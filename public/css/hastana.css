@@ -1,0 +1,82 @@
+/* HASTANA Website Custom Styles */
+
+/* Responsive Design Enhancements */
+@media (max-width: 640px) {
+    .hero-bg {
+        min-height: 80vh;
+        background-attachment: scroll;
+    }
+
+    .hero-bg h1 {
+        font-size: 2.5rem;
+    }
+
+    .hero-bg .text-2xl {
+        font-size: 1.25rem;
+    }
+
+    .card-hover {
+        padding: 1.5rem;
+    }
+
+    .portfolio-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
+
+    .gradient-text {
+        font-size: 2.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-bg h1 {
+        font-size: 2rem;
+    }
+
+    .portfolio-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .card-hover {
+        padding: 1rem;
+    }
+}
+
+/* Improved hover effects */
+.card-hover {
+    will-change: transform;
+}
+
+.portfolio-grid img {
+    will-change: transform, filter;
+}
+
+/* Loading states */
+.loading {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.6s ease;
+}
+
+.loaded .loading {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Improved focus states for accessibility */
+a:focus,
+button:focus {
+    outline: 2px solid #1e40af;
+    outline-offset: 2px;
+}
+
+/* Print styles */
+@media print {
+    .floating-animation,
+    .card-hover,
+    footer {
+        animation: none;
+        transform: none;
+    }
+}
