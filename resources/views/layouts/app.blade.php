@@ -25,7 +25,7 @@
     <link rel="stylesheet" href="{{ asset('css/hastana.css') }}">
     
     <!-- Vite Assets -->
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    {{-- @vite(['resources/css/app.css', 'resources/js/app.js']) --}}
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
