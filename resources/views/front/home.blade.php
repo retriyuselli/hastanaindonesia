@@ -118,11 +118,11 @@
             </p>
             
             <div class="flex flex-col sm:flex-row gap-6 justify-center items-center">
-                <a href="#members" class="inline-flex items-center px-8 py-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white font-semibold rounded-full hover:from-blue-700 hover:to-blue-800 transition-all duration-300 shadow-xl hover:shadow-2xl transform hover:-translate-y-1">
+                <a href="{{ route('members') }}" class="inline-flex items-center px-8 py-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white font-semibold rounded-full hover:from-blue-700 hover:to-blue-800 transition-all duration-300 shadow-xl hover:shadow-2xl transform hover:-translate-y-1">
                     <i class="fas fa-users mr-3"></i>
                     Lihat Daftar Anggota
                 </a>
-                <a href="#join" class="inline-flex items-center px-8 py-4 bg-gradient-to-r from-red-600 to-red-700 text-white font-semibold rounded-full hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow-xl hover:shadow-2xl transform hover:-translate-y-1">
+                <a href="{{ route('join') }}" class="inline-flex items-center px-8 py-4 bg-gradient-to-r from-red-600 to-red-700 text-white font-semibold rounded-full hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow-xl hover:shadow-2xl transform hover:-translate-y-1">
                     <i class="fas fa-handshake mr-3"></i>
                     Gabung Bersama Kami
                 </a>
@@ -219,11 +219,11 @@
                 </div>
                 
                 <div class="mt-10 flex flex-col sm:flex-row gap-4">
-                    <a href="#about" class="inline-flex items-center px-6 py-3 border-2 border-hastana-blue text-hastana-blue font-semibold rounded-full hover:bg-hastana-blue hover:text-white transition-all duration-300">
+                    <a href="{{ route('about') }}" class="inline-flex items-center px-6 py-3 border-2 border-hastana-blue text-hastana-blue font-semibold rounded-full hover:bg-hastana-blue hover:text-white transition-all duration-300">
                         <i class="fas fa-info-circle mr-2"></i>
                         Selengkapnya
                     </a>
-                    <a href="#contact" class="inline-flex items-center px-6 py-3 text-gray-600 font-semibold hover:text-hastana-blue transition-colors duration-300">
+                    <a href="{{ route('contact') }}" class="inline-flex items-center px-6 py-3 text-gray-600 font-semibold hover:text-hastana-blue transition-colors duration-300">
                         <i class="fas fa-envelope mr-2"></i>
                         Hubungi Kami
                     </a>

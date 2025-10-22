@@ -18,7 +18,10 @@ class DatabaseSeeder extends Seeder
             RegionSeeder::class,
             CompanySeeder::class,
             EventCategorySeeder::class,
+            EventHastanaSeeder::class,
             WeddingOrganizerSeeder::class,
+            BlogCategorySeeder::class,
+            BlogSeeder::class,
         ]);
     }
 }

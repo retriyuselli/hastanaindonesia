@@ -5,60 +5,87 @@
             <!-- Company Info -->
             <div class="lg:col-span-1">
                 <div class="flex items-center space-x-3 mb-6">
-                    <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-red-500 rounded-full flex items-center justify-center">
+                    {{-- <div
+                        class="w-12 h-12 bg-gradient-to-br from-blue-500 to-red-500 rounded-full flex items-center justify-center">
                         <i class="fas fa-gem text-white text-xl"></i>
-                    </div>
-                    <div>
-                        <h3 class="text-2xl font-bold">HASTANA</h3>
-                        <p class="text-sm text-gray-400">Indonesia</p>
-                    </div>
+                    </div> --}}
+                    <!-- Logo Section -->
+                    <a href="{{ route('home') }}" class="flex items-center space-x-4 logo-container cursor-pointer group">
+                        <!-- Logo Image -->
+                        <div class="relative">
+                            <img src="{{ asset('images/Logo Hastana Indonesia Putih.png') }}" alt="HASTANA Indonesia"
+                                class="h-12 w-auto object-contain transition-transform duration-300 group-hover:scale-110">
+                            <!-- Subtle glow effect on hover -->
+                            <div
+                                class="absolute -inset-1 bg-gradient-to-r from-blue-600 to-red-600 rounded-full opacity-0 group-hover:opacity-20 blur transition-opacity duration-300">
+                            </div>
+                        </div>
+
+                        <!-- Logo Text -->
+                        {{-- <div class="flex flex-col">
+                        <h1 class="text-xl font-bold text-hastana-black leading-tight">
+                            HASTANA
+                        </h1>
+                        <span class="text-xs text-gray-600 font-medium tracking-wide -mt-1">
+                            INDONESIA
+                        </span>
+                    </div> --}}
+                    </a>
                 </div>
                 <p class="text-gray-300 leading-relaxed mb-6">
-                    Himpunan Perusahaan Penata Acara Seluruh Indonesia - Organisasi resmi yang menaungi wedding organizer profesional di Indonesia.
+                    Himpunan Perusahaan Penata Acara Seluruh Indonesia - Organisasi resmi yang menaungi wedding
+                    organizer profesional di Indonesia.
                 </p>
                 <div class="flex space-x-4">
-                    <a href="#" class="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center hover:bg-blue-700 transition-colors">
+                    <a href="#"
+                        class="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center hover:bg-blue-700 transition-colors">
                         <i class="fab fa-facebook-f text-white"></i>
                     </a>
-                    <a href="#" class="w-10 h-10 bg-pink-600 rounded-full flex items-center justify-center hover:bg-pink-700 transition-colors">
+                    <a href="#"
+                        class="w-10 h-10 bg-pink-600 rounded-full flex items-center justify-center hover:bg-pink-700 transition-colors">
                         <i class="fab fa-instagram text-white"></i>
                     </a>
-                    <a href="#" class="w-10 h-10 bg-blue-400 rounded-full flex items-center justify-center hover:bg-blue-500 transition-colors">
+                    <a href="#"
+                        class="w-10 h-10 bg-blue-400 rounded-full flex items-center justify-center hover:bg-blue-500 transition-colors">
                         <i class="fab fa-twitter text-white"></i>
                     </a>
-                    <a href="#" class="w-10 h-10 bg-red-600 rounded-full flex items-center justify-center hover:bg-red-700 transition-colors">
+                    <a href="#"
+                        class="w-10 h-10 bg-red-600 rounded-full flex items-center justify-center hover:bg-red-700 transition-colors">
                         <i class="fab fa-youtube text-white"></i>
                     </a>
                 </div>
             </div>
-            
+
             <!-- Quick Links -->
             <div>
                 <h4 class="text-lg font-semibold mb-6">Menu Utama</h4>
                 <ul class="space-y-3">
                     <li><a href="#" class="text-gray-300 hover:text-white transition-colors">Beranda</a></li>
-                    <li><a href="#" class="text-gray-300 hover:text-white transition-colors">Tentang Kami</a></li>
                     <li><a href="#" class="text-gray-300 hover:text-white transition-colors">Daftar Anggota</a></li>
-                    <li><a href="#" class="text-gray-300 hover:text-white transition-colors">Portfolio</a></li>
                     <li><a href="#" class="text-gray-300 hover:text-white transition-colors">Event</a></li>
                     <li><a href="#" class="text-gray-300 hover:text-white transition-colors">Blog</a></li>
                     <li><a href="#" class="text-gray-300 hover:text-white transition-colors">Kontak</a></li>
+                    <li><a href="#" class="text-gray-300 hover:text-white transition-colors">Tentang Kami</a></li>
                 </ul>
             </div>
-            
+
             <!-- Services -->
             <div>
                 <h4 class="text-lg font-semibold mb-6">Layanan</h4>
                 <ul class="space-y-3">
-                    <li><a href="#" class="text-gray-300 hover:text-white transition-colors">Sertifikasi WO</a></li>
+                    <li><a href="#" class="text-gray-300 hover:text-white transition-colors">Sertifikasi WO</a>
+                    </li>
                     <li><a href="#" class="text-gray-300 hover:text-white transition-colors">Pelatihan Profesional</a></li>
-                    <li><a href="#" class="text-gray-300 hover:text-white transition-colors">Networking Event</a></li>
-                    <li><a href="#" class="text-gray-300 hover:text-white transition-colors">Konsultasi Bisnis</a></li>
+                    <li><a href="#" class="text-gray-300 hover:text-white transition-colors">Networking Event</a>
+                    </li>
+                    <li><a href="#" class="text-gray-300 hover:text-white transition-colors">Konsultasi Bisnis</a>
+                    </li>
                     <li><a href="#" class="text-gray-300 hover:text-white transition-colors">Directory WO</a></li>
-                    <li><a href="#" class="text-gray-300 hover:text-white transition-colors">Quality Assurance</a></li>
+                    <li><a href="#" class="text-gray-300 hover:text-white transition-colors">Quality Assurance</a>
+                    </li>
                 </ul>
             </div>
-            
+
             <!-- Contact Info -->
             <div>
                 <h4 class="text-lg font-semibold mb-6">Kontak Kami</h4>
@@ -86,9 +113,9 @@
                         <p class="text-gray-300">www.hastana.id</p>
                     </div>
                 </div>
-                
+
                 <!-- Newsletter -->
-                <div class="mt-8">
+                {{-- <div class="mt-8">
                     <h5 class="font-semibold mb-3">Newsletter</h5>
                     <div class="flex">
                         <input type="email" placeholder="Email Anda" class="flex-1 px-4 py-2 bg-gray-800 text-white rounded-l-full focus:outline-none focus:ring-2 focus:ring-blue-500">
@@ -96,10 +123,10 @@
                             <i class="fas fa-paper-plane"></i>
                         </button>
                     </div>
-                </div>
+                </div> --}}
             </div>
         </div>
-        
+
         <!-- Bottom Footer -->
         <div class="border-t border-gray-700 pt-8">
             <div class="flex flex-col md:flex-row justify-between items-center">
@@ -113,16 +140,16 @@
                 </div>
             </div>
         </div>
-        
+
         <!-- Certification Badges -->
         <div class="mt-8 pt-8 border-t border-gray-700">
             <div class="flex justify-center items-center">
                 <div class="text-center">
                     <p class="text-gray-400 text-sm">
                         <i class="fas fa-code text-blue-500 mr-2"></i>
-                        Developed by <span class="text-white font-semibold">PT. Makna Kreatif Indonesia</span>
+                        Developed by <span class="text-white font-semibold">Makna Wedding & Event Planner</span>
                     </p>
-                    <p class="text-gray-500 text-xs mt-1">Creative Digital Solutions</p>
+                    <p class="text-gray-500 text-xs mt-1">PT. Makna Kreatif Indonesia</p>
                 </div>
             </div>
         </div>
@@ -131,17 +158,20 @@
 
 <!-- Floating WhatsApp Button -->
 <div class="fixed bottom-6 left-6 z-50">
-    <a href="https://wa.me/6281234567890?text=Halo%20HASTANA%20Indonesia,%20saya%20ingin%20berkonsultasi%20tentang%20layanan%20wedding%20organizer" 
-       target="_blank" 
-       class="group bg-green-500 hover:bg-green-600 text-white p-4 rounded-full shadow-2xl transition-all duration-300 hover:scale-110 flex items-center justify-center">
+    <a href="https://wa.me/6281234567890?text=Halo%20HASTANA%20Indonesia,%20saya%20ingin%20berkonsultasi%20tentang%20layanan%20wedding%20organizer"
+        target="_blank"
+        class="group bg-green-500 hover:bg-green-600 text-white p-4 rounded-full shadow-2xl transition-all duration-300 hover:scale-110 flex items-center justify-center">
         <i class="fab fa-whatsapp text-2xl"></i>
-        
+
         <!-- Tooltip -->
-        <div class="absolute left-full ml-3 bg-gray-800 text-white px-3 py-2 rounded-lg text-sm whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+        <div
+            class="absolute left-full ml-3 bg-gray-800 text-white px-3 py-2 rounded-lg text-sm whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300">
             Chat via WhatsApp
-            <div class="absolute top-1/2 -left-1 transform -translate-y-1/2 w-0 h-0 border-r-4 border-r-gray-800 border-t-2 border-b-2 border-t-transparent border-b-transparent"></div>
+            <div
+                class="absolute top-1/2 -left-1 transform -translate-y-1/2 w-0 h-0 border-r-4 border-r-gray-800 border-t-2 border-b-2 border-t-transparent border-b-transparent">
+            </div>
         </div>
-        
+
         <!-- Pulse Animation -->
         <div class="absolute inset-0 bg-green-500 rounded-full animate-ping opacity-20"></div>
     </a>
@@ -149,16 +179,19 @@
 
 <style>
     @keyframes pulse-whatsapp {
-        0%, 100% {
+
+        0%,
+        100% {
             transform: scale(1);
             opacity: 1;
         }
+
         50% {
             transform: scale(1.05);
             opacity: 0.8;
         }
     }
-    
+
     .whatsapp-float {
         animation: pulse-whatsapp 2s infinite;
     }

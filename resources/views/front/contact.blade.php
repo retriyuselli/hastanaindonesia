@@ -23,7 +23,7 @@
 @section('content')
 
 <!-- Hero Section -->
-<section class="bg-gradient-to-r from-red-900 via-red-800 to-blue-800 py-20 text-white">
+<section class="bg-gradient-to-r from-red-900 via-red-800 to-blue-800 py-20 text-white mt-20">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <div class="max-w-4xl mx-auto">
             <div class="mb-8">
@@ -162,15 +162,17 @@
                     <label class="block text-sm font-semibold text-gray-700 mb-2">
                         Subjek <span class="text-red-500">*</span>
                     </label>
-                    <select required class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                        <option value="">Pilih subjek...</option>
-                        <option value="membership">Informasi Keanggotaan</option>
-                        <option value="partnership">Kerjasama & Partnership</option>
-                        <option value="event">Event & Training</option>
-                        <option value="complaint">Keluhan & Saran</option>
-                        <option value="general">Pertanyaan Umum</option>
-                        <option value="other">Lainnya</option>
-                    </select>
+                    <div class="relative">
+                        <select required class="search-box w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none bg-white">
+                            <option value="">Pilih subjek...</option>
+                            <option value="membership">Informasi Keanggotaan</option>
+                            <option value="partnership">Kerjasama & Partnership</option>
+                            <option value="event">Event & Training</option>
+                            <option value="complaint">Keluhan & Saran</option>
+                            <option value="general">Pertanyaan Umum</option>
+                            <option value="other">Lainnya</option>
+                        </select>
+                    </div>
                 </div>
                 
                 <!-- Message -->

@@ -28,9 +28,15 @@
     }
     
     .filter-tab.active {
-        background: linear-gradient(135deg, #1e40af, #dc2626);
+        background: var(--category-color, linear-gradient(135deg, #1e40af, #dc2626));
         color: white;
+        border-color: var(--category-color, #1e40af) !important;
         transform: scale(1.05);
+    }
+    
+    .filter-tab:not(.active):hover {
+        border-color: var(--category-color, #3B82F6);
+        color: var(--category-color, #1e40af);
     }
     
     .timeline-item {
@@ -65,7 +71,7 @@
 @section('content')
 
 <!-- Hero Section -->
-<section class="bg-gradient-to-r from-red-900 via-red-800 to-blue-800 py-20 text-white">
+<section class="bg-gradient-to-r from-red-900 via-red-800 to-blue-800 py-20 text-white mt-20">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <div class="max-w-4xl mx-auto">
             <div class="mb-8">
@@ -106,24 +112,22 @@
         </div>
         
         <div class="flex flex-wrap justify-center gap-4">
-            <button class="filter-tab active px-6 py-3 rounded-full border-2 border-gray-300 bg-white text-gray-700 font-semibold" data-filter="all">
+            <a href="{{ route('events') }}" 
+               class="filter-tab {{ !request('type') ? 'active' : '' }} px-6 py-3 rounded-full border-2 border-gray-300 bg-white text-gray-700 font-semibold hover:bg-blue-50 hover:border-blue-500 transition-all duration-300">
+                <i class="fas fa-th mr-2"></i>
                 Semua Events
-            </button>
-            <button class="filter-tab px-6 py-3 rounded-full border-2 border-gray-300 bg-white text-gray-700 font-semibold" data-filter="upcoming">
-                Upcoming
-            </button>
-            <button class="filter-tab px-6 py-3 rounded-full border-2 border-gray-300 bg-white text-gray-700 font-semibold" data-filter="workshop">
-                Workshop
-            </button>
-            <button class="filter-tab px-6 py-3 rounded-full border-2 border-gray-300 bg-white text-gray-700 font-semibold" data-filter="networking">
-                Networking
-            </button>
-            <button class="filter-tab px-6 py-3 rounded-full border-2 border-gray-300 bg-white text-gray-700 font-semibold" data-filter="conference">
-                Conference
-            </button>
-            <button class="filter-tab px-6 py-3 rounded-full border-2 border-gray-300 bg-white text-gray-700 font-semibold" data-filter="training">
-                Training
-            </button>
+            </a>
+            
+            @foreach($eventCategories as $category)
+            <a href="{{ route('events', ['type' => $category->slug]) }}" 
+               class="filter-tab {{ request('type') == $category->slug ? 'active' : '' }} px-6 py-3 rounded-full border-2 border-gray-300 bg-white text-gray-700 font-semibold hover:bg-blue-50 hover:border-blue-500 transition-all duration-300"
+               style="--category-color: {{ $category->color ?? '#3B82F6' }}">
+                @if($category->icon)
+                <i class="fas fa-{{ $category->icon }} mr-2"></i>
+                @endif
+                {{ $category->name }}
+            </a>
+            @endforeach
         </div>
     </div>
 </section>
@@ -133,296 +137,154 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16">
             <h2 class="text-3xl font-bold text-gray-900 mb-4">
-                Events <span class="bg-gradient-to-r from-blue-600 to-red-600 bg-clip-text text-transparent">Mendatang</span>
+                Events <span class="bg-gradient-to-r from-blue-600 to-red-600 bg-clip-text text-transparent">
+                    {{ $hasUpcomingEvents ? 'Mendatang' : 'Terbaru' }}
+                </span>
             </h2>
-            <p class="text-lg text-gray-600">Jangan lewatkan kesempatan emas untuk mengembangkan skill dan networking</p>
+            <p class="text-lg text-gray-600">
+                @if($hasUpcomingEvents)
+                    Jangan lewatkan kesempatan emas untuk mengembangkan skill dan networking
+                @else
+                    Lihat koleksi event HASTANA Indonesia yang telah dilaksanakan
+                @endif
+            </p>
         </div>
         
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="events-grid">
             
-            <!-- Event 1 - Featured -->
-            <div class="event-card bg-white rounded-2xl shadow-lg overflow-hidden relative md:col-span-2 lg:col-span-1" data-category="upcoming conference">
-                <div class="event-status">
-                    <span class="bg-red-500 text-white px-3 py-1 rounded-full text-xs font-bold">FEATURED</span>
-                </div>
-                <div class="relative">
-                    <img src="https://images.unsplash.com/photo-1511578314322-379afb476865?w=600&h=300&fit=crop" alt="HASTANA Conference 2025" class="w-full h-48 object-cover">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-                    <div class="absolute bottom-4 left-4 text-white">
-                        <span class="bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full text-sm">Conference</span>
+            @if($events->count() > 0)
+                @foreach($events as $event)
+                <!-- Event Card -->
+                <div class="event-card bg-white rounded-2xl shadow-lg overflow-hidden relative hover:shadow-2xl transition-shadow duration-300" 
+                     data-category="{{ $event->event_type }}">
+                    
+                    @if($event->badge_type)
+                    <div class="event-status">
+                        <span class="bg-{{ $event->badge_color }} text-white px-3 py-1 rounded-full text-xs font-bold uppercase">
+                            {{ $event->badge_label }}
+                        </span>
                     </div>
-                </div>
-                <div class="p-6">
-                    <div class="flex items-center justify-between mb-3">
-                        <div class="flex items-center text-sm text-gray-500">
-                            <i class="fas fa-calendar mr-2 text-blue-600"></i>
-                            <span>15-17 Maret 2025</span>
+                    @endif
+                    
+                    <div class="relative">
+                        <img src="{{ $event->featured_image_url }}" 
+                             alt="{{ $event->title }}" 
+                             class="w-full h-48 object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                        <div class="absolute bottom-4 left-4 text-white">
+                            <span class="bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full text-sm capitalize">
+                                {{ str_replace('_', ' ', $event->event_type) }}
+                            </span>
                         </div>
-                        <div class="flex items-center text-sm text-gray-500">
-                            <i class="fas fa-map-marker-alt mr-2 text-red-600"></i>
-                            <span>Bali</span>
+                        @if($event->is_premium)
+                        <div class="absolute top-4 right-4">
+                            <span class="bg-yellow-500 text-white px-3 py-1 rounded-full text-xs font-bold">
+                                <i class="fas fa-crown mr-1"></i>PREMIUM
+                            </span>
                         </div>
+                        @endif
                     </div>
                     
-                    <h3 class="text-xl font-bold text-gray-900 mb-3">HASTANA Annual Conference 2025</h3>
-                    <p class="text-gray-600 mb-4 leading-relaxed">
-                        Konferensi tahunan terbesar dengan tema "Wedding Industry 4.0: Digital Transformation in Wedding Organizer Business". 
-                        Hadiah doorprize senilai 50 juta rupiah!
-                    </p>
-                    
-                    <div class="flex items-center justify-between mb-4">
-                        <div class="text-sm">
-                            <span class="text-gray-500">Peserta:</span>
-                            <span class="font-semibold text-blue-600">500+ WO</span>
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-3">
+                            <div class="flex items-center text-sm text-gray-500">
+                                <i class="fas fa-calendar mr-2 text-blue-600"></i>
+                                <span>{{ $event->formatted_date }}</span>
+                            </div>
+                            @if($event->city)
+                            <div class="flex items-center text-sm text-gray-500">
+                                <i class="fas fa-map-marker-alt mr-2 text-red-600"></i>
+                                <span>{{ $event->city }}</span>
+                            </div>
+                            @endif
                         </div>
-                        <div class="text-sm">
+                        
+                        <h3 class="text-xl font-bold text-gray-900 mb-3 hover:text-blue-600 transition-colors">
+                            <a href="{{ route('events.show', $event->slug) }}">
+                                {{ Str::limit($event->title, 50) }}
+                            </a>
+                        </h3>
+                        
+                        <p class="text-gray-600 mb-4 text-sm leading-relaxed">
+                            {{ Str::limit($event->short_description ?? $event->description, 120) }}
+                        </p>
+                        
+                        <div class="flex items-center justify-between mb-4 pb-4 border-b border-gray-100">
+                            @if($event->quota)
+                            <div class="text-sm">
+                                <span class="text-gray-500">Kuota:</span>
+                                <span class="font-semibold text-blue-600">{{ $event->remaining_quota }} tersisa</span>
+                            </div>
+                            @endif
+                            
+                            <div class="text-sm">
+                                <span class="text-gray-500">Harga:</span>
+                                <span class="font-semibold {{ $event->is_free ? 'text-green-600' : 'text-red-600' }}">
+                                    {{ $event->formatted_price }}
+                                </span>
+                            </div>
+                        </div>
+                        
+                        @if($event->speaker)
+                        <div class="mb-4 text-sm">
                             <span class="text-gray-500">Speaker:</span>
-                            <span class="font-semibold text-green-600">10 Expert</span>
+                            <span class="font-semibold text-gray-900">{{ Str::limit($event->speaker, 30) }}</span>
+                        </div>
+                        @endif
+                        
+                        <div class="flex space-x-3">
+                            @if($event->canRegister())
+                            <a href="{{ $event->registration_link ?: route('events.show', $event->slug) }}" 
+                               class="flex-1 bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 transition-colors font-semibold text-center">
+                                <i class="fas fa-ticket-alt mr-2"></i>Daftar
+                            </a>
+                            @else
+                            <button disabled 
+                                    class="flex-1 bg-gray-400 text-white py-3 px-4 rounded-lg cursor-not-allowed font-semibold">
+                                <i class="fas fa-times-circle mr-2"></i>Penuh
+                            </button>
+                            @endif
+                            
+                            <a href="{{ route('events.show', $event->slug) }}" 
+                               class="flex-1 border border-blue-600 text-blue-600 py-3 px-4 rounded-lg hover:bg-blue-50 transition-colors font-semibold text-center">
+                                <i class="fas fa-info-circle mr-2"></i>Detail
+                            </a>
                         </div>
                     </div>
-                    
-                    <div class="flex space-x-3">
-                        <button class="flex-1 bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 transition-colors font-semibold">
-                            <i class="fas fa-ticket-alt mr-2"></i>Daftar
-                        </button>
-                        <button class="flex-1 border border-blue-600 text-blue-600 py-3 px-4 rounded-lg hover:bg-blue-50 transition-colors font-semibold">
-                            <i class="fas fa-info-circle mr-2"></i>Detail
-                        </button>
-                    </div>
                 </div>
-            </div>
-
-            <!-- Event 2 -->
-            <div class="event-card bg-white rounded-2xl shadow-lg overflow-hidden relative" data-category="upcoming workshop">
-                <div class="event-status">
-                    <span class="bg-green-500 text-white px-3 py-1 rounded-full text-xs font-bold">OPEN</span>
-                </div>
-                <div class="relative">
-                    <img src="https://images.unsplash.com/photo-1556761175-4b46a572b786?w=400&h=250&fit=crop" alt="Photography Workshop" class="w-full h-48 object-cover">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-                    <div class="absolute bottom-4 left-4 text-white">
-                        <span class="bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full text-sm">Workshop</span>
+                <!-- End Event Card -->
+                @endforeach
+            @else
+                <!-- Empty State -->
+                <div class="col-span-full text-center py-16">
+                    <div class="inline-flex items-center justify-center w-24 h-24 bg-gray-100 rounded-full mb-6">
+                        <i class="fas fa-calendar-times text-4xl text-gray-400"></i>
                     </div>
-                </div>
-                <div class="p-6">
-                    <div class="flex items-center justify-between mb-3">
-                        <div class="flex items-center text-sm text-gray-500">
-                            <i class="fas fa-calendar mr-2 text-blue-600"></i>
-                            <span>25 Januari 2025</span>
-                        </div>
-                        <div class="flex items-center text-sm text-gray-500">
-                            <i class="fas fa-map-marker-alt mr-2 text-red-600"></i>
-                            <span>Jakarta</span>
-                        </div>
-                    </div>
-                    
-                    <h3 class="text-lg font-bold text-gray-900 mb-3">Wedding Photography Masterclass</h3>
-                    <p class="text-gray-600 mb-4 text-sm leading-relaxed">
-                        Workshop intensif fotografi pernikahan dengan equipment terbaru dan teknik editing professional.
+                    <h3 class="text-2xl font-bold text-gray-900 mb-3">Belum Ada Event</h3>
+                    <p class="text-gray-600 mb-8">
+                        @if(request('search') || request('type') || request('city'))
+                            Tidak ada event yang sesuai dengan pencarian Anda. Coba ubah filter pencarian.
+                        @else
+                            Saat ini belum ada event yang tersedia. Pantau terus untuk update terbaru!
+                        @endif
                     </p>
-                    
-                    <div class="flex items-center justify-between mb-4">
-                        <div class="text-sm">
-                            <span class="text-gray-500">Quota:</span>
-                            <span class="font-semibold text-orange-600">30 peserta</span>
-                        </div>
-                        <div class="text-sm">
-                            <span class="text-gray-500">Harga:</span>
-                            <span class="font-semibold text-green-600">Rp 750K</span>
-                        </div>
-                    </div>
-                    
-                    <button class="w-full bg-gradient-to-r from-green-600 to-green-700 text-white py-2 px-4 rounded-lg hover:from-green-700 hover:to-green-800 transition-all font-semibold">
-                        <i class="fas fa-user-plus mr-2"></i>Daftar Sekarang
-                    </button>
+                    @if(request('search') || request('type') || request('city'))
+                    <a href="{{ route('events') }}" 
+                       class="inline-flex items-center px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-semibold">
+                        <i class="fas fa-redo mr-2"></i>Reset Filter
+                    </a>
+                    @endif
                 </div>
-            </div>
-
-            <!-- Event 3 -->
-            <div class="event-card bg-white rounded-2xl shadow-lg overflow-hidden relative" data-category="upcoming networking">
-                <div class="event-status">
-                    <span class="bg-blue-500 text-white px-3 py-1 rounded-full text-xs font-bold">PREMIUM</span>
-                </div>
-                <div class="relative">
-                    <img src="https://images.unsplash.com/photo-1511578314322-379afb476865?w=400&h=250&fit=crop" alt="Networking Dinner" class="w-full h-48 object-cover">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-                    <div class="absolute bottom-4 left-4 text-white">
-                        <span class="bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full text-sm">Networking</span>
-                    </div>
-                </div>
-                <div class="p-6">
-                    <div class="flex items-center justify-between mb-3">
-                        <div class="flex items-center text-sm text-gray-500">
-                            <i class="fas fa-calendar mr-2 text-blue-600"></i>
-                            <span>8 Februari 2025</span>
-                        </div>
-                        <div class="flex items-center text-sm text-gray-500">
-                            <i class="fas fa-map-marker-alt mr-2 text-red-600"></i>
-                            <span>Surabaya</span>
-                        </div>
-                    </div>
-                    
-                    <h3 class="text-lg font-bold text-gray-900 mb-3">Premium Networking Dinner</h3>
-                    <p class="text-gray-600 mb-4 text-sm leading-relaxed">
-                        Malam networking eksklusif dengan top wedding organizer se-Jawa Timur. Premium venue dengan live music.
-                    </p>
-                    
-                    <div class="flex items-center justify-between mb-4">
-                        <div class="text-sm">
-                            <span class="text-gray-500">Level:</span>
-                            <span class="font-semibold text-purple-600">Gold+</span>
-                        </div>
-                        <div class="text-sm">
-                            <span class="text-gray-500">Dress:</span>
-                            <span class="font-semibold text-indigo-600">Formal</span>
-                        </div>
-                    </div>
-                    
-                    <button class="w-full bg-gradient-to-r from-purple-600 to-purple-700 text-white py-2 px-4 rounded-lg hover:from-purple-700 hover:to-purple-800 transition-all font-semibold">
-                        <i class="fas fa-crown mr-2"></i>Join Premium
-                    </button>
-                </div>
-            </div>
-
-            <!-- Event 4 -->
-            <div class="event-card bg-white rounded-2xl shadow-lg overflow-hidden relative" data-category="upcoming training">
-                <div class="event-status">
-                    <span class="bg-yellow-500 text-gray-900 px-3 py-1 rounded-full text-xs font-bold">LIMITED</span>
-                </div>
-                <div class="relative">
-                    <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=400&h=250&fit=crop" alt="Business Training" class="w-full h-48 object-cover">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-                    <div class="absolute bottom-4 left-4 text-white">
-                        <span class="bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full text-sm">Training</span>
-                    </div>
-                </div>
-                <div class="p-6">
-                    <div class="flex items-center justify-between mb-3">
-                        <div class="flex items-center text-sm text-gray-500">
-                            <i class="fas fa-calendar mr-2 text-blue-600"></i>
-                            <span>20 Februari 2025</span>
-                        </div>
-                        <div class="flex items-center text-sm text-gray-500">
-                            <i class="fas fa-map-marker-alt mr-2 text-red-600"></i>
-                            <span>Bandung</span>
-                        </div>
-                    </div>
-                    
-                    <h3 class="text-lg font-bold text-gray-900 mb-3">Business Development Training</h3>
-                    <p class="text-gray-600 mb-4 text-sm leading-relaxed">
-                        Pelatihan pengembangan bisnis WO dengan strategi marketing digital dan customer retention.
-                    </p>
-                    
-                    <div class="flex items-center justify-between mb-4">
-                        <div class="text-sm">
-                            <span class="text-gray-500">Sisa:</span>
-                            <span class="font-semibold text-red-600">5 slot</span>
-                        </div>
-                        <div class="text-sm">
-                            <span class="text-gray-500">Benefit:</span>
-                            <span class="font-semibold text-blue-600">E-Certificate</span>
-                        </div>
-                    </div>
-                    
-                    <button class="w-full bg-gradient-to-r from-yellow-600 to-orange-600 text-white py-2 px-4 rounded-lg hover:from-yellow-700 hover:to-orange-700 transition-all font-semibold">
-                        <i class="fas fa-bolt mr-2"></i>Daftar Cepat
-                    </button>
-                </div>
-            </div>
-
-            <!-- Event 5 -->
-            <div class="event-card bg-white rounded-2xl shadow-lg overflow-hidden relative" data-category="upcoming workshop">
-                <div class="event-status">
-                    <span class="bg-indigo-500 text-white px-3 py-1 rounded-full text-xs font-bold">NEW</span>
-                </div>
-                <div class="relative">
-                    <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&h=250&fit=crop" alt="Digital Marketing" class="w-full h-48 object-cover">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-                    <div class="absolute bottom-4 left-4 text-white">
-                        <span class="bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full text-sm">Workshop</span>
-                    </div>
-                </div>
-                <div class="p-6">
-                    <div class="flex items-center justify-between mb-3">
-                        <div class="flex items-center text-sm text-gray-500">
-                            <i class="fas fa-calendar mr-2 text-blue-600"></i>
-                            <span>5 Maret 2025</span>
-                        </div>
-                        <div class="flex items-center text-sm text-gray-500">
-                            <i class="fas fa-map-marker-alt mr-2 text-red-600"></i>
-                            <span>Online</span>
-                        </div>
-                    </div>
-                    
-                    <h3 class="text-lg font-bold text-gray-900 mb-3">Social Media Marketing for WO</h3>
-                    <p class="text-gray-600 mb-4 text-sm leading-relaxed">
-                        Workshop online tentang strategi social media marketing khusus untuk wedding organizer. Include template konten.
-                    </p>
-                    
-                    <div class="flex items-center justify-between mb-4">
-                        <div class="text-sm">
-                            <span class="text-gray-500">Format:</span>
-                            <span class="font-semibold text-green-600">Online</span>
-                        </div>
-                        <div class="text-sm">
-                            <span class="text-gray-500">Bonus:</span>
-                            <span class="font-semibold text-purple-600">Template</span>
-                        </div>
-                    </div>
-                    
-                    <button class="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-2 px-4 rounded-lg hover:from-indigo-700 hover:to-purple-700 transition-all font-semibold">
-                        <i class="fas fa-laptop mr-2"></i>Join Online
-                    </button>
-                </div>
-            </div>
-
-            <!-- Event 6 -->
-            <div class="event-card bg-white rounded-2xl shadow-lg overflow-hidden relative" data-category="upcoming networking">
-                <div class="event-status">
-                    <span class="bg-pink-500 text-white px-3 py-1 rounded-full text-xs font-bold">FEMALE</span>
-                </div>
-                <div class="relative">
-                    <img src="https://images.unsplash.com/photo-1573164713714-d95e436ab8d6?w=400&h=250&fit=crop" alt="Women Networking" class="w-full h-48 object-cover">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-                    <div class="absolute bottom-4 left-4 text-white">
-                        <span class="bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full text-sm">Networking</span>
-                    </div>
-                </div>
-                <div class="p-6">
-                    <div class="flex items-center justify-between mb-3">
-                        <div class="flex items-center text-sm text-gray-500">
-                            <i class="fas fa-calendar mr-2 text-blue-600"></i>
-                            <span>10 Maret 2025</span>
-                        </div>
-                        <div class="flex items-center text-sm text-gray-500">
-                            <i class="fas fa-map-marker-alt mr-2 text-red-600"></i>
-                            <span>Yogyakarta</span>
-                        </div>
-                    </div>
-                    
-                    <h3 class="text-lg font-bold text-gray-900 mb-3">Women in Wedding Industry</h3>
-                    <p class="text-gray-600 mb-4 text-sm leading-relaxed">
-                        Gathering khusus untuk wanita pengusaha wedding organizer. Diskusi empowerment dan business growth.
-                    </p>
-                    
-                    <div class="flex items-center justify-between mb-4">
-                        <div class="text-sm">
-                            <span class="text-gray-500">Target:</span>
-                            <span class="font-semibold text-pink-600">Female WO</span>
-                        </div>
-                        <div class="text-sm">
-                            <span class="text-gray-500">Theme:</span>
-                            <span class="font-semibold text-purple-600">Empowerment</span>
-                        </div>
-                    </div>
-                    
-                    <button class="w-full bg-gradient-to-r from-pink-600 to-rose-600 text-white py-2 px-4 rounded-lg hover:from-pink-700 hover:to-rose-700 transition-all font-semibold">
-                        <i class="fas fa-female mr-2"></i>Join Community
-                    </button>
-                </div>
-            </div>
+            @endif
 
         </div>
+        
+        <!-- Pagination -->
+        @if($events->hasPages())
+        <div class="mt-12">
+            {{ $events->links() }}
+        </div>
+        @endif
     </div>
 </section>
 

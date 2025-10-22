@@ -37,7 +37,7 @@
 @section('content')
 
 <!-- Hero Section -->
-<section class="bg-gradient-to-r from-red-900 via-red-800 to-blue-800 py-20 text-white">
+<section class="bg-gradient-to-r from-red-900 via-red-800 to-blue-800 py-20 text-white mt-20">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <div class="max-w-4xl mx-auto">
             <div class="mb-8">
@@ -77,28 +77,38 @@
                 <!-- Filter by Region -->
                 <div class="md:col-span-1">
                     <label class="block text-sm font-semibold text-gray-700 mb-2">Filter Wilayah</label>
-                    <select class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        <option>Semua Wilayah</option>
-                        <option>DKI Jakarta</option>
-                        <option>Jawa Barat</option>
-                        <option>Jawa Tengah</option>
-                        <option>Jawa Timur</option>
-                        <option>Bali</option>
-                        <option>Sumatera</option>
-                        <option>Kalimantan</option>
-                        <option>Sulawesi</option>
-                    </select>
+                    <div class="relative">
+                        <select class="search-box w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none bg-white">
+                            <option>Semua Wilayah</option>
+                            <option>DKI Jakarta</option>
+                            <option>Jawa Barat</option>
+                            <option>Jawa Tengah</option>
+                            <option>Jawa Timur</option>
+                            <option>Bali</option>
+                            <option>Sumatera</option>
+                            <option>Kalimantan</option>
+                            <option>Sulawesi</option>
+                        </select>
+                        <div class="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none">
+                            <i class="fas fa-chevron-down text-gray-400"></i>
+                        </div>
+                    </div>
                 </div>
                 
                 <!-- Filter by Membership -->
                 <div class="md:col-span-1">
                     <label class="block text-sm font-semibold text-gray-700 mb-2">Tingkat Keanggotaan</label>
-                    <select class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        <option>Semua Tingkat</option>
-                        <option>Platinum</option>
-                        <option>Gold</option>
-                        <option>Silver</option>
-                    </select>
+                    <div class="relative">
+                        <select class="search-box w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none bg-white">
+                            <option>Semua Tingkat</option>
+                            <option>Platinum</option>
+                            <option>Gold</option>
+                            <option>Silver</option>
+                        </select>
+                        <div class="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none">
+                            <i class="fas fa-chevron-down text-gray-400"></i>
+                        </div>
+                    </div>
                 </div>
                 
             </div>

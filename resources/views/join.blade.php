@@ -125,7 +125,7 @@
 @section('content')
 
 <!-- Hero Section -->
-<section class="hero-join-bg py-20">
+<section class="hero-join-bg py-20 mt-20">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-white">
         <div class="max-w-4xl mx-auto">
             <div class="mb-8">
