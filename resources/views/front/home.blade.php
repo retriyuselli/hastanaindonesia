@@ -777,7 +777,7 @@
         
         <!-- CTA Button -->
         <div class="text-center mt-16">
-            <a href="#portfolio" class="inline-flex items-center px-8 py-4 bg-gradient-to-r from-blue-600 to-red-600 text-white font-bold rounded-full hover:from-blue-700 hover:to-red-700 transition-all duration-300 shadow-xl hover:shadow-2xl transform hover:-translate-y-1">
+            <a href="{{ route('gallery') }}" class="inline-flex items-center px-8 py-4 bg-gradient-to-r from-blue-600 to-red-600 text-white font-bold rounded-full hover:from-blue-700 hover:to-red-700 transition-all duration-300 shadow-xl hover:shadow-2xl transform hover:-translate-y-1">
                 <i class="fas fa-images mr-3"></i>
                 Lihat Gallery Lengkap
             </a>

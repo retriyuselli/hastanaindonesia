@@ -32,85 +32,85 @@
                     </div> --}}
                     </a>
                 </div>
-                <p class="text-gray-300 leading-relaxed mb-6">
+                <p class="text-sm text-gray-300 leading-relaxed mb-6">
                     Himpunan Perusahaan Penata Acara Seluruh Indonesia - Organisasi resmi yang menaungi wedding
                     organizer profesional di Indonesia.
                 </p>
-                <div class="flex space-x-4">
+                <div class="flex space-x-3">
                     <a href="#"
-                        class="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center hover:bg-blue-700 transition-colors">
-                        <i class="fab fa-facebook-f text-white"></i>
+                        class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center hover:bg-blue-700 transition-colors">
+                        <i class="fab fa-facebook-f text-white text-xs"></i>
                     </a>
                     <a href="#"
-                        class="w-10 h-10 bg-pink-600 rounded-full flex items-center justify-center hover:bg-pink-700 transition-colors">
-                        <i class="fab fa-instagram text-white"></i>
+                        class="w-8 h-8 bg-pink-600 rounded-full flex items-center justify-center hover:bg-pink-700 transition-colors">
+                        <i class="fab fa-instagram text-white text-xs"></i>
                     </a>
                     <a href="#"
-                        class="w-10 h-10 bg-blue-400 rounded-full flex items-center justify-center hover:bg-blue-500 transition-colors">
-                        <i class="fab fa-twitter text-white"></i>
+                        class="w-8 h-8 bg-blue-400 rounded-full flex items-center justify-center hover:bg-blue-500 transition-colors">
+                        <i class="fab fa-twitter text-white text-xs"></i>
                     </a>
                     <a href="#"
-                        class="w-10 h-10 bg-red-600 rounded-full flex items-center justify-center hover:bg-red-700 transition-colors">
-                        <i class="fab fa-youtube text-white"></i>
+                        class="w-8 h-8 bg-red-600 rounded-full flex items-center justify-center hover:bg-red-700 transition-colors">
+                        <i class="fab fa-youtube text-white text-xs"></i>
                     </a>
                 </div>
             </div>
 
             <!-- Quick Links -->
             <div>
-                <h4 class="text-lg font-semibold mb-6">Menu Utama</h4>
-                <ul class="space-y-3">
-                    <li><a href="#" class="text-gray-300 hover:text-white transition-colors">Beranda</a></li>
-                    <li><a href="#" class="text-gray-300 hover:text-white transition-colors">Daftar Anggota</a></li>
-                    <li><a href="#" class="text-gray-300 hover:text-white transition-colors">Event</a></li>
-                    <li><a href="#" class="text-gray-300 hover:text-white transition-colors">Blog</a></li>
-                    <li><a href="#" class="text-gray-300 hover:text-white transition-colors">Kontak</a></li>
-                    <li><a href="#" class="text-gray-300 hover:text-white transition-colors">Tentang Kami</a></li>
+                <h4 class="text-base font-semibold mb-4">Menu Utama</h4>
+                <ul class="space-y-2">
+                    <li><a href="#" class="text-sm text-gray-300 hover:text-white transition-colors">Beranda</a></li>
+                    <li><a href="#" class="text-sm text-gray-300 hover:text-white transition-colors">Daftar Anggota</a></li>
+                    <li><a href="#" class="text-sm text-gray-300 hover:text-white transition-colors">Event</a></li>
+                    <li><a href="#" class="text-sm text-gray-300 hover:text-white transition-colors">Blog</a></li>
+                    <li><a href="#" class="text-sm text-gray-300 hover:text-white transition-colors">Kontak</a></li>
+                    <li><a href="#" class="text-sm text-gray-300 hover:text-white transition-colors">Tentang Kami</a></li>
                 </ul>
             </div>
 
             <!-- Services -->
             <div>
-                <h4 class="text-lg font-semibold mb-6">Layanan</h4>
-                <ul class="space-y-3">
-                    <li><a href="#" class="text-gray-300 hover:text-white transition-colors">Sertifikasi WO</a>
+                <h4 class="text-base font-semibold mb-4">Layanan</h4>
+                <ul class="space-y-2">
+                    <li><a href="#" class="text-sm text-gray-300 hover:text-white transition-colors">Sertifikasi WO</a>
                     </li>
-                    <li><a href="#" class="text-gray-300 hover:text-white transition-colors">Pelatihan Profesional</a></li>
-                    <li><a href="#" class="text-gray-300 hover:text-white transition-colors">Networking Event</a>
+                    <li><a href="#" class="text-sm text-gray-300 hover:text-white transition-colors">Pelatihan Profesional</a></li>
+                    <li><a href="#" class="text-sm text-gray-300 hover:text-white transition-colors">Networking Event</a>
                     </li>
-                    <li><a href="#" class="text-gray-300 hover:text-white transition-colors">Konsultasi Bisnis</a>
+                    <li><a href="#" class="text-sm text-gray-300 hover:text-white transition-colors">Konsultasi Bisnis</a>
                     </li>
-                    <li><a href="#" class="text-gray-300 hover:text-white transition-colors">Directory WO</a></li>
-                    <li><a href="#" class="text-gray-300 hover:text-white transition-colors">Quality Assurance</a>
+                    <li><a href="#" class="text-sm text-gray-300 hover:text-white transition-colors">Directory WO</a></li>
+                    <li><a href="#" class="text-sm text-gray-300 hover:text-white transition-colors">Quality Assurance</a>
                     </li>
                 </ul>
             </div>
 
             <!-- Contact Info -->
             <div>
-                <h4 class="text-lg font-semibold mb-6">Kontak Kami</h4>
-                <div class="space-y-4">
-                    <div class="flex items-start space-x-3">
-                        <i class="fas fa-map-marker-alt text-red-500 mt-1"></i>
+                <h4 class="text-base font-semibold mb-4">Kontak Kami</h4>
+                <div class="space-y-3">
+                    <div class="flex items-start space-x-2">
+                        <i class="fas fa-map-marker-alt text-red-500 mt-1 text-xs"></i>
                         <div>
-                            <p class="text-gray-300">
+                            <p class="text-sm text-gray-300">
                                 Jl. Wedding Organizer No. 123<br>
                                 Jakarta Selatan 12345<br>
                                 Indonesia
                             </p>
                         </div>
                     </div>
-                    <div class="flex items-center space-x-3">
-                        <i class="fas fa-phone text-blue-500"></i>
-                        <p class="text-gray-300">+62 21 1234 5678</p>
+                    <div class="flex items-center space-x-2">
+                        <i class="fas fa-phone text-blue-500 text-xs"></i>
+                        <p class="text-sm text-gray-300">+62 21 1234 5678</p>
                     </div>
-                    <div class="flex items-center space-x-3">
-                        <i class="fas fa-envelope text-green-500"></i>
-                        <p class="text-gray-300">info@hastana.id</p>
+                    <div class="flex items-center space-x-2">
+                        <i class="fas fa-envelope text-green-500 text-xs"></i>
+                        <p class="text-sm text-gray-300">info@hastana.id</p>
                     </div>
-                    <div class="flex items-center space-x-3">
-                        <i class="fas fa-globe text-purple-500"></i>
-                        <p class="text-gray-300">www.hastana.id</p>
+                    <div class="flex items-center space-x-2">
+                        <i class="fas fa-globe text-purple-500 text-xs"></i>
+                        <p class="text-sm text-gray-300">www.hastana.id</p>
                     </div>
                 </div>
 
@@ -128,12 +128,12 @@
         </div>
 
         <!-- Bottom Footer -->
-        <div class="border-t border-gray-700 pt-8">
+        <div class="border-t border-gray-700 pt-6">
             <div class="flex flex-col md:flex-row justify-between items-center">
-                <div class="text-gray-400 text-sm mb-4 md:mb-0">
+                <div class="text-gray-400 text-xs mb-3 md:mb-0">
                     <p>&copy; {{ date('Y') }} HASTANA Indonesia. All rights reserved.</p>
                 </div>
-                <div class="flex space-x-6 text-sm">
+                <div class="flex space-x-4 text-xs">
                     <a href="#" class="text-gray-400 hover:text-white transition-colors">Privacy Policy</a>
                     <a href="#" class="text-gray-400 hover:text-white transition-colors">Terms of Service</a>
                     <a href="#" class="text-gray-400 hover:text-white transition-colors">Cookie Policy</a>
@@ -142,11 +142,11 @@
         </div>
 
         <!-- Certification Badges -->
-        <div class="mt-8 pt-8 border-t border-gray-700">
+        <div class="mt-6 pt-6 border-t border-gray-700">
             <div class="flex justify-center items-center">
                 <div class="text-center">
-                    <p class="text-gray-400 text-sm">
-                        <i class="fas fa-code text-blue-500 mr-2"></i>
+                    <p class="text-gray-400 text-xs">
+                        <i class="fas fa-code text-blue-500 mr-1 text-xs"></i>
                         Developed by <span class="text-white font-semibold">Makna Wedding & Event Planner</span>
                     </p>
                     <p class="text-gray-500 text-xs mt-1">PT. Makna Kreatif Indonesia</p>

@@ -38,10 +38,14 @@ class AuthenticatedSessionController extends Controller
     {
         Auth::guard('web')->logout();
 
+        // Clear all session data including flash messages
+        $request->session()->flush();
+        
         $request->session()->invalidate();
 
         $request->session()->regenerateToken();
 
-        return redirect('/');
+        // Redirect to home with timestamp to prevent cache
+        return redirect('/?t=' . time());
     }
 }

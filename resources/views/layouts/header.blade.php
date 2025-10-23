@@ -316,49 +316,43 @@
                         <!-- Subtle glow effect on hover -->
                         <div class="absolute -inset-1 bg-gradient-to-r from-blue-600 to-red-600 rounded-full opacity-0 group-hover:opacity-20 blur transition-opacity duration-300"></div>
                     </div>
-                    
-                    <!-- Logo Text -->
-                    {{-- <div class="flex flex-col">
-                        <h1 class="text-xl font-bold text-hastana-black leading-tight">
-                            HASTANA
-                        </h1>
-                        <span class="text-xs text-gray-600 font-medium tracking-wide -mt-1">
-                            INDONESIA
-                        </span>
-                    </div> --}}
                 </a>
 
                 <!-- Desktop Navigation -->
-                <nav class="hidden lg:flex items-center space-x-8">
-                    <a href="{{ route('home') }}" class="nav-link {{ Request::routeIs('home') ? 'active' : '' }} text-gray-700 font-medium px-2 py-1">
+                <nav class="hidden lg:flex items-center space-x-6">
+                    <a href="{{ route('home') }}" class="nav-link {{ Request::routeIs('home') ? 'active' : '' }} text-gray-700 text-sm font-medium px-2 py-1">
                         Home
                     </a>
-                    <a href="{{ route('events') }}" class="nav-link {{ Request::routeIs('events') ? 'active' : '' }} text-gray-700 font-medium px-2 py-1">
+                    <a href="{{ route('events') }}" class="nav-link {{ Request::routeIs('events') ? 'active' : '' }} text-gray-700 text-sm font-medium px-2 py-1">
                         Event
                     </a>
-                    <a href="{{ route('blog') }}" class="nav-link {{ Request::routeIs('blog') ? 'active' : '' }} text-gray-700 font-medium px-2 py-1">
+                    <a href="{{ route('blog') }}" class="nav-link {{ Request::routeIs('blog') ? 'active' : '' }} text-gray-700 text-sm font-medium px-2 py-1">
                         Blog
                     </a>
-                    <a href="{{ route('about') }}" class="nav-link {{ Request::routeIs('about') ? 'active' : '' }} text-gray-700 font-medium px-2 py-1">
+                    <a href="{{ route('about') }}" class="nav-link {{ Request::routeIs('about') ? 'active' : '' }} text-gray-700 text-sm font-medium px-2 py-1">
                         About
                     </a>
                     <!-- Kontak Dropdown -->
                     <div class="dropdown">
-                        <a href="{{ route('contact') }}" class="nav-link {{ Request::routeIs('contact') || Request::routeIs('portfolio*') || Request::routeIs('members') ? 'active' : '' }} text-gray-700 font-medium px-2 py-1 flex items-center">
+                        <a href="{{ route('contact') }}" class="nav-link {{ Request::routeIs('contact') || Request::routeIs('portfolio*') || Request::routeIs('members') ? 'active' : '' }} text-gray-700 text-sm font-medium px-2 py-1 flex items-center">
                             Kontak
                             <i class="fas fa-chevron-down ml-1 text-xs dropdown-arrow"></i>
                         </a>
                         <div class="dropdown-menu">
-                            <a href="{{ route('contact') }}" class="dropdown-item">
-                                <i class="fas fa-envelope text-sm"></i>
+                            <a href="{{ route('contact') }}" class="dropdown-item text-sm">
+                                <i class="fas fa-envelope text-xs"></i>
                                 Hubungi Kami
                             </a>
-                            <a href="{{ route('portfolio') }}" class="dropdown-item">
-                                <i class="fas fa-briefcase text-sm"></i>
+                            <a href="{{ route('gallery') }}" class="dropdown-item text-sm">
+                                <i class="fas fa-images text-xs"></i>
+                                Gallery
+                            </a>
+                            <a href="{{ route('portfolio') }}" class="dropdown-item text-sm">
+                                <i class="fas fa-briefcase text-xs"></i>
                                 Portfolio WO
                             </a>
-                            <a href="{{ route('members') }}" class="dropdown-item">
-                                <i class="fas fa-users text-sm"></i>
+                            <a href="{{ route('members') }}" class="dropdown-item text-sm">
+                                <i class="fas fa-users text-xs"></i>
                                 Daftar Anggota WO
                             </a>
                         </div>
@@ -366,8 +360,8 @@
 
                     <!-- Login Link for Guest (Desktop) -->
                     @guest
-                        <a href="{{ route('login') }}" class="nav-link {{ Request::routeIs('login') ? 'active' : '' }} text-gray-700 font-medium px-4 py-2 hover:text-hastana-blue transition-smooth">
-                            <i class="fas fa-sign-in-alt mr-1 text-sm"></i>
+                        <a href="{{ route('login') }}" class="nav-link {{ Request::routeIs('login') ? 'active' : '' }} text-gray-700 text-sm font-medium px-4 py-2 hover:text-hastana-blue transition-smooth">
+                            <i class="fas fa-sign-in-alt mr-1 text-xs"></i>
                             Login
                         </a>
                     @endguest
@@ -394,27 +388,27 @@
                                 </div>
                             </a>
                             <div class="dropdown-menu">
-                                <div class="px-4 py-3 border-b border-gray-100">
-                                    <p class="text-sm font-semibold text-gray-900">{{ auth()->user()->name }}</p>
-                                    <p class="text-xs text-gray-500 truncate">{{ auth()->user()->email }}</p>
+                                <div class="px-4 py-2 border-b border-gray-100">
+                                    <p class="text-xs font-semibold text-gray-900">{{ auth()->user()->name }}</p>
+                                    <p class="text-xs text-gray-400 truncate">{{ auth()->user()->email }}</p>
                                 </div>
-                                <a href="{{ route('dashboard') }}" class="dropdown-item">
-                                    <i class="fas fa-tachometer-alt text-sm"></i>
+                                <a href="{{ route('dashboard') }}" class="dropdown-item text-sm">
+                                    <i class="fas fa-tachometer-alt text-xs"></i>
                                     Dashboard
                                 </a>
-                                <a href="{{ route('profile.edit') }}" class="dropdown-item">
-                                    <i class="fas fa-user-circle text-sm"></i>
+                                <a href="{{ route('profile.edit') }}" class="dropdown-item text-sm">
+                                    <i class="fas fa-user-circle text-xs"></i>
                                     Profil Saya
                                 </a>
-                                <a href="#" class="dropdown-item">
-                                    <i class="fas fa-ticket-alt text-sm"></i>
+                                <a href="#" class="dropdown-item text-sm">
+                                    <i class="fas fa-ticket-alt text-xs"></i>
                                     Event Saya
                                 </a>
                                 <div class="border-t border-gray-100"></div>
                                 <form method="POST" action="{{ route('logout') }}">
                                     @csrf
-                                    <button type="submit" class="dropdown-item w-full text-left text-red-600 hover:bg-red-50">
-                                        <i class="fas fa-sign-out-alt text-sm"></i>
+                                    <button type="submit" class="dropdown-item w-full text-left text-sm text-red-600 hover:bg-red-50">
+                                        <i class="fas fa-sign-out-alt text-xs"></i>
                                         Logout
                                     </button>
                                 </form>
@@ -465,6 +459,10 @@
                         <a href="{{ route('contact') }}" class="mobile-dropdown-item flex items-center text-sm hover:bg-blue-50 transition-smooth rounded">
                             <i class="fas fa-envelope mr-2 text-xs w-4"></i>
                             Hubungi Kami
+                        </a>
+                        <a href="{{ route('gallery') }}" class="mobile-dropdown-item flex items-center text-sm hover:bg-blue-50 transition-smooth rounded">
+                            <i class="fas fa-images mr-2 text-xs w-4"></i>
+                            Gallery
                         </a>
                         <a href="{{ route('portfolio') }}" class="mobile-dropdown-item flex items-center text-sm hover:bg-blue-50 transition-smooth rounded">
                             <i class="fas fa-briefcase mr-2 text-xs w-4"></i>
