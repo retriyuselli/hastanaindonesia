@@ -119,6 +119,50 @@
         pointer-events: none;
         color: #6b7280;
     }
+
+    /* Modal Styles */
+    .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.75);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+
+    .modal-overlay.active {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .modal-content {
+        background: white;
+        border-radius: 1rem;
+        max-width: 500px;
+        width: 90%;
+        max-height: 90vh;
+        overflow-y: auto;
+        transform: scale(0.9);
+        transition: transform 0.3s ease;
+        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+    }
+
+    .modal-overlay.active .modal-content {
+        transform: scale(1);
+    }
+
+    .form-disabled {
+        pointer-events: none;
+        opacity: 0.6;
+        filter: grayscale(50%);
+    }
 </style>
 @endpush
 
@@ -242,135 +286,6 @@
     </div>
 </section>
 
-<!-- Membership Types -->
-{{-- <section class="py-20 bg-white">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-16">
-            <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-                Pilihan <span class="text-red-600">Keanggotaan</span>
-            </h2>
-            <p class="text-xl text-gray-600 max-w-3xl mx-auto">
-                Pilih paket keanggotaan yang sesuai dengan kebutuhan dan skala bisnis wedding organizer Anda
-            </p>
-        </div>
-        
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <!-- Silver Member -->
-            <div class="bg-white border-2 border-gray-200 rounded-2xl p-8 relative hover:border-gray-400 transition-all duration-300">
-                <div class="text-center mb-8">
-                    <div class="w-16 h-16 bg-gradient-to-br from-gray-400 to-gray-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <i class="fas fa-star text-white text-xl"></i>
-                    </div>
-                    <h3 class="text-2xl font-bold text-gray-900 mb-2">Silver Member</h3>
-                    <p class="text-gray-600 mb-4">Untuk WO pemula & menengah</p>
-                    <div class="text-3xl font-bold text-gray-900 mb-2">Rp 500.000</div>
-                    <div class="text-sm text-gray-500">per tahun</div>
-                </div>
-                <ul class="space-y-3 mb-8">
-                    <li class="flex items-center">
-                        <i class="fas fa-check text-green-500 mr-3"></i>
-                        <span>Sertifikasi HASTANA</span>
-                    </li>
-                    <li class="flex items-center">
-                        <i class="fas fa-check text-green-500 mr-3"></i>
-                        <span>Akses direktori member</span>
-                    </li>
-                    <li class="flex items-center">
-                        <i class="fas fa-check text-green-500 mr-3"></i>
-                        <span>Newsletter bulanan</span>
-                    </li>
-                    <li class="flex items-center">
-                        <i class="fas fa-check text-green-500 mr-3"></i>
-                        <span>Event networking dasar</span>
-                    </li>
-                </ul>
-                <button class="w-full bg-gray-600 text-white py-3 rounded-xl font-semibold hover:bg-gray-700 transition-colors">
-                    Pilih Silver
-                </button>
-            </div>
-            
-            <!-- Gold Member -->
-            <div class="bg-white border-2 border-yellow-400 rounded-2xl p-8 relative hover:border-yellow-500 transition-all duration-300 transform scale-105">
-                <div class="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                    <span class="bg-yellow-400 text-white px-4 py-1 rounded-full text-sm font-semibold">Populer</span>
-                </div>
-                <div class="text-center mb-8">
-                    <div class="w-16 h-16 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <i class="fas fa-crown text-white text-xl"></i>
-                    </div>
-                    <h3 class="text-2xl font-bold text-gray-900 mb-2">Gold Member</h3>
-                    <p class="text-gray-600 mb-4">Untuk WO berpengalaman</p>
-                    <div class="text-3xl font-bold text-gray-900 mb-2">Rp 1.000.000</div>
-                    <div class="text-sm text-gray-500">per tahun</div>
-                </div>
-                <ul class="space-y-3 mb-8">
-                    <li class="flex items-center">
-                        <i class="fas fa-check text-green-500 mr-3"></i>
-                        <span>Semua fitur Silver</span>
-                    </li>
-                    <li class="flex items-center">
-                        <i class="fas fa-check text-green-500 mr-3"></i>
-                        <span>Workshop eksklusif</span>
-                    </li>
-                    <li class="flex items-center">
-                        <i class="fas fa-check text-green-500 mr-3"></i>
-                        <span>Listing prioritas</span>
-                    </li>
-                    <li class="flex items-center">
-                        <i class="fas fa-check text-green-500 mr-3"></i>
-                        <span>Konsultasi bisnis</span>
-                    </li>
-                    <li class="flex items-center">
-                        <i class="fas fa-check text-green-500 mr-3"></i>
-                        <span>Diskon vendor 10%</span>
-                    </li>
-                </ul>
-                <button class="w-full bg-yellow-500 text-white py-3 rounded-xl font-semibold hover:bg-yellow-600 transition-colors">
-                    Pilih Gold
-                </button>
-            </div>
-            
-            <!-- Platinum Member -->
-            <div class="bg-white border-2 border-purple-400 rounded-2xl p-8 relative hover:border-purple-500 transition-all duration-300">
-                <div class="text-center mb-8">
-                    <div class="w-16 h-16 bg-gradient-to-br from-purple-600 to-purple-800 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <i class="fas fa-gem text-white text-xl"></i>
-                    </div>
-                    <h3 class="text-2xl font-bold text-gray-900 mb-2">Platinum Member</h3>
-                    <p class="text-gray-600 mb-4">Untuk WO enterprise</p>
-                    <div class="text-3xl font-bold text-gray-900 mb-2">Rp 2.000.000</div>
-                    <div class="text-sm text-gray-500">per tahun</div>
-                </div>
-                <ul class="space-y-3 mb-8">
-                    <li class="flex items-center">
-                        <i class="fas fa-check text-green-500 mr-3"></i>
-                        <span>Semua fitur Gold</span>
-                    </li>
-                    <li class="flex items-center">
-                        <i class="fas fa-check text-green-500 mr-3"></i>
-                        <span>Dedicated account manager</span>
-                    </li>
-                    <li class="flex items-center">
-                        <i class="fas fa-check text-green-500 mr-3"></i>
-                        <span>Marketing premium</span>
-                    </li>
-                    <li class="flex items-center">
-                        <i class="fas fa-check text-green-500 mr-3"></i>
-                        <span>Event VIP access</span>
-                    </li>
-                    <li class="flex items-center">
-                        <i class="fas fa-check text-green-500 mr-3"></i>
-                        <span>Diskon vendor 20%</span>
-                    </li>
-                </ul>
-                <button class="w-full bg-purple-600 text-white py-3 rounded-xl font-semibold hover:bg-purple-700 transition-colors">
-                    Pilih Platinum
-                </button>
-            </div>
-        </div>
-    </div>
-</section> --}}
-
 <!-- Registration Process -->
 <section class="py-20 bg-gray-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -427,198 +342,397 @@
             </p>
         </div>
         
-        <div class="bg-white rounded-2xl shadow-xl border border-gray-200 p-8">
-            <form action="#" method="POST" enctype="multipart/form-data">
+        <div class="bg-white rounded-2xl shadow-xl border border-gray-200 p-8 {{ $alreadyRegistered ? 'form-disabled' : '' }}">
+            <!-- Already Registered Warning -->
+            @if($alreadyRegistered)
+            <div class="mb-6 bg-gradient-to-r from-yellow-50 to-orange-50 border-2 border-yellow-400 text-yellow-900 rounded-xl p-6 flex items-start shadow-lg">
+                <i class="fas fa-exclamation-triangle text-yellow-600 text-3xl mr-4 mt-1 animate-pulse"></i>
+                <div class="flex-1">
+                    <h4 class="font-bold text-lg mb-2 flex items-center">
+                        <i class="fas fa-lock mr-2"></i>
+                        Form Pendaftaran Tidak Tersedia
+                    </h4>
+                    <p class="text-sm mb-3">
+                        Akun Anda sudah memiliki wedding organizer yang terdaftar: 
+                        <strong class="text-yellow-800">{{ $existingOrganizer->organizer_name }}</strong>
+                    </p>
+                    <div class="bg-white rounded-lg p-3 border border-yellow-300">
+                        <p class="text-xs text-gray-700">
+                            <i class="fas fa-info-circle text-yellow-600 mr-1"></i>
+                            Satu akun hanya dapat mendaftarkan 1 wedding organizer. Untuk perubahan data atau pertanyaan, silakan hubungi admin HASTANA.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            @endif
+
+            <!-- User Info Section -->
+            @auth
+            <div class="mb-6 bg-blue-50 border border-blue-200 text-blue-800 rounded-lg p-4 flex items-start">
+                <i class="fas fa-user-circle text-blue-600 text-xl mr-3 mt-1"></i>
+                <div class="flex-1">
+                    <h4 class="font-semibold mb-1">Pendaftaran atas nama:</h4>
+                    <p class="text-sm">
+                        <strong>{{ Auth::user()->name }}</strong> ({{ Auth::user()->email }})
+                    </p>
+                    <p class="text-xs mt-2 text-blue-600">
+                        <i class="fas fa-info-circle mr-1"></i>
+                        Wedding organizer yang Anda daftarkan akan terhubung dengan akun Anda
+                    </p>
+                </div>
+            </div>
+            @endauth
+
+            <!-- Success/Error Messages -->
+            @if(session('success'))
+            <div class="mb-6 bg-green-50 border border-green-200 text-green-800 rounded-lg p-4 flex items-start">
+                <i class="fas fa-check-circle text-green-600 text-xl mr-3 mt-1"></i>
+                <div>
+                    <h4 class="font-semibold mb-1">Pendaftaran Berhasil!</h4>
+                    <p class="text-sm">{{ session('success') }}</p>
+                </div>
+            </div>
+            @endif
+
+            @if(session('error'))
+            <div class="mb-6 bg-red-50 border border-red-200 text-red-800 rounded-lg p-4 flex items-start">
+                <i class="fas fa-exclamation-circle text-red-600 text-xl mr-3 mt-1"></i>
+                <div>
+                    <h4 class="font-semibold mb-1">Terjadi Kesalahan!</h4>
+                    <p class="text-sm">{{ session('error') }}</p>
+                </div>
+            </div>
+            @endif
+
+            @if($errors->any())
+            <div class="mb-6 bg-red-50 border border-red-200 text-red-800 rounded-lg p-4">
+                <div class="flex items-start mb-2">
+                    <i class="fas fa-exclamation-triangle text-red-600 text-xl mr-3 mt-1"></i>
+                    <h4 class="font-semibold">Terdapat kesalahan pada form:</h4>
+                </div>
+                <ul class="list-disc list-inside text-sm ml-9 space-y-1">
+                    @foreach($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+            @endif
+
+            <form action="{{ route('join.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 
                 <!-- Company Information -->
                 <div class="mb-12">
                     <h3 class="text-2xl font-bold text-gray-900 mb-6 border-b border-gray-200 pb-3">
                         <i class="fas fa-building text-blue-600 mr-3"></i>
-                        Informasi Perusahaan
+                        Informasi Wedding Organizer
                     </h3>
                     
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div class="form-group">
-                            <label class="form-label">Nama Perusahaan *</label>
-                            <input type="text" name="company_name" class="form-input" placeholder="PT. Wedding Organizer Indonesia" required>
+                            <label class="form-label">Nama Wedding Organizer *</label>
+                            <input type="text" name="organizer_name" class="form-input @error('organizer_name') border-red-500 @enderror" placeholder="Elegant Wedding Organizer" value="{{ old('organizer_name') }}" required>
+                            @error('organizer_name')
+                            <p class="text-xs text-red-600 mt-1">{{ $message }}</p>
+                            @else
+                            <p class="text-xs text-gray-500 mt-1">Nama resmi perusahaan WO Anda</p>
+                            @enderror
                         </div>
                         
                         <div class="form-group">
-                            <label class="form-label">Nama Pemilik/Direktur *</label>
-                            <input type="text" name="owner_name" class="form-input" placeholder="John Doe" required>
+                            <label class="form-label">Nama PT/CV (Optional)</label>
+                            <input type="text" name="brand_name" class="form-input @error('brand_name') border-red-500 @enderror" placeholder="Elegant WO" value="{{ old('brand_name') }}">
+                            @error('brand_name')
+                            <p class="text-xs text-red-600 mt-1">{{ $message }}</p>
+                            @else
+                            <p class="text-xs text-gray-500 mt-1">Nama brand untuk pemasaran (opsional)</p>
+                            @enderror
                         </div>
                         
                         <div class="form-group">
-                            <label class="form-label">Email Perusahaan *</label>
-                            <input type="email" name="email" class="form-input" placeholder="info@weddingorganizer.com" required>
+                            <label class="form-label">Email *</label>
+                            <input type="email" name="email" class="form-input @error('email') border-red-500 @enderror" placeholder="info@elegantwedding.com" value="{{ old('email') }}" required>
+                            @error('email')
+                            <p class="text-xs text-red-600 mt-1">{{ $message }}</p>
+                            @enderror
                         </div>
                         
                         <div class="form-group">
-                            <label class="form-label">Nomor Telepon *</label>
-                            <input type="tel" name="phone" class="form-input" placeholder="+62 21 1234 5678" required>
+                            <label class="form-label">Nomor Telepon/WhatsApp *</label>
+                            <input type="tel" name="phone" class="form-input @error('phone') border-red-500 @enderror" placeholder="081234567890" value="{{ old('phone') }}" required>
+                            @error('phone')
+                            <p class="text-xs text-red-600 mt-1">{{ $message }}</p>
+                            @enderror
                         </div>
                         
                         <div class="form-group">
                             <label class="form-label">Tahun Berdiri *</label>
-                            <input type="number" name="established_year" class="form-input" placeholder="2020" min="1990" max="2025" required>
+                            <input type="number" name="established_year" class="form-input @error('established_year') border-red-500 @enderror" placeholder="2020" min="1990" max="2025" value="{{ old('established_year') }}" required>
+                            @error('established_year')
+                            <p class="text-xs text-red-600 mt-1">{{ $message }}</p>
+                            @enderror
                         </div>
                         
                         <div class="form-group">
-                            <label class="form-label">Jumlah Karyawan</label>
-                            <select name="employee_count" class="form-select">
-                                <option value="">Pilih jumlah karyawan</option>
-                                <option value="1-5">1-5 orang</option>
-                                <option value="6-10">6-10 orang</option>
-                                <option value="11-25">11-25 orang</option>
-                                <option value="26-50">26-50 orang</option>
-                                <option value="50+">Lebih dari 50 orang</option>
+                            <label class="form-label">Jenis Usaha *</label>
+                            <select name="business_type" class="form-select @error('business_type') border-red-500 @enderror" required>
+                                <option value="">Pilih Jenis Usaha</option>
+                                @foreach(config('indonesia.business_types') as $value => $label)
+                                <option value="{{ $value }}" {{ old('business_type') == $value ? 'selected' : '' }}>{{ $label }}</option>
+                                @endforeach
                             </select>
+                            @error('business_type')
+                            <p class="text-xs text-red-600 mt-1">{{ $message }}</p>
+                            @enderror
                         </div>
                     </div>
                     
                     <div class="form-group">
+                        <label class="form-label">Wilayah Operasional *</label>
+                        <select name="region_id" class="form-select @error('region_id') border-red-500 @enderror" required>
+                            <option value="">Pilih Wilayah</option>
+                            @foreach($regions as $region)
+                            <option value="{{ $region->id }}" {{ old('region_id') == $region->id ? 'selected' : '' }}>
+                                {{ $region->region_name }}
+                            </option>
+                            @endforeach
+                        </select>
+                        @error('region_id')
+                        <p class="text-xs text-red-600 mt-1">{{ $message }}</p>
+                        @else
+                        <p class="text-xs text-gray-500 mt-1">Pilih wilayah operasional wedding organizer Anda</p>
+                        @enderror
+                    </div>
+
+                    <div class="form-group">
                         <label class="form-label">Alamat Lengkap *</label>
-                        <textarea name="address" class="form-input form-textarea" placeholder="Jl. Wedding Street No. 123, Jakarta Selatan 12345" required></textarea>
+                        <textarea name="address" class="form-input form-textarea @error('address') border-red-500 @enderror" rows="2" placeholder="Jl. Wedding Street No. 123" required>{{ old('address') }}</textarea>
+                        @error('address')
+                        <p class="text-xs text-red-600 mt-1">{{ $message }}</p>
+                        @enderror
                     </div>
                     
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                         <div class="form-group">
-                            <label class="form-label">Kota *</label>
-                            <input type="text" name="city" class="form-input" placeholder="Jakarta" required>
+                            <label class="form-label">Provinsi *</label>
+                            <select name="province" id="province-select" class="form-select @error('province') border-red-500 @enderror" required>
+                                <option value="">Pilih Provinsi</option>
+                                @foreach(config('indonesia.provinces') as $key => $province)
+                                <option value="{{ $key }}" {{ old('province') == $key ? 'selected' : '' }}>{{ $province }}</option>
+                                @endforeach
+                            </select>
+                            @error('province')
+                            <p class="text-xs text-red-600 mt-1">{{ $message }}</p>
+                            @enderror
                         </div>
                         
                         <div class="form-group">
-                            <label class="form-label">Provinsi *</label>
-                            <select name="province" class="form-select" required>
-                                <option value="">Pilih Provinsi</option>
-                                <option value="DKI Jakarta">DKI Jakarta</option>
-                                <option value="Jawa Barat">Jawa Barat</option>
-                                <option value="Jawa Tengah">Jawa Tengah</option>
-                                <option value="Jawa Timur">Jawa Timur</option>
-                                <option value="Bali">Bali</option>
-                                <option value="Sumatera Utara">Sumatera Utara</option>
-                                <option value="Sumatera Barat">Sumatera Barat</option>
-                                <option value="Riau">Riau</option>
-                                <option value="Lainnya">Lainnya</option>
+                            <label class="form-label">Kota *</label>
+                            <select name="city" id="city-select" class="form-select @error('city') border-red-500 @enderror" required>
+                                <option value="">Pilih provinsi terlebih dahulu</option>
                             </select>
+                            @error('city')
+                            <p class="text-xs text-red-600 mt-1">{{ $message }}</p>
+                            @else
+                            <p class="text-xs text-gray-500 mt-1">Pilih provinsi untuk melihat daftar kota</p>
+                            @enderror
                         </div>
                         
                         <div class="form-group">
                             <label class="form-label">Kode Pos</label>
-                            <input type="text" name="postal_code" class="form-input" placeholder="12345">
+                            <input type="text" name="postal_code" class="form-input @error('postal_code') border-red-500 @enderror" placeholder="12345" maxlength="5" value="{{ old('postal_code') }}">
+                            @error('postal_code')
+                            <p class="text-xs text-red-600 mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+                    </div>
+                    
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="form-group">
+                            <label class="form-label">Website</label>
+                            <input type="url" name="website" class="form-input @error('website') border-red-500 @enderror" placeholder="https://www.elegantwedding.com" value="{{ old('website') }}">
+                            @error('website')
+                            <p class="text-xs text-red-600 mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Instagram</label>
+                            <div class="relative">
+                                <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">@</span>
+                                <input type="text" name="instagram" class="form-input pl-8 @error('instagram') border-red-500 @enderror" placeholder="elegantwedding" value="{{ old('instagram') }}">
+                            </div>
+                            @error('instagram')
+                            <p class="text-xs text-red-600 mt-1">{{ $message }}</p>
+                            @enderror
                         </div>
                     </div>
                     
                     <div class="form-group">
-                        <label class="form-label">Website/Instagram</label>
-                        <input type="url" name="website" class="form-input" placeholder="https://www.instagram.com/weddingorganizer">
+                        <label class="form-label">Deskripsi Singkat *</label>
+                        <textarea name="description" class="form-input form-textarea @error('description') border-red-500 @enderror" rows="3" placeholder="Ceritakan tentang wedding organizer Anda, spesialisasi, dan pengalaman..." required>{{ old('description') }}</textarea>
+                        @error('description')
+                        <p class="text-xs text-red-600 mt-1">{{ $message }}</p>
+                        @else
+                        <p class="text-xs text-gray-500 mt-1">Minimal 50 karakter</p>
+                        @enderror
                     </div>
-                    
+
                     <div class="form-group">
-                        <label class="form-label">Deskripsi Perusahaan</label>
-                        <textarea name="description" class="form-input form-textarea" placeholder="Ceritakan tentang perusahaan wedding organizer Anda, spesialisasi, dan pengalaman..."></textarea>
+                        <label class="form-label">Spesialisasi/Layanan *</label>
+                        <textarea name="specializations" class="form-input form-textarea @error('specializations') border-red-500 @enderror" rows="2" placeholder="Contoh: Traditional Wedding, Modern Wedding, Intimate Wedding, etc" required>{{ old('specializations') }}</textarea>
+                        @error('specializations')
+                        <p class="text-xs text-red-600 mt-1">{{ $message }}</p>
+                        @else
+                        <p class="text-xs text-gray-500 mt-1">Pisahkan dengan koma</p>
+                        @enderror
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Layanan yang Ditawarkan</label>
+                        <textarea name="services" class="form-input form-textarea @error('services') border-red-500 @enderror" rows="2" placeholder="Contoh: Full Planning, Decoration, Catering Coordination, Photography, Videography, etc">{{ old('services') }}</textarea>
+                        @error('services')
+                        <p class="text-xs text-red-600 mt-1">{{ $message }}</p>
+                        @else
+                        <p class="text-xs text-gray-500 mt-1">Pisahkan dengan koma (opsional)</p>
+                        @enderror
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="form-group">
+                            <label class="form-label">Harga Minimum Paket</label>
+                            <div class="relative">
+                                <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500">Rp</span>
+                                <input type="number" name="price_range_min" class="form-input pl-12 @error('price_range_min') border-red-500 @enderror" placeholder="50000000" value="{{ old('price_range_min') }}" min="0">
+                            </div>
+                            @error('price_range_min')
+                            <p class="text-xs text-red-600 mt-1">{{ $message }}</p>
+                            @else
+                            <p class="text-xs text-gray-500 mt-1">Contoh: 50000000 (50 juta)</p>
+                            @enderror
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Harga Maksimum Paket</label>
+                            <div class="relative">
+                                <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500">Rp</span>
+                                <input type="number" name="price_range_max" class="form-input pl-12 @error('price_range_max') border-red-500 @enderror" placeholder="500000000" value="{{ old('price_range_max') }}" min="0">
+                            </div>
+                            @error('price_range_max')
+                            <p class="text-xs text-red-600 mt-1">{{ $message }}</p>
+                            @else
+                            <p class="text-xs text-gray-500 mt-1">Contoh: 500000000 (500 juta)</p>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Jumlah Event yang Telah Diselesaikan</label>
+                        <input type="number" name="completed_events" class="form-input @error('completed_events') border-red-500 @enderror" placeholder="25" value="{{ old('completed_events', 0) }}" min="0">
+                        @error('completed_events')
+                        <p class="text-xs text-red-600 mt-1">{{ $message }}</p>
+                        @else
+                        <p class="text-xs text-gray-500 mt-1">Total jumlah acara pernikahan yang sudah ditangani</p>
+                        @enderror
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Penghargaan</label>
+                        <textarea name="awards" class="form-input form-textarea @error('awards') border-red-500 @enderror" rows="2" placeholder="Contoh: Best Wedding Organizer 2023, TOP 10 WO Indonesia 2022, dll">{{ old('awards') }}</textarea>
+                        @error('awards')
+                        <p class="text-xs text-red-600 mt-1">{{ $message }}</p>
+                        @else
+                        <p class="text-xs text-gray-500 mt-1">Sebutkan penghargaan yang pernah diterima (opsional)</p>
+                        @enderror
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Level Sertifikasi (opsional)</label>
+                        <select name="certification_level" class="form-select @error('certification_level') border-red-500 @enderror">
+                            <option value="">-- Pilih Level Sertifikasi --</option>
+                            @foreach(config('indonesia.certification_levels') as $key => $value)
+                                <option value="{{ $key }}" {{ old('certification_level') == $key ? 'selected' : '' }}>{{ $value }}</option>
+                            @endforeach
+                        </select>
+                        @error('certification_level')
+                        <p class="text-xs text-red-600 mt-1">{{ $message }}</p>
+                        @else
+                        <p class="text-xs text-gray-500 mt-1">Level kompetensi akan dinilai oleh tim HASTANA (opsional)</p>
+                        @enderror
                     </div>
                 </div>
                 
                 <!-- Legal Documents -->
                 <div class="mb-12">
                     <h3 class="text-2xl font-bold text-gray-900 mb-6 border-b border-gray-200 pb-3">
-                        <i class="fas fa-file-alt text-red-600 mr-3"></i>
-                        Dokumen Legal
+                        <i class="fas fa-file-contract text-red-600 mr-3"></i>
+                        Informasi Legal
                     </h3>
                     
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div class="form-group">
-                            <label class="form-label">Nomor Izin Usaha (SIUP/NIB) *</label>
-                            <input type="text" name="business_license" class="form-input" placeholder="1234567890123456" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label class="form-label">NPWP Perusahaan</label>
-                            <input type="text" name="tax_number" class="form-input" placeholder="12.345.678.9-012.345">
-                        </div>
+                    <div class="form-group">
+                        <label class="form-label">Nomor Izin Usaha (NIB/SIUP/TDP) *</label>
+                        <input type="text" name="business_license" class="form-input @error('business_license') border-red-500 @enderror" placeholder="1234567890123456" value="{{ old('business_license') }}" required>
+                        @error('business_license')
+                        <p class="text-xs text-red-600 mt-1">{{ $message }}</p>
+                        @else
+                        <p class="text-xs text-gray-500 mt-1">Masukkan nomor izin usaha yang valid</p>
+                        @enderror
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Dokumen Legal</label>
+                        <input type="file" name="legal_documents[]" class="form-input @error('legal_documents') border-red-500 @enderror" multiple accept=".pdf,.jpg,.jpeg,.png">
+                        @error('legal_documents')
+                        <p class="text-xs text-red-600 mt-1">{{ $message }}</p>
+                        @else
+                        <p class="text-xs text-gray-500 mt-1">Upload dokumen: NIB, NPWP, Akta, KTP (PDF/JPG, max 5MB per file, opsional saat pendaftaran)</p>
+                        @enderror
                     </div>
                     
-                    <div class="requirement-item">
-                        <i class="fas fa-info-circle text-blue-600 mr-3 mt-1"></i>
-                        <div>
-                            <h4 class="font-semibold text-gray-900 mb-2">Dokumen yang Diperlukan:</h4>
-                            <ul class="text-sm text-gray-600 space-y-1">
-                                <li>• Scan SIUP/NIB (format PDF/JPG, max 2MB)</li>
-                                <li>• Scan NPWP Perusahaan (format PDF/JPG, max 2MB)</li>
-                                <li>• Logo perusahaan (format PNG/JPG, max 1MB)</li>
-                                <li>• Portfolio minimal 3 proyek (format PDF/JPG, max 5MB)</li>
-                            </ul>
+                    <div class="bg-amber-50 border border-amber-200 rounded-lg p-5 mt-6">
+                        <div class="flex items-start space-x-3">
+                            <i class="fas fa-info-circle text-amber-600 text-xl mt-1"></i>
+                            <div class="flex-1">
+                                <h4 class="font-semibold text-gray-900 mb-3">Dokumen Tambahan yang Akan Dibutuhkan</h4>
+                                <ul class="text-sm text-gray-700 space-y-2 mb-4">
+                                    <li class="flex items-center">
+                                        <i class="fas fa-file-pdf text-red-500 w-5 mr-2"></i>
+                                        NPWP Perusahaan
+                                    </li>
+                                    <li class="flex items-center">
+                                        <i class="fas fa-file-pdf text-red-500 w-5 mr-2"></i>
+                                        Akta Pendirian untuk PT/CV
+                                    </li>
+                                    <li class="flex items-center">
+                                        <i class="fas fa-id-card text-blue-500 w-5 mr-2"></i>
+                                        KTP Pemilik/Penanggung Jawab
+                                    </li>
+                                </ul>
+                                <div class="bg-white rounded-lg px-4 py-3 border border-amber-100">
+                                    <p class="text-xs text-gray-700 flex items-center">
+                                        <i class="fas fa-check-circle text-green-600 mr-2"></i>
+                                        <span><strong>Catatan:</strong> Dokumen lengkap dapat dilengkapi setelah pendaftaran disetujui melalui dashboard admin Anda</span>
+                                    </p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                
-                <!-- Membership Selection -->
-                {{-- <div class="mb-12">
-                    <h3 class="text-2xl font-bold text-gray-900 mb-6 border-b border-gray-200 pb-3">
-                        <i class="fas fa-crown text-yellow-600 mr-3"></i>
-                        Pilihan Keanggotaan
-                    </h3>
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <label class="relative">
-                            <input type="radio" name="membership_type" value="silver" class="sr-only peer" required>
-                            <div class="p-6 border-2 border-gray-200 rounded-xl cursor-pointer peer-checked:border-blue-500 peer-checked:bg-blue-50 transition-all">
-                                <div class="text-center">
-                                    <i class="fas fa-star text-gray-500 text-2xl mb-3"></i>
-                                    <h4 class="font-bold text-lg">Silver</h4>
-                                    <p class="text-2xl font-bold text-gray-900 mt-2">Rp 500.000</p>
-                                    <p class="text-sm text-gray-500">per tahun</p>
-                                </div>
-                            </div>
-                        </label>
-                        
-                        <label class="relative">
-                            <input type="radio" name="membership_type" value="gold" class="sr-only peer">
-                            <div class="p-6 border-2 border-gray-200 rounded-xl cursor-pointer peer-checked:border-yellow-500 peer-checked:bg-yellow-50 transition-all">
-                                <div class="text-center">
-                                    <i class="fas fa-crown text-yellow-500 text-2xl mb-3"></i>
-                                    <h4 class="font-bold text-lg">Gold</h4>
-                                    <p class="text-2xl font-bold text-gray-900 mt-2">Rp 1.000.000</p>
-                                    <p class="text-sm text-gray-500">per tahun</p>
-                                </div>
-                            </div>
-                        </label>
-                        
-                        <label class="relative">
-                            <input type="radio" name="membership_type" value="platinum" class="sr-only peer">
-                            <div class="p-6 border-2 border-gray-200 rounded-xl cursor-pointer peer-checked:border-purple-500 peer-checked:bg-purple-50 transition-all">
-                                <div class="text-center">
-                                    <i class="fas fa-gem text-purple-500 text-2xl mb-3"></i>
-                                    <h4 class="font-bold text-lg">Platinum</h4>
-                                    <p class="text-2xl font-bold text-gray-900 mt-2">Rp 2.000.000</p>
-                                    <p class="text-sm text-gray-500">per tahun</p>
-                                </div>
-                            </div>
-                        </label>
-                    </div>
-                </div> --}}
                 
                 <!-- Terms and Conditions -->
                 <div class="mb-8">
                     <label class="flex items-start space-x-3">
-                        <input type="checkbox" name="terms" class="mt-1 h-5 w-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500" required>
+                        <input type="checkbox" name="terms" class="mt-1 h-5 w-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500 @error('terms') border-red-500 @enderror" required {{ old('terms') ? 'checked' : '' }}>
                         <span class="text-gray-700">
                             Saya menyetujui <a href="{{ route('terms') }}" target="_blank" class="text-blue-600 hover:underline font-semibold">syarat dan ketentuan</a> 
                             serta <a href="{{ route('privacy') }}" target="_blank" class="text-blue-600 hover:underline font-semibold">kebijakan privasi</a> 
-                            keanggotaan HASTANA Indonesia dan bersedia mematuhi kode etik organisasi.
+                            keanggotaan HASTANA Indonesia dan bersedia mematuhi kode etik organisasi. *
                         </span>
                     </label>
-                </div>
-                
-                <div class="mb-8">
-                    <label class="flex items-start space-x-3">
-                        <input type="checkbox" name="newsletter" class="mt-1 h-5 w-5 text-blue-600 border-gray-300 rounded">
-                        <span class="text-gray-700">
-                            Saya ingin menerima newsletter dan informasi terbaru dari HASTANA Indonesia.
-                        </span>
-                    </label>
+                    @error('terms')
+                    <p class="text-xs text-red-600 mt-1 ml-8">{{ $message }}</p>
+                    @enderror
                 </div>
                 
                 <!-- Submit Button -->
@@ -635,6 +749,113 @@
         </div>
     </div>
 </section>
+
+<!-- Modal - Already Registered -->
+@if($alreadyRegistered)
+<div id="alreadyRegisteredModal" class="modal-overlay active">
+    <div class="modal-content">
+        <div class="p-8">
+            <!-- Header -->
+            <div class="text-center mb-6">
+                <div class="w-20 h-20 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-4 animate-bounce">
+                    <i class="fas fa-check-circle text-white text-4xl"></i>
+                </div>
+                <h2 class="text-3xl font-bold text-gray-900 mb-2">
+                    Anda Sudah Terdaftar!
+                </h2>
+                <p class="text-gray-600">
+                    Akun Anda sudah memiliki wedding organizer yang terdaftar di Hastana Indonesia
+                </p>
+            </div>
+
+            <!-- Organizer Info -->
+            @if($existingOrganizer)
+            <div class="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-6 mb-6 border border-blue-200">
+                <div class="flex items-start space-x-4">
+                    <div class="flex-shrink-0">
+                        @if($existingOrganizer->user && $existingOrganizer->user->avatar)
+                            <img src="{{ asset('storage/' . $existingOrganizer->user->avatar) }}" 
+                                 alt="{{ $existingOrganizer->user->name }}" 
+                                 class="w-16 h-16 rounded-full object-cover border-2 border-blue-300">
+                        @else
+                            <div class="w-16 h-16 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-full flex items-center justify-center border-2 border-blue-300">
+                                <span class="text-white text-2xl font-bold">
+                                    {{ strtoupper(substr($existingOrganizer->user->name ?? $existingOrganizer->organizer_name, 0, 2)) }}
+                                </span>
+                            </div>
+                        @endif
+                    </div>
+                    <div class="flex-1">
+                        <h3 class="font-bold text-lg text-gray-900 mb-1">
+                            {{ $existingOrganizer->organizer_name }}
+                        </h3>
+                        @if($existingOrganizer->brand_name)
+                        <p class="text-sm text-gray-600 mb-2">
+                            <i class="fas fa-building mr-1"></i>
+                            {{ $existingOrganizer->brand_name }}
+                        </p>
+                        @endif
+                        <div class="flex flex-wrap gap-2 text-xs">
+                            <span class="px-3 py-1 bg-white rounded-full border border-blue-200 text-blue-700">
+                                <i class="fas fa-map-marker-alt mr-1"></i>
+                                {{ $existingOrganizer->city }}
+                            </span>
+                            @if($existingOrganizer->verification_status === 'verified')
+                                <span class="px-3 py-1 bg-green-100 rounded-full border border-green-300 text-green-700">
+                                    <i class="fas fa-check-circle mr-1"></i>
+                                    Terverifikasi
+                                </span>
+                            @else
+                                <span class="px-3 py-1 bg-yellow-100 rounded-full border border-yellow-300 text-yellow-700">
+                                    <i class="fas fa-clock mr-1"></i>
+                                    Menunggu Approval
+                                </span>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @endif
+
+            <!-- Info Box -->
+            <div class="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-6">
+                <div class="flex items-start space-x-3">
+                    <i class="fas fa-info-circle text-amber-600 text-xl mt-0.5"></i>
+                    <div class="flex-1">
+                        <h4 class="font-semibold text-gray-900 mb-2">Informasi Penting:</h4>
+                        <ul class="text-sm text-gray-700 space-y-1">
+                            <li class="flex items-start">
+                                <i class="fas fa-chevron-right text-amber-600 text-xs mt-1 mr-2"></i>
+                                <span>Satu akun hanya dapat memiliki 1 wedding organizer</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-chevron-right text-amber-600 text-xs mt-1 mr-2"></i>
+                                <span>Untuk mengelola data wedding organizer Anda, silakan hubungi admin</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-chevron-right text-amber-600 text-xs mt-1 mr-2"></i>
+                                <span>Jika ingin mendaftar wedding organizer baru, gunakan akun yang berbeda</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex flex-col sm:flex-row gap-2">
+                <a href="{{ route('home') }}" class="flex-1 inline-flex items-center justify-center px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-sm font-semibold rounded-lg hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 shadow-lg hover:shadow-xl">
+                    <i class="fas fa-home mr-2 text-xs"></i>
+                    Home
+                </a>
+                <button onclick="closeModal()" class="flex-1 inline-flex items-center justify-center px-4 py-2 bg-white text-blue-600 text-sm font-semibold rounded-lg border-2 border-blue-600 hover:bg-blue-50 transition-all duration-300">
+                    <i class="fas fa-edit mr-2 text-xs"></i>
+                    Edit
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+@endif
 
 <!-- Contact Section -->
 <section class="py-20 bg-gray-900 text-white">
@@ -678,6 +899,224 @@
 
 @push('scripts')
 <script>
+    // Already Registered Modal
+    @if($alreadyRegistered)
+    // Data wedding organizer yang sudah terdaftar
+    const existingData = @json($existingOrganizer);
+    console.log('Existing Data:', existingData);
+    console.log('City:', existingData?.city);
+    console.log('Legal Documents:', existingData?.legal_documents);
+    
+    // Disable form when user already registered
+    document.addEventListener('DOMContentLoaded', function() {
+        const formSection = document.querySelector('form').closest('section');
+        const formContainer = formSection.querySelector('.bg-white.rounded-2xl');
+        
+        // Add disabled class to form
+        formContainer.classList.add('form-disabled');
+        
+        // Prevent form submission initially
+        const form = document.querySelector('form');
+        form.addEventListener('submit', function(e) {
+            if (formContainer.classList.contains('form-disabled')) {
+                e.preventDefault();
+                alert('Anda sudah terdaftar sebagai Wedding Organizer. Klik tombol "Edit" untuk mengubah data.');
+                return false;
+            }
+        });
+    });
+
+    // Function to populate form with existing data
+    function populateForm() {
+        if (!existingData) return;
+
+        // Populate text inputs and select
+        const fields = [
+            'organizer_name', 'brand_name', 'email', 'phone', 
+            'established_year', 'business_type', 'address', 
+            'postal_code', 'website', 'instagram', 'business_license',
+            'price_range_min', 'price_range_max', 'completed_events',
+            'certification_level', 'region_id'
+        ];
+
+        fields.forEach(field => {
+            const input = document.querySelector(`[name="${field}"]`);
+            if (input && existingData[field]) {
+                input.value = existingData[field];
+            }
+        });
+
+        // Populate description textarea (single field)
+        const descriptionTextarea = document.querySelector('textarea[name="description"]');
+        if (descriptionTextarea && existingData.description) {
+            descriptionTextarea.value = existingData.description;
+        }
+
+        // Populate array textareas (specializations, services, awards)
+        const arrayTextareaFields = ['specializations', 'services', 'awards'];
+        arrayTextareaFields.forEach(field => {
+            const textarea = document.querySelector(`textarea[name="${field}"]`);
+            if (textarea && existingData[field]) {
+                // Convert JSON array to comma-separated string if needed
+                if (typeof existingData[field] === 'object' && Array.isArray(existingData[field])) {
+                    textarea.value = existingData[field].join(', ');
+                } else if (typeof existingData[field] === 'string') {
+                    try {
+                        const parsed = JSON.parse(existingData[field]);
+                        textarea.value = Array.isArray(parsed) ? parsed.join(', ') : existingData[field];
+                    } catch (e) {
+                        textarea.value = existingData[field];
+                    }
+                } else {
+                    textarea.value = existingData[field];
+                }
+            }
+        });
+
+        // Update province dropdown first
+        const provinceSelect = document.getElementById('province-select');
+        const citySelect = document.getElementById('city-select');
+        
+        if (provinceSelect && existingData.province) {
+            console.log('Setting province to:', existingData.province);
+            provinceSelect.value = existingData.province;
+            
+            // Manually populate cities for this province
+            if (existingData.province && window.provinceCityData && window.provinceCityData[existingData.province]) {
+                citySelect.innerHTML = '<option value="">Pilih Kota</option>';
+                
+                window.provinceCityData[existingData.province].forEach(city => {
+                    const option = document.createElement('option');
+                    option.value = city;
+                    option.textContent = city;
+                    citySelect.appendChild(option);
+                });
+                
+                citySelect.disabled = false;
+                
+                // Set city value after options are populated
+                if (existingData.city) {
+                    setTimeout(() => {
+                        citySelect.value = existingData.city;
+                        console.log('City value set to:', citySelect.value);
+                        console.log('Expected city:', existingData.city);
+                    }, 50);
+                }
+            }
+        }
+
+        // Show existing legal documents info (file uploads can't be pre-filled for security reasons)
+        console.log('Checking legal documents...', existingData.legal_documents);
+        
+        if (existingData.legal_documents) {
+            // Parse legal_documents if it's a JSON string
+            let legalDocs = existingData.legal_documents;
+            console.log('Legal docs type:', typeof legalDocs);
+            console.log('Legal docs value:', legalDocs);
+            
+            if (typeof legalDocs === 'string') {
+                try {
+                    legalDocs = JSON.parse(legalDocs);
+                    console.log('Parsed legal docs:', legalDocs);
+                } catch (e) {
+                    console.log('Failed to parse legal docs:', e);
+                    legalDocs = [];
+                }
+            }
+            
+            console.log('Is array?', Array.isArray(legalDocs));
+            console.log('Length:', legalDocs?.length);
+            
+            if (Array.isArray(legalDocs) && legalDocs.length > 0) {
+                const fileInput = document.querySelector('input[name="legal_documents[]"]');
+                console.log('File input found:', fileInput);
+                
+                if (fileInput) {
+                    // Find parent form-group instead of .mb-6
+                    const fileContainer = fileInput.closest('.form-group');
+                    console.log('File container found:', fileContainer);
+                    
+                    if (fileContainer) {
+                        // Remove old info if exists
+                        const oldInfo = fileContainer.querySelector('.existing-files-info');
+                        if (oldInfo) {
+                            console.log('Removing old info');
+                            oldInfo.remove();
+                        }
+                        
+                        // Create info message about existing files
+                        const existingFilesInfo = document.createElement('div');
+                        existingFilesInfo.className = 'mt-3 p-4 bg-blue-50 border border-blue-200 rounded-lg existing-files-info';
+                        existingFilesInfo.innerHTML = `
+                            <p class="text-sm text-blue-800 font-semibold mb-2">
+                                <i class="fas fa-file-check mr-2"></i>Dokumen yang sudah diupload:
+                            </p>
+                            <ul class="text-sm text-blue-700 space-y-1 mb-2">
+                                ${legalDocs.map(doc => {
+                                    const fileName = doc.split('/').pop();
+                                    return `<li class="flex items-center">
+                                        <i class="fas fa-paperclip mr-2 text-blue-500"></i>
+                                        <span>${fileName}</span>
+                                    </li>`;
+                                }).join('')}
+                            </ul>
+                            <p class="text-xs text-blue-600 italic">
+                                <i class="fas fa-info-circle mr-1"></i>
+                                Upload file baru jika ingin mengganti dokumen yang sudah ada.
+                            </p>
+                        `;
+                        
+                        fileContainer.appendChild(existingFilesInfo);
+                        console.log('Legal documents info added successfully');
+                    }
+                }
+            } else {
+                console.log('No legal documents to display (empty or null)');
+            }
+        } else {
+            console.log('No legal_documents field in existingData');
+        }
+
+        // Change button text and color
+        const submitButton = document.querySelector('button[type="submit"]');
+        if (submitButton) {
+            submitButton.innerHTML = '<i class="fas fa-save mr-3"></i>Update Data';
+            submitButton.classList.remove('from-blue-600', 'to-red-600');
+            submitButton.classList.add('from-green-600', 'to-green-700');
+        }
+    }
+
+    // Function to close modal and enable edit
+    function closeModal() {
+        const modal = document.getElementById('alreadyRegisteredModal');
+        modal.classList.remove('active');
+        
+        // Remove disabled class from form
+        const formContainer = document.querySelector('.bg-white.rounded-2xl');
+        formContainer.classList.remove('form-disabled');
+        
+        // Populate form with existing data
+        populateForm();
+        
+        // Scroll to form
+        document.querySelector('form').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    // Close modal when clicking outside
+    document.getElementById('alreadyRegisteredModal').addEventListener('click', function(e) {
+        if (e.target === this) {
+            closeModal();
+        }
+    });
+
+    // Close modal with ESC key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeModal();
+        }
+    });
+    @endif
+
     // Form validation and interactive elements
     document.addEventListener('DOMContentLoaded', function() {
         // Membership type selection highlighting
@@ -706,25 +1145,6 @@
             });
         });
 
-        // Form submission handling
-        const form = document.querySelector('form');
-        form.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // Show loading state
-            const submitButton = form.querySelector('button[type="submit"]');
-            const originalText = submitButton.innerHTML;
-            submitButton.innerHTML = '<i class="fas fa-spinner fa-spin mr-3"></i>Memproses...';
-            submitButton.disabled = true;
-            
-            // Simulate form submission (replace with actual submission logic)
-            setTimeout(() => {
-                alert('Formulir pendaftaran telah berhasil dikirim! Tim HASTANA akan menghubungi Anda dalam 3-5 hari kerja.');
-                submitButton.innerHTML = originalText;
-                submitButton.disabled = false;
-            }, 2000);
-        });
-
         // Smooth scrolling for anchor links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
@@ -738,6 +1158,47 @@
                 }
             });
         });
+
+        // Province-City Dependent Dropdown
+        window.provinceCityData = @json(config('indonesia.cities'));
+        const provinceSelect = document.getElementById('province-select');
+        const citySelect = document.getElementById('city-select');
+        const oldCity = '{{ old("city") }}';
+        const oldProvince = '{{ old("province") }}';
+
+        // Function to update cities based on selected province
+        function updateCities(province) {
+            // Clear current options
+            citySelect.innerHTML = '<option value="">Pilih Kota</option>';
+            
+            if (province && window.provinceCityData[province]) {
+                // Add cities for selected province
+                window.provinceCityData[province].forEach(city => {
+                    const option = document.createElement('option');
+                    option.value = city;
+                    option.textContent = city;
+                    // Restore old value if exists
+                    if (city === oldCity) {
+                        option.selected = true;
+                    }
+                    citySelect.appendChild(option);
+                });
+                citySelect.disabled = false;
+            } else {
+                citySelect.innerHTML = '<option value="">Pilih provinsi terlebih dahulu</option>';
+                citySelect.disabled = true;
+            }
+        }
+
+        // Event listener for province change
+        provinceSelect.addEventListener('change', function() {
+            updateCities(this.value);
+        });
+
+        // Initialize cities on page load if province is already selected
+        if (oldProvince) {
+            updateCities(oldProvince);
+        }
     });
 </script>
 @endpush

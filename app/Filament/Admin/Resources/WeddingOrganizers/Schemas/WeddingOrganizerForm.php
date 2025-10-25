@@ -12,6 +12,7 @@ use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Schema;
 use App\Models\User;
 use App\Models\Region;
+use Illuminate\Support\Facades\Auth;
 
 class WeddingOrganizerForm
 {
@@ -32,10 +33,10 @@ class WeddingOrganizerForm
                 Select::make('region_id')
                     ->label('Wilayah')
                     ->options(Region::pluck('region_name', 'id'))
-                    ->required()
+                    ->nullable()
                     ->searchable()
                     ->placeholder('Pilih wilayah')
-                    ->helperText('Wilayah operasional wedding organizer'),
+                    ->helperText('Wilayah operasional wedding organizer (akan diisi oleh admin)'),
 
                 TextInput::make('organizer_name')
                     ->label('Nama Wedding Organizer')
@@ -45,7 +46,7 @@ class WeddingOrganizerForm
                     ->columnSpan(2),
 
                 TextInput::make('brand_name')
-                    ->label('Nama Brand')
+                    ->label('Nama PT/CV (Optional)')
                     ->maxLength(255)
                     ->placeholder('Nama brand/perusahaan')
                     ->columnSpan(2),
@@ -90,26 +91,30 @@ class WeddingOrganizerForm
                     ->rows(2)
                     ->columnSpan(2),
 
-                TextInput::make('city')
-                    ->label('Kota')
-                    ->required()
-                    ->maxLength(100)
-                    ->placeholder('Jakarta'),
-
-                TextInput::make('province')
+                Select::make('province')
                     ->label('Provinsi')
                     ->required()
-                    ->maxLength(100)
-                    ->placeholder('DKI Jakarta')
-                    ->datalist([
-                        'Aceh', 'Sumatera Utara', 'Sumatera Barat', 'Riau', 'Kepulauan Riau',
-                        'Jambi', 'Sumatera Selatan', 'Bangka Belitung', 'Bengkulu', 'Lampung',
-                        'DKI Jakarta', 'Jawa Barat', 'Jawa Tengah', 'DI Yogyakarta', 'Jawa Timur',
-                        'Banten', 'Bali', 'Nusa Tenggara Barat', 'Nusa Tenggara Timur',
-                        'Kalimantan Barat', 'Kalimantan Tengah', 'Kalimantan Selatan', 'Kalimantan Timur', 'Kalimantan Utara',
-                        'Sulawesi Utara', 'Sulawesi Tengah', 'Sulawesi Selatan', 'Sulawesi Tenggara', 'Gorontalo', 'Sulawesi Barat',
-                        'Maluku', 'Maluku Utara', 'Papua', 'Papua Barat'
-                    ]),
+                    ->searchable()
+                    ->options(config('indonesia.provinces'))
+                    ->placeholder('Pilih Provinsi')
+                    ->live()
+                    ->afterStateUpdated(fn (callable $set) => $set('city', null)),
+
+                Select::make('city')
+                    ->label('Kota')
+                    ->required()
+                    ->searchable()
+                    ->options(function (callable $get) {
+                        $province = $get('province');
+                        if (!$province) {
+                            return [];
+                        }
+                        $cities = config('indonesia.cities')[$province] ?? [];
+                        return array_combine($cities, $cities);
+                    })
+                    ->placeholder('Pilih Kota')
+                    ->disabled(fn (callable $get) => !$get('province'))
+                    ->helperText('Pilih provinsi terlebih dahulu'),
 
                 TextInput::make('postal_code')
                     ->label('Kode Pos')
@@ -120,12 +125,7 @@ class WeddingOrganizerForm
                 // Professional Information
                 Select::make('certification_level')
                     ->label('Level Sertifikasi')
-                    ->options([
-                        'basic' => '🥉 Basic',
-                        'intermediate' => '🥈 Intermediate', 
-                        'advanced' => '🥇 Advanced',
-                        'expert' => '👑 Expert',
-                    ])
+                    ->options(config('indonesia.certification_levels'))
                     ->placeholder('Pilih level sertifikasi')
                     ->helperText('Level kompetensi berdasarkan sertifikasi'),
 
@@ -138,12 +138,8 @@ class WeddingOrganizerForm
 
                 Select::make('business_type')
                     ->label('Jenis Usaha')
-                    ->options([
-                        'individual' => 'Perorangan',
-                        'partnership' => 'Partnership',
-                        'company' => 'Perusahaan'
-                    ])
-                    ->default('individual')
+                    ->options(config('indonesia.business_types'))
+                    ->default('Perorangan')
                     ->required(),
 
                 TextInput::make('business_license')
@@ -197,8 +193,7 @@ class WeddingOrganizerForm
                 Textarea::make('awards')
                     ->label('Penghargaan')
                     ->placeholder('List penghargaan yang pernah diterima')
-                    ->rows(2)
-                    ->columnSpan(2),
+                    ->rows(2),
 
                 // Status & Verification
                 Select::make('verification_status')
@@ -210,11 +205,13 @@ class WeddingOrganizerForm
                     ])
                     ->default('pending')
                     ->required()
-                    ->live(),
+                    ->live()
+                    ->visible(fn () => Auth::check() && Auth::user()->role === 'admin'),
 
                 Toggle::make('is_featured')
                     ->label('Featured')
-                    ->helperText('Tampilkan di halaman utama'),
+                    ->helperText('Tampilkan di halaman utama')
+                    ->visible(fn () => Auth::check() && Auth::user()->role === 'admin'),
 
                 Select::make('status')
                     ->label('Status')
@@ -224,17 +221,37 @@ class WeddingOrganizerForm
                         'suspended' => '🟡 Suspended'
                     ])
                     ->default('active')
-                    ->required(),
+                    ->required()
+                    ->visible(fn () => Auth::check() && Auth::user()->role === 'admin'),
 
                 DateTimePicker::make('verified_at')
                     ->label('Tanggal Verifikasi')
-                    ->visible(fn (callable $get) => in_array($get('verification_status'), ['verified', 'rejected'])),
+                    ->visible(fn (callable $get) => 
+                        Auth::check() && 
+                        Auth::user()->role === 'admin' && 
+                        in_array($get('verification_status'), ['verified', 'rejected'])
+                    ),
 
                 Select::make('verified_by')
                     ->label('Diverifikasi Oleh')
                     ->options(User::where('role', 'admin')->pluck('name', 'id'))
-                    ->placeholder('Pilih admin verifikator')
-                    ->visible(fn (callable $get) => in_array($get('verification_status'), ['verified', 'rejected'])),
+                    ->searchable()
+                    ->preload()
+                    ->default(fn () => Auth::check() && Auth::user()->role === 'admin' ? Auth::id() : null)
+                    ->afterStateHydrated(function ($component, $state) {
+                        // Jika belum ada nilai, set dengan admin yang login
+                        if (!$state && Auth::check() && Auth::user()->role === 'admin') {
+                            $component->state(Auth::id());
+                        }
+                    })
+                    ->disabled()
+                    ->dehydrated()
+                    ->helperText('Otomatis terisi dengan admin yang sedang login')
+                    ->visible(fn (callable $get) => 
+                        Auth::check() && 
+                        Auth::user()->role === 'admin' && 
+                        in_array($get('verification_status'), ['verified', 'rejected'])
+                    ),
 
                 // Legal Documents
                 Select::make('legal_entity_type')
@@ -307,33 +324,56 @@ class WeddingOrganizerForm
                     ])
                     ->default('incomplete')
                     ->required()
-                    ->live(),
+                    ->live()
+                    ->visible(fn () => Auth::check() && Auth::user()->role === 'admin'),
 
                 Textarea::make('legal_document_notes')
                     ->label('Catatan Dokumen Legal')
                     ->placeholder('Catatan reviewer mengenai dokumen legal')
                     ->rows(3)
-                    ->visible(fn (callable $get) => in_array($get('legal_document_status'), ['verified', 'rejected']))
+                    ->visible(fn (callable $get) => 
+                        Auth::check() && 
+                        Auth::user()->role === 'admin' && 
+                        in_array($get('legal_document_status'), ['verified', 'rejected'])
+                    )
                     ->columnSpan(2),
 
                 DateTimePicker::make('legal_verified_at')
                     ->label('Tanggal Verifikasi Legal')
-                    ->visible(fn (callable $get) => in_array($get('legal_document_status'), ['verified', 'rejected'])),
+                    ->visible(fn (callable $get) => 
+                        Auth::check() && 
+                        Auth::user()->role === 'admin' && 
+                        in_array($get('legal_document_status'), ['verified', 'rejected'])
+                    ),
 
                 Select::make('legal_verified_by')
                     ->label('Legal Diverifikasi Oleh')
                     ->options(User::where('role', 'admin')->pluck('name', 'id'))
-                    ->placeholder('Pilih admin verifikator')
-                    ->visible(fn (callable $get) => in_array($get('legal_document_status'), ['verified', 'rejected'])),
+                    ->searchable()
+                    ->preload()
+                    ->default(fn () => Auth::check() && Auth::user()->role === 'admin' ? Auth::id() : null)
+                    ->afterStateHydrated(function ($component, $state) {
+                        // Jika belum ada nilai, set dengan admin yang login
+                        if (!$state && Auth::check() && Auth::user()->role === 'admin') {
+                            $component->state(Auth::id());
+                        }
+                    })
+                    ->disabled()
+                    ->dehydrated()
+                    ->helperText('Otomatis terisi dengan admin yang sedang login')
+                    ->visible(fn (callable $get) => 
+                        Auth::check() && 
+                        Auth::user()->role === 'admin' && 
+                        in_array($get('legal_document_status'), ['verified', 'rejected'])
+                    ),
 
                 FileUpload::make('legal_documents')
                     ->label('Dokumen Legal')
                     ->disk('public')
+                    ->openable()
                     ->directory('wedding-organizer-documents')
-                    ->multiple()
                     ->acceptedFileTypes(['application/pdf', 'image/*'])
-                    ->maxSize(5120)
-                    ->columnSpan(2),
+                    ->maxSize(5120),
             ]);
     }
 }

@@ -6,6 +6,7 @@ use App\Http\Controllers\BlogEngagementController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GalleryController;
+use App\Http\Controllers\JoinController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -14,9 +15,11 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/gallery', [GalleryController::class, 'index'])->name('gallery');
 Route::get('/gallery/{id}', [GalleryController::class, 'show'])->name('gallery.show');
 
-Route::get('/bergabung', function () {
-    return view('join');
-})->name('join');
+// Join/Registration routes (requires authentication)
+Route::middleware('auth')->group(function () {
+    Route::get('/bergabung', [JoinController::class, 'index'])->name('join');
+    Route::post('/bergabung', [JoinController::class, 'store'])->name('join.store');
+});
 
 Route::get('/syarat-ketentuan', function () {
     return view('terms');
