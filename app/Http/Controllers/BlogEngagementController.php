@@ -1,181 +1,208 @@
 <?php
 
+
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Blog;
 use App\Models\BlogComment;
-use App\Models\BlogLike;
-use App\Models\BlogView;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
 class BlogEngagementController extends Controller
 {
     /**
-     * Toggle like for a blog
+     * Store a new comment (Web version)
      */
-    public function toggleLike(Request $request, $blogId)
+    public function storeCommentWeb(Request $request, $slug)
     {
-        $blog = Blog::findOrFail($blogId);
-        
-        // Enhanced debugging
-        Log::info('Like toggle request received', [
-            'blog_id' => $blog->id,
-            'blog_title' => $blog->title,
-            'ip' => $request->ip(),
-            'user_agent' => $request->userAgent()
-        ]);
-        
-        $ipAddress = $request->ip();
-        $userAgent = $request->userAgent();
-        
-        $result = $blog->toggleLike($ipAddress, $userAgent);
-        
-        Log::info('Like toggle result', [
-            'blog_id' => $blog->id,
-            'action' => $result['action'],
-            'count' => $result['count']
-        ]);
-        
-        return response()->json([
-            'success' => true,
-            'action' => $result['action'],
-            'likes_count' => $result['count'],
-            'is_liked' => $result['action'] === 'liked'
-        ]);
-    }
+        try {
+            // Validate input
+            $validated = $request->validate([
+                'comment' => 'required|string|min:3|max:1000',
+                'parent_id' => 'nullable|exists:blog_comments,id',
+            ], [
+                'comment.required' => 'Komentar tidak boleh kosong.',
+                'comment.min' => 'Komentar minimal 3 karakter.',
+                'comment.max' => 'Komentar maksimal 1000 karakter.',
+            ]);
 
-    /**
-     * Record a view for a blog
-     */
-    public function recordView(Request $request, $blogId)
-    {
-        $blog = Blog::findOrFail($blogId);
-        $ipAddress = $request->ip();
-        $userAgent = $request->userAgent();
-        $referrer = $request->header('referer');
-        
-        $blog->incrementViews($ipAddress, $userAgent, $referrer);
-        
-        return response()->json([
-            'success' => true,
-            'views_count' => $blog->fresh()->views_count
-        ]);
-    }
+            // Get authenticated user
+            $user = auth()->user();
+            if (!$user) {
+                return redirect()
+                    ->back()
+                    ->with('error', 'Anda harus login terlebih dahulu untuk mengirim komentar.');
+            }
 
-    /**
-     * Store a new comment
-     */
-    public function storeComment(Request $request, $blogId)
-    {
-        $blog = Blog::findOrFail($blogId);
-        
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
-            'comment' => 'required|string|max:1000',
-            'parent_id' => 'nullable|exists:blog_comments,id'
-        ]);
+            // Find blog
+            $blog = Blog::where('slug', $slug)->firstOrFail();
 
-        $comment = $blog->comments()->create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'comment' => $request->comment,
-            'parent_id' => $request->parent_id,
-            'ip_address' => $request->ip(),
-            'user_agent' => $request->userAgent(),
-            'is_approved' => true // Auto-approve for now, can be changed later
-        ]);
+            // Check for duplicate comments (same user, same blog, similar content in last 5 minutes)
+            $recentDuplicate = BlogComment::where('email', $user->email)
+                ->where('blog_id', $blog->id)
+                ->where('comment', $validated['comment'])
+                ->where('created_at', '>=', now()->subMinutes(5))
+                ->exists();
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Komentar berhasil ditambahkan!',
-            'comment' => [
-                'id' => $comment->id,
-                'name' => $comment->name,
-                'comment' => $comment->comment,
-                'avatar_url' => $comment->avatar_url,
-                'formatted_date' => $comment->formatted_date,
-                'parent_id' => $comment->parent_id
-            ],
-            'comments_count' => $blog->fresh()->comments_count
-        ]);
-    }
+            if ($recentDuplicate) {
+                return redirect()
+                    ->back()
+                    ->with('error', 'Anda baru saja mengirim komentar yang sama. Mohon tunggu beberapa saat.');
+            }
 
-    /**
-     * Get comments for a blog
-     */
-    public function getComments($blogId)
-    {
-        $blog = Blog::findOrFail($blogId);
-        
-        $comments = $blog->topLevelComments()
-                        ->with(['replies' => function($query) {
-                            $query->orderBy('created_at', 'asc');
-                        }])
-                        ->get();
+            // Rate limiting: max 3 comments per user per blog per day
+            $todayCommentsCount = BlogComment::where('email', $user->email)
+                ->where('blog_id', $blog->id)
+                ->whereDate('created_at', today())
+                ->count();
 
-        return response()->json([
-            'success' => true,
-            'comments' => $comments->map(function($comment) {
-                return [
-                    'id' => $comment->id,
-                    'name' => $comment->name,
-                    'comment' => $comment->comment,
-                    'avatar_url' => $comment->avatar_url,
-                    'formatted_date' => $comment->formatted_date,
-                    'replies' => $comment->replies->map(function($reply) {
-                        return [
-                            'id' => $reply->id,
-                            'name' => $reply->name,
-                            'comment' => $reply->comment,
-                            'avatar_url' => $reply->avatar_url,
-                            'formatted_date' => $reply->formatted_date,
-                        ];
-                    })
-                ];
-            })
-        ]);
-    }
+            if ($todayCommentsCount >= 3) {
+                return redirect()
+                    ->back()
+                    ->with('error', 'Anda telah mencapai batas maksimal komentar untuk artikel ini hari ini (3 komentar).');
+            }
 
-    /**
-     * Update reading duration
-     */
-    public function updateDuration(Request $request, $blogId)
-    {
-        $blog = Blog::findOrFail($blogId);
-        
-        $request->validate([
-            'duration' => 'required|integer|min:1'
-        ]);
+            // Create comment
+            $comment = BlogComment::create([
+                'blog_id' => $blog->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'comment' => $validated['comment'],
+                'parent_id' => $validated['parent_id'] ?? null,
+                'is_approved' => false,
+                'ip_address' => $request->ip(),
+                'user_agent' => $request->userAgent(),
+            ]);
 
-        $ipAddress = $request->ip();
-        
-        // Find the most recent view from this IP
-        $view = BlogView::where('blog_id', $blog->id)
-                       ->where('ip_address', $ipAddress)
-                       ->latest()
-                       ->first();
+            // Auto-approve for trusted users (users with 3+ approved comments)
+            $approvedCommentsCount = BlogComment::where('email', $user->email)
+                ->where('is_approved', true)
+                ->count();
 
-        if ($view) {
-            $view->updateDuration($request->duration);
+            if ($approvedCommentsCount >= 3) {
+                $comment->update(['is_approved' => true]);
+                $message = 'Komentar Anda berhasil dipublikasikan!';
+            } else {
+                $message = 'Komentar Anda berhasil dikirim dan sedang menunggu persetujuan admin.';
+            }
+
+            return redirect()
+                ->back()
+                ->with('success', $message);
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            throw $e;
+        } catch (\Exception $e) {
+            Log::error('Error storing comment', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+                'slug' => $slug,
+                'user' => auth()->user()?->email,
+            ]);
+
+            return redirect()
+                ->back()
+                ->with('error', 'Terjadi kesalahan saat menyimpan komentar. Silakan coba lagi.');
         }
-
-        return response()->json(['success' => true]);
     }
 
     /**
-     * Get blog engagement stats
+     * Like a comment
      */
-    public function getStats($blogId)
+    public function likeComment(Request $request, $id)
     {
-        $blog = Blog::findOrFail($blogId);
-        
-        $stats = $blog->getEngagementStats();
-        
-        return response()->json([
-            'success' => true,
-            'stats' => $stats
-        ]);
+        try {
+            $comment = BlogComment::findOrFail($id);
+            
+            // Session-based like tracking
+            $likedComments = session('liked_comments', []);
+            
+            if (in_array($id, $likedComments)) {
+                // Unlike
+                $likedComments = array_diff($likedComments, [$id]);
+                session(['liked_comments' => $likedComments]);
+                $liked = false;
+            } else {
+                // Like
+                $likedComments[] = $id;
+                session(['liked_comments' => $likedComments]);
+                $liked = true;
+            }
+
+            return response()->json([
+                'success' => true,
+                'liked' => $liked,
+                'count' => count(session('liked_comments', [])),
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan.',
+            ], 500);
+        }
+    }
+
+    /**
+     * Delete a comment
+     */
+    public function deleteComment(Request $request, $id)
+    {
+        try {
+            $comment = BlogComment::findOrFail($id);
+            $user = auth()->user();
+
+            // Check ownership
+            if ($comment->email !== $user->email) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Anda tidak memiliki izin untuk menghapus komentar ini.',
+                ], 403);
+            }
+
+            $comment->delete();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Komentar berhasil dihapus.',
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan saat menghapus komentar.',
+            ], 500);
+        }
+    }
+
+    /**
+     * Report a comment
+     */
+    public function reportComment(Request $request, $id)
+    {
+        try {
+            $validated = $request->validate([
+                'reason' => 'required|string|max:255',
+            ]);
+
+            $comment = BlogComment::findOrFail($id);
+
+            Log::warning('Comment reported', [
+                'comment_id' => $id,
+                'reason' => $validated['reason'],
+                'reported_by' => auth()->user()?->email,
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Laporan Anda telah dikirim. Terima kasih.',
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan saat mengirim laporan.',
+            ], 500);
+        }
     }
 }

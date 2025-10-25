@@ -1,745 +1,983 @@
 @extends('layouts.app')
 
 @section('title', $blog->title . ' - HASTANA Indonesia')
-@section('description', $blog->excerpt)
 
 @push('styles')
 <style>
-    /* Enhanced Article Styling */
-    .article-content {
-        line-height: 1.8;
-        font-size: 1.1rem;
+    /* Reduce all font sizes proportionally */
+    body {
+        font-size: 13px !important;
     }
     
-    .article-content h2 {
-        font-size: 1.75rem;
-        font-weight: bold;
-        margin: 2.5rem 0 1.5rem 0;
+    h1 {
+        font-size: 1.5rem !important;
+    }
+    
+    h2 {
+        font-size: 1.25rem !important;
+    }
+    
+    h3 {
+        font-size: 1.125rem !important;
+    }
+    
+    .text-4xl {
+        font-size: 1.5rem !important;
+    }
+    
+    .text-3xl {
+        font-size: 1.25rem !important;
+    }
+    
+    .text-2xl {
+        font-size: 1.125rem !important;
+    }
+    
+    .text-xl {
+        font-size: 1rem !important;
+    }
+    
+    .text-lg {
+        font-size: 0.9375rem !important;
+    }
+    
+    .text-base {
+        font-size: 0.8125rem !important;
+    }
+    
+    .text-sm {
+        font-size: 0.75rem !important;
+    }
+    
+    .text-xs {
+        font-size: 0.625rem !important;
+    }
+    
+    button, .btn {
+        font-size: 0.75rem !important;
+    }
+    
+    input, textarea, select {
+        font-size: 0.75rem !important;
+    }
+    
+    label {
+        font-size: 0.75rem !important;
+    }
+    
+    /* Enhanced Article Content Styling */
+    .prose {
+        max-width: 100% !important;
+        color: #374151 !important;
+        font-size: 0.875rem !important;
+    }
+    
+    .prose p {
+        font-size: 0.875rem !important;
+    }
+    
+    .prose h2 {
+        font-size: 1.25rem !important;
+    }
+    
+    .prose h3 {
+        font-size: 1rem !important;
+    }
+    
+    /* Headings in content */
+    .prose h2 {
         color: #1f2937;
-        border-left: 4px solid #f59e0b;
-        padding-left: 1rem;
-    }
-    
-    .article-content h3 {
-        font-size: 1.4rem;
-        font-weight: 600;
-        margin: 2rem 0 1rem 0;
-        color: #374151;
-    }
-    
-    .article-content p {
+        font-weight: 700;
+        margin-top: 2.5rem;
         margin-bottom: 1.5rem;
-        color: #4b5563;
+        padding-bottom: 0.75rem;
+        border-bottom: 3px solid #f59e0b;
+        position: relative;
     }
     
-    .article-content ul, .article-content ol {
+    .prose h2::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: -3px;
+        width: 60px;
+        height: 3px;
+        background: linear-gradient(90deg, #f59e0b, #d97706);
+    }
+    
+    .prose h3 {
+        color: #374151;
+        font-weight: 600;
+        margin-top: 2rem;
+        margin-bottom: 1rem;
+        padding-left: 1rem;
+        border-left: 4px solid #3b82f6;
+    }
+    
+    /* Paragraphs */
+    .prose p {
+        margin-bottom: 1.5rem;
+        line-height: 1.8;
+        text-align: justify;
+    }
+    
+    .prose p:first-of-type::first-letter {
+        font-size: 3.5rem;
+        font-weight: 700;
+        float: left;
+        line-height: 1;
+        margin-right: 0.5rem;
+        margin-top: 0.1rem;
+        color: #f59e0b;
+    }
+    
+    /* Lists */
+    .prose ul, .prose ol {
         margin: 1.5rem 0;
-        padding-left: 2rem;
-    }
-    
-    .article-content li {
-        margin-bottom: 0.75rem;
-        color: #4b5563;
-    }
-    
-    .article-content blockquote {
-        border-left: 4px solid #e5e7eb;
         padding-left: 1.5rem;
+    }
+    
+    .prose ul li {
+        position: relative;
+        padding-left: 1.5rem;
+        margin-bottom: 0.75rem;
+    }
+    
+    .prose ul li::before {
+        content: '▸';
+        position: absolute;
+        left: 0;
+        color: #f59e0b;
+        font-weight: bold;
+    }
+    
+    .prose ol li {
+        padding-left: 0.5rem;
+        margin-bottom: 0.75rem;
+    }
+    
+    .prose ol {
+        counter-reset: item;
+        list-style: none;
+    }
+    
+    .prose ol li {
+        counter-increment: item;
+        position: relative;
+    }
+    
+    .prose ol li::before {
+        content: counter(item);
+        position: absolute;
+        left: -2rem;
+        top: 0;
+        background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+        color: white;
+        width: 1.5rem;
+        height: 1.5rem;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.75rem;
+        font-weight: 600;
+    }
+    
+    /* Blockquotes */
+    .prose blockquote {
+        border-left: 4px solid #f59e0b;
+        padding: 1.5rem;
         margin: 2rem 0;
+        background: linear-gradient(90deg, #fff7ed, #ffffff);
+        border-radius: 0 0.5rem 0.5rem 0;
         font-style: italic;
         color: #6b7280;
-        background: #f9fafb;
-        padding: 1.5rem;
-        border-radius: 0.5rem;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
     }
-
-    /* Enhanced Like Button */
-    .like-btn {
+    
+    .prose blockquote p {
+        margin: 0;
+        font-size: 1.05rem;
+    }
+    
+    /* Links */
+    .prose a {
+        color: #3b82f6;
+        text-decoration: none;
+        border-bottom: 2px solid transparent;
         transition: all 0.3s ease;
+        font-weight: 500;
+    }
+    
+    .prose a:hover {
+        color: #1d4ed8;
+        border-bottom-color: #3b82f6;
+    }
+    
+    /* Images */
+    .prose img {
+        border-radius: 0.75rem;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        margin: 2rem auto;
+        transition: transform 0.3s ease;
+    }
+    
+    .prose img:hover {
+        transform: scale(1.02);
+    }
+    
+    /* Code blocks */
+    .prose code {
+        background: #f3f4f6;
+        padding: 0.25rem 0.5rem;
+        border-radius: 0.25rem;
+        font-size: 0.875rem;
+        color: #dc2626;
+        font-family: 'Courier New', monospace;
+    }
+    
+    .prose pre {
+        background: #1f2937;
+        color: #f3f4f6;
+        padding: 1.5rem;
+        border-radius: 0.75rem;
+        overflow-x: auto;
+        margin: 2rem 0;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+    
+    .prose pre code {
+        background: transparent;
+        color: inherit;
+        padding: 0;
+    }
+    
+    /* Tables */
+    .prose table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 2rem 0;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        border-radius: 0.5rem;
+        overflow: hidden;
+    }
+    
+    .prose th {
+        background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+        color: white;
+        padding: 1rem;
+        text-align: left;
+        font-weight: 600;
+    }
+    
+    .prose td {
+        padding: 0.875rem 1rem;
+        border-bottom: 1px solid #e5e7eb;
+    }
+    
+    .prose tr:hover {
+        background: #f9fafb;
+    }
+    
+    /* Strong/Bold */
+    .prose strong {
+        color: #1f2937;
+        font-weight: 700;
+    }
+    
+    /* Emphasis/Italic */
+    .prose em {
+        color: #6b7280;
+    }
+    
+    /* HR */
+    .prose hr {
+        border: none;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, #e5e7eb, transparent);
+        margin: 3rem 0;
+    }
+    
+    /* Add some spacing after certain elements */
+    .prose h2 + p,
+    .prose h3 + p {
+        margin-top: 0.5rem;
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .prose {
+            font-size: 0.875rem !important;
+        }
+        
+        .prose h2 {
+            font-size: 1.25rem !important;
+        }
+        
+        .prose h3 {
+            font-size: 1.0625rem !important;
+        }
+        
+        .prose p:first-of-type::first-letter {
+            font-size: 2.5rem;
+        }
+    }
+    
+    /* Like Button Styling */
+    .like-button {
+        color: #6b7280;
+        font-weight: 500;
+        cursor: pointer;
         position: relative;
         overflow: hidden;
     }
     
-    .like-btn:hover {
-        transform: translateY(-2px);
-        shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+    .like-button:hover {
+        color: #3b82f6;
     }
     
-    .like-btn.liked {
-        background: linear-gradient(135deg, #ef4444, #dc2626);
-        color: white;
-        border-color: #dc2626;
+    .like-button.liked {
+        color: #3b82f6;
+        font-weight: 600;
     }
     
-    .like-btn.liked::before {
-        content: '';
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        width: 0;
-        height: 0;
-        background: rgba(255, 255, 255, 0.3);
-        border-radius: 50%;
-        animation: ripple 0.6s ease-out;
+    .like-button.liked i {
+        animation: likeAnimation 0.4s ease-in-out;
     }
     
-    @keyframes ripple {
-        to {
-            width: 100px;
-            height: 100px;
-            opacity: 0;
-        }
-    }
-
-    /* Enhanced Like Counter Animation */
-    .like-count-number {
-        transition: all 0.3s ease;
-        display: inline-block;
-    }
-    
-    .like-btn.liked .like-icon {
-        animation: heartBeat 0.5s ease-in-out;
-    }
-    
-    @keyframes heartBeat {
-        0%, 100% { transform: scale(1); }
-        25% { transform: scale(1.3); }
-        50% { transform: scale(1.1); }
-        75% { transform: scale(1.2); }
-    }
-    
-    .like-count-number.increment {
-        animation: countUp 0.5s ease-out;
-    }
-    
-    .like-count-number.decrement {
-        animation: countDown 0.5s ease-out;
-    }
-    
-    @keyframes countUp {
-        0% { 
-            transform: translateY(20px) scale(0.8);
-            opacity: 0;
+    @keyframes likeAnimation {
+        0% {
+            transform: scale(1);
         }
         50% {
-            transform: translateY(-5px) scale(1.2);
+            transform: scale(1.3) rotate(-10deg);
         }
-        100% { 
-            transform: translateY(0) scale(1);
-            opacity: 1;
-        }
-    }
-    
-    @keyframes countDown {
-        0% { 
-            transform: translateY(-20px) scale(0.8);
-            opacity: 0;
-        }
-        50% {
-            transform: translateY(5px) scale(1.2);
-        }
-        100% { 
-            transform: translateY(0) scale(1);
-            opacity: 1;
+        100% {
+            transform: scale(1) rotate(0deg);
         }
     }
     
-    .like-btn:active .like-icon {
-        transform: scale(0.9);
-    }
-
-    /* Enhanced View Counter */
-    .view-counter {
-        background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-        color: white;
-        border-radius: 50px;
-        padding: 0.5rem 1rem;
-        font-weight: 600;
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-    }
-
-    /* Reading Progress Bar */
-    .reading-progress {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 0%;
-        height: 4px;
-        background: linear-gradient(90deg, #f59e0b, #d97706);
-        z-index: 1000;
-        transition: width 0.1s ease;
-    }
-
-    /* Share Buttons */
-    .share-btn {
-        transition: all 0.3s ease;
-    }
-    
-    .share-btn:hover {
-        transform: translateY(-2px);
-    }
-
-    /* Toast Notification */
-    .toast {
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        padding: 12px 24px;
-        border-radius: 8px;
-        color: white;
-        font-weight: 600;
-        z-index: 1000;
-        transform: translateX(100%);
-        transition: transform 0.3s ease;
-    }
-    
-    .toast.show {
-        transform: translateX(0);
-    }
-    
-    .toast.success {
-        background: #10b981;
-    }
-    
-    .toast.error {
-        background: #ef4444;
-    }
-
-    /* Enhanced Category Badge */
-    .category-badge {
-        background: linear-gradient(135deg, #8b5cf6, #7c3aed);
-        color: white;
-        padding: 0.25rem 0.75rem;
-        border-radius: 50px;
-        font-size: 0.875rem;
-        font-weight: 600;
-    }
-
-    /* Author Section */
-    .author-section {
-        background: linear-gradient(135deg, #f8fafc, #e2e8f0);
-        border-radius: 1rem;
-        padding: 1.5rem;
-        border: 2px solid #e5e7eb;
-    }
-
-    /* Related Articles */
-    .related-article-card {
-        transition: all 0.3s ease;
-    }
-    
-    .related-article-card:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    .like-button:active {
+        transform: scale(0.95);
     }
 </style>
 @endpush
 
 @section('content')
-<!-- Reading Progress Bar -->
-<div class="reading-progress"></div>
-
-<!-- Blog Container with data-blog-id for JavaScript -->
-<div data-blog-id="{{ $blog->id }}" class="min-h-screen bg-gray-50 mt-20">
+<div class="min-h-screen bg-gray-50 pt-20">
     <div class="container mx-auto px-4 py-8">
-        <div class="max-w-4xl mx-auto">
-            
+        <div class="max-w-7xl mx-auto">
+
             <!-- Breadcrumb -->
             <nav class="mb-6 text-sm">
                 <ol class="flex items-center space-x-2 text-gray-500">
-                    <li><a href="{{ route('home') }}" class="hover:text-amber-600 transition-colors">Home</a></li>
-                    <li class="text-gray-400">/</li>
-                    <li><a href="{{ route('blog') }}" class="hover:text-amber-600 transition-colors">Blog</a></li>
-                    <li class="text-gray-400">/</li>
-                    <li class="text-gray-700 font-medium">{{ Str::limit($blog->title, 50) }}</li>
+                    <li><a href="{{ route('home') }}" class="hover:text-amber-600">Home</a></li>
+                    <li>/</li>
+                    <li><a href="{{ route('blog') }}" class="hover:text-amber-600">Blog</a></li>
+                    <li>/</li>
+                    <li class="text-gray-700">{{ Str::limit($blog->title, 50) }}</li>
                 </ol>
             </nav>
 
-            <!-- Article Header -->
-            <article class="bg-white rounded-2xl shadow-lg overflow-hidden mb-8">
+            <!-- Main Content Grid with Sidebar -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                
+                <!-- Main Content Area -->
+                <div class="lg:col-span-2">
+                    
+            <!-- Article -->
+            <article class="bg-white rounded-lg shadow-lg overflow-hidden mb-8">
                 
                 <!-- Featured Image -->
                 @if($blog->featured_image)
                 <div class="relative h-96 overflow-hidden">
                     <img src="{{ $blog->featured_image_url }}" 
                          alt="{{ $blog->title }}"
-                         class="w-full h-full object-cover transition-transform duration-700 hover:scale-105">
+                         class="w-full h-full object-cover">
                     
-                    <!-- Category Badge Overlay -->
                     @if($blog->category)
                     <div class="absolute top-4 left-4">
-                        <span class="category-badge">
+                        <span class="bg-amber-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
                             {{ $blog->category->name }}
                         </span>
                     </div>
                     @endif
+                    
+                    <!-- Views Badge -->
+                    <div class="absolute top-4 right-4">
+                        <span class="bg-blue-600 bg-opacity-90 text-white px-3 py-1.5 rounded-full text-sm font-semibold flex items-center gap-2 shadow-lg backdrop-blur-sm" title="Unique views (1 IP = 1 view per 24 jam)">
+                            <i class="fas fa-eye"></i>
+                            {{ number_format($blog->views_count ?? 0) }}
+                        </span>
+                    </div>
                 </div>
                 @endif
 
-                <!-- Article Content -->
                 <div class="p-8">
                     
-                    <!-- Article Meta -->
-                    <div class="flex flex-wrap items-center gap-4 mb-6 text-sm text-gray-600">
-                        <!-- Author -->
+                    <!-- Meta -->
+                    <div class="flex items-center gap-4 mb-6 text-sm text-gray-600">
                         <div class="flex items-center gap-2">
-                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path>
-                            </svg>
+                            <i class="fas fa-user"></i>
                             <span>{{ $blog->author ? $blog->author->name : 'Anonymous' }}</span>
                         </div>
-                        
-                        <!-- Published Date -->
                         <div class="flex items-center gap-2">
-                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"></path>
-                            </svg>
-                            <time datetime="{{ $blog->published_at }}">{{ $blog->published_at->format('d M Y') }}</time>
+                            <i class="fas fa-calendar"></i>
+                            <time>{{ $blog->published_at ? $blog->published_at->format('d M Y') : $blog->created_at->format('d M Y') }}</time>
                         </div>
-                        
-                        <!-- Reading Time -->
                         <div class="flex items-center gap-2">
-                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"></path>
-                            </svg>
-                            <span>{{ $blog->read_time }} menit baca</span>
+                            <i class="fas fa-clock"></i>
+                            <span>{{ $blog->read_time ?? 5 }} menit</span>
                         </div>
                     </div>
 
-                    <!-- Article Title -->
-                    <h1 class="text-4xl font-bold text-gray-900 mb-6 leading-tight">
-                        {{ $blog->title }}
-                    </h1>
-
-                    <!-- Article Excerpt -->
-                    @if($blog->excerpt)
-                    <div class="text-xl text-gray-600 mb-8 font-medium leading-relaxed">
-                        {{ $blog->excerpt }}
-                    </div>
-                    @endif
-
-                    <!-- Engagement Stats & Actions -->
-                    <div class="flex flex-wrap items-center justify-between gap-4 mb-8 p-4 bg-gray-50 rounded-lg">
+                    <!-- Title -->
+                    <div class="flex items-center justify-between mb-6">
+                        <h1 class="text-4xl font-bold text-gray-900 flex-1">{{ $blog->title }}</h1>
                         
-                        <!-- Left: Stats -->
-                        <div class="flex items-center gap-6">
-                            <!-- Views Counter -->
-                            <div class="view-counter">
-                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                                    <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"></path>
-                                    <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"></path>
-                                </svg>
-                                <span id="views-count">{{ number_format($blog->views_count) }}</span>
-                                <span>views</span>
-                            </div>
+                        <!-- Admin Edit Button -->
+                        @auth
+                            @if(auth()->user()->isAdmin())
+                            <a href="/admin/blogs/{{ $blog->slug }}/edit" 
+                               class="flex items-center gap-2 px-4 py-2 bg-amber-500 text-white rounded-lg hover:bg-amber-600 transition-all shadow-md hover:shadow-lg ml-4">
+                                <i class="fas fa-edit"></i>
+                                <span class="font-semibold text-sm">Edit Artikel</span>
+                            </a>
+                            @endif
+                        @endauth
+                    </div>
+
+                    <!-- Excerpt -->
+                    {{-- @if($blog->excerpt)
+                    <div class="text-xl text-gray-600 mb-8">{{ $blog->excerpt }}</div>
+                    @endif --}}
+                    
+                    <!-- Reading Progress -->
+                    <div class="mb-6 flex items-center gap-4 text-sm text-gray-500">
+                        <div class="flex items-center gap-2">
+                            <i class="fas fa-book-open text-amber-500"></i>
+                            <span>{{ $blog->read_time ?? 5 }} menit bacaan</span>
                         </div>
+                        <div class="flex items-center gap-2">
+                            <i class="fas fa-layer-group text-blue-500"></i>
+                            <span>{{ str_word_count(strip_tags($blog->content)) }} kata</span>
+                        </div>
+                    </div>
 
-                        <!-- Right: Actions -->
-                        <div class="flex items-center gap-3">
-                            
-                            <!-- Like Button -->
-                            <button id="like-btn" 
-                                    class="like-btn flex items-center gap-2 px-4 py-2 border-2 border-red-500 text-red-500 rounded-lg font-semibold hover:bg-red-500 hover:text-white transition-all duration-300"
-                                    data-likes="{{ $blog->likes_count }}">
-                                <!-- Heart Icon with Pulse Animation -->
-                                <svg class="w-5 h-5 like-icon transition-transform duration-300" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"></path>
-                                </svg>
-                                <!-- Enhanced Like Counter with Animation -->
-                                <span id="like-count" class="like-count-number font-bold min-w-[2rem] text-center" data-count="{{ $blog->likes_count }}">
-                                    @if($blog->likes_count >= 1000)
-                                        {{ number_format($blog->likes_count / 1000, 1) }}K
-                                    @elseif($blog->likes_count > 0)
-                                        {{ number_format($blog->likes_count) }}
-                                    @else
-                                        0
-                                    @endif
-                                </span>
-                                <span class="like-text">Like</span>
-                            </button>
-
-                            <!-- Share Dropdown -->
-                            <div class="relative">
-                                <button id="share-btn" class="share-btn flex items-center gap-2 px-4 py-2 border-2 border-blue-500 text-blue-500 rounded-lg font-semibold hover:bg-blue-500 hover:text-white transition-all duration-300">
-                                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                                        <path d="M15 8a3 3 0 10-2.977-2.63l-4.94 2.47a3 3 0 100 4.319l4.94 2.47a3 3 0 10.895-1.789l-4.94-2.47a3.027 3.027 0 000-.74l4.94-2.47C13.456 7.68 14.19 8 15 8z"></path>
-                                    </svg>
-                                    <span>Share</span>
+                    <!-- Content -->
+                    <div class="prose prose-lg max-w-none">{!! $blog->content !!}</div>
+                    
+                    <!-- Share Article -->
+                    <div class="mt-12 pt-8 border-t border-gray-200">
+                        <div class="flex items-center justify-between flex-wrap gap-4">
+                            <h3 class="text-lg font-semibold text-gray-900 flex items-center gap-2">
+                                <i class="fas fa-share-alt text-blue-600"></i>
+                                Bagikan Artikel Ini
+                            </h3>
+                            <div class="flex items-center gap-3">
+                                <!-- Facebook -->
+                                <a href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode(request()->url()) }}" 
+                                   target="_blank"
+                                   class="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+                                    <i class="fab fa-facebook-f"></i>
+                                    <span class="text-sm font-medium">Facebook</span>
+                                </a>
+                                <!-- Twitter -->
+                                <a href="https://twitter.com/intent/tweet?url={{ urlencode(request()->url()) }}&text={{ urlencode($blog->title) }}" 
+                                   target="_blank"
+                                   class="flex items-center gap-2 px-4 py-2 bg-sky-500 text-white rounded-lg hover:bg-sky-600 transition">
+                                    <i class="fab fa-twitter"></i>
+                                    <span class="text-sm font-medium">Twitter</span>
+                                </a>
+                                <!-- WhatsApp -->
+                                <a href="https://wa.me/?text={{ urlencode($blog->title . ' - ' . request()->url()) }}" 
+                                   target="_blank"
+                                   class="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition">
+                                    <i class="fab fa-whatsapp"></i>
+                                    <span class="text-sm font-medium">WhatsApp</span>
+                                </a>
+                                <!-- Copy Link -->
+                                <button onclick="copyLink()" 
+                                        class="flex items-center gap-2 px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition">
+                                    <i class="fas fa-link"></i>
+                                    <span class="text-sm font-medium">Salin Link</span>
                                 </button>
-                                
-                                <!-- Share Options -->
-                                <div id="share-options" class="hidden absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-10">
-                                    <a href="#" onclick="shareToFacebook()" class="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 transition-colors">
-                                        <svg class="w-5 h-5 text-blue-600" fill="currentColor" viewBox="0 0 24 24">
-                                            <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
-                                        </svg>
-                                        <span>Facebook</span>
-                                    </a>
-                                    <a href="#" onclick="shareToTwitter()" class="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 transition-colors">
-                                        <svg class="w-5 h-5 text-sky-500" fill="currentColor" viewBox="0 0 24 24">
-                                            <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
-                                        </svg>
-                                        <span>Twitter</span>
-                                    </a>
-                                    <a href="#" onclick="shareToWhatsApp()" class="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 transition-colors">
-                                        <svg class="w-5 h-5 text-green-500" fill="currentColor" viewBox="0 0 24 24">
-                                            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
-                                        </svg>
-                                        <span>WhatsApp</span>
-                                    </a>
-                                    <a href="#" onclick="copyLink()" class="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 transition-colors">
-                                        <svg class="w-5 h-5 text-gray-600" fill="currentColor" viewBox="0 0 20 20">
-                                            <path d="M8 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z"></path>
-                                            <path d="M6 3a2 2 0 00-2 2v11a2 2 0 002 2h8a2 2 0 002-2V5a2 2 0 00-2-2 3 3 0 01-3 3H9a3 3 0 01-3-3z"></path>
-                                        </svg>
-                                        <span>Copy Link</span>
-                                    </a>
-                                </div>
                             </div>
                         </div>
-                    </div>
-
-                    <!-- Article Content -->
-                    <div class="article-content prose prose-lg max-w-none">
-                        {!! $blog->content !!}
                     </div>
 
                     <!-- Tags -->
                     @if($blog->tags)
-                    <div class="mt-8 pt-6 border-t border-gray-200">
-                        <h3 class="text-lg font-semibold mb-3">Tags:</h3>
+                    <div class="mt-8 pt-6 border-t">
+                        <h3 class="font-semibold mb-3">Tags:</h3>
                         <div class="flex flex-wrap gap-2">
                             @php
-                                // Handle both string and array formats
                                 $tags = is_array($blog->tags) ? $blog->tags : explode(',', $blog->tags);
                             @endphp
                             @foreach($tags as $tag)
-                            <span class="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm font-medium hover:bg-gray-200 transition-colors">
-                                #{{ trim($tag) }}
-                            </span>
+                            <span class="px-3 py-1 bg-gray-100 rounded-full text-sm">#{{ trim($tag) }}</span>
                             @endforeach
                         </div>
                     </div>
                     @endif
-
                 </div>
             </article>
 
-            <!-- Author Bio -->
-            <div class="author-section mb-8">
-                @if($blog->author)
-                    <div class="flex items-start gap-4">
-                        @if($blog->author->avatar)
-                            <img src="{{ $blog->author->avatar_url }}" 
-                                 alt="{{ $blog->author->name }}" 
-                                 class="w-16 h-16 rounded-full object-cover">
-                        @else
-                            <div class="w-16 h-16 bg-gradient-to-br from-amber-400 to-orange-500 rounded-full flex items-center justify-center text-white font-bold text-xl">
-                                {{ substr($blog->author->name, 0, 1) }}
-                            </div>
-                        @endif
-                        <div class="flex-1">
-                            <h3 class="text-xl font-bold text-gray-900 mb-2">{{ $blog->author->name }}</h3>
-                            <p class="text-gray-600 leading-relaxed">
-                                {{ $blog->author->bio ?? 'Wedding organizer profesional dengan pengalaman lebih dari 5 tahun dalam industri pernikahan. Spesialis dalam menciptakan momen pernikahan yang tak terlupakan dengan sentuhan personal dan detail yang sempurna.' }}
-                            </p>
-                            @if($blog->author->website || $blog->author->instagram || $blog->author->facebook || $blog->author->twitter)
-                                <div class="flex gap-3 mt-3">
-                                    @if($blog->author->website)
-                                        <a href="{{ $blog->author->website }}" target="_blank" class="text-gray-500 hover:text-amber-600 transition">
-                                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                                                <path fill-rule="evenodd" d="M4.083 9h1.946c.089-1.546.383-2.97.837-4.118A6.004 6.004 0 004.083 9zM10 2a8 8 0 100 16 8 8 0 000-16zm0 2c-.076 0-.232.032-.465.262-.238.234-.497.623-.737 1.182-.389.907-.673 2.142-.766 3.556h3.936c-.093-1.414-.377-2.649-.766-3.556-.24-.56-.5-.948-.737-1.182C10.232 4.032 10.076 4 10 4zm3.971 5c-.089-1.546-.383-2.97-.837-4.118A6.004 6.004 0 0115.917 9h-1.946zm-2.003 2H8.032c.093 1.414.377 2.649.766 3.556.24.56.5.948.737 1.182.233.23.389.262.465.262.076 0 .232-.032.465-.262.238-.234.498-.623.737-1.182.389-.907.673-2.142.766-3.556zm1.166 4.118c.454-1.147.748-2.572.837-4.118h1.946a6.004 6.004 0 01-2.783 4.118zm-6.268 0C6.412 13.97 6.118 12.546 6.03 11H4.083a6.004 6.004 0 002.783 4.118z" clip-rule="evenodd"></path>
-                                            </svg>
-                                        </a>
-                                    @endif
-                                    @if($blog->author->instagram)
-                                        <a href="{{ $blog->author->instagram }}" target="_blank" class="text-gray-500 hover:text-pink-600 transition">
-                                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                                                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
-                                            </svg>
-                                        </a>
-                                    @endif
-                                    @if($blog->author->facebook)
-                                        <a href="{{ $blog->author->facebook }}" target="_blank" class="text-gray-500 hover:text-blue-600 transition">
-                                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                                                <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
-                                            </svg>
-                                        </a>
-                                    @endif
-                                    @if($blog->author->twitter)
-                                        <a href="{{ $blog->author->twitter }}" target="_blank" class="text-gray-500 hover:text-blue-400 transition">
-                                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                                                <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
-                                            </svg>
-                                        </a>
-                                    @endif
-                                </div>
-                            @endif
-                        </div>
+             <!-- Flash Messages -->
+            @if(session('success'))
+                <div class="bg-green-50 border-l-4 border-green-500 p-4 mb-5 rounded-lg">
+                    <div class="flex items-center">
+                        <i class="fas fa-check-circle text-green-500 mr-3"></i>
+                        <p class="text-green-800 text-sm font-medium">{{ session('success') }}</p>
                     </div>
-                @endif
-            </div>
-
-            <!-- Related Articles -->
-            @php
-                $relatedBlogs = App\Models\Blog::where('id', '!=', $blog->id)
-                    ->where('status', 'published')
-                    ->when($blog->category_id, function($query) use ($blog) {
-                        return $query->where('category_id', $blog->category_id);
-                    })
-                    ->latest()
-                    ->take(3)
-                    ->get();
-            @endphp
-
-            @if($relatedBlogs->count() > 0)
-            <section class="mb-8">
-                <h2 class="text-2xl font-bold text-gray-900 mb-6">Artikel Terkait</h2>
-                <div class="grid md:grid-cols-3 gap-6">
-                    @foreach($relatedBlogs as $relatedBlog)
-                    <article class="related-article-card bg-white rounded-lg shadow-md overflow-hidden">
-                        @if($relatedBlog->featured_image)
-                        <div class="h-48 overflow-hidden">
-                            <img src="{{ $relatedBlog->featured_image_url }}" 
-                                 alt="{{ $relatedBlog->title }}"
-                                 class="w-full h-full object-cover transition-transform duration-300 hover:scale-105">
-                        </div>
-                        @endif
-                        <div class="p-6">
-                            <h3 class="font-semibold text-gray-900 mb-2 line-clamp-2">
-                                <a href="{{ route('blog.detail', $relatedBlog->slug) }}" 
-                                   class="hover:text-amber-600 transition-colors">
-                                    {{ $relatedBlog->title }}
-                                </a>
-                            </h3>
-                            <p class="text-gray-600 text-sm mb-4 line-clamp-2">{{ $relatedBlog->excerpt }}</p>
-                            <div class="flex justify-between items-center text-xs text-gray-500">
-                                <span>{{ $relatedBlog->published_at->format('d M Y') }}</span>
-                                <span>{{ $relatedBlog->read_time }} min</span>
-                            </div>
-                        </div>
-                    </article>
-                    @endforeach
                 </div>
-            </section>
             @endif
 
-            <!-- Comments Section (Placeholder for future) -->
-            <section class="bg-white rounded-lg shadow-md p-8">
-                <h2 class="text-2xl font-bold text-gray-900 mb-6">Komentar</h2>
-                <div id="comments-section">
-                    <div class="text-center py-8 text-gray-500">
-                        <svg class="w-12 h-12 mx-auto mb-4 text-gray-300" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd" d="M18 10c0 3.866-3.582 7-8 7a8.841 8.841 0 01-4.083-.98L2 17l1.338-3.123C2.493 12.767 2 11.434 2 10c0-3.866 3.582-7 8-7s8 3.134 8 7zM7 9H5v2h2V9zm8 0h-2v2h2V9zM9 9h2v2H9V9z" clip-rule="evenodd"></path>
-                        </svg>
-                        <p class="text-lg">Fitur komentar akan segera hadir!</p>
-                        <p class="text-sm">Sementara waktu, silakan share pendapat Anda melalui social media.</p>
+            @if(session('error'))
+                <div class="bg-red-50 border-l-4 border-red-500 p-4 mb-5 rounded-lg">
+                    <div class="flex items-center">
+                        <i class="fas fa-exclamation-circle text-red-500 mr-3"></i>
+                        <p class="text-red-800 text-sm font-medium">{{ session('error') }}</p>
                     </div>
                 </div>
-            </section>
+            @endif
 
+            @if($errors->any())
+                <div class="bg-red-50 border-l-4 border-red-500 p-4 mb-5 rounded-lg">
+                    <div class="flex items-start">
+                        <i class="fas fa-exclamation-circle text-red-500 mr-3 mt-0.5"></i>
+                        <div class="flex-1">
+                            <p class="text-red-800 text-sm font-medium mb-1">Terjadi kesalahan:</p>
+                            <ul class="list-disc list-inside text-red-700 text-xs">
+                                @foreach($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            @endif
+
+            <!-- Comments Section -->
+            <section class="bg-white rounded-lg shadow-lg p-8">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-2xl font-bold text-gray-900 flex items-center gap-2">
+                        <i class="fas fa-comments text-blue-600"></i>
+                        Komentar
+                        <span class="text-base font-normal text-gray-500">({{ $blog->comments()->where('is_approved', true)->count() }})</span>
+                    </h2>
+                </div>
+
+                @auth
+                    <!-- Comment Form -->
+                    <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-5 mb-6 border border-blue-100">
+                        <form action="{{ route('blog.comment.store', $blog->slug) }}" method="POST">
+                            @csrf
+                            <div class="mb-3">
+                                <label for="comment" class="block text-sm font-semibold text-gray-700 mb-2">
+                                    <i class="fas fa-pencil-alt mr-1"></i>
+                                    Tulis Komentar Anda
+                                </label>
+                                <textarea 
+                                    id="comment"
+                                    name="comment" 
+                                    rows="4" 
+                                    maxlength="1000"
+                                    class="w-full px-3 py-2.5 border border-gray-300 text-sm"
+                                    placeholder="Bagikan pendapat atau pertanyaan Anda tentang artikel ini... (Min. 3 karakter, Maks. 1000 karakter)"
+                                    required
+                                ></textarea>
+                                <div class="flex justify-between items-center mt-1">
+                                    <span class="text-xs text-gray-500">
+                                        <i class="fas fa-check-circle text-green-500"></i>
+                                        Min. 3 karakter
+                                    </span>
+                                    <span id="char-count" class="text-xs text-gray-500">0 / 1000 karakter</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <p class="text-xs text-gray-500">
+                                    <i class="fas fa-info-circle mr-1"></i>
+                                    Komentar akan ditinjau sebelum dipublikasikan
+                                </p>
+                                <button 
+                                    type="submit" 
+                                    class="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-5 py-2 rounded-lg hover:from-blue-700 hover:to-blue-800 font-semibold text-sm flex items-center gap-2">
+                                    <i class="fas fa-paper-plane"></i>
+                                    Kirim Komentar
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                @else
+                    <!-- Login Prompt -->
+                    <div class="bg-gradient-to-r from-amber-50 to-orange-50 rounded-lg p-5 mb-6 border border-amber-200">
+                        <div class="flex items-start gap-3">
+                            <div class="bg-amber-100 p-2.5 rounded-full">
+                                <i class="fas fa-lock text-amber-600 text-lg"></i>
+                            </div>
+                            <div class="flex-1">
+                                <h3 class="font-semibold text-gray-900 mb-1">Login untuk Berkomentar</h3>
+                                <p class="text-sm text-gray-600 mb-3">
+                                    Silakan login terlebih dahulu untuk memberikan komentar pada artikel ini.
+                                </p>
+                                <a href="{{ route('login') }}" class="inline-flex items-center gap-2 bg-amber-500 text-white px-4 py-2 rounded-lg hover:bg-amber-600 font-semibold text-sm">
+                                    <i class="fas fa-sign-in-alt"></i>
+                                    Login Sekarang
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                @endauth
+
+                <!-- Comments List -->
+                <div class="space-y-4">
+                    @forelse($blog->comments()->with('user')->where('is_approved', true)->whereNull('parent_id')->orderBy('created_at', 'desc')->get() as $comment)
+                    <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition">
+                        <div class="flex items-start gap-3">
+                            <!-- Avatar -->
+                            <div class="flex-shrink-0">
+                                @php
+                                    // Get avatar from user if exists, otherwise from comment
+                                    $userAvatar = null;
+                                    if($comment->user) {
+                                        // Use avatar_url accessor if available
+                                        if(method_exists($comment->user, 'getAvatarUrlAttribute')) {
+                                            $userAvatar = $comment->user->avatar_url;
+                                        } elseif($comment->user->avatar) {
+                                            // Check if it's a full URL
+                                            if(filter_var($comment->user->avatar, FILTER_VALIDATE_URL)) {
+                                                $userAvatar = $comment->user->avatar;
+                                            } else {
+                                                // It's a storage path
+                                                $userAvatar = asset('storage/' . $comment->user->avatar);
+                                            }
+                                        }
+                                    }
+                                    
+                                    // Fallback to comment avatar
+                                    if(!$userAvatar && $comment->avatar) {
+                                        if(filter_var($comment->avatar, FILTER_VALIDATE_URL)) {
+                                            $userAvatar = $comment->avatar;
+                                        } else {
+                                            $userAvatar = asset('storage/' . $comment->avatar);
+                                        }
+                                    }
+                                @endphp
+                                
+                                @if($userAvatar)
+                                    <img src="{{ $userAvatar }}" 
+                                         alt="{{ $comment->name }}" 
+                                         class="w-10 h-10 rounded-full object-cover border-2 border-gray-200"
+                                         onerror="this.onerror=null; this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                    <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full items-center justify-center text-white font-bold text-sm hidden">
+                                        {{ strtoupper(substr($comment->name, 0, 1)) }}
+                                    </div>
+                                @else
+                                    <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full flex items-center justify-center text-white font-bold text-sm">
+                                        {{ strtoupper(substr($comment->name, 0, 1)) }}
+                                    </div>
+                                @endif
+                            </div>
+
+                            <!-- Comment Content -->
+                            <div class="flex-1">
+                                <div class="flex items-center gap-2 mb-1">
+                                    <span class="font-semibold text-gray-900">{{ $comment->name }}</span>
+                                    @if($comment->is_approved)
+                                        <span class="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full">Terverifikasi</span>
+                                    @endif
+                                    <span class="text-xs text-gray-500">• {{ $comment->created_at->diffForHumans() }}</span>
+                                </div>
+                                <p class="text-gray-700 mb-2">{{ $comment->comment }}</p>
+                                
+                                <!-- Comment Actions -->
+                                @auth
+                                <div class="flex items-center gap-3 text-xs">
+                                    @php
+                                        $likedComments = session('liked_comments', []);
+                                        $isLiked = in_array($comment->id, $likedComments);
+                                    @endphp
+                                    <button 
+                                        onclick="likeComment({{ $comment->id }})" 
+                                        id="like-btn-{{ $comment->id }}"
+                                        class="like-button {{ $isLiked ? 'liked' : '' }} flex items-center gap-1 transition-all duration-300 hover:scale-110"
+                                    >
+                                        <i class="{{ $isLiked ? 'fas' : 'far' }} fa-thumbs-up transition-all duration-300"></i>
+                                        <span class="like-text">{{ $isLiked ? 'Disukai' : 'Suka' }}</span>
+                                    </button>
+                                    @if(auth()->user()->email === $comment->email)
+                                    <button onclick="deleteComment({{ $comment->id }})" class="text-gray-500 hover:text-red-600 flex items-center gap-1 transition-colors duration-300">
+                                        <i class="far fa-trash-alt"></i>
+                                        <span>Hapus</span>
+                                    </button>
+                                    @endif
+                                </div>
+                                @endauth
+                            </div>
+                        </div>
+                    </div>
+                    @empty
+                    <div class="text-center py-8 text-gray-500">
+                        <i class="fas fa-comments text-4xl mb-3 text-gray-300"></i>
+                        <p>Belum ada komentar. Jadilah yang pertama berkomentar!</p>
+                    </div>
+                    @endforelse
+                </div>
+            </section>
+            
+            </div>
+            <!-- End Main Content Area -->
+
+            <!-- Sidebar -->
+            <aside class="lg:col-span-1">
+                
+                <!-- Edvetorial Widget (Advertisement) -->
+                <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
+                    <h3 class="text-xl font-bold text-gray-900 mb-4 pb-3 border-b-2 border-amber-500">
+                        Edvetorial
+                    </h3>
+                    
+                    <!-- Square Ad Space -->
+                    <div class="aspect-square bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg border-2 border-dashed border-gray-300 flex flex-col items-center justify-center p-6 hover:border-amber-400 transition-colors duration-300">
+                        <i class="fas fa-bullhorn text-5xl text-amber-500 mb-3"></i>
+                        <p class="text-sm font-semibold text-gray-700 mb-2">Advetorial Space</p>
+                        <p class="text-xs text-gray-500 text-center">300x300 Advertisement</p>
+                    </div>
+                </div>
+                
+                <!-- Latest Posts Widget -->
+                <div class="bg-white rounded-lg shadow-lg p-6 mb-6 sticky top-24">
+                    <h3 class="text-xl font-bold text-gray-900 mb-6 pb-3 border-b-2 border-amber-500">
+                        Latest
+                    </h3>
+                    
+                    <div class="space-y-6">
+                        @php
+                            $latestBlogs = \App\Models\Blog::where('id', '!=', $blog->id)
+                                ->where('status', 'published')
+                                ->orderBy('published_at', 'desc')
+                                ->take(5)
+                                ->get();
+                        @endphp
+                        
+                        @foreach($latestBlogs as $latestBlog)
+                        <div class="group">
+                            <a href="{{ route('blog.detail', $latestBlog->slug) }}" class="block">
+                                <!-- Thumbnail -->
+                                @if($latestBlog->featured_image)
+                                <div class="relative h-32 rounded-lg overflow-hidden mb-3">
+                                    <img src="{{ $latestBlog->featured_image_url }}" 
+                                         alt="{{ $latestBlog->title }}"
+                                         class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110">
+                                    <!-- Overlay on hover -->
+                                    <div class="absolute inset-0 bg-black opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
+                                </div>
+                                @endif
+                                
+                                <!-- Title -->
+                                <h4 class="font-bold text-gray-900 mb-2 line-clamp-2 group-hover:text-amber-600 transition-colors duration-300">
+                                    {{ $latestBlog->title }}
+                                </h4>
+                                
+                                <!-- Date -->
+                                <p class="text-xs text-gray-500">
+                                    <i class="far fa-calendar-alt mr-1"></i>
+                                    {{ $latestBlog->published_at ? $latestBlog->published_at->format('d F Y') : $latestBlog->created_at->format('d F Y') }}
+                                </p>
+                            </a>
+                            
+                            @if(!$loop->last)
+                            <hr class="mt-6 border-gray-200">
+                            @endif
+                        </div>
+                        @endforeach
+                    </div>
+                    
+                    <!-- View All Button -->
+                    <div class="mt-6 pt-4 border-t border-gray-200">
+                        <a href="{{ route('blog') }}" 
+                           class="block text-center px-4 py-2 bg-gradient-to-r from-amber-500 to-orange-500 text-white rounded-lg hover:from-amber-600 hover:to-orange-600 transition-all font-semibold text-sm">
+                            <i class="fas fa-th-list mr-2"></i>
+                            Lihat Semua Artikel
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Advertisement Widget (Optional) -->
+                <div class="bg-gray-100 rounded-lg shadow-lg p-6 text-center">
+                    <p class="text-sm text-gray-500 mb-4">- Advertisement -</p>
+                    <div class="bg-white rounded-lg p-8 border-2 border-dashed border-gray-300">
+                        <i class="fas fa-ad text-4xl text-gray-400 mb-2"></i>
+                        <p class="text-sm text-gray-500">Ad Space Available</p>
+                    </div>
+                </div>
+                
+            </aside>
+            <!-- End Sidebar -->
+
+        </div>
+        <!-- End Grid Layout -->
         </div>
     </div>
 </div>
 
-<!-- Toast Notification -->
-<div id="toast" class="toast"></div>
-@endsection
-
-@push('scripts')
-<!-- Blog Engagement Script -->
-@vite('resources/js/blog-engagement.js')
-
 <script>
-    // Enhanced Blog Detail JavaScript
-    document.addEventListener('DOMContentLoaded', function() {
-        console.log('🎯 DEBUG: blog-engagement.js loaded and DOM ready');
+// Character counter
+const textarea = document.getElementById('comment');
+const charCount = document.getElementById('char-count');
+
+if (textarea && charCount) {
+    textarea.addEventListener('input', function() {
+        const length = this.value.length;
+        charCount.textContent = `${length} / 1000 karakter`;
         
-        // Check for blog ID element
-        console.log('🔍 Checking for blog ID element...');
-        const blogElement = document.querySelector('[data-blog-id]');
-        console.log('🔘 Blog element found:', !!blogElement);
-        
-        if (blogElement) {
-            const blogId = blogElement.dataset.blogId;
-            console.log('🆔 Found blog ID:', blogId);
-            
-            if (blogId && typeof BlogEngagement !== 'undefined') {
-                console.log('✅ Initializing BlogEngagement for blog:', blogId);
-                
-                // Add delay to ensure DOM is fully ready
-                setTimeout(() => {
-                    console.log('🚀 Creating BlogEngagement instance now...');
-                    try {
-                        window.blogEngagement = new BlogEngagement(blogId);
-                        console.log('✅ BlogEngagement instance created successfully');
-                    } catch (error) {
-                        console.error('❌ Error creating BlogEngagement:', error);
-                    }
-                }, 100);
-            } else {
-                console.warn('⚠️ BlogEngagement class not found or blog ID missing');
-            }
+        if (length < 3) {
+            charCount.classList.add('text-red-600');
+            charCount.classList.remove('text-gray-500');
         } else {
-            console.error('❌ No blog ID found on page');
+            charCount.classList.remove('text-red-600');
+            charCount.classList.add('text-gray-500');
         }
+    });
+}
 
-        // Reading Progress Bar
-        const progressBar = document.querySelector('.reading-progress');
-        if (progressBar) {
-            window.addEventListener('scroll', updateReadingProgress);
+// Like comment
+function likeComment(commentId) {
+    const button = document.getElementById(`like-btn-${commentId}`);
+    const icon = button.querySelector('i');
+    const text = button.querySelector('.like-text');
+    
+    fetch(`/api/comments/${commentId}/like`, {
+        method: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+            'Content-Type': 'application/json'
         }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Toggle liked state
+            if (data.liked) {
+                button.classList.add('liked');
+                icon.classList.remove('far');
+                icon.classList.add('fas');
+                text.textContent = 'Disukai';
+                
+                // Trigger animation
+                icon.style.animation = 'none';
+                setTimeout(() => {
+                    icon.style.animation = 'likeAnimation 0.4s ease-in-out';
+                }, 10);
+            } else {
+                button.classList.remove('liked');
+                icon.classList.remove('fas');
+                icon.classList.add('far');
+                text.textContent = 'Suka';
+            }
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Terjadi kesalahan saat menyukai komentar');
+    });
+}
 
-        // Share Button Toggle
-        const shareBtn = document.getElementById('share-btn');
-        const shareOptions = document.getElementById('share-options');
-        
-        if (shareBtn && shareOptions) {
-            shareBtn.addEventListener('click', function(e) {
-                e.preventDefault();
-                shareOptions.classList.toggle('hidden');
-            });
+// Delete comment
+function deleteComment(commentId) {
+    if (!confirm('Apakah Anda yakin ingin menghapus komentar ini?')) {
+        return;
+    }
 
-            // Close share options when clicking outside
-            document.addEventListener('click', function(e) {
-                if (!shareBtn.contains(e.target) && !shareOptions.contains(e.target)) {
-                    shareOptions.classList.add('hidden');
-                }
+    fetch(`/api/comments/${commentId}`, {
+        method: 'DELETE',
+        headers: {
+            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert('Komentar berhasil dihapus');
+            location.reload();
+        }
+    })
+    .catch(error => console.error('Error:', error));
+}
+
+// Copy link to clipboard
+function copyLink() {
+    const url = window.location.href;
+    
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(url).then(() => {
+            alert('Link berhasil disalin!');
+        }).catch(err => {
+            console.error('Error copying:', err);
+            fallbackCopyTextToClipboard(url);
+        });
+    } else {
+        fallbackCopyTextToClipboard(url);
+    }
+}
+
+function fallbackCopyTextToClipboard(text) {
+    const textArea = document.createElement("textarea");
+    textArea.value = text;
+    textArea.style.position = "fixed";
+    textArea.style.top = "-999999px";
+    textArea.style.left = "-999999px";
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+    
+    try {
+        document.execCommand('copy');
+        alert('Link berhasil disalin!');
+    } catch (err) {
+        alert('Gagal menyalin link');
+    }
+    
+    document.body.removeChild(textArea);
+}
+
+// Smooth scroll for anchor links
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+            target.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
             });
         }
     });
+});
 
-    // Reading Progress Function
-    function updateReadingProgress() {
-        const article = document.querySelector('article');
-        if (!article) return;
+// Add fade-in animation to prose elements on scroll
+const observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -100px 0px'
+};
 
-        const articleTop = article.offsetTop;
-        const articleHeight = article.offsetHeight;
-        const scrollTop = window.pageYOffset;
-        const windowHeight = window.innerHeight;
-        
-        const scrolled = scrollTop - articleTop;
-        const totalHeight = articleHeight - windowHeight;
-        
-        if (scrolled > 0 && totalHeight > 0) {
-            const progress = Math.min((scrolled / totalHeight) * 100, 100);
-            document.querySelector('.reading-progress').style.width = progress + '%';
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.style.opacity = '1';
+            entry.target.style.transform = 'translateY(0)';
         }
-    }
+    });
+}, observerOptions);
 
-    // Enhanced Share Functions
-    function shareToFacebook() {
-        const url = encodeURIComponent(window.location.href);
-        const title = encodeURIComponent(document.title);
-        window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, '_blank', 'width=600,height=400');
-        hideShareOptions();
-        showToast('Sharing to Facebook...', 'success');
-    }
-
-    function shareToTwitter() {
-        const url = encodeURIComponent(window.location.href);
-        const title = encodeURIComponent(document.title);
-        window.open(`https://twitter.com/intent/tweet?url=${url}&text=${title}`, '_blank', 'width=600,height=400');
-        hideShareOptions();
-        showToast('Sharing to Twitter...', 'success');
-    }
-
-    function shareToWhatsApp() {
-        const url = encodeURIComponent(window.location.href);
-        const title = encodeURIComponent(document.title);
-        window.open(`https://wa.me/?text=${title} ${url}`, '_blank');
-        hideShareOptions();
-        showToast('Sharing to WhatsApp...', 'success');
-    }
-
-    function copyLink() {
-        navigator.clipboard.writeText(window.location.href).then(function() {
-            showToast('Link copied to clipboard!', 'success');
-        }).catch(function() {
-            showToast('Failed to copy link', 'error');
-        });
-        hideShareOptions();
-    }
-
-    function hideShareOptions() {
-        document.getElementById('share-options').classList.add('hidden');
-    }
-
-    // Enhanced Toast Function
-    function showToast(message, type = 'success') {
-        const toast = document.getElementById('toast');
-        toast.textContent = message;
-        toast.className = `toast ${type}`;
-        toast.classList.add('show');
-        
-        setTimeout(() => {
-            toast.classList.remove('show');
-        }, 3000);
-    }
-
-    // Enhanced Like Counter Formatter
-    function formatLikeCount(count) {
-        if (count >= 1000000) {
-            return (count / 1000000).toFixed(1).replace(/\.0$/, '') + 'M';
-        }
-        if (count >= 1000) {
-            return (count / 1000).toFixed(1).replace(/\.0$/, '') + 'K';
-        }
-        return count.toString();
-    }
-
-    // Animate Like Counter with Direction
-    function animateLikeCounter(newCount, isIncrement = true) {
-        const counterElement = document.getElementById('like-count');
-        if (!counterElement) return;
-
-        // Remove previous animation classes
-        counterElement.classList.remove('increment', 'decrement');
-        
-        // Force reflow to restart animation
-        void counterElement.offsetWidth;
-        
-        // Add appropriate animation class
-        counterElement.classList.add(isIncrement ? 'increment' : 'decrement');
-        
-        // Update the count with formatted number
-        counterElement.textContent = formatLikeCount(newCount);
-        counterElement.dataset.count = newCount;
-        
-        // Remove animation class after completion
-        setTimeout(() => {
-            counterElement.classList.remove('increment', 'decrement');
-        }, 500);
-    }
-
-    // Override updateLikeButton function for better animation
-    if (typeof window.blogEngagement !== 'undefined') {
-        const originalUpdateLikeButton = window.blogEngagement.updateLikeButton;
-        window.blogEngagement.updateLikeButton = function(isLiked, count) {
-            const likeBtn = document.getElementById('like-btn');
-            const currentCount = parseInt(document.getElementById('like-count')?.dataset.count || '0');
-            const isIncrement = count > currentCount;
-            
-            if (likeBtn) {
-                if (isLiked) {
-                    likeBtn.classList.add('liked');
-                } else {
-                    likeBtn.classList.remove('liked');
-                }
-            }
-            
-            // Animate counter
-            animateLikeCounter(count, isIncrement);
-        };
-    }
-
-    // Global function for BlogEngagement to use
-    window.showToast = showToast;
-    window.animateLikeCounter = animateLikeCounter;
-    window.formatLikeCount = formatLikeCount;
+// Observe prose elements
+document.querySelectorAll('.prose > *').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(20px)';
+    el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+    observer.observe(el);
+});
 </script>
-@endpush
+@endsection

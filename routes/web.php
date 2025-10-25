@@ -62,10 +62,30 @@ Route::middleware(['auth'])->group(function () {
 
 
 Route::get('/blog', function () {
-    $blogs = \App\Models\Blog::with('category')
-                            ->where('status', 'published')
-                            ->orderBy('created_at', 'desc')
-                            ->paginate(10);
+    $query = \App\Models\Blog::with('category', 'author')
+                            ->withCount([
+                                'comments' => function($query) {
+                                    $query->where('is_approved', true);
+                                },
+                                'likes',
+                                'views'
+                            ])
+                            ->where('status', 'published');
+    
+    // Handle search query
+    if (request()->has('search') && request('search') != '') {
+        $searchTerm = request('search');
+        $query->where(function($q) use ($searchTerm) {
+            $q->where('title', 'like', '%' . $searchTerm . '%')
+              ->orWhere('content', 'like', '%' . $searchTerm . '%')
+              ->orWhere('excerpt', 'like', '%' . $searchTerm . '%')
+              ->orWhereHas('category', function($categoryQuery) use ($searchTerm) {
+                  $categoryQuery->where('name', 'like', '%' . $searchTerm . '%');
+              });
+        });
+    }
+    
+    $blogs = $query->orderBy('created_at', 'desc')->paginate(10);
     
     $categories = \App\Models\BlogCategory::withCount(['blogs' => function($query) {
         $query->where('status', 'published');
@@ -83,17 +103,49 @@ Route::get('/debug-views', function () {
 })->name('debug.views');
 
 Route::get('/blog/{slug}', function ($slug) {
-    // Get blog from database
+    // Get blog from database with comments
     $blog = \App\Models\Blog::where('slug', $slug)
-                           ->with('category')
+                           ->withCount([
+                               'comments' => function($query) {
+                                   $query->where('is_approved', true);
+                               },
+                               'likes',
+                               'views'
+                           ])
+                           ->with(['category', 'author', 'comments' => function($query) {
+                               $query->where('is_approved', true)
+                                     ->orderBy('created_at', 'desc');
+                           }])
                            ->first();
     
     if (!$blog) {
         abort(404);
     }
     
+    // Increment views count
+    $blog->incrementViews(
+        request()->ip(),
+        request()->userAgent(),
+        request()->headers->get('referer')
+    );
+    
+    // Refresh to get updated views_count
+    $blog->refresh();
+    
     return view('blog.detail', compact('blog'));
 })->name('blog.detail');
+
+// Blog Comment Route (requires authentication)
+Route::middleware(['auth'])->group(function () {
+    Route::post('/blog/{slug}/comment', [BlogEngagementController::class, 'storeCommentWeb'])->name('blog.comment.store');
+    
+    // Comment Actions API Routes
+    Route::prefix('api/comments')->group(function () {
+        Route::post('/{id}/like', [BlogEngagementController::class, 'likeComment'])->name('api.comment.like');
+        Route::delete('/{id}', [BlogEngagementController::class, 'deleteComment'])->name('api.comment.delete');
+        Route::post('/{id}/report', [BlogEngagementController::class, 'reportComment'])->name('api.comment.report');
+    });
+});
 
 // Blog Engagement AJAX Routes
 Route::prefix('api/blog')->group(function () {

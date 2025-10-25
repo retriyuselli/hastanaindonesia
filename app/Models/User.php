@@ -67,4 +67,39 @@ class User extends Authenticatable
     {
         return $this->hasMany(WeddingOrganizer::class, 'verified_by');
     }
+
+    /**
+     * Check if user has a specific role
+     */
+    public function hasRole($role)
+    {
+        if (is_array($role)) {
+            return in_array($this->role, $role);
+        }
+        return $this->role === $role;
+    }
+
+    /**
+     * Check if user is admin
+     */
+    public function isAdmin()
+    {
+        return in_array($this->role, ['admin', 'super_admin']);
+    }
+
+    /**
+     * Get avatar URL with storage path
+     */
+    public function getAvatarUrlAttribute()
+    {
+        if ($this->avatar) {
+            // If avatar already has full URL (http/https)
+            if (filter_var($this->avatar, FILTER_VALIDATE_URL)) {
+                return $this->avatar;
+            }
+            // If avatar is a storage path
+            return asset('storage/' . $this->avatar);
+        }
+        return null;
+    }
 }

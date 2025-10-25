@@ -65,6 +65,11 @@ class Blog extends Model
             if ($blog->is_published && !$blog->published_at) {
                 $blog->published_at = now();
             }
+            
+            // Auto-calculate read time if not set
+            if (empty($blog->read_time) && !empty($blog->content)) {
+                $blog->read_time = $blog->calculateReadTime();
+            }
         });
 
         static::updating(function ($blog) {
@@ -74,6 +79,11 @@ class Blog extends Model
             
             if ($blog->isDirty('is_published') && $blog->is_published && !$blog->published_at) {
                 $blog->published_at = now();
+            }
+            
+            // Auto-recalculate read time if content changed
+            if ($blog->isDirty('content') && !empty($blog->content)) {
+                $blog->read_time = $blog->calculateReadTime();
             }
         });
     }
@@ -211,6 +221,36 @@ class Blog extends Model
     public function getReadingTimeAttribute()
     {
         return $this->read_time . ' min read';
+    }
+
+    /**
+     * Calculate reading time based on content
+     * Average reading speed: 200-250 words per minute
+     * We use 225 as middle ground
+     */
+    public function calculateReadTime()
+    {
+        if (empty($this->content)) {
+            return 1; // Minimum 1 minute
+        }
+        
+        // Strip HTML tags and count words
+        $text = strip_tags($this->content);
+        $wordCount = str_word_count($text);
+        
+        // Calculate minutes (225 words per minute)
+        $minutes = ceil($wordCount / 225);
+        
+        // Minimum 1 minute, even for short articles
+        return max(1, $minutes);
+    }
+
+    /**
+     * Get word count of content
+     */
+    public function getWordCountAttribute()
+    {
+        return str_word_count(strip_tags($this->content));
     }
 
     /**
