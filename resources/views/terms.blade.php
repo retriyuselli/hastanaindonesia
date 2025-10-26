@@ -17,7 +17,7 @@
         color: #1e40af;
         font-weight: 700;
         margin-bottom: 1rem;
-        font-size: 1.25rem;
+        font-size: 1.125rem;
     }
     
     .terms-section ol, .terms-section ul {
@@ -26,6 +26,12 @@
     
     .terms-section li {
         margin-bottom: 0.5rem;
+        line-height: 1.6;
+        font-size: 0.875rem;
+    }
+    
+    .terms-section p {
+        font-size: 0.875rem;
         line-height: 1.6;
     }
     
@@ -60,6 +66,7 @@
         text-decoration: none;
         border-bottom: 1px solid #e5e7eb;
         transition: all 0.3s ease;
+        font-size: 0.875rem;
     }
     
     .table-of-contents a:hover {
@@ -76,7 +83,7 @@
 @section('content')
 
 <!-- Hero Section -->
-<section class="bg-gradient-to-r from-blue-900 via-blue-800 to-red-800 py-20 text-white">
+<section class="bg-gradient-to-r from-blue-900 via-blue-800 to-red-800 py-20 text-white mt-20">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <div class="max-w-4xl mx-auto">
             <div class="mb-8">
@@ -85,11 +92,11 @@
                 </div>
             </div>
             
-            <h1 class="font-poppins text-4xl md:text-6xl font-bold mb-6 leading-tight">
+            <h1 class="font-poppins text-3xl md:text-4xl font-bold mb-6 leading-tight">
                 Syarat dan <span class="text-yellow-300">Ketentuan</span>
             </h1>
             
-            <p class="text-xl md:text-2xl mb-8 leading-relaxed opacity-90">
+            <p class="text-lg md:text-xl mb-8 leading-relaxed opacity-90">
                 Himpunan Perusahaan Penata Acara Seluruh Indonesia (HASTANA)
             </p>
             
@@ -106,8 +113,8 @@
         
         <!-- Table of Contents -->
         <div class="table-of-contents">
-            <h2 class="text-2xl font-bold text-gray-900 mb-4">
-                <i class="fas fa-list text-blue-600 mr-3"></i>
+            <h2 class="text-xl font-bold text-gray-900 mb-4">
+                <i class="fas fa-list-ul text-blue-600 mr-2"></i>
                 Daftar Isi
             </h2>
             <a href="#ketentuan-umum">1. Ketentuan Umum</a>

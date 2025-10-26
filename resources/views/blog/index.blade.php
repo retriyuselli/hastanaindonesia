@@ -320,7 +320,7 @@
 @endif
 
 <!-- Newsletter Section -->
-<section class="bg-gradient-to-r from-blue-800 to-red-800 py-16 text-white">
+{{-- <section class="bg-gradient-to-r from-blue-800 to-red-800 py-16 text-white">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <h2 class="text-2xl font-bold mb-3">Subscribe Newsletter</h2>
         <p class="text-base mb-6 text-white/90">
@@ -336,7 +336,7 @@
             </button>
         </form>
     </div>
-</section>
+</section> --}}
 
 @endsection
 

@@ -205,9 +205,7 @@ Route::get('/contact', function () {
     return view('front.contact');
 })->name('contact');
 
-Route::get('/about', function () {
-    return view('front.about');
-})->name('about');
+Route::get('/about', [App\Http\Controllers\Front\AboutController::class, 'index'])->name('about');
 
 Route::get('/header-demo', function () {
     return view('layouts.header');

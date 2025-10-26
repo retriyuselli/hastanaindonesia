@@ -5,6 +5,17 @@
 
 @push('styles')
 <style>
+    /* Global font size reduction */
+    .portfolio-detail p {
+        font-size: 0.875rem;
+        line-height: 1.6;
+    }
+    
+    .portfolio-detail ul li,
+    .portfolio-detail ol li {
+        font-size: 0.875rem;
+    }
+    
     .gallery-item {
         transition: all 0.3s ease;
         cursor: pointer;
@@ -159,6 +170,8 @@
 
 @section('content')
 
+<div class="portfolio-detail">
+
 <!-- Hero Section with Portfolio Images -->
 <section class="relative h-screen overflow-hidden">
     <div class="absolute inset-0">
@@ -194,30 +207,30 @@
                     </span>
                 </div>
                 
-                <h1 class="font-poppins text-4xl md:text-6xl font-bold mb-6 leading-tight">
+                <h1 class="font-poppins text-2xl md:text-3xl font-bold mb-6 leading-tight">
                     Elegant <span class="text-yellow-300">Javanese Wedding</span>
                 </h1>
                 
-                <p class="text-xl md:text-2xl mb-8 leading-relaxed opacity-90">
+                <p class="text-base md:text-lg mb-8 leading-relaxed opacity-90">
                     Pernikahan adat Jawa yang memukau dengan detail tradisional yang sempurna
                 </p>
                 
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
                     <div class="bg-white/10 backdrop-blur-sm rounded-lg p-4 text-center">
-                        <div class="text-2xl font-bold">500+</div>
-                        <div class="text-sm opacity-80">Guests</div>
+                        <div class="text-lg font-bold">500+</div>
+                        <div class="text-xs opacity-80">Guests</div>
                     </div>
                     <div class="bg-white/10 backdrop-blur-sm rounded-lg p-4 text-center">
-                        <div class="text-2xl font-bold">2 Days</div>
-                        <div class="text-sm opacity-80">Event</div>
+                        <div class="text-lg font-bold">2 Days</div>
+                        <div class="text-xs opacity-80">Event</div>
                     </div>
                     <div class="bg-white/10 backdrop-blur-sm rounded-lg p-4 text-center">
-                        <div class="text-2xl font-bold">15</div>
-                        <div class="text-sm opacity-80">Vendors</div>
+                        <div class="text-lg font-bold">15</div>
+                        <div class="text-xs opacity-80">Vendors</div>
                     </div>
                     <div class="bg-white/10 backdrop-blur-sm rounded-lg p-4 text-center">
-                        <div class="text-2xl font-bold">Jakarta</div>
-                        <div class="text-sm opacity-80">Location</div>
+                        <div class="text-lg font-bold">Jakarta</div>
+                        <div class="text-xs opacity-80">Location</div>
                     </div>
                 </div>
                 
@@ -243,8 +256,9 @@
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-12 items-center">
             <div class="lg:col-span-2">
                 <div class="mb-8">
-                    <h2 class="text-3xl font-bold text-gray-900 mb-4">
-                        Tentang <span class="bg-gradient-to-r from-blue-600 to-red-600 bg-clip-text text-transparent">Wedding Organizer</span>
+                                        <h2 class="text-xl font-bold text-gray-900 mb-4">
+                        <i class="fas fa-info-circle text-blue-600 mr-2"></i>
+                        Tentang Event
                     </h2>
                     <div class="w-20 h-1 bg-gradient-to-r from-blue-600 to-red-600 rounded-full"></div>
                 </div>
@@ -291,8 +305,8 @@
                         <div class="w-24 h-24 bg-gradient-to-br from-blue-600 to-red-600 rounded-full flex items-center justify-center mx-auto mb-4">
                             <i class="fas fa-award text-white text-2xl"></i>
                         </div>
-                        <h3 class="text-xl font-bold text-gray-900">Prima Wedding</h3>
-                        <p class="text-gray-600">Traditional Wedding Specialist</p>
+                        <h3 class="text-lg font-bold text-gray-900">Prima Wedding</h3>
+                        <p class="text-gray-600 text-sm">Traditional Wedding Specialist</p>
                     </div>
                     
                     <div class="space-y-4">
@@ -339,10 +353,10 @@
 <section id="gallery" class="py-20 bg-gray-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16">
-            <h2 class="text-3xl font-bold text-gray-900 mb-4">
+            <h2 class="text-xl font-bold text-gray-900 mb-4">
                 Galeri <span class="bg-gradient-to-r from-blue-600 to-red-600 bg-clip-text text-transparent">Foto</span>
             </h2>
-            <p class="text-lg text-gray-600">Momen-momen indah dalam pernikahan adat Jawa</p>
+            <p class="text-sm text-gray-600">Momen-momen indah dalam pernikahan adat Jawa</p>
         </div>
         
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
@@ -379,10 +393,10 @@
 <section id="vendors" class="py-20 bg-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16">
-            <h2 class="text-3xl font-bold text-gray-900 mb-4">
+            <h2 class="text-xl font-bold text-gray-900 mb-4">
                 Tim <span class="bg-gradient-to-r from-blue-600 to-red-600 bg-clip-text text-transparent">Vendor</span>
             </h2>
-            <p class="text-lg text-gray-600">Kolaborasi dengan vendor terbaik untuk hasil sempurna</p>
+            <p class="text-sm text-gray-600">Kolaborasi dengan vendor terbaik untuk hasil sempurna</p>
         </div>
         
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -723,6 +737,8 @@
         <i class="fas fa-arrow-up"></i>
     </div>
 </div>
+
+</div><!-- End portfolio-detail wrapper -->
 
 @endsection
 

@@ -25,7 +25,7 @@
         width: 100%;
         padding: 0.875rem 1rem;
         padding-left: 3rem;
-        border: 2px solid #e5e7eb;
+        border: 1px solid #e5e7eb;
         border-radius: 0.75rem;
         font-size: 1rem;
         transition: all 0.3s ease;
@@ -34,7 +34,7 @@
     .login-input:focus {
         outline: none;
         border-color: #1e40af;
-        box-shadow: 0 0 0 4px rgba(30, 64, 175, 0.1);
+        box-shadow: none;
     }
 
     .input-icon {

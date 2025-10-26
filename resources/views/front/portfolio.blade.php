@@ -49,15 +49,15 @@
                 </div>
             </div>
             
-            <h1 class="font-poppins text-4xl md:text-6xl font-bold mb-6 leading-tight">
+            <h1 class="font-poppins text-3xl md:text-4xl font-bold mb-6 leading-tight">
                 Portfolio <span class="text-yellow-300">Wedding Organizer</span>
             </h1>
             
-            <p class="text-xl md:text-2xl mb-8 leading-relaxed opacity-90">
+            <p class="text-lg md:text-xl mb-8 leading-relaxed opacity-90">
                 Karya Terbaik Anggota HASTANA Indonesia
             </p>
             
-            <div class="text-sm opacity-75">
+            <div class="text-xs opacity-75">
                 Lebih dari 1000+ acara pernikahan telah dipercayakan kepada anggota kami
             </div>
         </div>
@@ -68,8 +68,8 @@
 <section class="py-12 bg-gray-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-8">
-            <h2 class="text-3xl font-bold text-gray-900 mb-4">Filter Kategori</h2>
-            <p class="text-gray-600">Pilih kategori untuk melihat portfolio spesifik</p>
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">Filter Kategori</h2>
+            <p class="text-gray-600 text-sm">Pilih kategori untuk melihat portfolio spesifik</p>
         </div>
         
         <div class="flex flex-wrap justify-center gap-4">
@@ -106,7 +106,7 @@
                     <img src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=500&h=400&fit=crop" alt="Traditional Wedding" class="w-full h-64 object-cover">
                     <div class="portfolio-overlay absolute inset-0 flex items-center justify-center">
                         <div class="text-center text-white">
-                            <h3 class="text-xl font-bold mb-2">Traditional Javanese Wedding</h3>
+                            <h3 class="text-lg font-bold mb-2">Traditional Javanese Wedding</h3>
                             <p class="text-sm mb-4">Pernikahan adat Jawa dengan detail sempurna</p>
                             <a href="{{ route('portfolio.detail', 1) }}" class="bg-white text-gray-900 px-4 py-2 rounded-full font-semibold hover:bg-gray-100 transition-colors">
                                 Lihat Detail
@@ -119,7 +119,7 @@
                         <span class="text-sm bg-red-100 text-red-800 px-3 py-1 rounded-full">Traditional</span>
                         <span class="text-sm text-gray-500">Jakarta</span>
                     </div>
-                    <h3 class="font-bold text-lg mb-2">Elegant Javanese Wedding</h3>
+                    <h3 class="font-bold text-base mb-2">Elegant Javanese Wedding</h3>
                     <p class="text-gray-600 text-sm mb-4">Wedding organizer: <strong>Prima Wedding</strong></p>
                     <div class="flex justify-between items-center">
                         <div class="flex text-yellow-400">
@@ -140,7 +140,7 @@
                     <img src="https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=500&h=400&fit=crop" alt="Modern Outdoor Wedding" class="w-full h-64 object-cover">
                     <div class="portfolio-overlay absolute inset-0 flex items-center justify-center">
                         <div class="text-center text-white">
-                            <h3 class="text-xl font-bold mb-2">Modern Garden Wedding</h3>
+                            <h3 class="text-lg font-bold mb-2">Modern Garden Wedding</h3>
                             <p class="text-sm mb-4">Pernikahan outdoor dengan konsep modern minimalis</p>
                             <a href="{{ route('portfolio.detail', 2) }}" class="bg-white text-gray-900 px-4 py-2 rounded-full font-semibold hover:bg-gray-100 transition-colors">
                                 Lihat Detail
@@ -153,7 +153,7 @@
                         <span class="text-sm bg-blue-100 text-blue-800 px-3 py-1 rounded-full">Modern</span>
                         <span class="text-sm text-gray-500">Bandung</span>
                     </div>
-                    <h3 class="font-bold text-lg mb-2">Garden Paradise Wedding</h3>
+                    <h3 class="font-bold text-base mb-2">Garden Paradise Wedding</h3>
                     <p class="text-gray-600 text-sm mb-4">Wedding organizer: <strong>Blossom Events</strong></p>
                     <div class="flex justify-between items-center">
                         <div class="flex text-yellow-400">
@@ -174,7 +174,7 @@
                     <img src="https://images.unsplash.com/photo-1606800052052-a08af7148866?w=500&h=400&fit=crop" alt="Intimate Wedding" class="w-full h-64 object-cover">
                     <div class="portfolio-overlay absolute inset-0 flex items-center justify-center">
                         <div class="text-center text-white">
-                            <h3 class="text-xl font-bold mb-2">Intimate Ceremony</h3>
+                            <h3 class="text-lg font-bold mb-2">Intimate Ceremony</h3>
                             <p class="text-sm mb-4">Pernikahan intimate dengan keluarga terdekat</p>
                             <a href="{{ route('portfolio.detail', 3) }}" class="bg-white text-gray-900 px-4 py-2 rounded-full font-semibold hover:bg-gray-100 transition-colors">
                                 Lihat Detail
@@ -187,7 +187,7 @@
                         <span class="text-sm bg-green-100 text-green-800 px-3 py-1 rounded-full">Intimate</span>
                         <span class="text-sm text-gray-500">Yogyakarta</span>
                     </div>
-                    <h3 class="font-bold text-lg mb-2">Cozy Family Wedding</h3>
+                    <h3 class="font-bold text-base mb-2">Cozy Family Wedding</h3>
                     <p class="text-gray-600 text-sm mb-4">Wedding organizer: <strong>Intimate Moments</strong></p>
                     <div class="flex justify-between items-center">
                         <div class="flex text-yellow-400">
@@ -208,7 +208,7 @@
                     <img src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=500&h=400&fit=crop" alt="Luxury Wedding" class="w-full h-64 object-cover">
                     <div class="portfolio-overlay absolute inset-0 flex items-center justify-center">
                         <div class="text-center text-white">
-                            <h3 class="text-xl font-bold mb-2">Luxury Hotel Wedding</h3>
+                            <h3 class="text-lg font-bold mb-2">Luxury Hotel Wedding</h3>
                             <p class="text-sm mb-4">Pernikahan mewah di hotel bintang 5</p>
                             <a href="{{ route('portfolio.detail', 4) }}" class="bg-white text-gray-900 px-4 py-2 rounded-full font-semibold hover:bg-gray-100 transition-colors">
                                 Lihat Detail
@@ -221,7 +221,7 @@
                         <span class="text-sm bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full">Luxury</span>
                         <span class="text-sm text-gray-500">Surabaya</span>
                     </div>
-                    <h3 class="font-bold text-lg mb-2">Grand Ballroom Wedding</h3>
+                    <h3 class="font-bold text-base mb-2">Grand Ballroom Wedding</h3>
                     <p class="text-gray-600 text-sm mb-4">Wedding organizer: <strong>Luxury Events</strong></p>
                     <div class="flex justify-between items-center">
                         <div class="flex text-yellow-400">
@@ -242,7 +242,7 @@
                     <img src="https://images.unsplash.com/photo-1545291730-faff8ca1d4b0?w=500&h=400&fit=crop" alt="Beach Wedding" class="w-full h-64 object-cover">
                     <div class="portfolio-overlay absolute inset-0 flex items-center justify-center">
                         <div class="text-center text-white">
-                            <h3 class="text-xl font-bold mb-2">Beach Wedding Ceremony</h3>
+                            <h3 class="text-lg font-bold mb-2">Beach Wedding Ceremony</h3>
                             <p class="text-sm mb-4">Pernikahan romantis di tepi pantai</p>
                             <a href="{{ route('portfolio.detail', 5) }}" class="bg-white text-gray-900 px-4 py-2 rounded-full font-semibold hover:bg-gray-100 transition-colors">
                                 Lihat Detail
@@ -255,7 +255,7 @@
                         <span class="text-sm bg-cyan-100 text-cyan-800 px-3 py-1 rounded-full">Outdoor</span>
                         <span class="text-sm text-gray-500">Bali</span>
                     </div>
-                    <h3 class="font-bold text-lg mb-2">Sunset Beach Wedding</h3>
+                    <h3 class="font-bold text-base mb-2">Sunset Beach Wedding</h3>
                     <p class="text-gray-600 text-sm mb-4">Wedding organizer: <strong>Tropical Dreams</strong></p>
                     <div class="flex justify-between items-center">
                         <div class="flex text-yellow-400">
@@ -276,7 +276,7 @@
                     <img src="https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=500&h=400&fit=crop" alt="Modern Luxury Wedding" class="w-full h-64 object-cover">
                     <div class="portfolio-overlay absolute inset-0 flex items-center justify-center">
                         <div class="text-center text-white">
-                            <h3 class="text-xl font-bold mb-2">Contemporary Elegance</h3>
+                            <h3 class="text-lg font-bold mb-2">Contemporary Elegance</h3>
                             <p class="text-sm mb-4">Pernikahan modern dengan sentuhan mewah</p>
                             <a href="{{ route('portfolio.detail', 6) }}" class="bg-white text-gray-900 px-4 py-2 rounded-full font-semibold hover:bg-gray-100 transition-colors">
                                 Lihat Detail
@@ -289,7 +289,7 @@
                         <span class="text-sm bg-purple-100 text-purple-800 px-3 py-1 rounded-full">Modern</span>
                         <span class="text-sm text-gray-500">Jakarta</span>
                     </div>
-                    <h3 class="font-bold text-lg mb-2">Metropolitan Wedding</h3>
+                    <h3 class="font-bold text-base mb-2">Metropolitan Wedding</h3>
                     <p class="text-gray-600 text-sm mb-4">Wedding organizer: <strong>Urban Celebrations</strong></p>
                     <div class="flex justify-between items-center">
                         <div class="flex text-yellow-400">

@@ -7,7 +7,8 @@
     'author' => null,
     'category' => null,
     'featured' => false,
-    'hover' => true
+    'hover' => true,
+    'showReadMore' => true
 ])
 
 <article class="bg-white rounded-2xl shadow-lg overflow-hidden transition-all duration-300 {{ $hover ? 'hover:shadow-2xl hover:-translate-y-2' : '' }} {{ $featured ? 'ring-2 ring-hastana-blue' : '' }}">
@@ -85,6 +86,7 @@
         {{ $slot }}
         
         <!-- Read More Link -->
+        @if($showReadMore)
         <div class="flex items-center justify-between pt-4 border-t border-gray-100">
             <a href="{{ $url }}" class="text-hastana-blue font-medium text-sm hover:text-hastana-red transition-colors">
                 Selengkapnya
@@ -101,6 +103,7 @@
                 </button>
             </div>
         </div>
+        @endif
     </div>
 </article>
 

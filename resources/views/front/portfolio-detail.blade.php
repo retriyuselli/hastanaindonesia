@@ -41,19 +41,19 @@
         <div class="max-w-4xl mx-auto text-center">
             <div class="mb-8">
                 <div class="w-24 h-24 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-6 backdrop-blur-sm">
-                    <i class="fas fa-camera text-white text-3xl"></i>
+                    <i class="fas fa-camera text-white text-2xl"></i>
                 </div>
             </div>
             
-            <h1 class="font-poppins text-4xl md:text-6xl font-bold mb-6 leading-tight">
+            <h1 class="font-poppins text-3xl md:text-4xl font-bold mb-6 leading-tight">
                 Traditional <span class="text-yellow-300">Javanese Wedding</span>
             </h1>
             
-            <p class="text-xl md:text-2xl mb-8 leading-relaxed opacity-90">
+            <p class="text-lg md:text-xl mb-8 leading-relaxed opacity-90">
                 Pernikahan Adat Jawa dengan Detail Sempurna
             </p>
             
-            <div class="flex flex-wrap justify-center gap-4 text-sm opacity-75">
+            <div class="flex flex-wrap justify-center gap-4 text-xs opacity-75">
                 <span><i class="fas fa-map-marker-alt mr-2"></i>Jakarta</span>
                 <span><i class="fas fa-users mr-2"></i>500+ Guests</span>
                 <span><i class="fas fa-calendar mr-2"></i>Agustus 2024</span>
@@ -72,7 +72,7 @@
             <div class="lg:col-span-2">
                 <!-- Image Gallery -->
                 <div class="mb-12">
-                    <h2 class="text-3xl font-bold text-gray-900 mb-8">Gallery Foto</h2>
+                    <h2 class="text-2xl font-bold text-gray-900 mb-8">Gallery Foto</h2>
                     <div class="image-gallery">
                         <div class="gallery-item">
                             <img src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=600&h=400&fit=crop" 
@@ -109,7 +109,7 @@
                 
                 <!-- Description -->
                 <div class="mb-12">
-                    <h2 class="text-3xl font-bold text-gray-900 mb-8">Deskripsi Acara</h2>
+                    <h2 class="text-2xl font-bold text-gray-900 mb-8">Deskripsi Acara</h2>
                     <div class="prose prose-lg text-gray-600 max-w-none">
                         <p class="mb-6">
                             Pernikahan tradisional Jawa yang diselenggarakan dengan penuh kehangatan dan kemegahan. Acara ini menggabungkan nilai-nilai budaya Jawa yang luhur dengan sentuhan modern yang elegan, menciptakan momen yang tak terlupakan bagi kedua mempelai dan seluruh keluarga.
@@ -127,7 +127,7 @@
                 
                 <!-- Services Included -->
                 <div class="mb-12">
-                    <h2 class="text-3xl font-bold text-gray-900 mb-8">Layanan yang Disediakan</h2>
+                    <h2 class="text-2xl font-bold text-gray-900 mb-8">Layanan yang Disediakan</h2>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div class="flex items-start space-x-4">
                             <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
@@ -198,10 +198,10 @@
                 <div class="bg-gray-50 rounded-2xl p-8 mb-8 sticky top-8">
                     <div class="text-center mb-6">
                         <div class="w-20 h-20 bg-gradient-to-br from-blue-500 to-red-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                            <i class="fas fa-crown text-white text-2xl"></i>
+                            <i class="fas fa-crown text-white text-xl"></i>
                         </div>
-                        <h3 class="text-xl font-bold text-gray-900 mb-2">Prima Wedding</h3>
-                        <p class="text-gray-600">Premium Wedding Organizer</p>
+                        <h3 class="text-lg font-bold text-gray-900 mb-2">Prima Wedding</h3>
+                        <p class="text-gray-600 text-sm">Premium Wedding Organizer</p>
                         <div class="flex justify-center text-yellow-400 mt-2">
                             <i class="fas fa-star"></i>
                             <i class="fas fa-star"></i>
@@ -245,8 +245,8 @@
                 
                 <!-- Project Info -->
                 <div class="bg-white border border-gray-200 rounded-2xl p-6">
-                    <h4 class="font-bold text-gray-900 mb-4">Informasi Project</h4>
-                    <div class="space-y-3 text-sm">
+                    <h4 class="font-bold text-gray-900 mb-4 text-base">Informasi Project</h4>
+                    <div class="space-y-3 text-xs">
                         <div class="flex justify-between">
                             <span class="text-gray-600">Kategori:</span>
                             <span class="font-medium">Traditional & Luxury</span>
@@ -278,10 +278,10 @@
 <section class="py-20 bg-gray-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16">
-            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            <h2 class="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
                 Portfolio <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-red-600">Serupa</span>
             </h2>
-            <p class="text-lg text-gray-600">Portfolio wedding organizer lainnya yang mungkin Anda sukai</p>
+            <p class="text-base text-gray-600">Portfolio wedding organizer lainnya yang mungkin Anda sukai</p>
         </div>
         
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -294,8 +294,8 @@
                 </div>
                 <div class="p-6">
                     <span class="text-sm bg-blue-100 text-blue-800 px-3 py-1 rounded-full">Modern</span>
-                    <h3 class="font-bold text-lg mt-3 mb-2">Garden Paradise Wedding</h3>
-                    <p class="text-gray-600 text-sm mb-4">Blossom Events • Bandung</p>
+                    <h3 class="font-bold text-base mt-3 mb-2">Garden Paradise Wedding</h3>
+                    <p class="text-gray-600 text-xs mb-4">Blossom Events • Bandung</p>
                     <a href="{{ route('portfolio.detail', 2) }}" class="text-blue-600 font-semibold text-sm hover:text-blue-700 transition-colors">
                         Lihat Detail →
                     </a>
@@ -311,8 +311,8 @@
                 </div>
                 <div class="p-6">
                     <span class="text-sm bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full">Luxury</span>
-                    <h3 class="font-bold text-lg mt-3 mb-2">Grand Ballroom Wedding</h3>
-                    <p class="text-gray-600 text-sm mb-4">Luxury Events • Surabaya</p>
+                    <h3 class="font-bold text-base mt-3 mb-2">Grand Ballroom Wedding</h3>
+                    <p class="text-gray-600 text-xs mb-4">Luxury Events • Surabaya</p>
                     <a href="{{ route('portfolio.detail', 4) }}" class="text-blue-600 font-semibold text-sm hover:text-blue-700 transition-colors">
                         Lihat Detail →
                     </a>
@@ -328,8 +328,8 @@
                 </div>
                 <div class="p-6">
                     <span class="text-sm bg-cyan-100 text-cyan-800 px-3 py-1 rounded-full">Outdoor</span>
-                    <h3 class="font-bold text-lg mt-3 mb-2">Sunset Beach Wedding</h3>
-                    <p class="text-gray-600 text-sm mb-4">Tropical Dreams • Bali</p>
+                    <h3 class="font-bold text-base mt-3 mb-2">Sunset Beach Wedding</h3>
+                    <p class="text-gray-600 text-xs mb-4">Tropical Dreams • Bali</p>
                     <a href="{{ route('portfolio.detail', 5) }}" class="text-blue-600 font-semibold text-sm hover:text-blue-700 transition-colors">
                         Lihat Detail →
                     </a>
