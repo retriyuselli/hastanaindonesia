@@ -113,10 +113,314 @@
                     <h2 class="text-xl font-bold text-gray-900 mb-3 flex items-center">
                         <i class="fas fa-info-circle text-blue-600 mr-2"></i> Deskripsi Event
                     </h2>
-                    <div class="prose max-w-none text-gray-700 text-sm">
+                    <div class="event-description prose max-w-none text-gray-700">
                         {!! $event->description !!}
                     </div>
                 </div>
+
+                <style>
+                .event-description {
+                    font-family: 'Poppins', 'Inter', system-ui, -apple-system, sans-serif;
+                    line-height: 1.8;
+                    color: #374151;
+                }
+
+                /* Paragraphs */
+                .event-description p {
+                    font-size: 14px;
+                    margin-bottom: 1rem;
+                    text-align: justify;
+                    color: #4b5563;
+                }
+
+                /* Drop Cap - First Letter */
+                /* .event-description p:first-of-type::first-letter {
+                    font-size: 3.5em;
+                    font-weight: 700;
+                    line-height: 0.9;
+                    float: left;
+                    margin: 0.1em 0.15em 0 0;
+                    color: #3b82f6;
+                    font-family: Georgia, serif;
+                } */
+
+                /* Headings */
+                .event-description h1 {
+                    font-size: 26px;
+                    font-weight: 700;
+                    margin: 1.5rem 0 1rem 0;
+                    color: #1f2937;
+                    padding-left: 1rem;
+                    border-left: 5px solid transparent;
+                    background: linear-gradient(90deg, #3b82f6 0%, #8b5cf6 100%);
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                    background-clip: text;
+                    position: relative;
+                }
+
+                .event-description h1::before {
+                    content: '';
+                    position: absolute;
+                    left: 0;
+                    top: 0;
+                    bottom: 0;
+                    width: 5px;
+                    background: linear-gradient(180deg, #3b82f6 0%, #8b5cf6 100%);
+                    border-radius: 2px;
+                }
+
+                .event-description h2 {
+                    font-size: 22px;
+                    font-weight: 700;
+                    margin: 1.5rem 0 1rem 0;
+                    color: #1f2937;
+                    padding-left: 1rem;
+                    border-left: 4px solid transparent;
+                    background: linear-gradient(90deg, #3b82f6 0%, #06b6d4 100%);
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                    background-clip: text;
+                    position: relative;
+                }
+
+                .event-description h2::before {
+                    content: '';
+                    position: absolute;
+                    left: 0;
+                    top: 0;
+                    bottom: 0;
+                    width: 4px;
+                    background: linear-gradient(180deg, #3b82f6 0%, #06b6d4 100%);
+                    border-radius: 2px;
+                }
+
+                .event-description h3 {
+                    font-size: 18px;
+                    font-weight: 600;
+                    margin: 1.25rem 0 0.75rem 0;
+                    color: #1f2937;
+                    padding-left: 0.75rem;
+                    border-left: 3px solid #3b82f6;
+                }
+
+                .event-description h4 {
+                    font-size: 16px;
+                    font-weight: 600;
+                    margin: 1rem 0 0.5rem 0;
+                    color: #374151;
+                    padding-left: 0.5rem;
+                    border-left: 2px solid #60a5fa;
+                }
+
+                /* Lists */
+                .event-description ul,
+                .event-description ol {
+                    margin: 1rem 0;
+                    padding-left: 1.5rem;
+                }
+
+                .event-description ul li {
+                    font-size: 14px;
+                    margin-bottom: 0.5rem;
+                    color: #4b5563;
+                    position: relative;
+                    padding-left: 1.5rem;
+                    list-style: none;
+                }
+
+                .event-description ul li::before {
+                    content: "▸";
+                    position: absolute;
+                    left: 0;
+                    color: #3b82f6;
+                    font-weight: bold;
+                    font-size: 16px;
+                }
+
+                .event-description ol {
+                    counter-reset: item;
+                }
+
+                .event-description ol li {
+                    font-size: 14px;
+                    margin-bottom: 0.5rem;
+                    color: #4b5563;
+                    position: relative;
+                    padding-left: 2rem;
+                    list-style: none;
+                    counter-increment: item;
+                }
+
+                .event-description ol li::before {
+                    content: counter(item);
+                    position: absolute;
+                    left: 0;
+                    top: 0;
+                    width: 24px;
+                    height: 24px;
+                    background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+                    color: white;
+                    border-radius: 50%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 12px;
+                    font-weight: 600;
+                }
+
+                /* Blockquote */
+                .event-description blockquote {
+                    font-size: 14px;
+                    padding: 1rem 1rem 1rem 3.5rem;
+                    margin: 1.5rem 0;
+                    background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+                    border-left: 4px solid #3b82f6;
+                    border-radius: 0.5rem;
+                    position: relative;
+                    font-style: italic;
+                    color: #1e40af;
+                }
+
+                .event-description blockquote::before {
+                    content: '"';
+                    position: absolute;
+                    left: 1rem;
+                    top: 0.5rem;
+                    font-size: 48px;
+                    color: #3b82f6;
+                    opacity: 0.3;
+                    font-family: Georgia, serif;
+                    line-height: 1;
+                }
+
+                /* Strong Text */
+                .event-description strong {
+                    font-weight: 600;
+                    color: #1f2937;
+                    background: linear-gradient(180deg, transparent 60%, #fef3c7 60%);
+                    padding: 0 0.2em;
+                }
+
+                /* Emphasis */
+                .event-description em {
+                    font-style: italic;
+                    color: #6366f1;
+                }
+
+                /* Links */
+                .event-description a {
+                    color: #3b82f6;
+                    text-decoration: none;
+                    font-weight: 500;
+                    position: relative;
+                    transition: color 0.2s;
+                }
+
+                .event-description a::after {
+                    content: '';
+                    position: absolute;
+                    left: 0;
+                    bottom: -2px;
+                    width: 0;
+                    height: 2px;
+                    background: linear-gradient(90deg, #3b82f6 0%, #8b5cf6 100%);
+                    transition: width 0.3s ease;
+                }
+
+                .event-description a:hover {
+                    color: #2563eb;
+                }
+
+                .event-description a:hover::after {
+                    width: 100%;
+                }
+
+                /* Code */
+                .event-description code {
+                    font-size: 13px;
+                    padding: 0.2em 0.5em;
+                    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+                    border: 1px solid #fbbf24;
+                    border-radius: 0.25rem;
+                    font-family: 'Courier New', monospace;
+                    color: #92400e;
+                }
+
+                .event-description pre {
+                    background: #1f2937;
+                    padding: 1rem;
+                    border-radius: 0.5rem;
+                    overflow-x: auto;
+                    margin: 1rem 0;
+                }
+
+                .event-description pre code {
+                    background: transparent;
+                    border: none;
+                    color: #e5e7eb;
+                    padding: 0;
+                }
+
+                /* Images */
+                .event-description img {
+                    max-width: 100%;
+                    height: auto;
+                    border-radius: 0.5rem;
+                    margin: 1.5rem auto;
+                    display: block;
+                    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+                    transition: transform 0.3s ease;
+                }
+
+                .event-description img:hover {
+                    transform: scale(1.02);
+                }
+
+                /* Tables */
+                .event-description table {
+                    width: 100%;
+                    border-collapse: collapse;
+                    margin: 1.5rem 0;
+                    font-size: 13px;
+                    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+                    border-radius: 0.5rem;
+                    overflow: hidden;
+                }
+
+                .event-description table thead {
+                    background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+                    color: white;
+                }
+
+                .event-description table th {
+                    padding: 0.75rem;
+                    text-align: left;
+                    font-weight: 600;
+                    font-size: 13px;
+                }
+
+                .event-description table td {
+                    padding: 0.75rem;
+                    border-bottom: 1px solid #e5e7eb;
+                }
+
+                .event-description table tbody tr:nth-child(even) {
+                    background-color: #f9fafb;
+                }
+
+                .event-description table tbody tr:hover {
+                    background-color: #eff6ff;
+                }
+
+                /* Horizontal Rule */
+                .event-description hr {
+                    border: none;
+                    height: 2px;
+                    background: linear-gradient(90deg, transparent 0%, #3b82f6 50%, transparent 100%);
+                    margin: 2rem 0;
+                }
+                </style>
 
                 <!-- Benefits -->
                 @if(count($benefits) > 0)

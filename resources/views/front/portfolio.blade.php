@@ -319,10 +319,10 @@
 <!-- CTA Section -->
 <section class="py-20 bg-gray-900 text-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <h2 class="text-3xl md:text-4xl font-bold mb-6">
+        <h2 class="text-2xl md:text-3xl font-bold mb-6">
             Ingin Menampilkan Portfolio Anda?
         </h2>
-        <p class="text-xl mb-8 opacity-90">
+        <p class="text-base md:text-lg mb-8 opacity-90">
             Bergabung dengan HASTANA Indonesia dan tampilkan karya terbaik Anda
         </p>
         <a href="{{ route('join') }}" class="inline-flex items-center px-8 py-4 bg-gradient-to-r from-yellow-400 to-yellow-600 text-gray-900 font-bold rounded-full hover:from-yellow-500 hover:to-yellow-700 transition-all duration-300 shadow-lg hover:shadow-xl">

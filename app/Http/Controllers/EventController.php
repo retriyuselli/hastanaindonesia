@@ -19,6 +19,21 @@ class EventController extends Controller
             ->where('status', 'published')
             ->where('is_active', true);
 
+        // Quick Filter (Gratis, Featured, Trending)
+        if ($request->has('filter')) {
+            switch ($request->filter) {
+                case 'free':
+                    $query->where('is_free', true);
+                    break;
+                case 'featured':
+                    $query->where('is_featured', true);
+                    break;
+                case 'trending':
+                    $query->where('is_trending', true);
+                    break;
+            }
+        }
+
         // Filter by category
         if ($request->has('category') && $request->category != '') {
             $query->where('event_category_id', $request->category);

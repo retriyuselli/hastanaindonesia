@@ -61,19 +61,19 @@
         <!-- Quick Filters -->
         <div class="flex flex-wrap gap-2 mt-3">
             <a href="{{ route('events') }}" 
-               class="px-3 py-1.5 text-sm rounded-full {{ !request()->has('price_filter') && !request()->has('date_filter') ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300' }} transition">
+               class="px-3 py-1.5 text-sm rounded-full {{ !request('filter') ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300' }} transition">
                 Semua Event
             </a>
-            <a href="{{ route('events.free') }}" 
-               class="px-3 py-1.5 text-sm rounded-full {{ request()->routeIs('events.free') ? 'bg-green-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300' }} transition">
+            <a href="{{ route('events', ['filter' => 'free']) }}" 
+               class="px-3 py-1.5 text-sm rounded-full {{ request('filter') == 'free' ? 'bg-green-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300' }} transition">
                 <i class="fas fa-gift mr-1 text-xs"></i> Gratis
             </a>
-            <a href="{{ route('events.featured') }}" 
-               class="px-3 py-1.5 text-sm rounded-full {{ request()->routeIs('events.featured') ? 'bg-yellow-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300' }} transition">
+            <a href="{{ route('events', ['filter' => 'featured']) }}" 
+               class="px-3 py-1.5 text-sm rounded-full {{ request('filter') == 'featured' ? 'bg-yellow-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300' }} transition">
                 <i class="fas fa-star mr-1 text-xs"></i> Featured
             </a>
-            <a href="{{ route('events.trending') }}" 
-               class="px-3 py-1.5 text-sm rounded-full {{ request()->routeIs('events.trending') ? 'bg-red-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300' }} transition">
+            <a href="{{ route('events', ['filter' => 'trending']) }}" 
+               class="px-3 py-1.5 text-sm rounded-full {{ request('filter') == 'trending' ? 'bg-red-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300' }} transition">
                 <i class="fas fa-fire mr-1 text-xs"></i> Trending
             </a>
         </div>
@@ -201,11 +201,22 @@
                                         @endif
                                     </div>
 
-                                    <!-- Action Button -->
-                                    <a href="{{ route('events.show', $event->slug) }}" 
-                                       class="block w-full text-center bg-blue-600 text-white py-2 text-sm rounded-lg hover:bg-blue-700 transition duration-200">
-                                        Lihat Detail <i class="fas fa-arrow-right ml-1 text-xs"></i>
-                                    </a>
+                                    <!-- Action Buttons -->
+                                    <div class="flex gap-2">
+                                        <a href="{{ route('events.show', $event->slug) }}" 
+                                           class="flex-1 text-center bg-blue-600 text-white py-2 text-sm rounded-lg hover:bg-blue-700 transition duration-200">
+                                            Lihat Detail <i class="fas fa-arrow-right ml-1 text-xs"></i>
+                                        </a>
+                                        @auth
+                                            @if(auth()->user()->isAdmin())
+                                                <a href="/admin/event-hastanas/{{ $event->id }}/edit" 
+                                                   class="px-4 bg-yellow-500 text-white py-2 text-sm rounded-lg hover:bg-yellow-600 transition duration-200"
+                                                   title="Edit Event">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+                                            @endif
+                                        @endauth
+                                    </div>
                                 </div>
                             </div>
                         @endforeach

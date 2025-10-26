@@ -74,7 +74,7 @@
                         <h3 class="text-xl font-bold text-gray-900">Misi Kami</h3>
                     </div>
                     @if($about && $about->mission)
-                        <div class="text-gray-700 leading-relaxed">
+                        <div class="text-gray-700 leading-relaxed text-center">
                             {!! $about->mission !!}
                         </div>
                     @else
@@ -125,8 +125,8 @@
                             <div class="w-16 h-16 bg-gradient-to-br from-{{ $color }}-500 to-{{ $color }}-600 rounded-full flex items-center justify-center mx-auto mb-4">
                                 <i class="fas {{ $icon }} text-white text-2xl"></i>
                             </div>
-                            <h4 class="text-lg font-bold text-gray-900 mb-3">{{ $value['title'] }}</h4>
-                            <p class="text-gray-600 text-sm leading-relaxed">
+                            <h4 class="text-lg font-bold text-gray-900 mb-3 text-center">{{ $value['title'] }}</h4>
+                            <p class="text-gray-600 text-sm leading-relaxed text-center">
                                 {{ $value['description'] }}
                             </p>
                         </x-ui.card>
@@ -226,7 +226,7 @@
                 </p>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 text-center">
                 
                 @if($about && $about->programs && count($about->programs) > 0)
                     @foreach($about->programs as $index => $program)
