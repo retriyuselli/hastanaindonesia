@@ -6,186 +6,298 @@
 <style>
     /* Blog Content Styling */
     .blog-content {
-        font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+        font-family: 'Poppins', sans-serif;
         color: #1f2937;
-        line-height: 1.8;
+        line-height: 1.9;
     }
     
     .blog-content p {
-        font-size: 0.9375rem;
-        line-height: 1.8;
-        margin-bottom: 1.25rem;
-        color: #374151;
+        font-size: 14px;
+        line-height: 1.9;
+        margin-bottom: 18px;
+        color: #4b5563;
+        text-align: justify;
+    }
+    
+    .blog-content p:first-of-type::first-letter {
+        font-size: 3.5em;
+        font-weight: 700;
+        float: left;
+        line-height: 0.85;
+        margin: 0.1em 0.1em 0 0;
+        color: #3b82f6;
     }
     
     .blog-content h1 {
-        font-size: 1.75rem;
+        font-size: 26px;
         font-weight: 700;
         color: #111827;
-        margin-top: 2rem;
-        margin-bottom: 1rem;
+        margin-top: 36px;
+        margin-bottom: 18px;
         line-height: 1.3;
-        border-bottom: 2px solid #e5e7eb;
-        padding-bottom: 0.5rem;
+        border-left: 5px solid #3b82f6;
+        padding-left: 16px;
+        padding-bottom: 0;
+        border-bottom: none;
+        background: linear-gradient(90deg, #eff6ff 0%, transparent 100%);
+        padding-top: 8px;
+        padding-bottom: 8px;
     }
     
     .blog-content h2 {
-        font-size: 1.5rem;
+        font-size: 22px;
         font-weight: 700;
-        color: #111827;
-        margin-top: 1.75rem;
-        margin-bottom: 0.875rem;
+        color: #1f2937;
+        margin-top: 32px;
+        margin-bottom: 16px;
         line-height: 1.4;
+        border-left: 4px solid #6366f1;
+        padding-left: 14px;
+        background: linear-gradient(90deg, #f5f3ff 0%, transparent 100%);
+        padding-top: 6px;
+        padding-bottom: 6px;
     }
     
     .blog-content h3 {
-        font-size: 1.25rem;
+        font-size: 18px;
         font-weight: 600;
-        color: #1f2937;
-        margin-top: 1.5rem;
-        margin-bottom: 0.75rem;
+        color: #374151;
+        margin-top: 28px;
+        margin-bottom: 14px;
         line-height: 1.4;
+        border-left: 3px solid #8b5cf6;
+        padding-left: 12px;
     }
     
     .blog-content h4,
     .blog-content h5,
     .blog-content h6 {
-        font-size: 1.0625rem;
+        font-size: 16px;
         font-weight: 600;
-        color: #374151;
-        margin-top: 1.25rem;
-        margin-bottom: 0.625rem;
+        color: #4b5563;
+        margin-top: 24px;
+        margin-bottom: 12px;
+        padding-left: 10px;
+        border-left: 2px solid #d1d5db;
     }
     
     .blog-content ul,
     .blog-content ol {
-        margin-bottom: 1.25rem;
-        padding-left: 1.75rem;
+        margin-bottom: 20px;
+        padding-left: 32px;
+        background: #f9fafb;
+        padding-top: 14px;
+        padding-bottom: 14px;
+        border-radius: 8px;
     }
     
     .blog-content ul li,
     .blog-content ol li {
-        font-size: 0.9375rem;
-        line-height: 1.7;
-        margin-bottom: 0.5rem;
-        color: #374151;
+        font-size: 14px;
+        line-height: 1.8;
+        margin-bottom: 10px;
+        color: #4b5563;
+        padding-left: 8px;
     }
     
     .blog-content ul li {
-        list-style-type: disc;
+        list-style-type: none;
+        position: relative;
+    }
+    
+    .blog-content ul li::before {
+        content: "▸";
+        color: #3b82f6;
+        font-weight: bold;
+        position: absolute;
+        left: -24px;
+        font-size: 16px;
     }
     
     .blog-content ol li {
-        list-style-type: decimal;
+        list-style-type: none;
+        counter-increment: list-counter;
+        position: relative;
     }
     
-    .blog-content ul li::marker {
-        color: #3b82f6;
+    .blog-content ol {
+        counter-reset: list-counter;
     }
     
-    .blog-content ol li::marker {
-        color: #3b82f6;
+    .blog-content ol li::before {
+        content: counter(list-counter);
+        color: white;
+        background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
         font-weight: 600;
+        position: absolute;
+        left: -32px;
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 11px;
+        text-align: center;
+        line-height: 22px;
     }
     
     .blog-content blockquote {
-        font-size: 0.9375rem;
+        font-size: 14px;
         font-style: italic;
-        border-left: 4px solid #3b82f6;
-        padding-left: 1.25rem;
-        padding-top: 0.5rem;
-        padding-bottom: 0.5rem;
-        margin: 1.5rem 0;
-        background: #eff6ff;
-        border-radius: 0 0.5rem 0.5rem 0;
+        border-left: 5px solid #3b82f6;
+        padding-left: 24px;
+        padding-right: 20px;
+        padding-top: 16px;
+        padding-bottom: 16px;
+        margin: 28px 0;
+        background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+        border-radius: 0 12px 12px 0;
         color: #1e40af;
+        position: relative;
+        box-shadow: 0 2px 8px rgba(59, 130, 246, 0.1);
+    }
+    
+    .blog-content blockquote::before {
+        content: '"';
+        font-size: 48px;
+        position: absolute;
+        top: -8px;
+        left: 12px;
+        color: #3b82f6;
+        opacity: 0.3;
+        font-family: Georgia, serif;
     }
     
     .blog-content a {
         color: #3b82f6;
-        text-decoration: underline;
-        text-underline-offset: 2px;
-        transition: color 0.2s;
+        text-decoration: none;
+        font-weight: 500;
+        border-bottom: 2px solid transparent;
+        transition: all 0.3s;
+        padding-bottom: 1px;
     }
     
     .blog-content a:hover {
         color: #2563eb;
+        border-bottom-color: #3b82f6;
     }
     
     .blog-content strong {
         font-weight: 600;
         color: #111827;
+        background: linear-gradient(180deg, transparent 60%, #fef3c7 60%);
+        padding: 0 2px;
     }
     
     .blog-content em {
         font-style: italic;
+        color: #6366f1;
     }
     
     .blog-content code {
-        background: #f3f4f6;
-        padding: 0.125rem 0.375rem;
-        border-radius: 0.25rem;
-        font-size: 0.875rem;
+        background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+        padding: 3px 8px;
+        border-radius: 5px;
+        font-size: 13px;
         font-family: 'Monaco', 'Courier New', monospace;
         color: #dc2626;
+        font-weight: 500;
+        border: 1px solid #fbbf24;
     }
     
     .blog-content pre {
-        background: #1f2937;
+        background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
         color: #f9fafb;
-        padding: 1rem;
-        border-radius: 0.5rem;
+        padding: 20px;
+        border-radius: 12px;
         overflow-x: auto;
-        margin: 1.25rem 0;
+        margin: 24px 0;
+        border: 1px solid #374151;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     }
     
     .blog-content pre code {
         background: transparent;
         color: #f9fafb;
         padding: 0;
+        border: none;
+        font-size: 13px;
     }
     
     .blog-content img {
-        border-radius: 0.5rem;
-        margin: 1.5rem auto;
+        border-radius: 12px;
+        margin: 28px auto;
         max-width: 100%;
         height: auto;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+        transition: transform 0.3s;
+        border: 4px solid #f3f4f6;
+    }
+    
+    .blog-content img:hover {
+        transform: scale(1.02);
     }
     
     .blog-content hr {
         border: none;
-        border-top: 2px solid #e5e7eb;
-        margin: 2rem 0;
+        height: 3px;
+        background: linear-gradient(90deg, transparent 0%, #3b82f6 50%, transparent 100%);
+        margin: 40px 0;
+        border-radius: 2px;
     }
     
     .blog-content table {
         width: 100%;
-        border-collapse: collapse;
-        margin: 1.25rem 0;
-        font-size: 0.875rem;
+        border-collapse: separate;
+        border-spacing: 0;
+        margin: 24px 0;
+        font-size: 13px;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     }
     
     .blog-content table th {
-        background: #f3f4f6;
-        padding: 0.75rem;
+        background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+        color: white;
+        padding: 14px;
         text-align: left;
         font-weight: 600;
-        border: 1px solid #e5e7eb;
+        border: none;
     }
     
     .blog-content table td {
-        padding: 0.75rem;
-        border: 1px solid #e5e7eb;
+        padding: 12px 14px;
+        border-bottom: 1px solid #e5e7eb;
+        background: white;
     }
     
-    .blog-content table tr:nth-child(even) {
+    .blog-content table tr:last-child td {
+        border-bottom: none;
+    }
+    
+    .blog-content table tr:nth-child(even) td {
         background: #f9fafb;
+    }
+    
+    .blog-content table tr:hover td {
+        background: #eff6ff;
+    }
+    
+    /* Reading Progress Indicator */
+    .blog-content::before {
+        content: '';
+        display: block;
+        height: 4px;
+        background: linear-gradient(90deg, #3b82f6 0%, #8b5cf6 100%);
+        border-radius: 2px;
+        margin-bottom: 24px;
     }
 </style>
 <div class="min-h-screen bg-gray-50 pt-20">
     <div class="container mx-auto px-4 py-8">
-        <div class="max-w-4xl mx-auto">
+        <div class="max-w-7xl mx-auto">
             
             <!-- Flash Messages -->
             @if(session('success'))
@@ -233,6 +345,11 @@
                 </ol>
             </nav>
 
+            <!-- Main Content Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                
+                <!-- Left Column - Article -->
+                <div class="lg:col-span-2">
             <!-- Article -->
             <article class="bg-white rounded-lg shadow-lg overflow-hidden mb-8">
                 
@@ -250,6 +367,14 @@
                         </span>
                     </div>
                     @endif
+                    
+                    <!-- Views Counter on Image -->
+                    <div class="absolute top-4 right-4">
+                        <div class="flex items-center gap-2 bg-black/60 backdrop-blur-sm text-white px-3 py-1.5 rounded-full text-xs font-medium">
+                            <i class="fas fa-eye"></i>
+                            <span>{{ number_format($blog->views_count ?? 0) }}</span>
+                        </div>
+                    </div>
                 </div>
                 @endif
 
@@ -275,17 +400,9 @@
                     <h1 class="text-3xl font-bold text-gray-900 mb-6">{{ $blog->title }}</h1>
 
                     <!-- Excerpt -->
-                    @if($blog->excerpt)
+                    {{-- @if($blog->excerpt)
                     <div class="text-lg text-gray-600 mb-8">{{ $blog->excerpt }}</div>
-                    @endif
-
-                    <!-- Stats -->
-                    <div class="flex items-center gap-6 mb-8 p-4 bg-gray-50 rounded-lg text-sm">
-                        <div class="flex items-center gap-2 text-gray-600">
-                            <i class="fas fa-eye"></i>
-                            <span>{{ number_format($blog->views_count ?? 0) }} views</span>
-                        </div>
-                    </div>
+                    @endif --}}
 
                     <!-- Content -->
                     <div class="blog-content">
@@ -310,7 +427,7 @@
             </article>
 
             <!-- Comments Section -->
-            <section class="bg-white rounded-lg shadow-lg p-8">
+            <section class="bg-white rounded-lg shadow-lg p-8 mb-8">
                 <div class="flex items-center justify-between mb-6">
                     <h2 class="text-xl font-bold text-gray-900 flex items-center gap-2">
                         <i class="fas fa-comments text-blue-600"></i>
@@ -434,6 +551,135 @@
                     @endforelse
                 </div>
             </section>
+            </div>
+            
+            <!-- Right Column - Sidebar Widgets -->
+            <aside class="lg:col-span-1">
+                
+                <!-- Author Widget -->
+                <div class="bg-white rounded-lg shadow-lg p-6 mb-6 top-24">
+                    <h3 class="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+                        <i class="fas fa-user-circle text-blue-600"></i>
+                        Tentang Penulis
+                    </h3>
+                    <div class="text-center mb-4">
+                        <div class="w-20 h-20 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full mx-auto mb-3 flex items-center justify-center text-white text-2xl font-bold">
+                            {{ strtoupper(substr($blog->author ? $blog->author->name : 'A', 0, 1)) }}
+                        </div>
+                        <h4 class="font-semibold text-gray-900 text-sm">{{ $blog->author ? $blog->author->name : 'Anonymous' }}</h4>
+                        <p class="text-xs text-gray-500 mt-1">Content Writer</p>
+                    </div>
+                    <p class="text-xs text-gray-600 text-center mb-4">Penulis artikel informatif seputar pernikahan dan event organizing</p>
+                    <div class="flex justify-center gap-3">
+                        <a href="#" class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 hover:bg-blue-200 transition">
+                            <i class="fab fa-facebook-f text-sm"></i>
+                        </a>
+                        <a href="#" class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 hover:bg-blue-200 transition">
+                            <i class="fab fa-twitter text-sm"></i>
+                        </a>
+                        <a href="#" class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 hover:bg-blue-200 transition">
+                            <i class="fab fa-linkedin-in text-sm"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Popular Posts Widget -->
+                <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
+                    <h3 class="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+                        <i class="fas fa-fire text-orange-500"></i>
+                        Artikel Populer
+                    </h3>
+                    @php
+                        $popularBlogs = \App\Models\Blog::where('is_published', true)
+                            ->where('id', '!=', $blog->id)
+                            ->orderBy('views_count', 'desc')
+                            ->take(5)
+                            ->get();
+                    @endphp
+                    <div class="space-y-4">
+                        @foreach($popularBlogs as $index => $popularBlog)
+                        <a href="{{ route('blog.detail', $popularBlog->slug) }}" class="flex gap-3 group hover:bg-gray-50 p-2 rounded-lg transition">
+                            <div class="flex-shrink-0">
+                                <span class="w-8 h-8 bg-gradient-to-br from-orange-500 to-red-500 rounded-full flex items-center justify-center text-white text-xs font-bold">
+                                    {{ $index + 1 }}
+                                </span>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <h4 class="text-xs font-semibold text-gray-900 group-hover:text-blue-600 transition line-clamp-2 mb-1">
+                                    {{ $popularBlog->title }}
+                                </h4>
+                                <div class="flex items-center gap-2 text-xs text-gray-500">
+                                    <i class="fas fa-eye"></i>
+                                    <span>{{ number_format($popularBlog->views_count ?? 0) }}</span>
+                                </div>
+                            </div>
+                        </a>
+                        @endforeach
+                    </div>
+                </div>
+
+                <!-- Categories Widget -->
+                <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
+                    <h3 class="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+                        <i class="fas fa-folder text-purple-600"></i>
+                        Kategori
+                    </h3>
+                    @php
+                        $categories = \App\Models\BlogCategory::withCount([
+                            'blogs' => function($query) {
+                                $query->where('is_published', true);
+                            }
+                        ])
+                        ->has('blogs')
+                        ->orderBy('blogs_count', 'desc')
+                        ->take(8)
+                        ->get();
+                    @endphp
+                    <div class="space-y-2">
+                        @foreach($categories as $category)
+                        <a href="{{ route('blog') }}?category={{ $category->slug }}" class="flex items-center justify-between p-2 rounded-lg hover:bg-purple-50 transition group">
+                            <span class="text-xs text-gray-700 group-hover:text-purple-600 font-medium">{{ $category->name }}</span>
+                            <span class="text-xs bg-purple-100 text-purple-600 px-2 py-1 rounded-full">{{ $category->blogs_count }}</span>
+                        </a>
+                        @endforeach
+                    </div>
+                </div>
+
+                <!-- Tags Cloud Widget -->
+                {{-- <div class="bg-white rounded-lg shadow-lg p-6">
+                    <h3 class="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+                        <i class="fas fa-tags text-green-600"></i>
+                        Tag Populer
+                    </h3>
+                    @php
+                        $allTags = \App\Models\Blog::where('is_published', true)
+                            ->whereNotNull('tags')
+                            ->pluck('tags')
+                            ->flatten()
+                            ->map(function($tags) {
+                                return is_array($tags) ? $tags : explode(',', $tags);
+                            })
+                            ->flatten()
+                            ->map(function($tag) {
+                                return trim($tag);
+                            })
+                            ->filter()
+                            ->countBy()
+                            ->sortDesc()
+                            ->take(15);
+                    @endphp
+                    <div class="flex flex-wrap gap-2">
+                        @foreach($allTags as $tag => $count)
+                        <a href="{{ route('blog') }}?tag={{ urlencode($tag) }}" class="px-3 py-1 bg-green-50 text-green-700 rounded-full text-xs hover:bg-green-100 transition font-medium">
+                            #{{ $tag }} <span class="text-green-500">({{ $count }})</span>
+                        </a>
+                        @endforeach
+                    </div>
+                </div> --}}
+                
+            </aside>
+            
+            </div>
         </div>
     </div>
 </div>
