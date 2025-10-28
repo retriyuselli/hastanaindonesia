@@ -32,11 +32,11 @@
                 </div>
             </div>
             
-            <h1 class="font-poppins text-4xl md:text-6xl font-bold mb-6 leading-tight">
+            <h1 class="font-poppins text-3xl md:text-4xl font-bold mb-6 leading-tight">
                 Hubungi <span class="text-yellow-300">Kami</span>
             </h1>
             
-            <p class="text-xl md:text-2xl mb-8 leading-relaxed opacity-90">
+            <p class="text-lg md:text-xl mb-8 leading-relaxed opacity-90">
                 Kami Siap Membantu Pengembangan Bisnis Wedding Organizer Anda
             </p>
         </div>
@@ -47,7 +47,7 @@
 <section class="py-20 bg-gray-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-12">
-            <h2 class="text-3xl font-bold text-gray-900 mb-4">Informasi Kontak</h2>
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">Informasi Kontak</h2>
             <p class="text-lg text-gray-600">Berbagai cara untuk menghubungi tim HASTANA Indonesia</p>
         </div>
         
@@ -114,7 +114,7 @@
 <section class="py-20 bg-white">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-12">
-            <h2 class="text-3xl font-bold text-gray-900 mb-4">Kirim Pesan</h2>
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">Kirim Pesan</h2>
             <p class="text-lg text-gray-600">Atau isi form di bawah ini untuk menghubungi kami</p>
         </div>
         
@@ -202,7 +202,7 @@
 <section class="py-20 bg-gray-100">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-12">
-            <h2 class="text-3xl font-bold text-gray-900 mb-4">Lokasi Kantor</h2>
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">Lokasi Kantor</h2>
             <p class="text-lg text-gray-600">Temukan kantor pusat HASTANA Indonesia</p>
         </div>
         
@@ -220,7 +220,7 @@
 <section class="py-20 bg-white">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-12">
-            <h2 class="text-3xl font-bold text-gray-900 mb-4">Pertanyaan yang Sering Diajukan</h2>
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">Pertanyaan yang Sering Diajukan</h2>
             <p class="text-lg text-gray-600">Beberapa pertanyaan umum seputar HASTANA Indonesia</p>
         </div>
         

@@ -19,17 +19,39 @@ class BlogSeeder extends Seeder
         // Get all categories
         $categories = BlogCategory::all();
         
-        // Authors pool
-        $authors = [
-            ['name' => 'Sarah Putri', 'avatar' => 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=40&h=40&fit=crop&crop=face&auto=format'],
-            ['name' => 'Budi Santoso', 'avatar' => 'https://images.unsplash.com/photo-1566492031773-4f4e44671d66?w=40&h=40&fit=crop&crop=face&auto=format'],
-            ['name' => 'Maya Sari', 'avatar' => 'https://images.unsplash.com/photo-1594736797933-d0401ba2fe65?w=40&h=40&fit=crop&crop=face&auto=format'],
-            ['name' => 'Andi Pratama', 'avatar' => 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=40&h=40&fit=crop&crop=face&auto=format'],
-            ['name' => 'Lisa Amanda', 'avatar' => 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=40&h=40&fit=crop&crop=face&auto=format'],
-            ['name' => 'Rudi Hermawan', 'avatar' => 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=40&h=40&fit=crop&crop=face&auto=format'],
-            ['name' => 'Diana Putri', 'avatar' => 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=40&h=40&fit=crop&crop=face&auto=format'],
-            ['name' => 'Farhan Malik', 'avatar' => 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop&crop=face&auto=format'],
-        ];
+        // Get all authors
+        $authors = \App\Models\Author::all();
+        
+        // If no authors exist, create some default authors first
+        if ($authors->isEmpty()) {
+            $this->command->warn('No authors found. Please run AuthorSeeder first!');
+            $this->command->info('Creating default authors...');
+            
+            $defaultAuthors = [
+                ['name' => 'Sarah Putri', 'avatar' => 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=40&h=40&fit=crop&crop=face&auto=format', 'slug' => 'sarah-putri'],
+                ['name' => 'Budi Santoso', 'avatar' => 'https://images.unsplash.com/photo-1566492031773-4f4e44671d66?w=40&h=40&fit=crop&crop=face&auto=format', 'slug' => 'budi-santoso'],
+                ['name' => 'Maya Sari', 'avatar' => 'https://images.unsplash.com/photo-1594736797933-d0401ba2fe65?w=40&h=40&fit=crop&crop=face&auto=format', 'slug' => 'maya-sari'],
+                ['name' => 'Andi Pratama', 'avatar' => 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=40&h=40&fit=crop&crop=face&auto=format', 'slug' => 'andi-pratama'],
+                ['name' => 'Lisa Amanda', 'avatar' => 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=40&h=40&fit=crop&crop=face&auto=format', 'slug' => 'lisa-amanda'],
+                ['name' => 'Rudi Hermawan', 'avatar' => 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=40&h=40&fit=crop&crop=face&auto=format', 'slug' => 'rudi-hermawan'],
+                ['name' => 'Diana Putri', 'avatar' => 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=40&h=40&fit=crop&crop=face&auto=format', 'slug' => 'diana-putri'],
+                ['name' => 'Farhan Malik', 'avatar' => 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop&crop=face&auto=format', 'slug' => 'farhan-malik'],
+            ];
+            
+            foreach ($defaultAuthors as $authorData) {
+                \App\Models\Author::updateOrCreate(
+                    ['slug' => $authorData['slug']],
+                    [
+                        'name' => $authorData['name'],
+                        'avatar' => $authorData['avatar'],
+                        'bio' => 'Wedding organizer expert dan content creator di HASTANA Indonesia',
+                        'email' => Str::slug($authorData['name']) . '@hastanaindonesia.com'
+                    ]
+                );
+            }
+            
+            $authors = \App\Models\Author::all();
+        }
         
         // Featured images pool
         $images = [
@@ -270,7 +292,7 @@ class BlogSeeder extends Seeder
             $templates = $blogTemplates[$category->slug] ?? [];
             
             foreach ($templates as $index => $template) {
-                $author = $authors[array_rand($authors)];
+                $author = $authors->random(); // Get random author from collection
                 $image = $images[array_rand($images)];
                 
                 $blog = [
@@ -281,8 +303,7 @@ class BlogSeeder extends Seeder
                     'content' => $this->generateContent($template['title'], $template['excerpt']),
                     'featured_image' => $image,
                     'blog_category_id' => $category->id,
-                    'author_name' => $author['name'],
-                    'author_avatar' => $author['avatar'],
+                    'author_id' => $author->id, // Use author_id instead of author_name/avatar
                     'meta_title' => $template['title'] . ' - HASTANA Indonesia',
                     'meta_description' => $template['excerpt'],
                     'seo_keywords' => $template['tags'],
