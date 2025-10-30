@@ -371,8 +371,8 @@
                 <div class="flex items-center space-x-4">
                     <!-- CTA Button (Desktop) -->
                     @guest
-                        <a href="{{ route('register') }}" class="hidden sm:inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-700 to-red-600 text-white font-semibold rounded-full hover:from-blue-800 hover:to-red-700 transition-smooth shadow-lg hover:shadow-xl">
-                            <i class="fas fa-user-plus mr-2 text-sm"></i>
+                        <a href="{{ route('register') }}" class="hidden sm:inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-700 to-red-600 text-white text-sm font-semibold rounded-full hover:from-blue-800 hover:to-red-700 transition-smooth shadow-md hover:shadow-lg">
+                            <i class="fas fa-user-plus mr-1.5 text-xs"></i>
                             Gabung Sekarang
                         </a>
                     @else

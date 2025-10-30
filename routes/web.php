@@ -7,7 +7,9 @@ use App\Http\Controllers\EventController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\JoinController;
+use App\Http\Controllers\MemberController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
@@ -37,9 +39,23 @@ Route::get('/portfolio/detail/{id?}', function ($id = 1) {
     return view('front.portfolio-detail');
 })->name('portfolio.detail');
 
-Route::get('/anggota', function () {
-    return view('front.members');
-})->name('members');
+// Members/Anggota routes
+Route::get('/anggota', [MemberController::class, 'index'])->name('members');
+Route::get('/anggota/{id}', [MemberController::class, 'show'])->name('members.show');
+Route::get('/anggota/{id}/product/{productId}', [MemberController::class, 'showProduct'])->name('members.product');
+
+// Debug route - hapus setelah selesai debug
+Route::get('/debug-product/{id}', function($id) {
+    $product = \App\Models\Product::findOrFail($id);
+    return response()->json([
+        'id' => $product->id,
+        'name' => $product->name,
+        'images_raw' => $product->images,
+        'images_type' => gettype($product->images),
+        'images_count' => is_array($product->images) ? count($product->images) : 0,
+        'images_with_storage_url' => is_array($product->images) ? array_map(fn($img) => Storage::url($img), $product->images) : [],
+    ]);
+});
 
 // Events routes
 Route::get('/events', [EventController::class, 'index'])->name('events');

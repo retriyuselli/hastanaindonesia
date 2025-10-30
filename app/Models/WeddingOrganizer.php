@@ -115,6 +115,22 @@ class WeddingOrganizer extends Model
     }
 
     /**
+     * Get all products for this wedding organizer
+     */
+    public function products()
+    {
+        return $this->hasMany(Product::class)->orderBy('sort_order');
+    }
+
+    /**
+     * Get active products
+     */
+    public function activeProducts()
+    {
+        return $this->hasMany(Product::class)->where('is_active', true)->orderBy('sort_order');
+    }
+
+    /**
      * Scope for verified wedding organizers
      */
     public function scopeVerified($query)

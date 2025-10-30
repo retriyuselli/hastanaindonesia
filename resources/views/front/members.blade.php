@@ -7,19 +7,26 @@
 <style>
     .member-card {
         transition: all 0.3s ease;
-        border: 2px solid transparent;
+        border: 1px solid #e5e7eb;
+        display: flex;
+        flex-direction: column;
+        background: white;
+        border-radius: 1rem;
+        padding: 1.5rem;
+        position: relative;
+        height: 100%;
     }
     
     .member-card:hover {
-        transform: translateY(-8px);
-        box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-        border-color: #3b82f6;
+        transform: translateY(-4px);
+        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        border-color: #d1d5db;
     }
     
     .member-badge {
         position: absolute;
-        top: 1rem;
-        right: 1rem;
+        top: 0.5rem;
+        left: 0.5rem;
         z-index: 10;
     }
     
@@ -30,6 +37,58 @@
     .search-box:focus {
         transform: scale(1.02);
         box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+    }
+    
+    /* Logo circle */
+    .member-logo {
+        width: 140px;
+        height: 140px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 3px solid #f3f4f6;
+        margin: 0 auto 1rem;
+        display: block;
+    }
+    
+    /* Icon badge on logo */
+    .logo-badge {
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        background: white;
+        border-radius: 50%;
+        padding: 0.25rem;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+    
+    .logo-badge-icon {
+        width: 24px;
+        height: 24px;
+        background: #fbbf24;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+        color: white;
+    }
+    
+    /* Card content wrapper */
+    .member-card-content {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+    }
+    
+    /* Card body flex grow */
+    .member-card-body {
+        flex: 1;
+    }
+    
+    /* Button always at bottom */
+    .member-card-footer {
+        margin-top: auto;
     }
 </style>
 @endpush
@@ -55,7 +114,7 @@
             </p>
             
             <div class="text-sm opacity-75">
-                125+ anggota aktif siap melayani impian pernikahan Anda
+                {{ $members->total() }}+ anggota aktif siap melayani impian pernikahan Anda
             </div>
         </div>
     </div>
@@ -65,53 +124,49 @@
 <section class="py-12 bg-gray-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="bg-white rounded-2xl shadow-lg p-8">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                
-                <!-- Search -->
-                <div class="md:col-span-1">
-                    <label class="block text-sm font-semibold text-gray-700 mb-2">Cari Anggota</label>
-                    <input type="text" placeholder="Nama perusahaan atau kota..." 
-                           class="search-box w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500">
-                </div>
-                
-                <!-- Filter by Region -->
-                <div class="md:col-span-1">
-                    <label class="block text-sm font-semibold text-gray-700 mb-2">Filter Wilayah</label>
-                    <div class="relative">
-                        <select class="search-box w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none bg-white">
-                            <option>Semua Wilayah</option>
-                            <option>DKI Jakarta</option>
-                            <option>Jawa Barat</option>
-                            <option>Jawa Tengah</option>
-                            <option>Jawa Timur</option>
-                            <option>Bali</option>
-                            <option>Sumatera</option>
-                            <option>Kalimantan</option>
-                            <option>Sulawesi</option>
-                        </select>
-                        <div class="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none">
-                            <i class="fas fa-chevron-down text-gray-400"></i>
+            <form method="GET" action="{{ route('members') }}">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    
+                    <!-- Search -->
+                    <div class="md:col-span-1">
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Cari Anggota</label>
+                        <input type="text" 
+                               name="search" 
+                               value="{{ request('search') }}"
+                               placeholder="Nama wedding organizer atau kota..." 
+                               class="search-box w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    
+                    <!-- Filter by Region -->
+                    <div class="md:col-span-1">
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Filter Wilayah</label>
+                        <div class="relative">
+                            <select name="region" 
+                                    class="search-box w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none bg-white">
+                                <option value="">Semua Wilayah</option>
+                                @foreach($regions as $region)
+                                    <option value="{{ $region->id }}" {{ request('region') == $region->id ? 'selected' : '' }}>
+                                        {{ $region->region_name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            <div class="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none">
+                                <i class="fas fa-chevron-down text-gray-400"></i>
+                            </div>
                         </div>
                     </div>
-                </div>
-                
-                <!-- Filter by Membership -->
-                <div class="md:col-span-1">
-                    <label class="block text-sm font-semibold text-gray-700 mb-2">Tingkat Keanggotaan</label>
-                    <div class="relative">
-                        <select class="search-box w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none bg-white">
-                            <option>Semua Tingkat</option>
-                            <option>Platinum</option>
-                            <option>Gold</option>
-                            <option>Silver</option>
-                        </select>
-                        <div class="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none">
-                            <i class="fas fa-chevron-down text-gray-400"></i>
-                        </div>
+                    
+                    <!-- Search Button -->
+                    <div class="md:col-span-1">
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">&nbsp;</label>
+                        <button type="submit" 
+                                class="w-full px-6 py-3 bg-blue-600 text-white font-semibold rounded-xl hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors">
+                            <i class="fas fa-search mr-2"></i>Cari
+                        </button>
                     </div>
+                    
                 </div>
-                
-            </div>
+            </form>
         </div>
     </div>
 </section>
@@ -123,330 +178,123 @@
         <!-- Stats -->
         <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
             <div class="bg-gradient-to-r from-blue-500 to-blue-600 text-white p-6 rounded-xl text-center">
-                <div class="text-3xl font-bold">125+</div>
+                <div class="text-3xl font-bold">{{ $members->total() }}</div>
                 <div class="text-sm opacity-90">Total Anggota</div>
             </div>
             <div class="bg-gradient-to-r from-green-500 to-green-600 text-white p-6 rounded-xl text-center">
-                <div class="text-3xl font-bold">34</div>
-                <div class="text-sm opacity-90">Provinsi</div>
+                <div class="text-3xl font-bold">{{ $regions->count() }}</div>
+                <div class="text-sm opacity-90">Wilayah</div>
             </div>
             <div class="bg-gradient-to-r from-yellow-500 to-yellow-600 text-white p-6 rounded-xl text-center">
-                <div class="text-3xl font-bold">15+</div>
-                <div class="text-sm opacity-90">Tahun Pengalaman</div>
+                <div class="text-3xl font-bold">{{ $members->avg('rating') ? number_format($members->avg('rating'), 1) : '4.8' }}</div>
+                <div class="text-sm opacity-90">Rating Rata-rata</div>
             </div>
             <div class="bg-gradient-to-r from-red-500 to-red-600 text-white p-6 rounded-xl text-center">
-                <div class="text-3xl font-bold">5000+</div>
+                <div class="text-3xl font-bold">{{ number_format($members->sum('completed_events')) }}</div>
                 <div class="text-sm opacity-90">Event Sukses</div>
             </div>
         </div>
 
         <!-- Members Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="members-grid">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" id="members-grid">
             
-            <!-- Member 1 -->
-            <div class="member-card bg-white rounded-2xl shadow-lg overflow-hidden relative">
+            @forelse($members as $member)
+            <div class="member-card">
+                @if($member->is_featured)
                 <div class="member-badge">
-                    <span class="bg-yellow-400 text-gray-900 px-3 py-1 rounded-full text-xs font-bold">PLATINUM</span>
+                    <span class="bg-red-500 text-white px-3 py-1 rounded-full text-xs font-bold flex items-center">
+                        <i class="fas fa-tag mr-1"></i> Deals Available
+                    </span>
                 </div>
-                <div class="relative">
-                    <img src="https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=400&h=250&fit=crop" alt="Prima Wedding" class="w-full h-48 object-cover">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-                </div>
-                <div class="p-6">
-                    <h3 class="font-bold text-xl mb-2">Prima Wedding Organizer</h3>
-                    <p class="text-gray-600 mb-3">
-                        <i class="fas fa-map-marker-alt mr-2 text-red-500"></i>
-                        Jakarta Selatan
-                    </p>
-                    <p class="text-gray-700 text-sm mb-4">
-                        Spesialis wedding traditional dan modern dengan pengalaman 15+ tahun. 
-                        Telah menangani 500+ pernikahan di seluruh Jakarta.
-                    </p>
-                    
-                    <div class="flex justify-between items-center mb-4">
-                        <div class="flex text-yellow-400">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <span class="text-gray-600 text-sm ml-2">4.9 (127 review)</span>
+                @endif
+                
+                <div class="member-card-content text-center">
+                    <div class="member-card-body">
+                        <!-- Logo Circle -->
+                        <div class="relative inline-block mb-3">
+                            @if($member->logo)
+                                <img src="{{ Storage::url($member->logo) }}" alt="{{ $member->organizer_name }}" class="member-logo">
+                            @else
+                                <div class="member-logo bg-gray-900 flex items-center justify-center text-white text-2xl font-bold">
+                                    {{ strtoupper(substr($member->organizer_name, 0, 1)) }}
+                                </div>
+                            @endif
+                            <div class="logo-badge">
+                                <div class="logo-badge-icon">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Name -->
+                        <h3 class="font-bold text-base mb-1 text-gray-900">{{ $member->organizer_name }}</h3>
+                        
+                        <!-- Category -->
+                        <p class="text-gray-600 text-xs mb-1">
+                            @if($member->specializations && is_array($member->specializations) && count($member->specializations) > 0)
+                                {{ $member->specializations[0] }}
+                            @else
+                                Wedding Organizer
+                            @endif
+                        </p>
+                        
+                        <!-- Location -->
+                        <p class="text-gray-500 text-xs mb-3">
+                            {{ $member->city }}{{ $member->province ? ', ' . substr($member->province, 0, 2) : '' }}
+                        </p>
+                        
+                        <!-- Price Range -->
+                        <div class="text-gray-700 text-xs mb-2">
+                            @if($member->price_range_min && $member->price_range_max)
+                                <span class="font-semibold">
+                                    @if($member->price_range_min < 10000000)
+                                        $
+                                    @elseif($member->price_range_min < 50000000)
+                                        $$
+                                    @else
+                                        $$$
+                                    @endif
+                                </span>
+                            @else
+                                <span class="font-semibold">$$</span>
+                            @endif
+                            <span class="mx-1">|</span>
+                            <!-- Rating -->
+                            <span class="inline-flex items-center">
+                                <i class="fas fa-star text-yellow-400 mr-1 text-xs"></i>
+                                <span class="font-semibold">{{ number_format($member->rating ?? 4.5, 1) }}/5</span>
+                                <span class="text-gray-500 ml-1">({{ $member->completed_events ?? 0 }} ulasan)</span>
+                            </span>
                         </div>
                     </div>
                     
-                    <div class="flex flex-wrap gap-2 mb-4">
-                        <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs">Traditional</span>
-                        <span class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs">Modern</span>
-                        <span class="bg-purple-100 text-purple-800 px-2 py-1 rounded-full text-xs">Luxury</span>
-                    </div>
-                    
-                    <div class="flex space-x-3">
-                        <button class="flex-1 bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors">
-                            <i class="fas fa-phone mr-2"></i>Hubungi
-                        </button>
-                        <button class="flex-1 border border-blue-600 text-blue-600 py-2 px-4 rounded-lg hover:bg-blue-50 transition-colors">
-                            <i class="fas fa-eye mr-2"></i>Portfolio
-                        </button>
+                    <!-- Button -->
+                    <div class="member-card-footer">
+                        <a href="{{ route('members.show', $member->id) }}" 
+                           class="block w-full mt-4 px-4 py-2 border border-gray-300 text-gray-700 text-sm font-semibold rounded-lg hover:bg-gray-50 transition-colors text-center">
+                            <i class="fas fa-eye mr-2"></i>Detail
+                        </a>
                     </div>
                 </div>
             </div>
-
-            <!-- Member 2 -->
-            <div class="member-card bg-white rounded-2xl shadow-lg overflow-hidden relative">
-                <div class="member-badge">
-                    <span class="bg-gray-300 text-gray-900 px-3 py-1 rounded-full text-xs font-bold">GOLD</span>
+            @empty
+            <div class="col-span-full text-center py-12">
+                <div class="text-gray-400 mb-4">
+                    <i class="fas fa-search text-6xl"></i>
                 </div>
-                <div class="relative">
-                    <img src="https://images.unsplash.com/photo-1606800052052-a08af7148866?w=400&h=250&fit=crop" alt="Blossom Events" class="w-full h-48 object-cover">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-                </div>
-                <div class="p-6">
-                    <h3 class="font-bold text-xl mb-2">Blossom Events</h3>
-                    <p class="text-gray-600 mb-3">
-                        <i class="fas fa-map-marker-alt mr-2 text-red-500"></i>
-                        Bandung, Jawa Barat
-                    </p>
-                    <p class="text-gray-700 text-sm mb-4">
-                        Wedding organizer dengan konsep garden dan outdoor wedding. 
-                        Menghadirkan suasana romantic untuk momen spesial Anda.
-                    </p>
-                    
-                    <div class="flex justify-between items-center mb-4">
-                        <div class="flex text-yellow-400">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <span class="text-gray-600 text-sm ml-2">4.8 (89 review)</span>
-                        </div>
-                    </div>
-                    
-                    <div class="flex flex-wrap gap-2 mb-4">
-                        <span class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs">Outdoor</span>
-                        <span class="bg-pink-100 text-pink-800 px-2 py-1 rounded-full text-xs">Garden</span>
-                        <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs">Romantic</span>
-                    </div>
-                    
-                    <div class="flex space-x-3">
-                        <button class="flex-1 bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors">
-                            <i class="fas fa-phone mr-2"></i>Hubungi
-                        </button>
-                        <button class="flex-1 border border-blue-600 text-blue-600 py-2 px-4 rounded-lg hover:bg-blue-50 transition-colors">
-                            <i class="fas fa-eye mr-2"></i>Portfolio
-                        </button>
-                    </div>
-                </div>
+                <h3 class="text-xl font-semibold text-gray-700 mb-2">Tidak ada anggota ditemukan</h3>
+                <p class="text-gray-500">Coba ubah filter atau kata kunci pencarian Anda</p>
             </div>
-
-            <!-- Member 3 -->
-            <div class="member-card bg-white rounded-2xl shadow-lg overflow-hidden relative">
-                <div class="member-badge">
-                    <span class="bg-gray-400 text-white px-3 py-1 rounded-full text-xs font-bold">SILVER</span>
-                </div>
-                <div class="relative">
-                    <img src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=400&h=250&fit=crop" alt="Intimate Moments" class="w-full h-48 object-cover">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-                </div>
-                <div class="p-6">
-                    <h3 class="font-bold text-xl mb-2">Intimate Moments</h3>
-                    <p class="text-gray-600 mb-3">
-                        <i class="fas fa-map-marker-alt mr-2 text-red-500"></i>
-                        Yogyakarta
-                    </p>
-                    <p class="text-gray-700 text-sm mb-4">
-                        Spesialis intimate wedding dengan suasana hangat dan personal. 
-                        Sempurna untuk pernikahan dengan guest terbatas.
-                    </p>
-                    
-                    <div class="flex justify-between items-center mb-4">
-                        <div class="flex text-yellow-400">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <span class="text-gray-600 text-sm ml-2">4.9 (56 review)</span>
-                        </div>
-                    </div>
-                    
-                    <div class="flex flex-wrap gap-2 mb-4">
-                        <span class="bg-orange-100 text-orange-800 px-2 py-1 rounded-full text-xs">Intimate</span>
-                        <span class="bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full text-xs">Cozy</span>
-                        <span class="bg-red-100 text-red-800 px-2 py-1 rounded-full text-xs">Personal</span>
-                    </div>
-                    
-                    <div class="flex space-x-3">
-                        <button class="flex-1 bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors">
-                            <i class="fas fa-phone mr-2"></i>Hubungi
-                        </button>
-                        <button class="flex-1 border border-blue-600 text-blue-600 py-2 px-4 rounded-lg hover:bg-blue-50 transition-colors">
-                            <i class="fas fa-eye mr-2"></i>Portfolio
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Member 4 -->
-            <div class="member-card bg-white rounded-2xl shadow-lg overflow-hidden relative">
-                <div class="member-badge">
-                    <span class="bg-yellow-400 text-gray-900 px-3 py-1 rounded-full text-xs font-bold">PLATINUM</span>
-                </div>
-                <div class="relative">
-                    <img src="https://images.unsplash.com/photo-1545291730-faff8ca1d4b0?w=400&h=250&fit=crop" alt="Tropical Dreams" class="w-full h-48 object-cover">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-                </div>
-                <div class="p-6">
-                    <h3 class="font-bold text-xl mb-2">Tropical Dreams Wedding</h3>
-                    <p class="text-gray-600 mb-3">
-                        <i class="fas fa-map-marker-alt mr-2 text-red-500"></i>
-                        Denpasar, Bali
-                    </p>
-                    <p class="text-gray-700 text-sm mb-4">
-                        Wedding organizer terbaik di Bali untuk destination wedding. 
-                        Spesialis beach wedding dengan pemandangan sunset yang memukau.
-                    </p>
-                    
-                    <div class="flex justify-between items-center mb-4">
-                        <div class="flex text-yellow-400">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <span class="text-gray-600 text-sm ml-2">5.0 (203 review)</span>
-                        </div>
-                    </div>
-                    
-                    <div class="flex flex-wrap gap-2 mb-4">
-                        <span class="bg-cyan-100 text-cyan-800 px-2 py-1 rounded-full text-xs">Beach</span>
-                        <span class="bg-orange-100 text-orange-800 px-2 py-1 rounded-full text-xs">Tropical</span>
-                        <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs">Destination</span>
-                    </div>
-                    
-                    <div class="flex space-x-3">
-                        <button class="flex-1 bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors">
-                            <i class="fas fa-phone mr-2"></i>Hubungi
-                        </button>
-                        <button class="flex-1 border border-blue-600 text-blue-600 py-2 px-4 rounded-lg hover:bg-blue-50 transition-colors">
-                            <i class="fas fa-eye mr-2"></i>Portfolio
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Member 5 -->
-            <div class="member-card bg-white rounded-2xl shadow-lg overflow-hidden relative">
-                <div class="member-badge">
-                    <span class="bg-gray-300 text-gray-900 px-3 py-1 rounded-full text-xs font-bold">GOLD</span>
-                </div>
-                <div class="relative">
-                    <img src="https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=400&h=250&fit=crop" alt="Urban Celebrations" class="w-full h-48 object-cover">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-                </div>
-                <div class="p-6">
-                    <h3 class="font-bold text-xl mb-2">Urban Celebrations</h3>
-                    <p class="text-gray-600 mb-3">
-                        <i class="fas fa-map-marker-alt mr-2 text-red-500"></i>
-                        Surabaya, Jawa Timur
-                    </p>
-                    <p class="text-gray-700 text-sm mb-4">
-                        Modern metropolitan wedding dengan konsep contemporary. 
-                        Menghadirkan nuansa urban yang elegant dan sophisticated.
-                    </p>
-                    
-                    <div class="flex justify-between items-center mb-4">
-                        <div class="flex text-yellow-400">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <span class="text-gray-600 text-sm ml-2">4.7 (94 review)</span>
-                        </div>
-                    </div>
-                    
-                    <div class="flex flex-wrap gap-2 mb-4">
-                        <span class="bg-gray-100 text-gray-800 px-2 py-1 rounded-full text-xs">Urban</span>
-                        <span class="bg-purple-100 text-purple-800 px-2 py-1 rounded-full text-xs">Modern</span>
-                        <span class="bg-indigo-100 text-indigo-800 px-2 py-1 rounded-full text-xs">Contemporary</span>
-                    </div>
-                    
-                    <div class="flex space-x-3">
-                        <button class="flex-1 bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors">
-                            <i class="fas fa-phone mr-2"></i>Hubungi
-                        </button>
-                        <button class="flex-1 border border-blue-600 text-blue-600 py-2 px-4 rounded-lg hover:bg-blue-50 transition-colors">
-                            <i class="fas fa-eye mr-2"></i>Portfolio
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Member 6 -->
-            <div class="member-card bg-white rounded-2xl shadow-lg overflow-hidden relative">
-                <div class="member-badge">
-                    <span class="bg-gray-400 text-white px-3 py-1 rounded-full text-xs font-bold">SILVER</span>
-                </div>
-                <div class="relative">
-                    <img src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=400&h=250&fit=crop" alt="Luxury Events" class="w-full h-48 object-cover">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-                </div>
-                <div class="p-6">
-                    <h3 class="font-bold text-xl mb-2">Luxury Events Indonesia</h3>
-                    <p class="text-gray-600 mb-3">
-                        <i class="fas fa-map-marker-alt mr-2 text-red-500"></i>
-                        Jakarta Pusat
-                    </p>
-                    <p class="text-gray-700 text-sm mb-4">
-                        Spesialis luxury wedding dengan detail yang sempurna. 
-                        Menangani high-end wedding untuk klien eksekutif dan selebritis.
-                    </p>
-                    
-                    <div class="flex justify-between items-center mb-4">
-                        <div class="flex text-yellow-400">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <span class="text-gray-600 text-sm ml-2">4.8 (112 review)</span>
-                        </div>
-                    </div>
-                    
-                    <div class="flex flex-wrap gap-2 mb-4">
-                        <span class="bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full text-xs">Luxury</span>
-                        <span class="bg-purple-100 text-purple-800 px-2 py-1 rounded-full text-xs">High-end</span>
-                        <span class="bg-pink-100 text-pink-800 px-2 py-1 rounded-full text-xs">Exclusive</span>
-                    </div>
-                    
-                    <div class="flex space-x-3">
-                        <button class="flex-1 bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors">
-                            <i class="fas fa-phone mr-2"></i>Hubungi
-                        </button>
-                        <button class="flex-1 border border-blue-600 text-blue-600 py-2 px-4 rounded-lg hover:bg-blue-50 transition-colors">
-                            <i class="fas fa-eye mr-2"></i>Portfolio
-                        </button>
-                    </div>
-                </div>
-            </div>
+            @endforelse
 
         </div>
 
         <!-- Pagination -->
+        @if($members->hasPages())
         <div class="flex justify-center mt-12">
-            <nav class="flex space-x-2">
-                <button class="px-4 py-2 bg-gray-200 text-gray-600 rounded-lg hover:bg-gray-300">
-                    <i class="fas fa-chevron-left"></i>
-                </button>
-                <button class="px-4 py-2 bg-blue-600 text-white rounded-lg">1</button>
-                <button class="px-4 py-2 bg-gray-200 text-gray-600 rounded-lg hover:bg-gray-300">2</button>
-                <button class="px-4 py-2 bg-gray-200 text-gray-600 rounded-lg hover:bg-gray-300">3</button>
-                <button class="px-4 py-2 bg-gray-200 text-gray-600 rounded-lg hover:bg-gray-300">
-                    <i class="fas fa-chevron-right"></i>
-                </button>
-            </nav>
+            {{ $members->links() }}
         </div>
+        @endif
 
     </div>
 </section>
@@ -468,28 +316,3 @@
 </section>
 
 @endsection
-
-@push('scripts')
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Search functionality
-        const searchBox = document.querySelector('.search-box');
-        const memberCards = document.querySelectorAll('.member-card');
-
-        searchBox.addEventListener('input', function() {
-            const searchTerm = this.value.toLowerCase();
-            
-            memberCards.forEach(card => {
-                const companyName = card.querySelector('h3').textContent.toLowerCase();
-                const location = card.querySelector('.fa-map-marker-alt').parentElement.textContent.toLowerCase();
-                
-                if (companyName.includes(searchTerm) || location.includes(searchTerm)) {
-                    card.style.display = 'block';
-                } else {
-                    card.style.display = 'none';
-                }
-            });
-        });
-    });
-</script>
-@endpush

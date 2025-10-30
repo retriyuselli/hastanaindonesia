@@ -29,7 +29,7 @@
         padding: 0.75rem 1rem;
         border: 2px solid #e5e7eb;
         border-radius: 0.5rem;
-        font-size: 1rem;
+        font-size: 0.875rem;
         transition: all 0.3s ease;
         background-color: #fff;
     }
@@ -50,7 +50,7 @@
         padding: 0.75rem 1rem;
         border: 2px solid #e5e7eb;
         border-radius: 0.5rem;
-        font-size: 1rem;
+        font-size: 0.875rem;
         background-color: #fff;
         background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%236b7280'%3E%3Cpath fill-rule='evenodd' d='M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z' clip-rule='evenodd'/%3E%3C/svg%3E");
         background-repeat: no-repeat;
@@ -88,7 +88,7 @@
         align-items: center;
         justify-content: center;
         font-weight: bold;
-        font-size: 1.25rem;
+        font-size: 1rem;
     }
     
     .requirement-item {
@@ -174,30 +174,30 @@
         <div class="max-w-4xl mx-auto">
             <div class="mb-8">
                 <div class="w-24 h-24 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-6 backdrop-blur-sm">
-                    <i class="fas fa-handshake text-white text-3xl"></i>
+                    <i class="fas fa-handshake text-white text-lg"></i>
                 </div>
             </div>
             
-            <h1 class="font-poppins text-4xl md:text-6xl font-bold mb-6 leading-tight">
+            <h1 class="font-poppins text-2xl md:text-4xl font-bold mb-6 leading-tight">
                 Bergabung dengan <span class="text-yellow-300">HASTANA</span>
             </h1>
             
-            <p class="text-xl md:text-2xl mb-8 leading-relaxed opacity-90">
+            <p class="text-base md:text-lg mb-8 leading-relaxed opacity-90">
                 Tingkatkan profesionalisme wedding organizer Anda bersama komunitas terbaik Indonesia
             </p>
             
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
                 <div class="bg-white/10 backdrop-blur-sm rounded-xl p-6">
-                    <div class="text-3xl font-bold mb-2">1000+</div>
-                    <div class="text-sm opacity-80">Anggota Aktif</div>
+                    <div class="text-2xl font-bold mb-2">1000+</div>
+                    <div class="text-xs opacity-80">Anggota Aktif</div>
                 </div>
                 <div class="bg-white/10 backdrop-blur-sm rounded-xl p-6">
-                    <div class="text-3xl font-bold mb-2">34</div>
-                    <div class="text-sm opacity-80">Provinsi</div>
+                    <div class="text-2xl font-bold mb-2">34</div>
+                    <div class="text-xs opacity-80">Provinsi</div>
                 </div>
                 <div class="bg-white/10 backdrop-blur-sm rounded-xl p-6">
-                    <div class="text-3xl font-bold mb-2">5</div>
-                    <div class="text-sm opacity-80">Tahun Berpengalaman</div>
+                    <div class="text-2xl font-bold mb-2">5</div>
+                    <div class="text-xs opacity-80">Tahun Berpengalaman</div>
                 </div>
             </div>
         </div>
@@ -208,10 +208,10 @@
 <section class="py-20 bg-gray-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16">
-            <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+            <h2 class="text-2xl md:text-3xl font-bold text-gray-900 mb-6">
                 Mengapa Bergabung dengan <span class="text-blue-600">HASTANA</span>?
             </h2>
-            <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+            <p class="text-base text-gray-600 max-w-3xl mx-auto">
                 Dapatkan akses eksklusif ke berbagai manfaat dan fasilitas yang akan memajukan bisnis wedding organizer Anda
             </p>
         </div>
@@ -220,10 +220,10 @@
             <!-- Benefit 1 -->
             <div class="benefit-card p-8 rounded-2xl">
                 <div class="w-16 h-16 bg-gradient-to-br from-blue-600 to-blue-700 rounded-2xl flex items-center justify-center mx-auto mb-6">
-                    <i class="fas fa-certificate text-white text-2xl"></i>
+                    <i class="fas fa-certificate text-white text-lg"></i>
                 </div>
-                <h3 class="text-xl font-bold text-gray-900 mb-4">Sertifikasi Resmi</h3>
-                <p class="text-gray-600 leading-relaxed">
+                <h3 class="text-base font-bold text-gray-900 mb-4">Sertifikasi Resmi</h3>
+                <p class="text-sm text-gray-600 leading-relaxed">
                     Dapatkan sertifikasi resmi HASTANA yang diakui secara nasional untuk meningkatkan kredibilitas bisnis Anda
                 </p>
             </div>
@@ -231,10 +231,10 @@
             <!-- Benefit 2 -->
             <div class="benefit-card p-8 rounded-2xl">
                 <div class="w-16 h-16 bg-gradient-to-br from-red-600 to-red-700 rounded-2xl flex items-center justify-center mx-auto mb-6">
-                    <i class="fas fa-network-wired text-white text-2xl"></i>
+                    <i class="fas fa-network-wired text-white text-lg"></i>
                 </div>
-                <h3 class="text-xl font-bold text-gray-900 mb-4">Jaringan Nasional</h3>
-                <p class="text-gray-600 leading-relaxed">
+                <h3 class="text-base font-bold text-gray-900 mb-4">Jaringan Nasional</h3>
+                <p class="text-sm text-gray-600 leading-relaxed">
                     Terhubung dengan 1000+ wedding organizer profesional di seluruh Indonesia untuk kolaborasi dan referensi
                 </p>
             </div>
@@ -242,10 +242,10 @@
             <!-- Benefit 3 -->
             <div class="benefit-card p-8 rounded-2xl">
                 <div class="w-16 h-16 bg-gradient-to-br from-green-600 to-green-700 rounded-2xl flex items-center justify-center mx-auto mb-6">
-                    <i class="fas fa-graduation-cap text-white text-2xl"></i>
+                    <i class="fas fa-graduation-cap text-white text-lg"></i>
                 </div>
-                <h3 class="text-xl font-bold text-gray-900 mb-4">Pelatihan Eksklusif</h3>
-                <p class="text-gray-600 leading-relaxed">
+                <h3 class="text-base font-bold text-gray-900 mb-4">Pelatihan Eksklusif</h3>
+                <p class="text-sm text-gray-600 leading-relaxed">
                     Akses ke workshop, seminar, dan pelatihan khusus untuk meningkatkan skill dan pengetahuan industri
                 </p>
             </div>
@@ -253,10 +253,10 @@
             <!-- Benefit 4 -->
             <div class="benefit-card p-8 rounded-2xl">
                 <div class="w-16 h-16 bg-gradient-to-br from-purple-600 to-purple-700 rounded-2xl flex items-center justify-center mx-auto mb-6">
-                    <i class="fas fa-bullhorn text-white text-2xl"></i>
+                    <i class="fas fa-bullhorn text-white text-lg"></i>
                 </div>
-                <h3 class="text-xl font-bold text-gray-900 mb-4">Platform Marketing</h3>
-                <p class="text-gray-600 leading-relaxed">
+                <h3 class="text-base font-bold text-gray-900 mb-4">Platform Marketing</h3>
+                <p class="text-sm text-gray-600 leading-relaxed">
                     Promosikan bisnis Anda melalui direktori resmi HASTANA dan platform digital kami
                 </p>
             </div>
@@ -264,10 +264,10 @@
             <!-- Benefit 5 -->
             <div class="benefit-card p-8 rounded-2xl">
                 <div class="w-16 h-16 bg-gradient-to-br from-yellow-600 to-yellow-700 rounded-2xl flex items-center justify-center mx-auto mb-6">
-                    <i class="fas fa-shield-alt text-white text-2xl"></i>
+                    <i class="fas fa-shield-alt text-white text-lg"></i>
                 </div>
-                <h3 class="text-xl font-bold text-gray-900 mb-4">Perlindungan Legal</h3>
-                <p class="text-gray-600 leading-relaxed">
+                <h3 class="text-base font-bold text-gray-900 mb-4">Perlindungan Legal</h3>
+                <p class="text-sm text-gray-600 leading-relaxed">
                     Bantuan konsultasi hukum dan perlindungan dalam menghadapi isu legal bisnis wedding organizer
                 </p>
             </div>
@@ -275,10 +275,10 @@
             <!-- Benefit 6 -->
             <div class="benefit-card p-8 rounded-2xl">
                 <div class="w-16 h-16 bg-gradient-to-br from-indigo-600 to-indigo-700 rounded-2xl flex items-center justify-center mx-auto mb-6">
-                    <i class="fas fa-handshake text-white text-2xl"></i>
+                    <i class="fas fa-handshake text-white text-lg"></i>
                 </div>
-                <h3 class="text-xl font-bold text-gray-900 mb-4">Kolaborasi Vendor</h3>
-                <p class="text-gray-600 leading-relaxed">
+                <h3 class="text-base font-bold text-gray-900 mb-4">Kolaborasi Vendor</h3>
+                <p class="text-sm text-gray-600 leading-relaxed">
                     Akses ke jaringan vendor terpercaya dengan harga khusus untuk member HASTANA
                 </p>
             </div>
@@ -302,28 +302,28 @@
             <!-- Step 1 -->
             <div class="text-center">
                 <div class="step-number mx-auto mb-6">1</div>
-                <h3 class="text-xl font-bold text-gray-900 mb-4">Isi Formulir</h3>
+                <h3 class="text-base font-bold text-gray-900 mb-4">Isi Formulir</h3>
                 <p class="text-gray-600">Lengkapi formulir pendaftaran dengan data perusahaan dan dokumen yang diperlukan</p>
             </div>
             
             <!-- Step 2 -->
             <div class="text-center">
                 <div class="step-number mx-auto mb-6">2</div>
-                <h3 class="text-xl font-bold text-gray-900 mb-4">Verifikasi</h3>
+                <h3 class="text-base font-bold text-gray-900 mb-4">Verifikasi</h3>
                 <p class="text-gray-600">Tim HASTANA akan memverifikasi dokumen dan kelengkapan data dalam 3-5 hari kerja</p>
             </div>
             
             <!-- Step 3 -->
             <div class="text-center">
                 <div class="step-number mx-auto mb-6">3</div>
-                <h3 class="text-xl font-bold text-gray-900 mb-4">Pembayaran</h3>
+                <h3 class="text-base font-bold text-gray-900 mb-4">Pembayaran</h3>
                 <p class="text-gray-600">Lakukan pembayaran biaya keanggotaan sesuai paket yang dipilih</p>
             </div>
             
             <!-- Step 4 -->
             <div class="text-center">
                 <div class="step-number mx-auto mb-6">4</div>
-                <h3 class="text-xl font-bold text-gray-900 mb-4">Aktivasi</h3>
+                <h3 class="text-base font-bold text-gray-900 mb-4">Aktivasi</h3>
                 <p class="text-gray-600">Akun member aktif dan mulai nikmati semua fasilitas HASTANA</p>
             </div>
         </div>
