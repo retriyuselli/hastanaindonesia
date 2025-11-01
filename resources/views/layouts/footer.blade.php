@@ -60,12 +60,13 @@
             <div>
                 <h4 class="text-base font-semibold mb-4">Menu Utama</h4>
                 <ul class="space-y-2">
-                    <li><a href="#" class="text-sm text-gray-300 hover:text-white transition-colors">Beranda</a></li>
-                    <li><a href="#" class="text-sm text-gray-300 hover:text-white transition-colors">Daftar Anggota</a></li>
-                    <li><a href="#" class="text-sm text-gray-300 hover:text-white transition-colors">Event</a></li>
-                    <li><a href="#" class="text-sm text-gray-300 hover:text-white transition-colors">Blog</a></li>
-                    <li><a href="#" class="text-sm text-gray-300 hover:text-white transition-colors">Kontak</a></li>
-                    <li><a href="#" class="text-sm text-gray-300 hover:text-white transition-colors">Tentang Kami</a></li>
+                    <li><a href="{{ route('home') }}" class="text-sm text-gray-300 hover:text-white transition-colors">Home</a></li>
+                    <li><a href="{{ route('events') }}" class="text-sm text-gray-300 hover:text-white transition-colors">Event</a></li>
+                    <li><a href="{{ route('blog') }}" class="text-sm text-gray-300 hover:text-white transition-colors">Blog</a></li>
+                    <li><a href="{{ route('about') }}" class="text-sm text-gray-300 hover:text-white transition-colors">About</a></li>
+                    <li><a href="{{ route('contact') }}" class="text-sm text-gray-300 hover:text-white transition-colors">Hubungi Kami</a></li>
+                    <li><a href="{{ route('gallery') }}" class="text-sm text-gray-300 hover:text-white transition-colors">Gallery</a></li>
+                    <li><a href="{{ route('members') }}" class="text-sm text-gray-300 hover:text-white transition-colors">Daftar Anggota WO</a></li>
                 </ul>
             </div>
 

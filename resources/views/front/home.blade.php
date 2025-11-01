@@ -306,10 +306,14 @@
         <div class="portfolio-marquee-content">
             @forelse($featuredProducts as $product)
             <div class="portfolio-marquee-item">
-                <div class="bg-white rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 p-6 relative">
+                @if($product->weddingOrganizer && $product->weddingOrganizer->slug)
+                <a href="{{ route('members.product', ['slug' => $product->weddingOrganizer->slug, 'productId' => $product->id]) }}" class="block bg-white rounded-3xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 p-6 relative transform hover:-translate-y-2 cursor-pointer">
+                @else
+                <div class="block bg-white rounded-3xl shadow-lg overflow-hidden p-6 relative opacity-75 cursor-not-allowed">
+                @endif
                     <!-- Deals Badge -->
                     @if($product->limited_offer || $product->discount > 0)
-                    <div class="absolute top-4 left-4 bg-red-500 text-white px-4 py-2 rounded-full text-xs font-semibold flex items-center gap-1 shadow-md">
+                    <div class="absolute top-4 left-4 bg-red-500 text-white px-4 py-2 rounded-full text-xs font-semibold flex items-center gap-1 shadow-md z-10">
                         <i class="fas fa-tag"></i>
                         @if($product->limited_offer)
                         Limited Offer
@@ -358,7 +362,7 @@
                     </div>
                     
                     <!-- Price & Discount -->
-                    <div class="text-center mb-6">
+                    <div class="text-center">
                         @if($product->discount > 0)
                         <div class="mb-1">
                             <span class="text-gray-400 line-through text-xs">Rp {{ number_format($product->original_price, 0, ',', '.') }}</span>
@@ -375,28 +379,19 @@
                         </div>
                         @endif
                     </div>
-                    
-                    <!-- Detail Button -->
-                    @if($product->weddingOrganizer && $product->weddingOrganizer->slug)
-                    <a href="{{ route('members.product', ['slug' => $product->weddingOrganizer->slug, 'productId' => $product->id]) }}" class="w-full bg-white border-2 border-gray-800 text-gray-800 text-center py-2 rounded-full text-sm font-semibold hover:bg-gray-800 hover:text-white transition-all duration-300 flex items-center justify-center gap-2">
-                        <i class="fas fa-eye text-xs"></i>
-                        Detail
-                    </a>
-                    @else
-                    <a href="#" class="w-full bg-gray-300 border-2 border-gray-400 text-gray-500 text-center py-2 rounded-full text-sm font-semibold cursor-not-allowed flex items-center justify-center gap-2">
-                        <i class="fas fa-eye text-xs"></i>
-                        Detail
-                    </a>
-                    @endif
+                @if($product->weddingOrganizer && $product->weddingOrganizer->slug)
+                </a>
+                @else
                 </div>
+                @endif
             </div>
             @empty
             <!-- Fallback jika tidak ada data -->
             @for ($i = 1; $i <= 10; $i++)
             <div class="portfolio-marquee-item">
-                <div class="bg-white rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 p-6 relative">
+                <a href="{{ route('members') }}" class="block bg-white rounded-3xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 p-6 relative transform hover:-translate-y-2 cursor-pointer">
                     <!-- Deals Badge -->
-                    <div class="absolute top-4 left-4 bg-red-500 text-white px-4 py-2 rounded-full text-xs font-semibold flex items-center gap-1 shadow-md">
+                    <div class="absolute top-4 left-4 bg-red-500 text-white px-4 py-2 rounded-full text-xs font-semibold flex items-center gap-1 shadow-md z-10">
                         <i class="fas fa-tag"></i>
                         Deals Available
                     </div>
@@ -422,7 +417,7 @@
                     </div>
                     
                     <!-- Price -->
-                    <div class="text-center mb-6">
+                    <div class="text-center">
                         <div class="mb-1">
                             <span class="text-gray-400 line-through text-xs">Rp {{ number_format((50 + $i * 5) * 1000000, 0, ',', '.') }}</span>
                         </div>
@@ -433,13 +428,7 @@
                             Hemat Rp {{ number_format(5 * 1000000, 0, ',', '.') }}
                         </div>
                     </div>
-                    
-                    <!-- Detail Button -->
-                    <a href="{{ route('members') }}" class="w-full bg-white border-2 border-gray-800 text-gray-800 text-center py-2 rounded-full text-sm font-semibold hover:bg-gray-800 hover:text-white transition-all duration-300 flex items-center justify-center gap-2">
-                        <i class="fas fa-eye text-xs"></i>
-                        Detail
-                    </a>
-                </div>
+                </a>
             </div>
             @endfor
             @endforelse

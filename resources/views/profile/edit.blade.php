@@ -58,10 +58,10 @@
                                 <i class="fas fa-key text-sm mr-3 w-5"></i>
                                 Ubah Password
                             </a>
-                            <a href="#security" class="profile-nav-link flex items-center py-2 px-3 rounded-lg transition">
+                            {{-- <a href="#security" class="profile-nav-link flex items-center py-2 px-3 rounded-lg transition">
                                 <i class="fas fa-shield-alt text-sm mr-3 w-5"></i>
                                 Keamanan Akun
-                            </a>
+                            </a> --}}
                         </nav>
 
                         <div class="mt-6 pt-6 border-t border-gray-200">
@@ -320,7 +320,7 @@
                     </div>
 
                     <!-- Delete Account -->
-                    <div id="security" class="bg-white rounded-lg shadow-md p-6 scroll-mt-24">
+                    {{-- <div id="security" class="bg-white rounded-lg shadow-md p-6 scroll-mt-24">
                         <div class="flex items-center mb-6">
                             <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center mr-4">
                                 <i class="fas fa-exclamation-triangle text-red-600 text-xl"></i>
@@ -348,7 +348,7 @@
                             <i class="fas fa-trash-alt mr-2"></i>
                             Hapus Akun
                         </button>
-                    </div>
+                    </div> --}}
 
                 </div>
             </div>
