@@ -8,6 +8,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\JoinController;
 use App\Http\Controllers\MemberController;
+use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 
@@ -21,6 +22,23 @@ Route::get('/gallery/{id}', [GalleryController::class, 'show'])->name('gallery.s
 Route::middleware('auth')->group(function () {
     Route::get('/bergabung', [JoinController::class, 'index'])->name('join');
     Route::post('/bergabung', [JoinController::class, 'store'])->name('join.store');
+    
+    // Product Management routes - fallback redirect
+    Route::get('/products', function() {
+        $weddingOrganizer = \App\Models\WeddingOrganizer::where('user_id', auth()->id())->first();
+        if (!$weddingOrganizer) {
+            return redirect()->route('join')->with('error', 'Anda belum memiliki Wedding Organizer. Silakan daftar terlebih dahulu.');
+        }
+        return redirect()->route('products.manage', $weddingOrganizer->slug);
+    });
+    
+    // Product Management routes with slug
+    Route::get('/{slug}/products', [ProductController::class, 'index'])->name('products.manage');
+    Route::get('/{slug}/products/create', [ProductController::class, 'create'])->name('products.create');
+    Route::post('/{slug}/products', [ProductController::class, 'store'])->name('products.store');
+    Route::get('/{slug}/products/{id}/edit', [ProductController::class, 'edit'])->name('products.edit');
+    Route::put('/{slug}/products/{id}', [ProductController::class, 'update'])->name('products.update');
+    Route::delete('/{slug}/products/{id}', [ProductController::class, 'destroy'])->name('products.destroy');
 });
 
 Route::get('/syarat-ketentuan', function () {
@@ -41,8 +59,8 @@ Route::get('/portfolio/detail/{id?}', function ($id = 1) {
 
 // Members/Anggota routes
 Route::get('/anggota', [MemberController::class, 'index'])->name('members');
-Route::get('/anggota/{id}', [MemberController::class, 'show'])->name('members.show');
-Route::get('/anggota/{id}/product/{productId}', [MemberController::class, 'showProduct'])->name('members.product');
+Route::get('/anggota/{slug}', [MemberController::class, 'show'])->name('members.show');
+Route::get('/anggota/{slug}/product/{productId}', [MemberController::class, 'showProduct'])->name('members.product');
 
 // Debug route - hapus setelah selesai debug
 Route::get('/debug-product/{id}', function($id) {

@@ -15,6 +15,7 @@ class WeddingOrganizer extends Model
         'organizer_name',
         'brand_name',
         'description',
+        'logo',
         'phone',
         'email',
         'website',

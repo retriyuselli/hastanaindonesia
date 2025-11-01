@@ -347,10 +347,10 @@
                                 <i class="fas fa-images text-xs"></i>
                                 Gallery
                             </a>
-                            <a href="{{ route('portfolio') }}" class="dropdown-item text-sm">
+                            {{-- <a href="{{ route('portfolio') }}" class="dropdown-item text-sm">
                                 <i class="fas fa-briefcase text-xs"></i>
                                 Portfolio WO
-                            </a>
+                            </a> --}}
                             <a href="{{ route('members') }}" class="dropdown-item text-sm">
                                 <i class="fas fa-users text-xs"></i>
                                 Daftar Anggota WO
@@ -464,10 +464,10 @@
                             <i class="fas fa-images mr-2 text-xs w-4"></i>
                             Gallery
                         </a>
-                        <a href="{{ route('portfolio') }}" class="mobile-dropdown-item flex items-center text-sm hover:bg-blue-50 transition-smooth rounded">
+                        {{-- <a href="{{ route('portfolio') }}" class="mobile-dropdown-item flex items-center text-sm hover:bg-blue-50 transition-smooth rounded">
                             <i class="fas fa-briefcase mr-2 text-xs w-4"></i>
                             Portfolio WO
-                        </a>
+                        </a> --}}
                         <a href="{{ route('members') }}" class="mobile-dropdown-item flex items-center text-sm hover:bg-blue-50 transition-smooth rounded">
                             <i class="fas fa-users mr-2 text-xs w-4"></i>
                             Daftar Anggota WO

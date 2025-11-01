@@ -195,20 +195,20 @@
 
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                     <div class="text-center">
-                        <div class="text-3xl md:text-4xl font-bold text-hastana-blue mb-2">1000+</div>
-                        <div class="text-gray-600 font-medium text-sm">Anggota Tersertifikasi</div>
+                        <div class="text-3xl md:text-4xl font-bold text-hastana-blue mb-2">{{ $totalMembers }}</div>
+                        <div class="text-gray-600 font-medium text-sm">Total Anggota</div>
                     </div>
                     <div class="text-center">
-                        <div class="text-3xl md:text-4xl font-bold text-hastana-red mb-2">34</div>
-                        <div class="text-gray-600 font-medium text-sm">Provinsi Terjangkau</div>
+                        <div class="text-3xl md:text-4xl font-bold text-hastana-red mb-2">{{ $totalRegions }}</div>
+                        <div class="text-gray-600 font-medium text-sm">Wilayah</div>
                     </div>
                     <div class="text-center">
-                        <div class="text-3xl md:text-4xl font-bold text-hastana-blue mb-2">15+</div>
-                        <div class="text-gray-600 font-medium text-sm">Tahun Pengalaman</div>
+                        <div class="text-3xl md:text-4xl font-bold text-hastana-blue mb-2">{{ number_format($averageRating, 1) }}</div>
+                        <div class="text-gray-600 font-medium text-sm">Rating Rata-rata</div>
                     </div>
                     <div class="text-center">
-                        <div class="text-3xl md:text-4xl font-bold text-hastana-red mb-2">50,000+</div>
-                        <div class="text-gray-600 font-medium text-sm">Pernikahan Tersukseskan</div>
+                        <div class="text-3xl md:text-4xl font-bold text-hastana-red mb-2">{{ number_format($totalEvents) }}</div>
+                        <div class="text-gray-600 font-medium text-sm">Event Sukses</div>
                     </div>
                 </div>
             </div>

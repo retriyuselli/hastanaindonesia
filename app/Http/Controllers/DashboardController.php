@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\EventParticipant;
 use App\Models\EventHastana;
+use App\Models\WeddingOrganizer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -53,12 +54,16 @@ class DashboardController extends Controller
             ->limit(6)
             ->get();
 
+        // Ambil Wedding Organizer milik user
+        $myWeddingOrganizer = WeddingOrganizer::where('user_id', $user->id)->first();
+
         return view('dashboard', compact(
             'totalRegistered',
             'upcomingEvents',
             'completedEvents',
             'myEvents',
-            'recommendedEvents'
+            'recommendedEvents',
+            'myWeddingOrganizer'
         ));
     }
 }

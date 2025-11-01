@@ -80,10 +80,9 @@ class EventHastanaForm
                     ->label('Link Meeting Online')
                     ->url()
                     ->placeholder('https://zoom.us/j/123456789 atau https://meet.google.com/xxx-xxxx-xxx')
-                    ->helperText('Link Zoom, Google Meet, atau platform online lainnya')
+                    ->helperText('Kosongkan dulu link nya, isi pada hari H pelaksanaan untuk keamanan')
                     ->columnSpanFull()
-                    ->visible(fn ($get) => in_array($get('location_type'), ['online', 'hybrid']))
-                    ->required(fn ($get) => $get('location_type') === 'online'),
+                    ->visible(fn ($get) => in_array($get('location_type'), ['online', 'hybrid'])),
                 
                 RichEditor::make('description')
                     ->label('Deskripsi Lengkap')

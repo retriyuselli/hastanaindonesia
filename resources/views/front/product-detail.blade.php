@@ -62,7 +62,7 @@
                 <i class="fas fa-chevron-right text-gray-400" style="font-size: 0.65rem;"></i>
                 <a href="{{ route('members') }}" class="text-gray-500 hover:text-gray-700">Daftar Anggota</a>
                 <i class="fas fa-chevron-right text-gray-400" style="font-size: 0.65rem;"></i>
-                <a href="{{ route('members.show', $member->id) }}" class="text-gray-500 hover:text-gray-700">{{ $member->organizer_name }}</a>
+                <a href="{{ route('members.show', $member->slug) }}" class="text-gray-500 hover:text-gray-700">{{ $member->organizer_name }}</a>
                 <i class="fas fa-chevron-right text-gray-400" style="font-size: 0.65rem;"></i>
                 <span class="text-gray-900">{{ $product['name'] }}</span>
             </div>
@@ -184,7 +184,7 @@
                         </a>
                         @endif
                         
-                        <a href="{{ route('members.show', $member->id) }}" class="inline-block px-6 py-2.5 border-2 border-gray-300 text-gray-700 text-sm font-bold rounded-lg hover:bg-gray-50 transition-colors">
+                        <a href="{{ route('members.show', $member->slug) }}" class="inline-block px-6 py-2.5 border-2 border-gray-300 text-gray-700 text-sm font-bold rounded-lg hover:bg-gray-50 transition-colors">
                             <i class="fas fa-store mr-2"></i>Lihat Produk Lainnya
                         </a>
                     </div>
@@ -250,7 +250,7 @@
                         @endif
                     </div> --}}
                     
-                    <a href="{{ route('members.show', $related->id) }}" class="block w-full px-4 py-2 bg-pink-500 text-white text-sm font-semibold rounded-lg hover:bg-pink-600 transition-colors text-center">
+                    <a href="{{ route('members.show', $related->slug) }}" class="block w-full px-4 py-2 bg-pink-500 text-white text-sm font-semibold rounded-lg hover:bg-pink-600 transition-colors text-center">
                         <i class="fas fa-eye mr-2"></i>Lihat Detail
                     </a>
                 </div>

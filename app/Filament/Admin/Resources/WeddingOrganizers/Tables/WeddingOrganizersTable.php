@@ -2,14 +2,9 @@
 
 namespace App\Filament\Admin\Resources\WeddingOrganizers\Tables;
 
-use Filament\Actions\BulkActionGroup;
-use Filament\Actions\DeleteBulkAction;
-use Filament\Actions\EditAction;
-use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ImageColumn;
-use Filament\Tables\Columns\BadgeColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
@@ -26,7 +21,6 @@ class WeddingOrganizersTable
                 ImageColumn::make('logo')
                     ->label('')
                     ->circular()
-                    ->size(40)
                     ->defaultImageUrl('/images/default-avatar.png')
                     ->toggleable()
                     ->toggledHiddenByDefault(),
@@ -141,29 +135,34 @@ class WeddingOrganizersTable
                     ->toggleable(),
 
                 // Status Columns
-                BadgeColumn::make('verification_status')
+                TextColumn::make('verification_status')
                     ->label('✓ Status Verifikasi')
-                    ->colors([
-                        'danger' => 'pending',
-                        'warning' => 'under_review',
-                        'success' => 'verified',
-                        'secondary' => 'rejected',
-                    ])
-                    ->icons([
-                        'heroicon-m-clock' => 'pending',
-                        'heroicon-m-eye' => 'under_review',
-                        'heroicon-m-check-circle' => 'verified',
-                        'heroicon-m-x-circle' => 'rejected',
-                    ]),
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'pending' => 'danger',
+                        'under_review' => 'warning',
+                        'verified' => 'success',
+                        'rejected' => 'gray',
+                        default => 'gray',
+                    })
+                    ->icon(fn (string $state): string => match ($state) {
+                        'pending' => 'heroicon-m-clock',
+                        'under_review' => 'heroicon-m-eye',
+                        'verified' => 'heroicon-m-check-circle',
+                        'rejected' => 'heroicon-m-x-circle',
+                        default => 'heroicon-m-question-mark-circle',
+                    }),
 
-                BadgeColumn::make('legal_document_status')
+                TextColumn::make('legal_document_status')
                     ->label('📋 Dokumen Legal')
-                    ->colors([
-                        'danger' => 'pending',
-                        'warning' => 'under_review',
-                        'success' => 'verified',
-                        'secondary' => 'rejected',
-                    ])
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'incomplete' => 'danger',
+                        'pending_review' => 'warning',
+                        'verified' => 'success',
+                        'rejected' => 'gray',
+                        default => 'gray',
+                    })
                     ->toggleable(),
 
                 IconColumn::make('is_featured')
@@ -175,20 +174,23 @@ class WeddingOrganizersTable
                     ->falseColor('gray')
                     ->toggleable(),
 
-                BadgeColumn::make('status')
+                TextColumn::make('status')
                     ->label('📊 Status')
-                    ->colors([
-                        'success' => 'active',
-                        'warning' => 'inactive',
-                        'danger' => 'suspended',
-                        'secondary' => 'pending',
-                    ])
-                    ->icons([
-                        'heroicon-m-check-circle' => 'active',
-                        'heroicon-m-pause-circle' => 'inactive',
-                        'heroicon-m-x-circle' => 'suspended',
-                        'heroicon-m-clock' => 'pending',
-                    ]),
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'active' => 'success',
+                        'inactive' => 'warning',
+                        'suspended' => 'danger',
+                        'pending' => 'gray',
+                        default => 'gray',
+                    })
+                    ->icon(fn (string $state): string => match ($state) {
+                        'active' => 'heroicon-m-check-circle',
+                        'inactive' => 'heroicon-m-pause-circle',
+                        'suspended' => 'heroicon-m-x-circle',
+                        'pending' => 'heroicon-m-clock',
+                        default => 'heroicon-m-question-mark-circle',
+                    }),
 
                 // Social Media
                 TextColumn::make('website')
@@ -326,22 +328,7 @@ class WeddingOrganizersTable
                     ->placeholder('Semua Provinsi')
                     ->searchable(),
             ])
-            ->recordActions([
-                ViewAction::make()
-                    ->label('Lihat')
-                    ->icon('heroicon-m-eye'),
-                EditAction::make()
-                    ->label('Edit')
-                    ->icon('heroicon-m-pencil-square'),
-            ])
-            ->toolbarActions([
-                BulkActionGroup::make([
-                    DeleteBulkAction::make()
-                        ->label('Hapus Terpilih'),
-                ]),
-            ])
             ->defaultSort('created_at', 'desc')
-            ->searchable()
             ->striped()
             ->paginated([10, 25, 50, 100]);
     }

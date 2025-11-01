@@ -15,12 +15,16 @@
         padding: 1.5rem;
         position: relative;
         height: 100%;
+        text-decoration: none;
+        color: inherit;
+        cursor: pointer;
     }
     
     .member-card:hover {
         transform: translateY(-4px);
         box-shadow: 0 10px 25px rgba(0,0,0,0.1);
         border-color: #d1d5db;
+        text-decoration: none;
     }
     
     .member-badge {
@@ -84,11 +88,6 @@
     /* Card body flex grow */
     .member-card-body {
         flex: 1;
-    }
-    
-    /* Button always at bottom */
-    .member-card-footer {
-        margin-top: auto;
     }
 </style>
 @endpush
@@ -199,7 +198,7 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" id="members-grid">
             
             @forelse($members as $member)
-            <div class="member-card">
+            <a href="{{ $member->slug ? route('members.show', $member->slug) : '#' }}" class="member-card {{ !$member->slug ? 'opacity-50 cursor-not-allowed' : '' }}">
                 @if($member->is_featured)
                 <div class="member-badge">
                     <span class="bg-red-500 text-white px-3 py-1 rounded-full text-xs font-bold flex items-center">
@@ -210,7 +209,7 @@
                 
                 <div class="member-card-content text-center">
                     <div class="member-card-body">
-                        <!-- Logo Circle -->
+                        <!-- Logo Circle -->    
                         <div class="relative inline-block mb-3">
                             @if($member->logo)
                                 <img src="{{ Storage::url($member->logo) }}" alt="{{ $member->organizer_name }}" class="member-logo">
@@ -267,16 +266,8 @@
                             </span>
                         </div>
                     </div>
-                    
-                    <!-- Button -->
-                    <div class="member-card-footer">
-                        <a href="{{ route('members.show', $member->id) }}" 
-                           class="block w-full mt-4 px-4 py-2 border border-gray-300 text-gray-700 text-sm font-semibold rounded-lg hover:bg-gray-50 transition-colors text-center">
-                            <i class="fas fa-eye mr-2"></i>Detail
-                        </a>
-                    </div>
                 </div>
-            </div>
+            </a>
             @empty
             <div class="col-span-full text-center py-12">
                 <div class="text-gray-400 mb-4">

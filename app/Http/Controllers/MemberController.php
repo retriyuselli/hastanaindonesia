@@ -93,10 +93,10 @@ class MemberController extends Controller
     /**
      * Display the specified wedding organizer member
      */
-    public function show($id)
+    public function show($slug)
     {
         $member = WeddingOrganizer::with(['region', 'user', 'verifier', 'activeProducts'])
-            ->where('id', $id)
+            ->where('slug', $slug)
             ->verified()
             ->active()
             ->firstOrFail();
@@ -117,17 +117,17 @@ class MemberController extends Controller
     /**
      * Display product detail page
      */
-    public function showProduct($id, $productId)
+    public function showProduct($slug, $productId)
     {
         $member = WeddingOrganizer::with(['region', 'user'])
-            ->where('id', $id)
+            ->where('slug', $slug)
             ->verified()
             ->active()
             ->firstOrFail();
 
         // Get product from database
         $productModel = \App\Models\Product::where('id', $productId)
-            ->where('wedding_organizer_id', $id)
+            ->where('wedding_organizer_id', $member->id)
             ->where('is_active', true)
             ->firstOrFail();
 

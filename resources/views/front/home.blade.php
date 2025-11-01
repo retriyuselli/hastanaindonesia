@@ -293,421 +293,165 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-12">
             <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-                Portfolio <span class="gradient-text">Wedding Organizer</span>
+                Paket <span class="gradient-text">Spesial</span>
             </h2>
             <p class="text-lg text-gray-600 max-w-3xl mx-auto mb-6">
-                Karya terbaik dari anggota HASTANA yang telah mewujudkan ribuan pernikahan impian
+                Penawaran terbaik dari wedding organizer anggota HASTANA untuk pernikahan impian Anda
             </p>
         </div>
     </div>
     
-    <!-- Full width marquee container -->
-    <div class="w-full">
-        <div class="portfolio-marquee mb-10">
-            <div class="portfolio-marquee-content">
-                @forelse($featuredPortfolios as $portfolio)
-                <!-- Portfolio Item {{ $loop->iteration }} -->
-                <div class="portfolio-marquee-item">
-                    <a href="{{ url('/portfolio/detail/' . $portfolio->id) }}" class="block h-full">
-                    <div class="portfolio-card bg-white rounded-2xl shadow-lg overflow-hidden h-full cursor-pointer">
-                <div class="relative group">
-                    @if($portfolio->first_image)
-                        <img src="{{ asset('storage/' . $portfolio->first_image) }}" 
-                             alt="{{ $portfolio->title }}" 
-                             class="w-full h-64 object-cover">
-                    @else
-                        <div class="w-full h-64 bg-gradient-to-br from-pink-200 to-rose-300 flex items-center justify-center">
-                            <i class="fas fa-image text-3xl text-white opacity-50"></i>
-                        </div>
-                    @endif
-                    <div class="portfolio-overlay absolute inset-0 flex items-center justify-center bg-gradient-to-br from-blue-900/90 to-red-900/90 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        <div class="text-center text-white px-4">
-                            <h3 class="text-lg font-bold mb-2">{{ $portfolio->title }}</h3>
-                            <p class="text-sm mb-4">{{ Str::limit($portfolio->description, 60) }}</p>
-                            <span class="bg-white text-gray-900 px-4 py-2 rounded-full font-semibold hover:bg-gray-100 transition-colors inline-block">
-                                Lihat Detail
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                <div class="p-4">
-                    <div class="flex justify-between items-center mb-3">
-                        @if($portfolio->category)
-                            <span class="text-xs bg-blue-100 text-blue-800 px-3 py-1 rounded-full">{{ $portfolio->category }}</span>
+    <!-- Wedding Organizer Card -->
+    <div class="portfolio-marquee">
+        <div class="portfolio-marquee-content">
+            @forelse($featuredProducts as $product)
+            <div class="portfolio-marquee-item">
+                <div class="bg-white rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 p-6 relative">
+                    <!-- Deals Badge -->
+                    @if($product->limited_offer || $product->discount > 0)
+                    <div class="absolute top-4 left-4 bg-red-500 text-white px-4 py-2 rounded-full text-xs font-semibold flex items-center gap-1 shadow-md">
+                        <i class="fas fa-tag"></i>
+                        @if($product->limited_offer)
+                        Limited Offer
                         @else
-                            <span class="text-xs bg-gray-100 text-gray-800 px-3 py-1 rounded-full">Wedding</span>
+                        Deals Available
                         @endif
-                        <span class="text-xs text-gray-500">{{ $portfolio->location ?? 'Indonesia' }}</span>
                     </div>
-                    <h3 class="font-bold text-sm mb-2">{{ $portfolio->title }}</h3>
-                    <p class="text-gray-600 text-xs mb-3">by <strong>{{ $portfolio->weddingOrganizer->name ?? 'Wedding Organizer' }}</strong></p>
-                    <div class="flex justify-between items-center">
-                        <div class="flex text-yellow-400 text-xs">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
+                    @endif
+                    
+                    <!-- Product Image -->
+                    <div class="flex justify-center mt-8 mb-6">
+                        <div class="relative">
+                            @if($product->images && count($product->images) > 0)
+                            <div class="w-40 h-40 rounded-full overflow-hidden shadow-xl border-4 border-gray-100">
+                                @if(str_starts_with($product->images[0], 'http'))
+                                <img src="{{ $product->images[0] }}" alt="{{ $product->name }}" class="w-full h-full object-cover">
+                                @else
+                                <img src="{{ asset('storage/' . $product->images[0]) }}" alt="{{ $product->name }}" class="w-full h-full object-cover">
+                                @endif
+                            </div>
+                            @else
+                            <div class="w-40 h-40 rounded-full bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center text-white text-5xl font-bold shadow-xl">
+                                {{ strtoupper(substr($product->name, 0, 1)) }}
+                            </div>
+                            @endif
+                            <!-- Verified Badge (if WO is verified) -->
+                            @if($product->weddingOrganizer && $product->weddingOrganizer->verification_status === 'verified')
+                            <div class="absolute bottom-0 right-0 bg-yellow-400 w-12 h-12 rounded-full flex items-center justify-center shadow-lg border-4 border-white">
+                                <i class="fas fa-check text-white text-lg"></i>
+                            </div>
+                            @endif
                         </div>
-                        <span class="text-xs text-gray-500"><i class="fas fa-heart mr-1"></i>{{ $portfolio->views ?? 0 }}</span>
                     </div>
+                    
+                    <!-- Product Info -->
+                    <div class="text-center mb-4">
+                        <h3 class="text-sm font-bold text-gray-900 mb-2" title="{{ $product->name }}">
+                            {{ Str::limit($product->name, 25) }}
+                        </h3>
+                        @if($product->weddingOrganizer)
+                        <p class="text-gray-600 text-xs mb-1">{{ $product->weddingOrganizer->brand_name }}</p>
+                        <p class="text-gray-500 text-xs">
+                            {{ $product->weddingOrganizer->city ?? 'Indonesia' }}{{ $product->weddingOrganizer->province ? ', ' . $product->weddingOrganizer->province : '' }}
+                        </p>
+                        @endif
+                    </div>
+                    
+                    <!-- Price & Discount -->
+                    <div class="text-center mb-6">
+                        @if($product->discount > 0)
+                        <div class="mb-1">
+                            <span class="text-gray-400 line-through text-xs">Rp {{ number_format($product->original_price, 0, ',', '.') }}</span>
+                        </div>
+                        <div class="text-lg font-bold text-red-600">
+                            Rp {{ number_format($product->price, 0, ',', '.') }}
+                        </div>
+                        <div class="text-xs text-green-600 font-semibold">
+                            Hemat Rp {{ number_format($product->discount, 0, ',', '.') }}
+                        </div>
+                        @else
+                        <div class="text-lg font-bold text-gray-900">
+                            Rp {{ number_format($product->price, 0, ',', '.') }}
+                        </div>
+                        @endif
+                    </div>
+                    
+                    <!-- Detail Button -->
+                    @if($product->weddingOrganizer && $product->weddingOrganizer->slug)
+                    <a href="{{ route('members.product', ['slug' => $product->weddingOrganizer->slug, 'productId' => $product->id]) }}" class="w-full bg-white border-2 border-gray-800 text-gray-800 text-center py-2 rounded-full text-sm font-semibold hover:bg-gray-800 hover:text-white transition-all duration-300 flex items-center justify-center gap-2">
+                        <i class="fas fa-eye text-xs"></i>
+                        Detail
+                    </a>
+                    @else
+                    <a href="#" class="w-full bg-gray-300 border-2 border-gray-400 text-gray-500 text-center py-2 rounded-full text-sm font-semibold cursor-not-allowed flex items-center justify-center gap-2">
+                        <i class="fas fa-eye text-xs"></i>
+                        Detail
+                    </a>
+                    @endif
                 </div>
+            </div>
+            @empty
+            <!-- Fallback jika tidak ada data -->
+            @for ($i = 1; $i <= 10; $i++)
+            <div class="portfolio-marquee-item">
+                <div class="bg-white rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 p-6 relative">
+                    <!-- Deals Badge -->
+                    <div class="absolute top-4 left-4 bg-red-500 text-white px-4 py-2 rounded-full text-xs font-semibold flex items-center gap-1 shadow-md">
+                        <i class="fas fa-tag"></i>
+                        Deals Available
                     </div>
+                    
+                    <!-- Product Image -->
+                    <div class="flex justify-center mt-8 mb-6">
+                        <div class="relative">
+                            <div class="w-40 h-40 rounded-full bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center text-white text-5xl font-bold shadow-xl">
+                                {{ chr(65 + ($i % 26)) }}
+                            </div>
+                            <!-- Verified Badge -->
+                            <div class="absolute bottom-0 right-0 bg-yellow-400 w-12 h-12 rounded-full flex items-center justify-center shadow-lg border-4 border-white">
+                                <i class="fas fa-check text-white text-lg"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Product Info -->
+                    <div class="text-center mb-4">
+                        <h3 class="text-sm font-bold text-gray-900 mb-2">Paket Wedding {{ $i }}</h3>
+                        <p class="text-gray-600 text-xs mb-1">Wedding Organizer {{ $i }}</p>
+                        <p class="text-gray-500 text-xs">Denpasar, Bali</p>
+                    </div>
+                    
+                    <!-- Price -->
+                    <div class="text-center mb-6">
+                        <div class="mb-1">
+                            <span class="text-gray-400 line-through text-xs">Rp {{ number_format((50 + $i * 5) * 1000000, 0, ',', '.') }}</span>
+                        </div>
+                        <div class="text-lg font-bold text-red-600">
+                            Rp {{ number_format((45 + $i * 5) * 1000000, 0, ',', '.') }}
+                        </div>
+                        <div class="text-xs text-green-600 font-semibold">
+                            Hemat Rp {{ number_format(5 * 1000000, 0, ',', '.') }}
+                        </div>
+                    </div>
+                    
+                    <!-- Detail Button -->
+                    <a href="{{ route('members') }}" class="w-full bg-white border-2 border-gray-800 text-gray-800 text-center py-2 rounded-full text-sm font-semibold hover:bg-gray-800 hover:text-white transition-all duration-300 flex items-center justify-center gap-2">
+                        <i class="fas fa-eye text-xs"></i>
+                        Detail
                     </a>
                 </div>
-                @empty
-            <!-- Default Portfolio Items when no data -->
-            <!-- Portfolio Item 1 -->
-            <div class="portfolio-marquee-item">
-                <div class="portfolio-card bg-white rounded-2xl shadow-lg overflow-hidden h-full">
-                <div class="relative group">
-                    <img src="https://images.unsplash.com/photo-1519741497674-611481863552?w=400&h=400&fit=crop" 
-                         alt="Wedding Tradisional Jawa" 
-                         class="w-full h-64 object-cover"
-                         loading="lazy">
-                    <div class="portfolio-overlay absolute inset-0 flex items-center justify-center bg-gradient-to-br from-blue-900/90 to-red-900/90 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        <div class="text-center text-white px-4">
-                            <h3 class="text-lg font-bold mb-2">Traditional Javanese Wedding</h3>
-                            <p class="text-sm mb-4">Pernikahan adat Jawa dengan detail sempurna</p>
-                            <a href="{{ route('portfolio') }}" class="bg-white text-gray-900 px-4 py-2 rounded-full font-semibold hover:bg-gray-100 transition-colors inline-block">
-                                Lihat Detail
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <div class="p-4">
-                    <div class="flex justify-between items-center mb-3">
-                        <span class="text-xs bg-red-100 text-red-800 px-3 py-1 rounded-full">Traditional</span>
-                        <span class="text-xs text-gray-500">Jakarta</span>
-                    </div>
-                    <h3 class="font-bold text-sm mb-2">Elegant Javanese Wedding</h3>
-                    <p class="text-gray-600 text-xs mb-3">by <strong>Prima Wedding</strong></p>
-                    <div class="flex justify-between items-center">
-                        <div class="flex text-yellow-400 text-xs">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                        </div>
-                        <span class="text-xs text-gray-500"><i class="fas fa-heart mr-1"></i>234</span>
-                    </div>
-                </div>
-                </div>
             </div>
-            
-            <!-- Portfolio Item 2 -->
-            <div class="portfolio-marquee-item">
-                <div class="portfolio-card bg-white rounded-2xl shadow-lg overflow-hidden h-full">
-                <div class="relative group">
-                    <img src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=400&h=400&fit=crop" 
-                         alt="Modern Minimalist Wedding" 
-                         class="w-full h-64 object-cover"
-                         loading="lazy">
-                    <div class="portfolio-overlay absolute inset-0 flex items-center justify-center bg-gradient-to-br from-blue-900/90 to-red-900/90 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        <div class="text-center text-white px-4">
-                            <h3 class="text-lg font-bold mb-2">Modern Minimalist Wedding</h3>
-                            <p class="text-sm mb-4">Konsep pernikahan modern dengan dekorasi minimalis</p>
-                            <a href="{{ route('portfolio') }}" class="bg-white text-gray-900 px-4 py-2 rounded-full font-semibold hover:bg-gray-100 transition-colors inline-block">
-                                Lihat Detail
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <div class="p-4">
-                    <div class="flex justify-between items-center mb-3">
-                        <span class="text-xs bg-purple-100 text-purple-800 px-3 py-1 rounded-full">Modern</span>
-                        <span class="text-xs text-gray-500">Bandung</span>
-                    </div>
-                    <h3 class="font-bold text-sm mb-2">Modern Minimalist Wedding</h3>
-                    <p class="text-gray-600 text-xs mb-3">by <strong>Modern Wedding Planner</strong></p>
-                    <div class="flex justify-between items-center">
-                        <div class="flex text-yellow-400 text-xs">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                        </div>
-                        <span class="text-xs text-gray-500"><i class="fas fa-heart mr-1"></i>189</span>
-                    </div>
-                </div>
-                </div>
-            </div>
-            
-            <!-- Portfolio Item 3 -->
-            <div class="portfolio-marquee-item">
-                <div class="portfolio-card bg-white rounded-2xl shadow-lg overflow-hidden h-full">
-                <div class="relative group">
-                    <img src="https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=400&h=400&fit=crop" 
-                         alt="Garden Wedding Outdoor" 
-                         class="w-full h-64 object-cover"
-                         loading="lazy">
-                    <div class="portfolio-overlay absolute inset-0 flex items-center justify-center bg-gradient-to-br from-blue-900/90 to-red-900/90 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        <div class="text-center text-white px-4">
-                            <h3 class="text-lg font-bold mb-2">Garden Wedding</h3>
-                            <p class="text-sm mb-4">Pernikahan outdoor di taman dengan suasana natural</p>
-                            <a href="{{ route('portfolio') }}" class="bg-white text-gray-900 px-4 py-2 rounded-full font-semibold hover:bg-gray-100 transition-colors inline-block">
-                                Lihat Detail
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <div class="p-4">
-                    <div class="flex justify-between items-center mb-3">
-                        <span class="text-xs bg-green-100 text-green-800 px-3 py-1 rounded-full">Outdoor</span>
-                        <span class="text-xs text-gray-500">Bali</span>
-                    </div>
-                    <h3 class="font-bold text-sm mb-2">Garden Wedding Outdoor</h3>
-                    <p class="text-gray-600 text-xs mb-3">by <strong>Bali Dream Wedding</strong></p>
-                    <div class="flex justify-between items-center">
-                        <div class="flex text-yellow-400 text-xs">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                        </div>
-                        <span class="text-xs text-gray-500"><i class="fas fa-heart mr-1"></i>312</span>
-                    </div>
-                </div>
-                </div>
-            </div>
-            
-            <!-- Portfolio Item 4 -->
-            <div class="portfolio-marquee-item">
-                <div class="portfolio-card bg-white rounded-2xl shadow-lg overflow-hidden h-full">
-                <div class="relative group">
-                    <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=400&h=400&fit=crop" 
-                         alt="Luxury Ballroom Wedding" 
-                         class="w-full h-64 object-cover"
-                         loading="lazy">
-                    <div class="portfolio-overlay absolute inset-0 flex items-center justify-center bg-gradient-to-br from-blue-900/90 to-red-900/90 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        <div class="text-center text-white px-4">
-                            <h3 class="text-lg font-bold mb-2">Luxury Ballroom</h3>
-                            <p class="text-sm mb-4">Resepsi mewah di ballroom hotel bintang lima</p>
-                            <a href="{{ route('portfolio') }}" class="bg-white text-gray-900 px-4 py-2 rounded-full font-semibold hover:bg-gray-100 transition-colors inline-block">
-                                Lihat Detail
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <div class="p-4">
-                    <div class="flex justify-between items-center mb-3">
-                        <span class="text-xs bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full">Luxury</span>
-                        <span class="text-xs text-gray-500">Surabaya</span>
-                    </div>
-                    <h3 class="font-bold text-sm mb-2">Luxury Ballroom Wedding</h3>
-                    <p class="text-gray-600 text-xs mb-3">by <strong>Elite Wedding Organizer</strong></p>
-                    <div class="flex justify-between items-center">
-                        <div class="flex text-yellow-400 text-xs">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                        </div>
-                        <span class="text-xs text-gray-500"><i class="fas fa-heart mr-1"></i>278</span>
-                    </div>
-                </div>
-                </div>
-            </div>
+            @endfor
             @endforelse
-            
-            <!-- Duplicate cards for seamless loop -->
-            @forelse($featuredPortfolios as $portfolio)
-            <div class="portfolio-marquee-item">
-                    <a href="{{ url('/portfolio/detail/' . $portfolio->id) }}" class="block h-full">
-                    <div class="portfolio-card bg-white rounded-2xl shadow-lg overflow-hidden h-full cursor-pointer">
-                        <div class="relative group">
-                            @if($portfolio->first_image)
-                                <img src="{{ asset('storage/' . $portfolio->first_image) }}" 
-                                     alt="{{ $portfolio->title }}" 
-                                     class="w-full h-64 object-cover">
-                            @else
-                                <div class="w-full h-64 bg-gradient-to-br from-pink-200 to-rose-300 flex items-center justify-center">
-                                    <i class="fas fa-image text-3xl text-white opacity-50"></i>
-                                </div>
-                            @endif
-                            <div class="portfolio-overlay absolute inset-0 flex items-center justify-center bg-gradient-to-br from-blue-900/90 to-red-900/90 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                                <div class="text-center text-white px-4">
-                                    <h3 class="text-lg font-bold mb-2">{{ $portfolio->title }}</h3>
-                                    <p class="text-sm mb-4">{{ Str::limit($portfolio->description, 60) }}</p>
-                                    <span class="bg-white text-gray-900 px-4 py-2 rounded-full font-semibold hover:bg-gray-100 transition-colors inline-block">
-                                        Lihat Detail
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="p-4">
-                            <div class="flex justify-between items-center mb-3">
-                                @if($portfolio->category)
-                                    <span class="text-xs bg-blue-100 text-blue-800 px-3 py-1 rounded-full">{{ $portfolio->category }}</span>
-                                @else
-                                    <span class="text-xs bg-gray-100 text-gray-800 px-3 py-1 rounded-full">Wedding</span>
-                                @endif
-                                <span class="text-xs text-gray-500">{{ $portfolio->location ?? 'Indonesia' }}</span>
-                            </div>
-                            <h3 class="font-bold text-sm mb-2">{{ $portfolio->title }}</h3>
-                            <p class="text-gray-600 text-xs mb-3">by <strong>{{ $portfolio->weddingOrganizer->name ?? 'Wedding Organizer' }}</strong></p>
-                            <div class="flex justify-between items-center">
-                                <div class="flex text-yellow-400 text-xs">
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                </div>
-                                <span class="text-xs text-gray-500"><i class="fas fa-heart mr-1"></i>{{ $portfolio->views ?? 0 }}</span>
-                            </div>
-                        </div>
-                    </div>
-                    </a>
-                </div>
-                @empty
-                <!-- Duplicate fallback items -->
-                @for($i = 0; $i < 4; $i++)
-                <div class="portfolio-marquee-item">
-                    <div class="portfolio-card bg-white rounded-2xl shadow-lg overflow-hidden h-full">
-                        <div class="relative group">
-                            <img src="https://images.unsplash.com/photo-{{ ['1519741497674-611481863552', '1519225421980-715cb0215aed', '1464366400600-7168b8af9bc3', '1511285560929-80b456fea0bc'][$i] }}?w=400&h=400&fit=crop" 
-                                 alt="Portfolio Item" 
-                                 class="w-full h-64 object-cover"
-                                 loading="lazy">
-                            <div class="portfolio-overlay absolute inset-0 flex items-center justify-center bg-gradient-to-br from-blue-900/90 to-red-900/90 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                                <div class="text-center text-white px-4">
-                                    <h3 class="text-lg font-bold mb-2">{{ ['Traditional Javanese Wedding', 'Modern Minimalist Wedding', 'Garden Wedding', 'Luxury Ballroom'][$i] }}</h3>
-                                    <p class="text-sm mb-4">{{ ['Pernikahan adat Jawa dengan detail sempurna', 'Konsep pernikahan modern dengan dekorasi minimalis', 'Pernikahan outdoor di taman dengan suasana natural', 'Resepsi mewah di ballroom hotel bintang lima'][$i] }}</p>
-                                    <a href="{{ route('portfolio') }}" class="bg-white text-gray-900 px-4 py-2 rounded-full font-semibold hover:bg-gray-100 transition-colors inline-block">
-                                        Lihat Detail
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="p-4">
-                            <div class="flex justify-between items-center mb-3">
-                                <span class="text-xs bg-{{ ['red', 'purple', 'green', 'yellow'][$i] }}-100 text-{{ ['red', 'purple', 'green', 'yellow'][$i] }}-800 px-3 py-1 rounded-full">{{ ['Traditional', 'Modern', 'Outdoor', 'Luxury'][$i] }}</span>
-                                <span class="text-xs text-gray-500">{{ ['Jakarta', 'Bandung', 'Bali', 'Surabaya'][$i] }}</span>
-                            </div>
-                            <h3 class="font-bold text-sm mb-2">{{ ['Elegant Javanese Wedding', 'Modern Minimalist Wedding', 'Garden Wedding Outdoor', 'Luxury Ballroom Wedding'][$i] }}</h3>
-                            <p class="text-gray-600 text-xs mb-3">by <strong>{{ ['Prima Wedding', 'Modern Wedding Planner', 'Bali Dream Wedding', 'Elite Wedding Organizer'][$i] }}</strong></p>
-                            <div class="flex justify-between items-center">
-                                <div class="flex text-yellow-400 text-xs">
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                </div>
-                                <span class="text-xs text-gray-500"><i class="fas fa-heart mr-1"></i>{{ [234, 189, 312, 278][$i] }}</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                @endfor
-                @endforelse
-            
-            <!-- Duplicate cards for seamless loop (2nd set) -->
-            @forelse($featuredPortfolios as $portfolio)
-            <div class="portfolio-marquee-item">
-                    <a href="{{ url('/portfolio/detail/' . $portfolio->id) }}" class="block h-full">
-                    <div class="portfolio-card bg-white rounded-2xl shadow-lg overflow-hidden h-full cursor-pointer">
-                        <div class="relative group">
-                            @if($portfolio->first_image)
-                                <img src="{{ asset('storage/' . $portfolio->first_image) }}" 
-                                     alt="{{ $portfolio->title }}" 
-                                     class="w-full h-64 object-cover">
-                            @else
-                                <div class="w-full h-64 bg-gradient-to-br from-pink-200 to-rose-300 flex items-center justify-center">
-                                    <i class="fas fa-image text-3xl text-white opacity-50"></i>
-                                </div>
-                            @endif
-                            <div class="portfolio-overlay absolute inset-0 flex items-center justify-center bg-gradient-to-br from-blue-900/90 to-red-900/90 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                                <div class="text-center text-white px-4">
-                                    <h3 class="text-lg font-bold mb-2">{{ $portfolio->title }}</h3>
-                                    <p class="text-sm mb-4">{{ Str::limit($portfolio->description, 60) }}</p>
-                                    <span class="bg-white text-gray-900 px-4 py-2 rounded-full font-semibold hover:bg-gray-100 transition-colors inline-block">
-                                        Lihat Detail
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="p-4">
-                            <div class="flex justify-between items-center mb-3">
-                                @if($portfolio->category)
-                                    <span class="text-xs bg-blue-100 text-blue-800 px-3 py-1 rounded-full">{{ $portfolio->category }}</span>
-                                @else
-                                    <span class="text-xs bg-gray-100 text-gray-800 px-3 py-1 rounded-full">Wedding</span>
-                                @endif
-                                <span class="text-xs text-gray-500">{{ $portfolio->location ?? 'Indonesia' }}</span>
-                            </div>
-                            <h3 class="font-bold text-sm mb-2">{{ $portfolio->title }}</h3>
-                            <p class="text-gray-600 text-xs mb-3">by <strong>{{ $portfolio->weddingOrganizer->name ?? 'Wedding Organizer' }}</strong></p>
-                            <div class="flex justify-between items-center">
-                                <div class="flex text-yellow-400 text-xs">
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                </div>
-                                <span class="text-xs text-gray-500"><i class="fas fa-heart mr-1"></i>{{ $portfolio->views ?? 0 }}</span>
-                            </div>
-                        </div>
-                    </div>
-                    </a>
-                </div>
-                @empty
-                <!-- Duplicate fallback items (2nd set) -->
-                @for($i = 0; $i < 4; $i++)
-                <div class="portfolio-marquee-item">
-                    <div class="portfolio-card bg-white rounded-2xl shadow-lg overflow-hidden h-full">
-                        <div class="relative group">
-                            <img src="https://images.unsplash.com/photo-{{ ['1519741497674-611481863552', '1519225421980-715cb0215aed', '1464366400600-7168b8af9bc3', '1511285560929-80b456fea0bc'][$i] }}?w=400&h=400&fit=crop" 
-                                 alt="Portfolio Item" 
-                                 class="w-full h-64 object-cover"
-                                 loading="lazy">
-                            <div class="portfolio-overlay absolute inset-0 flex items-center justify-center bg-gradient-to-br from-blue-900/90 to-red-900/90 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                                <div class="text-center text-white px-4">
-                                    <h3 class="text-lg font-bold mb-2">{{ ['Traditional Javanese Wedding', 'Modern Minimalist Wedding', 'Garden Wedding', 'Luxury Ballroom'][$i] }}</h3>
-                                    <p class="text-sm mb-4">{{ ['Pernikahan adat Jawa dengan detail sempurna', 'Konsep pernikahan modern dengan dekorasi minimalis', 'Pernikahan outdoor di taman dengan suasana natural', 'Resepsi mewah di ballroom hotel bintang lima'][$i] }}</p>
-                                    <a href="{{ route('portfolio') }}" class="bg-white text-gray-900 px-4 py-2 rounded-full font-semibold hover:bg-gray-100 transition-colors inline-block">
-                                        Lihat Detail
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="p-4">
-                            <div class="flex justify-between items-center mb-3">
-                                <span class="text-xs bg-{{ ['red', 'purple', 'green', 'yellow'][$i] }}-100 text-{{ ['red', 'purple', 'green', 'yellow'][$i] }}-800 px-3 py-1 rounded-full">{{ ['Traditional', 'Modern', 'Outdoor', 'Luxury'][$i] }}</span>
-                                <span class="text-xs text-gray-500">{{ ['Jakarta', 'Bandung', 'Bali', 'Surabaya'][$i] }}</span>
-                            </div>
-                            <h3 class="font-bold text-sm mb-2">{{ ['Elegant Javanese Wedding', 'Modern Minimalist Wedding', 'Garden Wedding Outdoor', 'Luxury Ballroom Wedding'][$i] }}</h3>
-                            <p class="text-gray-600 text-xs mb-3">by <strong>{{ ['Prima Wedding', 'Modern Wedding Planner', 'Bali Dream Wedding', 'Elite Wedding Organizer'][$i] }}</strong></p>
-                            <div class="flex justify-between items-center">
-                                <div class="flex text-yellow-400 text-xs">
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                </div>
-                                <span class="text-xs text-gray-500"><i class="fas fa-heart mr-1"></i>{{ [234, 189, 312, 278][$i] }}</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                @endfor
-                @endforelse
-            </div>
         </div>
     </div>
     
+    
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mt-10">
-            <a href="{{ route('portfolio') }}" class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-red-600 text-white font-semibold text-sm rounded-full hover:from-blue-700 hover:to-red-700 transition-all duration-300 shadow-lg hover:shadow-xl">
-                <i class="fas fa-images mr-2 text-xs"></i>
-                Lihat Semua Portfolio
+            <a href="{{ route('members') }}" class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-red-600 text-white font-semibold text-sm rounded-full hover:from-blue-700 hover:to-red-700 transition-all duration-300 shadow-lg hover:shadow-xl">
+                <i class="fas fa-shopping-bag mr-2 text-xs"></i>
+                Lihat Semua Paket
             </a>
         </div>
     </div>

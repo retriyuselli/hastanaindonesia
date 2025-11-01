@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Front;
 
 use App\Http\Controllers\Controller;
 use App\Models\AboutPage;
+use App\Models\WeddingOrganizer;
+use App\Models\Region;
 use Illuminate\Http\Request;
 
 class AboutController extends Controller
@@ -27,6 +29,12 @@ class AboutController extends Controller
             ];
         }
         
-        return view('front.about', compact('about'));
+        // Get statistics
+        $totalMembers = WeddingOrganizer::count();
+        $totalRegions = Region::count();
+        $averageRating = WeddingOrganizer::avg('rating') ?: 4.8;
+        $totalEvents = WeddingOrganizer::sum('completed_events') ?: 0;
+        
+        return view('front.about', compact('about', 'totalMembers', 'totalRegions', 'averageRating', 'totalEvents'));
     }
 }

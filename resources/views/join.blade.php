@@ -145,7 +145,7 @@
     .modal-content {
         background: white;
         border-radius: 1rem;
-        max-width: 500px;
+        max-width: 800px;
         width: 90%;
         max-height: 90vh;
         overflow-y: auto;
@@ -680,6 +680,116 @@
                         @enderror
                     </div>
 
+                    <!-- Legal Detail Fields (Opsional) -->
+                    <div class="bg-blue-50 border border-blue-200 rounded-lg p-5 mb-6">
+                        <h4 class="font-semibold text-gray-900 mb-4 flex items-center">
+                            <i class="fas fa-file-alt text-blue-600 mr-2"></i>
+                            Detail Legalitas (Opsional - dapat dilengkapi nanti)
+                        </h4>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="form-group mb-0">
+                                <label class="form-label">Jenis Badan Hukum</label>
+                                <select name="legal_entity_type" class="form-select @error('legal_entity_type') border-red-500 @enderror">
+                                    <option value="">Pilih Jenis Badan Hukum</option>
+                                    <option value="PT" {{ old('legal_entity_type') == 'PT' ? 'selected' : '' }}>Perseroan Terbatas (PT)</option>
+                                    <option value="CV" {{ old('legal_entity_type') == 'CV' ? 'selected' : '' }}>Commanditaire Vennootschap (CV)</option>
+                                    <option value="Firma" {{ old('legal_entity_type') == 'Firma' ? 'selected' : '' }}>Firma</option>
+                                    <option value="UD" {{ old('legal_entity_type') == 'UD' ? 'selected' : '' }}>Usaha Dagang (UD)</option>
+                                    <option value="Koperasi" {{ old('legal_entity_type') == 'Koperasi' ? 'selected' : '' }}>Koperasi</option>
+                                    <option value="Yayasan" {{ old('legal_entity_type') == 'Yayasan' ? 'selected' : '' }}>Yayasan</option>
+                                </select>
+                                @error('legal_entity_type')
+                                <p class="text-xs text-red-600 mt-1">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <div class="form-group mb-0">
+                                <label class="form-label">Nomor Akta Pendirian</label>
+                                <input type="text" name="deed_of_establishment" class="form-input @error('deed_of_establishment') border-red-500 @enderror" placeholder="No. 123/2020" value="{{ old('deed_of_establishment') }}">
+                                @error('deed_of_establishment')
+                                <p class="text-xs text-red-600 mt-1">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <div class="form-group mb-0">
+                                <label class="form-label">Tanggal Akta</label>
+                                <input type="date" name="deed_date" class="form-input @error('deed_date') border-red-500 @enderror" value="{{ old('deed_date') }}">
+                                @error('deed_date')
+                                <p class="text-xs text-red-600 mt-1">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <div class="form-group mb-0">
+                                <label class="form-label">Nama Notaris</label>
+                                <input type="text" name="notary_name" class="form-input @error('notary_name') border-red-500 @enderror" placeholder="Dr. John Doe, S.H., M.Kn." value="{{ old('notary_name') }}">
+                                @error('notary_name')
+                                <p class="text-xs text-red-600 mt-1">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <div class="form-group mb-0">
+                                <label class="form-label">Nomor Izin Notaris</label>
+                                <input type="text" name="notary_license_number" class="form-input @error('notary_license_number') border-red-500 @enderror" placeholder="123/KEP/2020" value="{{ old('notary_license_number') }}">
+                                @error('notary_license_number')
+                                <p class="text-xs text-red-600 mt-1">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <div class="form-group mb-0">
+                                <label class="form-label">Nomor NIB (Nomor Induk Berusaha)</label>
+                                <input type="text" name="nib_number" class="form-input @error('nib_number') border-red-500 @enderror" placeholder="1234567890123" value="{{ old('nib_number') }}">
+                                @error('nib_number')
+                                <p class="text-xs text-red-600 mt-1">{{ $message }}</p>
+                                @else
+                                <p class="text-xs text-gray-500 mt-1">13 digit NIB dari OSS</p>
+                                @enderror
+                            </div>
+
+                            <div class="form-group mb-0">
+                                <label class="form-label">Tanggal Terbit NIB</label>
+                                <input type="date" name="nib_issued_date" class="form-input @error('nib_issued_date') border-red-500 @enderror" value="{{ old('nib_issued_date') }}">
+                                @error('nib_issued_date')
+                                <p class="text-xs text-red-600 mt-1">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <div class="form-group mb-0">
+                                <label class="form-label">NIB Berlaku Sampai</label>
+                                <input type="date" name="nib_valid_until" class="form-input @error('nib_valid_until') border-red-500 @enderror" value="{{ old('nib_valid_until') }}">
+                                @error('nib_valid_until')
+                                <p class="text-xs text-red-600 mt-1">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <div class="form-group mb-0">
+                                <label class="form-label">Nomor NPWP</label>
+                                <input type="text" name="npwp_number" class="form-input @error('npwp_number') border-red-500 @enderror" placeholder="12.345.678.9-012.000" value="{{ old('npwp_number') }}">
+                                @error('npwp_number')
+                                <p class="text-xs text-red-600 mt-1">{{ $message }}</p>
+                                @else
+                                <p class="text-xs text-gray-500 mt-1">Format: XX.XXX.XXX.X-XXX.XXX</p>
+                                @enderror
+                            </div>
+
+                            <div class="form-group mb-0">
+                                <label class="form-label">Tanggal Terbit NPWP</label>
+                                <input type="date" name="npwp_issued_date" class="form-input @error('npwp_issued_date') border-red-500 @enderror" value="{{ old('npwp_issued_date') }}">
+                                @error('npwp_issued_date')
+                                <p class="text-xs text-red-600 mt-1">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <div class="form-group mb-0 md:col-span-2">
+                                <label class="form-label">Kantor Pajak Terdaftar</label>
+                                <input type="text" name="tax_office" class="form-input @error('tax_office') border-red-500 @enderror" placeholder="KPP Pratama Jakarta Selatan" value="{{ old('tax_office') }}">
+                                @error('tax_office')
+                                <p class="text-xs text-red-600 mt-1">{{ $message }}</p>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="form-group">
                         <label class="form-label">Dokumen Legal</label>
                         <input type="file" name="legal_documents[]" class="form-input @error('legal_documents') border-red-500 @enderror" multiple accept=".pdf,.jpg,.jpeg,.png">
@@ -737,6 +847,15 @@
                 
                 <!-- Submit Button -->
                 <div class="text-center">
+                    @if($alreadyRegistered)
+                    <button type="submit" class="inline-flex items-center px-12 py-4 bg-gradient-to-r from-green-600 to-green-700 text-white font-bold text-lg rounded-full hover:from-green-700 hover:to-green-800 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+                        <i class="fas fa-save mr-3"></i>
+                        Update Data
+                    </button>
+                    <p class="text-sm text-gray-500 mt-4">
+                        * Klik tombol "Edit" terlebih dahulu untuk mengubah data
+                    </p>
+                    @else
                     <button type="submit" class="inline-flex items-center px-12 py-4 bg-gradient-to-r from-blue-600 to-red-600 text-white font-bold text-lg rounded-full hover:from-blue-700 hover:to-red-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
                         <i class="fas fa-paper-plane mr-3"></i>
                         Daftar Sekarang
@@ -744,6 +863,7 @@
                     <p class="text-sm text-gray-500 mt-4">
                         * Tim HASTANA akan menghubungi Anda dalam 3-5 hari kerja
                     </p>
+                    @endif
                 </div>
             </form>
         </div>
@@ -754,43 +874,43 @@
 @if($alreadyRegistered)
 <div id="alreadyRegisteredModal" class="modal-overlay active">
     <div class="modal-content">
-        <div class="p-8">
+        <div class="p-6">
             <!-- Header -->
             <div class="text-center mb-6">
-                <div class="w-20 h-20 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-4 animate-bounce">
-                    <i class="fas fa-check-circle text-white text-4xl"></i>
+                <div class="w-16 h-16 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-3 animate-bounce">
+                    <i class="fas fa-check-circle text-white text-3xl"></i>
                 </div>
-                <h2 class="text-3xl font-bold text-gray-900 mb-2">
+                <h2 class="text-2xl font-bold text-gray-900 mb-2">
                     Anda Sudah Terdaftar!
                 </h2>
-                <p class="text-gray-600">
+                <p class="text-sm text-gray-600">
                     Akun Anda sudah memiliki wedding organizer yang terdaftar di Hastana Indonesia
                 </p>
             </div>
 
             <!-- Organizer Info -->
             @if($existingOrganizer)
-            <div class="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-6 mb-6 border border-blue-200">
-                <div class="flex items-start space-x-4">
+            <div class="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-4 mb-4 border border-blue-200">
+                <div class="flex items-start space-x-3">
                     <div class="flex-shrink-0">
                         @if($existingOrganizer->user && $existingOrganizer->user->avatar)
                             <img src="{{ asset('storage/' . $existingOrganizer->user->avatar) }}" 
                                  alt="{{ $existingOrganizer->user->name }}" 
-                                 class="w-16 h-16 rounded-full object-cover border-2 border-blue-300">
+                                 class="w-12 h-12 rounded-full object-cover border-2 border-blue-300">
                         @else
-                            <div class="w-16 h-16 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-full flex items-center justify-center border-2 border-blue-300">
-                                <span class="text-white text-2xl font-bold">
+                            <div class="w-12 h-12 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-full flex items-center justify-center border-2 border-blue-300">
+                                <span class="text-white text-lg font-bold">
                                     {{ strtoupper(substr($existingOrganizer->user->name ?? $existingOrganizer->organizer_name, 0, 2)) }}
                                 </span>
                             </div>
                         @endif
                     </div>
                     <div class="flex-1">
-                        <h3 class="font-bold text-lg text-gray-900 mb-1">
+                        <h3 class="font-bold text-base text-gray-900 mb-1">
                             {{ $existingOrganizer->organizer_name }}
                         </h3>
                         @if($existingOrganizer->brand_name)
-                        <p class="text-sm text-gray-600 mb-2">
+                        <p class="text-xs text-gray-600 mb-2">
                             <i class="fas fa-building mr-1"></i>
                             {{ $existingOrganizer->brand_name }}
                         </p>
@@ -817,23 +937,86 @@
             </div>
             @endif
 
-            <!-- Info Box -->
-            <div class="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-6">
+            <!-- Legal Information Warning -->
+            @if($existingOrganizer)
+            @php
+                $missingLegalFields = [];
+                $legalFields = [
+                    'legal_entity_type' => 'Jenis Badan Hukum',
+                    'deed_of_establishment' => 'Nomor Akta Pendirian',
+                    'deed_date' => 'Tanggal Akta',
+                    'notary_name' => 'Nama Notaris',
+                    'notary_license_number' => 'Nomor Izin Notaris',
+                    'nib_number' => 'Nomor NIB',
+                    'nib_issued_date' => 'Tanggal Terbit NIB',
+                    'nib_valid_until' => 'NIB Berlaku Sampai',
+                    'npwp_number' => 'Nomor NPWP',
+                    'npwp_issued_date' => 'Tanggal Terbit NPWP',
+                    'tax_office' => 'Kantor Pajak Terdaftar'
+                ];
+                
+                foreach ($legalFields as $field => $label) {
+                    if (empty($existingOrganizer->$field)) {
+                        $missingLegalFields[$field] = $label;
+                    }
+                }
+            @endphp
+
+            @if(count($missingLegalFields) > 0)
+            <div class="bg-gradient-to-r from-red-50 to-orange-50 border-2 border-red-300 rounded-xl p-4 mb-4 shadow-md">
                 <div class="flex items-start space-x-3">
-                    <i class="fas fa-info-circle text-amber-600 text-xl mt-0.5"></i>
+                    <div class="flex-shrink-0">
+                        <div class="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center animate-pulse">
+                            <i class="fas fa-exclamation text-white text-sm"></i>
+                        </div>
+                    </div>
                     <div class="flex-1">
-                        <h4 class="font-semibold text-gray-900 mb-2">Informasi Penting:</h4>
-                        <ul class="text-sm text-gray-700 space-y-1">
+                        <h4 class="font-bold text-base text-red-900 mb-2 flex items-center">
+                            <i class="fas fa-file-contract mr-2 text-sm"></i>
+                            Tambah Keterangan Legal
+                        </h4>
+                        <p class="text-xs text-red-800 mb-2">
+                            Dokumen legal Anda belum lengkap. Untuk meningkatkan kredibilitas dan mempercepat proses verifikasi, silakan lengkapi data berikut:
+                        </p>
+                        <div class="bg-white rounded-lg p-3 border border-red-200 mb-2">
+                            <ul class="grid grid-cols-1 gap-1 text-xs text-red-700">
+                                @foreach($missingLegalFields as $field => $label)
+                                <li class="flex items-start">
+                                    <i class="fas fa-times-circle text-red-500 text-xs mt-0.5 mr-2"></i>
+                                    <span><strong>{{ $label }}</strong> - Belum diisi</span>
+                                </li>
+                                @endforeach
+                            </ul>
+                        </div>
+                        <div class="bg-red-100 rounded-lg px-3 py-2 border border-red-200">
+                            <p class="text-xs text-red-800 flex items-center">
+                                <i class="fas fa-lightbulb text-red-600 mr-2 text-xs"></i>
+                                <span><strong>Tips:</strong> Klik tombol "Edit" di bawah untuk melengkapi data legal Anda. Data legal yang lengkap akan mempercepat proses verifikasi dan meningkatkan kepercayaan klien.</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @endif
+            @endif
+
+            <!-- Info Box -->
+            <div class="bg-amber-50 border border-amber-200 rounded-lg p-3 mb-4">
+                <div class="flex items-start space-x-2">
+                    <i class="fas fa-info-circle text-amber-600 text-sm mt-0.5"></i>
+                    <div class="flex-1">
+                        <h4 class="font-semibold text-sm text-gray-900 mb-2">Informasi Penting:</h4>
+                        <ul class="text-xs text-gray-700 space-y-1">
                             <li class="flex items-start">
-                                <i class="fas fa-chevron-right text-amber-600 text-xs mt-1 mr-2"></i>
+                                <i class="fas fa-chevron-right text-amber-600 text-xs mt-0.5 mr-2"></i>
                                 <span>Satu akun hanya dapat memiliki 1 wedding organizer</span>
                             </li>
                             <li class="flex items-start">
-                                <i class="fas fa-chevron-right text-amber-600 text-xs mt-1 mr-2"></i>
+                                <i class="fas fa-chevron-right text-amber-600 text-xs mt-0.5 mr-2"></i>
                                 <span>Untuk mengelola data wedding organizer Anda, silakan hubungi admin</span>
                             </li>
                             <li class="flex items-start">
-                                <i class="fas fa-chevron-right text-amber-600 text-xs mt-1 mr-2"></i>
+                                <i class="fas fa-chevron-right text-amber-600 text-xs mt-0.5 mr-2"></i>
                                 <span>Jika ingin mendaftar wedding organizer baru, gunakan akun yang berbeda</span>
                             </li>
                         </ul>
@@ -906,6 +1089,12 @@
     console.log('Existing Data:', existingData);
     console.log('City:', existingData?.city);
     console.log('Legal Documents:', existingData?.legal_documents);
+    console.log('Date Fields:', {
+        deed_date: existingData?.deed_date,
+        nib_issued_date: existingData?.nib_issued_date,
+        nib_valid_until: existingData?.nib_valid_until,
+        npwp_issued_date: existingData?.npwp_issued_date
+    });
     
     // Disable form when user already registered
     document.addEventListener('DOMContentLoaded', function() {
@@ -936,13 +1125,32 @@
             'established_year', 'business_type', 'address', 
             'postal_code', 'website', 'instagram', 'business_license',
             'price_range_min', 'price_range_max', 'completed_events',
-            'certification_level', 'region_id'
+            'certification_level', 'region_id',
+            // Legal fields
+            'legal_entity_type', 'deed_of_establishment', 'deed_date',
+            'notary_name', 'notary_license_number', 'nib_number',
+            'nib_issued_date', 'nib_valid_until', 'npwp_number',
+            'npwp_issued_date', 'tax_office'
         ];
 
         fields.forEach(field => {
             const input = document.querySelector(`[name="${field}"]`);
             if (input && existingData[field]) {
-                input.value = existingData[field];
+                // Handle date inputs - need to format properly
+                if (input.type === 'date') {
+                    // Convert date to YYYY-MM-DD format
+                    let dateValue = existingData[field];
+                    if (typeof dateValue === 'string' && dateValue.includes('T')) {
+                        // ISO format: 2025-10-30T00:00:00.000000Z
+                        dateValue = dateValue.split('T')[0];
+                    } else if (typeof dateValue === 'object' && dateValue.date) {
+                        // Laravel date object format
+                        dateValue = dateValue.date.split(' ')[0];
+                    }
+                    input.value = dateValue;
+                } else {
+                    input.value = existingData[field];
+                }
             }
         });
 
@@ -1075,14 +1283,6 @@
             }
         } else {
             console.log('No legal_documents field in existingData');
-        }
-
-        // Change button text and color
-        const submitButton = document.querySelector('button[type="submit"]');
-        if (submitButton) {
-            submitButton.innerHTML = '<i class="fas fa-save mr-3"></i>Update Data';
-            submitButton.classList.remove('from-blue-600', 'to-red-600');
-            submitButton.classList.add('from-green-600', 'to-green-700');
         }
     }
 

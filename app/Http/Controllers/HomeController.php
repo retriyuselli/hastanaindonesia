@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Portfolio;
+use App\Models\WeddingOrganizer;
 
 class HomeController extends Controller
 {
@@ -16,6 +17,20 @@ class HomeController extends Controller
         $featuredPortfolios = Portfolio::featured()
             ->with('weddingOrganizer')
             ->limit(4)
+            ->get();
+
+        // Get featured wedding organizers (verified and active)
+        $featuredWeddingOrganizers = WeddingOrganizer::where('verification_status', 'verified')
+            ->where('status', 'active')
+            ->inRandomOrder()
+            ->limit(10)
+            ->get();
+
+        // Get featured products with their wedding organizer
+        $featuredProducts = \App\Models\Product::with('weddingOrganizer')
+            ->where('is_active', true)
+            ->inRandomOrder()
+            ->limit(10)
             ->get();
 
         // Data dummy untuk demo - nanti bisa diganti dengan data dari database
@@ -94,6 +109,6 @@ class HomeController extends Controller
             ]
         ];
 
-        return view('front.home', compact('data', 'featuredPortfolios'));
+        return view('front.home', compact('data', 'featuredPortfolios', 'featuredWeddingOrganizers', 'featuredProducts'));
     }
 }

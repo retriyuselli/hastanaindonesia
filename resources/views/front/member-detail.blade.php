@@ -20,6 +20,7 @@
         border-bottom: 2px solid transparent;
         border-right: 1px solid #e5e7eb;
         transition: all 0.3s;
+        outline: none;
     }
     
     .tab-button:last-child {
@@ -28,11 +29,18 @@
     
     .tab-button:hover {
         color: #1f2937;
+        outline: none;
+    }
+    
+    .tab-button:focus {
+        outline: none;
+        box-shadow: none;
     }
     
     .tab-button.active {
         color: #ef4444;
         border-bottom-color: #ef4444;
+        outline: none;
     }
     
     .deal-badge {
@@ -384,11 +392,13 @@ document.addEventListener('DOMContentLoaded', function() {
                         </a>
                         @endif
                         
-                        @if($member->phone)
-                        <button class="block w-full px-4 py-2.5 border border-gray-300 text-gray-700 text-sm font-semibold rounded-lg hover:bg-gray-50 transition-colors text-center">
-                            <i class="fas fa-list mr-2"></i>Daftar Harga
-                        </button>
-                        @endif
+                        @auth
+                            @if($member->user_id == auth()->id() && $member->slug)
+                            <a href="{{ route('products.manage', $member->slug) }}" class="block w-full px-4 py-2.5 border border-gray-300 text-gray-700 text-sm font-semibold rounded-lg hover:bg-gray-50 transition-colors text-center">
+                                <i class="fas fa-edit mr-2"></i>Edit Produk
+                            </a>
+                            @endif
+                        @endauth
                     </div>
                     
                     <!-- Additional Info -->
@@ -461,7 +471,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         <button class="tab-button active text-xs flex-1 max-w-[180px]" data-tab="tab-store">Store (1)</button>
                         <button class="tab-button text-xs flex-1 max-w-[180px]" data-tab="tab-album">Album (0)</button>
                         <button class="tab-button text-xs flex-1 max-w-[180px]" data-tab="tab-ulasan">Ulasan ({{ $member->completed_events ?? 0 }})</button>
-                        <button class="tab-button text-xs flex-1 max-w-[180px]" data-tab="tab-harga">Harga</button>
+                        {{-- <button class="tab-button text-xs flex-1 max-w-[180px]" data-tab="tab-harga">Harga</button> --}}
                         <button class="tab-button text-xs flex-1 max-w-[180px]" data-tab="tab-info">Info</button>
                         <button class="tab-button text-xs flex-1 max-w-[180px]" data-tab="tab-tentang">Tentang Kami</button>
                         {{-- <button class="tab-button text-xs flex-1 max-w-[180px]" data-tab="tab-featured">Featured</button> --}}
@@ -478,7 +488,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         @if($member->activeProducts && $member->activeProducts->count() > 0)
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                                 @foreach($member->activeProducts as $product)
-                                <a href="{{ route('members.product', ['id' => $member->id, 'productId' => $product->id]) }}" class="border border-gray-200 rounded-xl overflow-hidden hover:shadow-lg transition-shadow block">
+                                <a href="{{ route('members.product', ['slug' => $member->slug, 'productId' => $product->id]) }}" class="border border-gray-200 rounded-xl overflow-hidden hover:shadow-lg transition-shadow block">
                                     <div class="relative aspect-square">
                                         <img src="{{ $product->main_image ?? 'https://images.unsplash.com/photo-1519741497674-611481863552?w=500&h=500&fit=crop' }}" alt="{{ $product->name }}" class="w-full h-full object-cover">
                                         @if($product->limited_offer)
@@ -499,10 +509,20 @@ document.addEventListener('DOMContentLoaded', function() {
                                         </div>
                                         
                                         @if($product->badges && count($product->badges) > 0)
-                                        <div class="flex flex-wrap gap-1.5">
-                                            @foreach($product->badges as $badge)
-                                            <span class="px-1.5 py-0.5 bg-gray-100 text-gray-700 text-[10px] rounded-full">{{ $badge }}</span>
+                                        <div class="flex items-center gap-1.5 overflow-hidden">
+                                            @php
+                                                $maxBadges = 3; // Maksimal badge yang ditampilkan
+                                                $visibleBadges = array_slice($product->badges, 0, $maxBadges);
+                                                $remainingCount = count($product->badges) - $maxBadges;
+                                            @endphp
+                                            
+                                            @foreach($visibleBadges as $badge)
+                                            <span class="px-1.5 py-0.5 bg-gray-100 text-gray-700 text-[10px] rounded-full whitespace-nowrap">{{ $badge }}</span>
                                             @endforeach
+                                            
+                                            @if($remainingCount > 0)
+                                            <span class="px-1.5 py-0.5 bg-gray-200 text-gray-700 text-[10px] rounded-full font-semibold">+{{ $remainingCount }}</span>
+                                            @endif
                                         </div>
                                         @endif
                                     </div>
@@ -1041,7 +1061,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             @foreach($relatedMembers as $related)
-            <div class="bg-white border border-gray-200 rounded-xl p-6 hover:shadow-lg transition-all">
+            <a href="{{ $related->slug ? route('members.show', $related->slug) : '#' }}" class="bg-white border border-gray-200 rounded-xl p-6 hover:shadow-lg transition-all block {{ !$related->slug ? 'opacity-50 cursor-not-allowed' : '' }}">
                 <div class="text-center">
                     <div class="relative inline-block mb-3">
                         @if($related->logo)
@@ -1056,16 +1076,12 @@ document.addEventListener('DOMContentLoaded', function() {
                     <h3 class="font-bold text-base mb-1">{{ $related->organizer_name }}</h3>
                     <p class="text-xs text-gray-600 mb-2">{{ $related->city }}</p>
                     
-                    <div class="text-xs text-gray-700 mb-3">
+                    <div class="text-xs text-gray-700">
                         <i class="fas fa-star text-yellow-400 mr-1"></i>
                         {{ number_format($related->rating ?? 0, 1) }}/5
                     </div>
-                    
-                    <a href="{{ route('members.show', $related->id) }}" class="block w-full px-4 py-2 border border-gray-300 text-gray-700 text-sm font-semibold rounded-lg hover:bg-gray-50 transition-colors text-center">
-                        <i class="fas fa-eye mr-2"></i>Detail
-                    </a>
                 </div>
-            </div>
+            </a>
             @endforeach
         </div>
     </div>

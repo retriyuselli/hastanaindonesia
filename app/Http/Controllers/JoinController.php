@@ -40,6 +40,14 @@ class JoinController extends Controller
      */
     public function store(Request $request)
     {
+        // Log incoming request data for debugging
+        Log::info('Join Form Submission', [
+            'all_data' => $request->all(),
+            'has_deed' => $request->has('deed_of_establishment'),
+            'deed_value' => $request->input('deed_of_establishment'),
+            'legal_entity_type' => $request->input('legal_entity_type'),
+        ]);
+
         // Check if user already has a wedding organizer (for update)
         $existingOrganizer = WeddingOrganizer::where('user_id', Auth::id())->first();
         $isUpdate = $existingOrganizer !== null;
@@ -72,6 +80,18 @@ class JoinController extends Controller
             'business_license' => 'required|string|max:100',
             'legal_documents' => 'nullable|array',
             'legal_documents.*' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:5120',
+            // Legal detail fields (optional)
+            'legal_entity_type' => 'nullable|string|in:PT,CV,Firma,UD,Koperasi,Yayasan',
+            'deed_of_establishment' => 'nullable|string|max:100',
+            'deed_date' => 'nullable|date',
+            'notary_name' => 'nullable|string|max:255',
+            'notary_license_number' => 'nullable|string|max:100',
+            'nib_number' => 'nullable|string|max:13',
+            'nib_issued_date' => 'nullable|date',
+            'nib_valid_until' => 'nullable|date',
+            'npwp_number' => 'nullable|string|max:20',
+            'npwp_issued_date' => 'nullable|date',
+            'tax_office' => 'nullable|string|max:255',
             'terms' => 'required|accepted',
             'newsletter' => 'nullable|boolean',
         ], [
@@ -121,8 +141,22 @@ class JoinController extends Controller
             foreach ($request->file('legal_documents') as $file) {
                 $path = $file->store('wedding-organizer-documents', 'public');
                 $uploadedFiles[] = $path;
+                
+                // Log successful upload
+                Log::info('Legal document uploaded', [
+                    'filename' => $file->getClientOriginalName(),
+                    'path' => $path,
+                    'size' => $file->getSize()
+                ]);
             }
-            $validated['legal_documents'] = json_encode($uploadedFiles);
+            $validated['legal_documents'] = $uploadedFiles; // Simpan sebagai array, akan di-cast otomatis oleh model
+            
+            Log::info('Total legal documents uploaded', [
+                'count' => count($uploadedFiles),
+                'files' => $uploadedFiles
+            ]);
+        } else {
+            Log::info('No legal documents uploaded in this request');
         }
 
         // Generate slug from organizer name (only for new registration)
@@ -154,10 +188,31 @@ class JoinController extends Controller
                 // Update existing wedding organizer
                 $existingOrganizer->update($validated);
                 $message = 'Data wedding organizer Anda berhasil diperbarui!';
+                
+                Log::info('Wedding Organizer Updated', [
+                    'id' => $existingOrganizer->id,
+                    'organizer_name' => $validated['organizer_name'],
+                    'has_legal_documents' => isset($validated['legal_documents']),
+                    'legal_fields' => [
+                        'legal_entity_type' => $validated['legal_entity_type'] ?? null,
+                        'deed_of_establishment' => $validated['deed_of_establishment'] ?? null,
+                        'notary_name' => $validated['notary_name'] ?? null,
+                        'nib_number' => $validated['nib_number'] ?? null,
+                        'npwp_number' => $validated['npwp_number'] ?? null,
+                    ]
+                ]);
             } else {
                 // Create new wedding organizer
                 $weddingOrganizer = WeddingOrganizer::create($validated);
                 $message = 'Terima kasih telah mendaftar! Kami akan menghubungi Anda dalam 3-5 hari kerja untuk proses verifikasi.';
+                
+                Log::info('Wedding Organizer Created', [
+                    'id' => $weddingOrganizer->id,
+                    'organizer_name' => $validated['organizer_name'],
+                    'user_id' => $validated['user_id'],
+                    'has_legal_documents' => isset($validated['legal_documents']),
+                    'legal_documents_count' => isset($validated['legal_documents']) ? count($validated['legal_documents']) : 0
+                ]);
             }
 
             // Send success message
@@ -167,7 +222,11 @@ class JoinController extends Controller
 
         } catch (\Exception $e) {
             // Log error for debugging
-            Log::error('Wedding Organizer Registration/Update Error: ' . $e->getMessage());
+            Log::error('Wedding Organizer Registration/Update Error: ' . $e->getMessage(), [
+                'exception' => $e,
+                'validated_data' => $validated,
+                'trace' => $e->getTraceAsString()
+            ]);
 
             return redirect()
                 ->back()

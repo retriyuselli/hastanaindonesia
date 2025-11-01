@@ -141,11 +141,20 @@
                                                 @endif
                                                 
                                                 @if($event->location_type === 'online' || ($event->location_type === 'hybrid' && $event->online_link))
-                                                    <a href="{{ $event->online_link ?? $event->location }}" target="_blank"
-                                                       class="inline-flex items-center px-4 py-2 bg-purple-600 text-white text-sm font-medium rounded-lg hover:bg-purple-700 transition duration-200">
-                                                        <i class="fas fa-video mr-2"></i>
-                                                        Join Online
-                                                    </a>
+                                                    @if($event->online_link && $event->online_link !== '' && $event->online_link !== 'coming soon')
+                                                        <a href="{{ $event->online_link }}" target="_blank"
+                                                           class="inline-flex items-center px-4 py-2 bg-purple-600 text-white text-sm font-medium rounded-lg hover:bg-purple-700 transition duration-200">
+                                                            <i class="fas fa-video mr-2"></i>
+                                                            Join Online
+                                                        </a>
+                                                    @else
+                                                        <button onclick="showComingSoonModal()"
+                                                                class="inline-flex items-center px-4 py-2 bg-gray-400 text-white text-sm font-medium rounded-lg cursor-not-allowed opacity-75">
+                                                            <i class="fas fa-video mr-2"></i>
+                                                            Join Online
+                                                            <span class="ml-2 text-xs bg-yellow-500 px-2 py-0.5 rounded-full">Coming Soon</span>
+                                                        </button>
+                                                    @endif
                                                 @endif
                                             @endif
                                             
@@ -279,8 +288,106 @@
                                 </span>
                                 <i class="fas fa-chevron-right text-gray-400"></i>
                             </a>
+                            
+                            @if($myWeddingOrganizer)
+                                @if($myWeddingOrganizer->slug)
+                                <a href="{{ route('members.show', $myWeddingOrganizer->slug) }}" class="flex items-center justify-between py-2 px-3 text-gray-700 hover:bg-blue-50 rounded-lg transition">
+                                    <span class="flex items-center">
+                                        <i class="fas fa-building mr-2 text-blue-600"></i>
+                                        Wedding Organizer Saya
+                                    </span>
+                                    <i class="fas fa-chevron-right text-gray-400"></i>
+                                </a>
+                                @endif
+                            @else
+                                <a href="{{ route('join') }}" class="flex items-center justify-between py-2 px-3 text-gray-700 hover:bg-green-50 rounded-lg transition">
+                                    <span class="flex items-center">
+                                        <i class="fas fa-plus-circle mr-2 text-green-600"></i>
+                                        Daftarkan WO Anda
+                                    </span>
+                                    <i class="fas fa-chevron-right text-gray-400"></i>
+                                </a>
+                            @endif
                         </div>
                     </div>
+
+                    <!-- Wedding Organizer Card -->
+                    @if($myWeddingOrganizer)
+                    <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+                        <h3 class="font-bold text-gray-900 mb-4">Wedding Organizer Saya</h3>
+                        
+                        <div class="text-center mb-4">
+                            @if($myWeddingOrganizer->logo)
+                                <img src="{{ Storage::url($myWeddingOrganizer->logo) }}" 
+                                     alt="{{ $myWeddingOrganizer->organizer_name }}"
+                                     class="w-20 h-20 rounded-full object-cover border-4 border-blue-100 mx-auto mb-3">
+                            @else
+                                <div class="w-20 h-20 bg-gradient-to-r from-blue-600 to-red-600 rounded-full flex items-center justify-center text-white text-2xl font-bold mx-auto mb-3">
+                                    {{ strtoupper(substr($myWeddingOrganizer->organizer_name, 0, 1)) }}
+                                </div>
+                            @endif
+                            
+                            <h4 class="font-bold text-gray-900">{{ $myWeddingOrganizer->organizer_name }}</h4>
+                            <p class="text-sm text-gray-600">{{ $myWeddingOrganizer->city }}</p>
+                            
+                            @if($myWeddingOrganizer->verification_status == 'verified')
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 mt-2">
+                                    <i class="fas fa-check-circle mr-1"></i>
+                                    Terverifikasi
+                                </span>
+                            @else
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800 mt-2">
+                                    <i class="fas fa-clock mr-1"></i>
+                                    Menunggu Verifikasi
+                                </span>
+                            @endif
+                        </div>
+                        
+                        <div class="space-y-2 text-sm">
+                            <div class="flex items-center justify-between py-2 border-t border-gray-100">
+                                <span class="text-gray-600">Rating</span>
+                                <span class="font-semibold text-gray-900">
+                                    <i class="fas fa-star text-yellow-400"></i>
+                                    {{ number_format($myWeddingOrganizer->rating ?? 0, 1) }}/5
+                                </span>
+                            </div>
+                            <div class="flex items-center justify-between py-2 border-t border-gray-100">
+                                <span class="text-gray-600">Event Selesai</span>
+                                <span class="font-semibold text-gray-900">{{ $myWeddingOrganizer->completed_events ?? 0 }}</span>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-4 space-y-2">
+                            @if($myWeddingOrganizer->slug)
+                            <a href="{{ route('members.show', $myWeddingOrganizer->slug) }}" 
+                               class="block w-full px-4 py-2 bg-blue-600 text-white text-center font-semibold rounded-lg hover:bg-blue-700 transition">
+                                <i class="fas fa-eye mr-2"></i>
+                                Lihat Profil
+                            </a>
+                            @endif
+                            <a href="{{ route('join') }}" 
+                               class="block w-full px-4 py-2 border border-gray-300 text-gray-700 text-center font-semibold rounded-lg hover:bg-gray-50 transition">
+                                <i class="fas fa-edit mr-2"></i>
+                                Edit Data
+                            </a>
+                        </div>
+                    </div>
+                    @else
+                    <div class="bg-gradient-to-r from-blue-50 to-blue-100 rounded-lg shadow-md p-6 mb-6 border border-blue-200">
+                        <div class="text-center">
+                            <div class="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <i class="fas fa-building text-white text-2xl"></i>
+                            </div>
+                            <h3 class="font-bold text-gray-900 mb-2">Belum Punya Wedding Organizer?</h3>
+                            <p class="text-sm text-gray-600 mb-4">Daftarkan wedding organizer Anda dan dapatkan berbagai benefit dari HASTANA Indonesia</p>
+                            <a href="{{ route('join') }}" 
+                               class="inline-flex items-center px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition">
+                                <i class="fas fa-plus-circle mr-2"></i>
+                                Daftar Sekarang
+                            </a>
+                        </div>
+                    </div>
+                    @endif
 
                     <!-- Quick Links -->
                     <div class="bg-white rounded-lg shadow-md p-6">
@@ -313,5 +420,81 @@
 <!-- Include Modals -->
 @include('partials.payment-proof-modal')
 @include('partials.ticket-modal')
+
+<!-- Coming Soon Modal -->
+<div id="comingSoonModal" class="fixed inset-0 bg-gray-900 bg-opacity-50 z-50 items-center justify-center p-4" style="display: none;">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8 relative animate-fade-in">
+        <!-- Close Button -->
+        <button onclick="closeComingSoonModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition">
+            <i class="fas fa-times text-2xl"></i>
+        </button>
+        
+        <!-- Icon -->
+        <div class="text-center mb-6">
+            <div class="w-20 h-20 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
+                <i class="fas fa-clock text-white text-3xl"></i>
+            </div>
+            <h3 class="text-2xl font-bold text-gray-900 mb-2">Coming Soon</h3>
+            <div class="w-16 h-1 bg-gradient-to-r from-yellow-400 to-orange-500 mx-auto rounded-full"></div>
+        </div>
+        
+        <!-- Content -->
+        <div class="text-center mb-6">
+            <p class="text-gray-600 leading-relaxed mb-4">
+                Link meeting online untuk event ini belum tersedia saat ini.
+            </p>
+            <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
+                <div class="flex items-start">
+                    <i class="fas fa-info-circle text-blue-600 mt-1 mr-3"></i>
+                    <div class="text-left text-sm text-blue-800">
+                        <p class="font-semibold mb-1">Informasi:</p>
+                        <p>Link akan diupdate oleh panitia pada <strong>hari pelaksanaan event</strong> untuk keamanan.</p>
+                    </div>
+                </div>
+            </div>
+            <p class="text-sm text-gray-500">
+                <i class="fas fa-bell text-yellow-500 mr-1"></i>
+                Selalu pantau Dashboard untuk melihat status event.
+            </p>
+        </div>
+        
+        <!-- Action Button -->
+        <button onclick="closeComingSoonModal()" 
+                class="w-full px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white font-semibold rounded-lg hover:from-blue-700 hover:to-blue-800 transition duration-200 shadow-md">
+            <i class="fas fa-check mr-2"></i>
+            Mengerti
+        </button>
+    </div>
+</div>
+
+@push('scripts')
+<script>
+function showComingSoonModal() {
+    const modal = document.getElementById('comingSoonModal');
+    modal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+}
+
+function closeComingSoonModal() {
+    const modal = document.getElementById('comingSoonModal');
+    modal.style.display = 'none';
+    document.body.style.overflow = 'auto';
+}
+
+// Close modal when clicking outside
+document.getElementById('comingSoonModal').addEventListener('click', function(e) {
+    if (e.target === this) {
+        closeComingSoonModal();
+    }
+});
+
+// Close modal with ESC key
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        closeComingSoonModal();
+    }
+});
+</script>
+@endpush
 
 @endsection
