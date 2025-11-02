@@ -390,14 +390,8 @@
             @for ($i = 1; $i <= 10; $i++)
             <div class="portfolio-marquee-item">
                 <a href="{{ route('members') }}" class="block bg-white rounded-3xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 p-6 relative cursor-pointer">
-                    <!-- Deals Badge -->
-                    <div class="absolute top-4 left-4 bg-red-500 text-white px-4 py-2 rounded-full text-xs font-semibold flex items-center gap-1 shadow-md z-10">
-                        <i class="fas fa-tag"></i>
-                        Deals Available
-                    </div>
-                    
                     <!-- Product Image -->
-                    <div class="flex justify-center mt-8 mb-6">
+                    <div class="flex justify-center mt-2 mb-6">
                         <div class="relative">
                             <div class="w-40 h-40 rounded-full bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center text-white text-5xl font-bold shadow-xl">
                                 {{ chr(65 + ($i % 26)) }}
@@ -414,19 +408,6 @@
                         <h3 class="text-sm font-bold text-gray-900 mb-2">Paket Wedding {{ $i }}</h3>
                         <p class="text-gray-600 text-xs mb-1">Wedding Organizer {{ $i }}</p>
                         <p class="text-gray-500 text-xs">Denpasar, Bali</p>
-                    </div>
-                    
-                    <!-- Price -->
-                    <div class="text-center">
-                        <div class="mb-1">
-                            <span class="text-gray-400 line-through text-xs">Rp {{ number_format((50 + $i * 5) * 1000000, 0, ',', '.') }}</span>
-                        </div>
-                        <div class="text-lg font-bold text-red-600">
-                            Rp {{ number_format((45 + $i * 5) * 1000000, 0, ',', '.') }}
-                        </div>
-                        <div class="text-xs text-green-600 font-semibold">
-                            Hemat Rp {{ number_format(5 * 1000000, 0, ',', '.') }}
-                        </div>
                     </div>
                 </a>
             </div>
