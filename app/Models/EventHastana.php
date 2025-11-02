@@ -426,4 +426,70 @@ class EventHastana extends Model
     {
         return $this->hasMany(EventParticipant::class);
     }
+
+    /**
+     * Get reviews for this event
+     */
+    public function reviews()
+    {
+        return $this->hasMany(EventReview::class);
+    }
+
+    /**
+     * Get approved reviews only
+     */
+    public function approvedReviews()
+    {
+        return $this->hasMany(EventReview::class)->where('is_approved', true);
+    }
+
+    /**
+     * Update event rating and total reviews based on approved reviews
+     */
+    public function updateRating(): void
+    {
+        $approvedReviews = $this->approvedReviews()->get();
+        
+        $this->total_reviews = $approvedReviews->count();
+        
+        if ($this->total_reviews > 0) {
+            $this->rating = round($approvedReviews->avg('rating'), 2);
+        } else {
+            $this->rating = 0;
+        }
+        
+        $this->save();
+    }
+
+    /**
+     * Get average rating with total reviews
+     */
+    public function getAverageRatingAttribute(): array
+    {
+        return [
+            'average' => $this->rating ?? 0,
+            'total' => $this->total_reviews ?? 0,
+            'formatted' => number_format($this->rating ?? 0, 1),
+        ];
+    }
+
+    /**
+     * Get rating distribution (1-5 stars)
+     */
+    public function getRatingDistribution(): array
+    {
+        $distribution = [];
+        
+        for ($i = 5; $i >= 1; $i--) {
+            $count = $this->approvedReviews()->where('rating', $i)->count();
+            $percentage = $this->total_reviews > 0 ? ($count / $this->total_reviews) * 100 : 0;
+            
+            $distribution[$i] = [
+                'count' => $count,
+                'percentage' => round($percentage, 1),
+            ];
+        }
+        
+        return $distribution;
+    }
 }

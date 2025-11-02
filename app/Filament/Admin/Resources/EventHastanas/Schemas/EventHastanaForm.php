@@ -13,6 +13,7 @@ use Filament\Forms\Components\TimePicker;
 use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Schema;
 use Illuminate\Support\Str;
+use App\Enums\ProvinsiEnum;
 
 class EventHastanaForm
 {
@@ -132,16 +133,34 @@ class EventHastanaForm
                     ->placeholder('Gedung Serbaguna, Aula Utama, dll')
                     ->hidden(fn ($get) => $get('location_type') === 'online'),
                 
-                TextInput::make('city')
-                    ->label('Kota')
-                    ->placeholder('Jakarta, Bandung, dll')
-                    ->required(fn ($get) => in_array($get('location_type'), ['offline', 'hybrid']))
-                    ->hidden(fn ($get) => $get('location_type') === 'online'),
-                
-                TextInput::make('province')
+                Select::make('province')
                     ->label('Provinsi')
-                    ->placeholder('DKI Jakarta, Jawa Barat, dll')
-                    ->hidden(fn ($get) => $get('location_type') === 'online'),
+                    ->options(ProvinsiEnum::toArray())
+                    ->searchable()
+                    ->preload()
+                    ->live()
+                    ->afterStateUpdated(fn (callable $set) => $set('city', null))
+                    ->required(fn ($get) => in_array($get('location_type'), ['offline', 'hybrid']))
+                    ->hidden(fn ($get) => $get('location_type') === 'online')
+                    ->placeholder('Pilih provinsi'),
+                
+                Select::make('city')
+                    ->label('Kota/Kabupaten')
+                    ->options(function (callable $get) {
+                        $province = $get('province');
+                        if (!$province) {
+                            return [];
+                        }
+                        $cities = ProvinsiEnum::getKotaKabupaten($province);
+                        return array_combine($cities, $cities);
+                    })
+                    ->searchable()
+                    ->preload()
+                    ->required(fn ($get) => in_array($get('location_type'), ['offline', 'hybrid']))
+                    ->hidden(fn ($get) => $get('location_type') === 'online')
+                    ->disabled(fn (callable $get) => !$get('province'))
+                    ->placeholder('Pilih kota/kabupaten')
+                    ->helperText('Pilih provinsi terlebih dahulu'),
                 
                 Toggle::make('is_free')
                     ->label('Event Gratis')

@@ -458,7 +458,7 @@
 
                 <!-- Related Events -->
                 @if($relatedEvents->count() > 0)
-                    <div class="bg-white rounded-lg shadow-lg p-5">
+                    <div class="bg-white rounded-lg shadow-lg p-5 mb-5">
                         <h2 class="text-xl font-bold text-gray-900 mb-5 flex items-center">
                             <i class="fas fa-calendar-alt text-blue-600 mr-2"></i> Event Terkait
                         </h2>
@@ -503,6 +503,446 @@
                         </div>
                     </div>
                 @endif
+
+                <!-- Reviews & Rating Section -->
+                <div class="bg-white rounded-lg shadow-lg p-5 mb-5">
+                    <h2 class="text-xl font-bold text-gray-900 mb-5 flex items-center">
+                        <i class="fas fa-star text-yellow-500 mr-2"></i> Rating & Reviews
+                    </h2>
+
+                    <!-- Success/Error Messages -->
+                    @if(session('success'))
+                        <div class="bg-green-50 border border-green-200 rounded-lg p-4 mb-5">
+                            <div class="flex items-center gap-3">
+                                <i class="fas fa-check-circle text-green-600 text-xl"></i>
+                                <p class="text-green-800 text-sm font-medium">{{ session('success') }}</p>
+                            </div>
+                        </div>
+                    @endif
+
+                    @if(session('error'))
+                        <div class="bg-red-50 border border-red-200 rounded-lg p-4 mb-5">
+                            <div class="flex items-center gap-3">
+                                <i class="fas fa-exclamation-circle text-red-600 text-xl"></i>
+                                <p class="text-red-800 text-sm font-medium">{{ session('error') }}</p>
+                            </div>
+                        </div>
+                    @endif
+
+                    @if($errors->any())
+                        <div class="bg-red-50 border border-red-200 rounded-lg p-4 mb-5">
+                            <div class="flex items-start gap-3">
+                                <i class="fas fa-exclamation-triangle text-red-600 text-xl"></i>
+                                <div>
+                                    <p class="text-red-800 text-sm font-semibold mb-2">Terdapat kesalahan:</p>
+                                    <ul class="list-disc list-inside text-red-700 text-xs space-y-1">
+                                        @foreach($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
+
+                    <!-- Rating Overview -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-6 pb-6 border-b border-gray-200">
+                        <!-- Average Rating -->
+                        <div class="text-center">
+                            <div class="text-5xl font-bold text-gray-900 mb-2">
+                                {{ $event->rating > 0 ? number_format($event->rating, 1) : 'N/A' }}
+                            </div>
+                            <div class="flex justify-center mb-2">
+                                @if($event->rating > 0)
+                                    @for($i = 1; $i <= 5; $i++)
+                                        @if($i <= floor($event->rating))
+                                            <i class="fas fa-star text-yellow-400 text-xl"></i>
+                                        @elseif($i - 0.5 <= $event->rating)
+                                            <i class="fas fa-star-half-alt text-yellow-400 text-xl"></i>
+                                        @else
+                                            <i class="far fa-star text-gray-300 text-xl"></i>
+                                        @endif
+                                    @endfor
+                                @else
+                                    @for($i = 1; $i <= 5; $i++)
+                                        <i class="far fa-star text-gray-300 text-xl"></i>
+                                    @endfor
+                                @endif
+                            </div>
+                            <div class="text-sm text-gray-600">
+                                {{ $event->total_reviews }} {{ $event->total_reviews == 1 ? 'review' : 'reviews' }}
+                            </div>
+                        </div>
+
+                        <!-- Rating Distribution -->
+                        <div class="md:col-span-2">
+                            @foreach([5, 4, 3, 2, 1] as $star)
+                                @php
+                                    $distribution = collect($ratingDistribution)->firstWhere('rating', $star);
+                                    $count = $distribution['count'] ?? 0;
+                                    $percentage = $distribution['percentage'] ?? 0;
+                                @endphp
+                                <div class="flex items-center gap-3 mb-2">
+                                    <div class="flex items-center gap-1 min-w-[80px]">
+                                        <span class="text-sm font-medium text-gray-700">{{ $star }}</span>
+                                        <i class="fas fa-star text-yellow-400 text-xs"></i>
+                                    </div>
+                                    <div class="flex-1 bg-gray-200 rounded-full h-2 overflow-hidden">
+                                        <div class="bg-yellow-400 h-full transition-all duration-300" 
+                                             style="width: {{ $percentage }}%"></div>
+                                    </div>
+                                    <span class="text-sm text-gray-600 min-w-[60px] text-right">
+                                        {{ $count }} ({{ number_format($percentage, 0) }}%)
+                                    </span>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+
+                    <!-- Write a Review Section (Only for verified participants) -->
+                    @auth
+                        @php
+                            // Check if user has attended this event
+                            $hasAttended = \App\Models\EventParticipant::where('event_hastana_id', $event->id)
+                                ->where('user_id', auth()->id())
+                                ->where('status', 'attended')
+                                ->exists();
+                            
+                            // Check if user already reviewed
+                            $hasReviewed = \App\Models\EventReview::where('event_hastana_id', $event->id)
+                                ->where('user_id', auth()->id())
+                                ->exists();
+                            
+                            // Get participant status for debugging
+                            $participant = \App\Models\EventParticipant::where('event_hastana_id', $event->id)
+                                ->where('user_id', auth()->id())
+                                ->first();
+                        @endphp
+
+                        {{-- DEBUG INFO - Remove after checking --}}
+                        <div class="bg-yellow-50 border-2 border-yellow-300 rounded-lg p-4 mb-5">
+                            <p class="text-xs font-bold text-yellow-900 mb-2">🔍 DEBUG INFO (Hapus setelah pengecekan):</p>
+                            <ul class="text-xs text-yellow-800 space-y-1">
+                                <li>✓ User sudah login: <strong>{{ auth()->check() ? 'Ya' : 'Tidak' }}</strong></li>
+                                <li>✓ User ID: <strong>{{ auth()->id() }}</strong></li>
+                                <li>✓ Event ID: <strong>{{ $event->id }}</strong></li>
+                                @if($participant)
+                                    <li>✓ Status Participant: <strong class="text-{{ $participant->status === 'attended' ? 'green' : 'red' }}-700">{{ strtoupper($participant->status) }}</strong></li>
+                                    <li>✓ Registration Code: <strong>{{ $participant->registration_code }}</strong></li>
+                                    <li>✓ Attended At: <strong>{{ $participant->attended_at ?? 'NULL' }}</strong></li>
+                                @else
+                                    <li>❌ <strong class="text-red-700">TIDAK ADA DATA PARTICIPANT</strong></li>
+                                @endif
+                                <li>✓ Has Attended: <strong class="text-{{ $hasAttended ? 'green' : 'red' }}-700">{{ $hasAttended ? 'YA' : 'TIDAK' }}</strong></li>
+                                <li>✓ Has Reviewed: <strong class="text-{{ $hasReviewed ? 'green' : 'red' }}-700">{{ $hasReviewed ? 'YA' : 'TIDAK' }}</strong></li>
+                                <li>✓ Form Review Akan Muncul: <strong class="text-{{ ($hasAttended && !$hasReviewed) ? 'green' : 'red' }}-700">{{ ($hasAttended && !$hasReviewed) ? 'YA ✓' : 'TIDAK ✗' }}</strong></li>
+                            </ul>
+                        </div>
+
+                        @if($hasAttended && !$hasReviewed)
+                            <div class="bg-gradient-to-r from-blue-50 to-purple-50 border-2 border-blue-200 rounded-lg p-5 mb-6">
+                                <h3 class="text-lg font-bold text-gray-900 mb-3 flex items-center">
+                                    <i class="fas fa-pen text-blue-600 mr-2"></i> Tulis Review Anda
+                                </h3>
+                                <p class="text-sm text-gray-600 mb-4">
+                                    Anda telah mengikuti event ini. Bagikan pengalaman Anda untuk membantu peserta lainnya!
+                                </p>
+
+                                <form action="{{ route('events.review.store', $event->slug) }}" method="POST" id="reviewForm">
+                                    @csrf
+                                    
+                                    <!-- Rating -->
+                                    <div class="mb-4">
+                                        <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                            Rating <span class="text-red-500">*</span>
+                                        </label>
+                                        <div class="flex items-center gap-2">
+                                            <div class="flex gap-1" id="starRating">
+                                                @for($i = 1; $i <= 5; $i++)
+                                                    <button type="button" 
+                                                            class="star-btn text-3xl text-gray-300 hover:text-yellow-400 transition focus:outline-none" 
+                                                            data-rating="{{ $i }}">
+                                                        <i class="far fa-star"></i>
+                                                    </button>
+                                                @endfor
+                                            </div>
+                                            <span id="ratingText" class="text-sm text-gray-600 ml-2"></span>
+                                        </div>
+                                        <input type="hidden" name="rating" id="ratingInput" required>
+                                    </div>
+
+                                    <!-- Review Title -->
+                                    <div class="mb-4">
+                                        <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                            Judul Review <span class="text-red-500">*</span>
+                                        </label>
+                                        <input type="text" 
+                                               name="title" 
+                                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm" 
+                                               placeholder="Ringkasan pengalaman Anda..." 
+                                               maxlength="100"
+                                               required>
+                                    </div>
+
+                                    <!-- Review Content -->
+                                    <div class="mb-4">
+                                        <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                            Review Anda <span class="text-red-500">*</span>
+                                        </label>
+                                        <textarea name="review" 
+                                                  rows="4" 
+                                                  class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm" 
+                                                  placeholder="Ceritakan pengalaman Anda mengikuti event ini..."
+                                                  required></textarea>
+                                    </div>
+
+                                    <!-- Pros & Cons -->
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                        <div>
+                                            <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                                <i class="fas fa-plus-circle text-green-600"></i> Kelebihan (Opsional)
+                                            </label>
+                                            <textarea name="pros" 
+                                                      rows="3" 
+                                                      class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 text-sm" 
+                                                      placeholder="Apa yang Anda suka dari event ini?"></textarea>
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                                <i class="fas fa-minus-circle text-red-600"></i> Kekurangan (Opsional)
+                                            </label>
+                                            <textarea name="cons" 
+                                                      rows="3" 
+                                                      class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 text-sm" 
+                                                      placeholder="Apa yang bisa diperbaiki?"></textarea>
+                                        </div>
+                                    </div>
+
+                                    <!-- Would Recommend -->
+                                    <div class="mb-4">
+                                        <label class="flex items-center gap-2 cursor-pointer">
+                                            <input type="checkbox" 
+                                                   name="would_recommend" 
+                                                   value="1" 
+                                                   class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-2 focus:ring-blue-500">
+                                            <span class="text-sm font-medium text-gray-700">
+                                                <i class="fas fa-thumbs-up text-blue-600"></i> Saya merekomendasikan event ini
+                                            </span>
+                                        </label>
+                                    </div>
+
+                                    <!-- Submit Button -->
+                                    <div class="flex items-center gap-3">
+                                        <button type="submit" 
+                                                class="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-2.5 rounded-lg font-semibold hover:from-blue-700 hover:to-purple-700 transition duration-200 shadow-lg hover:shadow-xl text-sm">
+                                            <i class="fas fa-paper-plane mr-2"></i> Submit Review
+                                        </button>
+                                        <button type="reset" 
+                                                class="bg-gray-200 text-gray-700 px-6 py-2.5 rounded-lg font-semibold hover:bg-gray-300 transition duration-200 text-sm">
+                                            <i class="fas fa-redo mr-2"></i> Reset
+                                        </button>
+                                    </div>
+                                </form>
+
+                                <script>
+                                // Star Rating System
+                                document.addEventListener('DOMContentLoaded', function() {
+                                    const stars = document.querySelectorAll('.star-btn');
+                                    const ratingInput = document.getElementById('ratingInput');
+                                    const ratingText = document.getElementById('ratingText');
+                                    let selectedRating = 0;
+
+                                    const ratingLabels = {
+                                        1: 'Sangat Buruk',
+                                        2: 'Buruk',
+                                        3: 'Cukup',
+                                        4: 'Bagus',
+                                        5: 'Sangat Bagus'
+                                    };
+
+                                    stars.forEach(star => {
+                                        // Hover effect
+                                        star.addEventListener('mouseenter', function() {
+                                            const rating = parseInt(this.dataset.rating);
+                                            updateStars(rating, false);
+                                        });
+
+                                        // Click to select
+                                        star.addEventListener('click', function() {
+                                            selectedRating = parseInt(this.dataset.rating);
+                                            ratingInput.value = selectedRating;
+                                            updateStars(selectedRating, true);
+                                            ratingText.textContent = ratingLabels[selectedRating];
+                                        });
+                                    });
+
+                                    // Reset stars on mouse leave
+                                    document.getElementById('starRating').addEventListener('mouseleave', function() {
+                                        updateStars(selectedRating, true);
+                                    });
+
+                                    function updateStars(rating, permanent) {
+                                        stars.forEach((star, index) => {
+                                            const starIcon = star.querySelector('i');
+                                            if (index < rating) {
+                                                starIcon.classList.remove('far', 'text-gray-300');
+                                                starIcon.classList.add('fas', 'text-yellow-400');
+                                            } else {
+                                                starIcon.classList.remove('fas', 'text-yellow-400');
+                                                starIcon.classList.add('far', 'text-gray-300');
+                                            }
+                                        });
+                                    }
+                                });
+                                </script>
+                            </div>
+                        @elseif($hasReviewed)
+                            <div class="bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
+                                <div class="flex items-center gap-3">
+                                    <i class="fas fa-check-circle text-green-600 text-2xl"></i>
+                                    <div>
+                                        <p class="font-semibold text-green-900 text-sm">Terima kasih atas review Anda!</p>
+                                        <p class="text-green-700 text-xs">Review Anda telah dikirim dan sedang menunggu persetujuan admin.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+                    @endauth
+
+                    <!-- Reviews List -->
+                    @if($reviews->count() > 0)
+                        <div class="space-y-4">
+                            @foreach($reviews as $review)
+                                <div class="border-b border-gray-200 pb-4 last:border-0 last:pb-0">
+                                    <!-- Review Header -->
+                                    <div class="flex items-start justify-between mb-3">
+                                        <div class="flex items-start gap-3">
+                                            <!-- User Avatar -->
+                                            <div class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
+                                                {{ strtoupper(substr($review->user->name ?? 'U', 0, 1)) }}
+                                            </div>
+                                            <div>
+                                                <div class="flex items-center gap-2 mb-1">
+                                                    <h4 class="font-semibold text-gray-900 text-sm">
+                                                        {{ $review->user->name ?? 'Anonymous' }}
+                                                    </h4>
+                                                    @if($review->is_verified_participant)
+                                                        <span class="bg-green-100 text-green-800 text-xs px-2 py-0.5 rounded-full font-semibold flex items-center gap-1">
+                                                            <i class="fas fa-check-circle"></i> Verified
+                                                        </span>
+                                                    @endif
+                                                    @if($review->is_featured)
+                                                        <span class="bg-yellow-100 text-yellow-800 text-xs px-2 py-0.5 rounded-full font-semibold flex items-center gap-1">
+                                                            <i class="fas fa-star"></i> Featured
+                                                        </span>
+                                                    @endif
+                                                </div>
+                                                <!-- Rating Stars -->
+                                                <div class="flex items-center gap-2 mb-1">
+                                                    <div class="flex">
+                                                        @for($i = 1; $i <= 5; $i++)
+                                                            @if($i <= $review->rating)
+                                                                <i class="fas fa-star text-yellow-400 text-sm"></i>
+                                                            @else
+                                                                <i class="far fa-star text-gray-300 text-sm"></i>
+                                                            @endif
+                                                        @endfor
+                                                    </div>
+                                                    <span class="text-xs text-gray-500">
+                                                        {{ $review->created_at->diffForHumans() }}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Would Recommend Badge -->
+                                        @if($review->would_recommend)
+                                            <span class="bg-blue-50 text-blue-700 text-xs px-2 py-1 rounded-full font-medium flex items-center gap-1">
+                                                <i class="fas fa-thumbs-up"></i> Recommended
+                                            </span>
+                                        @endif
+                                    </div>
+
+                                    <!-- Review Title -->
+                                    @if($review->title)
+                                        <h5 class="font-semibold text-gray-900 mb-2 text-sm">{{ $review->title }}</h5>
+                                    @endif
+
+                                    <!-- Review Content -->
+                                    <p class="text-gray-700 text-sm mb-3 leading-relaxed">
+                                        {{ $review->review }}
+                                    </p>
+
+                                    <!-- Pros & Cons -->
+                                    @if($review->pros || $review->cons)
+                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
+                                            @if($review->pros)
+                                                <div class="bg-green-50 border border-green-200 rounded-lg p-3">
+                                                    <div class="flex items-center gap-2 mb-2">
+                                                        <i class="fas fa-plus-circle text-green-600"></i>
+                                                        <span class="font-semibold text-green-900 text-xs">Pros</span>
+                                                    </div>
+                                                    <p class="text-green-800 text-xs">{{ $review->pros }}</p>
+                                                </div>
+                                            @endif
+                                            @if($review->cons)
+                                                <div class="bg-red-50 border border-red-200 rounded-lg p-3">
+                                                    <div class="flex items-center gap-2 mb-2">
+                                                        <i class="fas fa-minus-circle text-red-600"></i>
+                                                        <span class="font-semibold text-red-900 text-xs">Cons</span>
+                                                    </div>
+                                                    <p class="text-red-800 text-xs">{{ $review->cons }}</p>
+                                                </div>
+                                            @endif
+                                        </div>
+                                    @endif
+
+                                    <!-- Review Actions -->
+                                    <div class="flex items-center gap-4">
+                                        <button onclick="markHelpful({{ $review->id }})" 
+                                                class="text-gray-600 hover:text-blue-600 text-xs font-medium flex items-center gap-1 transition">
+                                            <i class="far fa-thumbs-up"></i>
+                                            <span>Helpful ({{ $review->helpful_count }})</span>
+                                        </button>
+                                        <button onclick="reportReview({{ $review->id }})" 
+                                                class="text-gray-600 hover:text-red-600 text-xs font-medium flex items-center gap-1 transition">
+                                            <i class="far fa-flag"></i>
+                                            <span>Report</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+
+                        <!-- Pagination -->
+                        @if($reviews->hasPages())
+                            <div class="mt-6">
+                                {{ $reviews->links() }}
+                            </div>
+                        @endif
+                    @else
+                        <!-- No Reviews -->
+                        <div class="text-center py-8">
+                            <i class="fas fa-comment-slash text-gray-300 text-5xl mb-3"></i>
+                            <p class="text-gray-600 text-sm">Belum ada review untuk event ini.</p>
+                            <p class="text-gray-500 text-xs mt-1">Jadilah yang pertama memberikan review!</p>
+                        </div>
+                    @endif
+                </div>
+
+                <script>
+                function markHelpful(reviewId) {
+                    // TODO: Implement AJAX call to mark review as helpful
+                    alert('Thank you for your feedback!');
+                }
+
+                function reportReview(reviewId) {
+                    if (confirm('Apakah Anda yakin ingin melaporkan review ini?')) {
+                        // TODO: Implement AJAX call to report review
+                        alert('Review berhasil dilaporkan. Tim kami akan meninjau laporan Anda.');
+                    }
+                }
+                </script>
             </div>
 
             <!-- Sidebar -->

@@ -573,58 +573,77 @@
             </p>
         </div>
         
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-10">
-            <!-- Event 1 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+            @forelse($upcomingEvents as $index => $event)
+            @php
+                $buttonColor = $index % 2 === 0 ? 'blue' : 'red';
+            @endphp
             <div class="card-hover bg-white rounded-2xl overflow-hidden shadow-lg">
                 <div class="aspect-video overflow-hidden">
-                    <img src="https://images.unsplash.com/photo-1606491956689-2ea866880c84?w=600&h=337&fit=crop" 
-                         alt="Workshop fotografi pernikahan dengan kamera profesional" 
+                    @if($event->image)
+                        <img src="{{ asset('storage/' . $event->image) }}" 
+                             alt="{{ $event->title }}" 
+                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                             loading="lazy">
+                    @else
+                        <div class="w-full h-full bg-gradient-to-br from-{{ $buttonColor }}-500 to-{{ $buttonColor }}-600 flex items-center justify-center">
+                            <i class="fas fa-calendar-alt text-white text-6xl opacity-20"></i>
+                        </div>
+                    @endif
+                </div>
+                <div class="p-6">
+                    <div class="flex items-center text-xs text-gray-500 mb-2">
+                        <i class="fas fa-calendar mr-1.5"></i>
+                        <span>{{ \Carbon\Carbon::parse($event->start_date)->translatedFormat('d F Y') }}</span>
+                        <i class="fas fa-map-marker-alt ml-3 mr-1.5"></i>
+                        <span>{{ $event->city ?? $event->location }}</span>
+                    </div>
+                    <h3 class="text-sm font-bold text-gray-900 mb-2 truncate" title="{{ $event->title }}">{{ $event->title }}</h3>
+                    <p class="text-xs text-gray-600 mb-4 leading-relaxed">
+                        {{ Str::limit($event->short_description ?? $event->description, 50) }}
+                    </p>
+                    <a href="{{ route('events.show', $event->slug) }}" class="inline-flex items-center text-{{ $buttonColor }}-600 font-semibold text-xs hover:text-{{ $buttonColor }}-700 transition-colors">
+                        Daftar
+                        <i class="fas fa-arrow-right ml-2 text-xs"></i>
+                    </a>
+                </div>
+            </div>
+            @empty
+            <!-- Fallback if no events from database -->
+            @foreach($data['upcoming_events'] as $index => $event)
+            @php
+                $buttonColor = $index % 2 === 0 ? 'blue' : 'red';
+                $imageUrls = [
+                    'https://images.unsplash.com/photo-1606491956689-2ea866880c84?w=600&h=337&fit=crop',
+                    'https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=600&h=337&fit=crop'
+                ];
+            @endphp
+            <div class="card-hover bg-white rounded-2xl overflow-hidden shadow-lg">
+                <div class="aspect-video overflow-hidden">
+                    <img src="{{ $imageUrls[$index] }}" 
+                         alt="{{ $event['title'] }}" 
                          class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                          loading="lazy">
                 </div>
                 <div class="p-6">
                     <div class="flex items-center text-xs text-gray-500 mb-2">
                         <i class="fas fa-calendar mr-1.5"></i>
-                        <span>25 Agustus 2025</span>
+                        <span>{{ $event['date'] }}</span>
                         <i class="fas fa-map-marker-alt ml-3 mr-1.5"></i>
-                        <span>Jakarta</span>
+                        <span>{{ $event['location'] }}</span>
                     </div>
-                    <h3 class="text-lg font-bold text-gray-900 mb-2">Workshop Fotografi Pernikahan Modern</h3>
+                    <h3 class="text-lg font-bold text-gray-900 mb-2">{{ $event['title'] }}</h3>
                     <p class="text-sm text-gray-600 mb-4 leading-relaxed">
-                        Pelatihan intensif fotografi pernikahan dengan teknik modern dan equipment terbaru. Dipandu oleh fotografer profesional dengan pengalaman internasional.
+                        {{ $event['description'] }}
                     </p>
-                    <a href="#events" class="inline-flex items-center text-blue-600 font-semibold text-sm hover:text-blue-700 transition-colors">
+                    <a href="#events" class="inline-flex items-center text-{{ $buttonColor }}-600 font-semibold text-sm hover:text-{{ $buttonColor }}-700 transition-colors">
                         Daftar Sekarang
                         <i class="fas fa-arrow-right ml-2 text-xs"></i>
                     </a>
                 </div>
             </div>
-            
-            <!-- Event 2 -->
-            <div class="card-hover bg-white rounded-2xl overflow-hidden shadow-lg">
-                <div class="aspect-video overflow-hidden">
-                    <img src="https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=600&h=337&fit=crop" 
-                         alt="Networking event dan gala dinner untuk profesional" 
-                         class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                         loading="lazy">
-                </div>
-                <div class="p-6">
-                    <div class="flex items-center text-xs text-gray-500 mb-2">
-                        <i class="fas fa-calendar mr-1.5"></i>
-                        <span>2 September 2025</span>
-                        <i class="fas fa-map-marker-alt ml-3 mr-1.5"></i>
-                        <span>Bali</span>
-                    </div>
-                    <h3 class="text-lg font-bold text-gray-900 mb-2">HASTANA Annual Networking Gala</h3>
-                    <p class="text-sm text-gray-600 mb-4 leading-relaxed">
-                        Acara networking tahunan HASTANA yang mempertemukan wedding organizer dari seluruh Indonesia. Kesempatan emas untuk membangun relasi profesional.
-                    </p>
-                    <a href="#events" class="inline-flex items-center text-red-600 font-semibold text-sm hover:text-red-700 transition-colors">
-                        Daftar Sekarang
-                        <i class="fas fa-arrow-right ml-2 text-xs"></i>
-                    </a>
-                </div>
-            </div>
+            @endforeach
+            @endforelse
         </div>
         
         <div class="text-center">
@@ -649,7 +668,36 @@
         </div>
         
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-            <!-- Article 1 -->
+            @forelse($latestBlogs as $blog)
+            <a href="{{ route('blog.detail', $blog->slug) }}" class="card-hover bg-white rounded-2xl overflow-hidden shadow-lg border border-gray-100 block">
+                <div class="aspect-video overflow-hidden">
+                    @if($blog->featured_image)
+                        <img src="{{ asset('storage/' . $blog->featured_image) }}" 
+                             alt="{{ $blog->title }}" 
+                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                             loading="lazy">
+                    @else
+                        <div class="w-full h-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+                            <i class="fas fa-newspaper text-white text-6xl opacity-20"></i>
+                        </div>
+                    @endif
+                </div>
+                <div class="p-5">
+                    <div class="text-xs text-gray-500 mb-2">
+                        {{ $blog->published_at ? $blog->published_at->translatedFormat('d F Y') : $blog->created_at->translatedFormat('d F Y') }}
+                    </div>
+                    <h3 class="text-base font-bold text-gray-900 mb-2 line-clamp-2">{{ $blog->title }}</h3>
+                    <p class="text-xs text-gray-600 leading-relaxed mb-3 line-clamp-3">
+                        {{ $blog->excerpt ?? Str::limit(strip_tags($blog->content), 100) }}
+                    </p>
+                    <span class="text-blue-600 font-semibold text-xs hover:text-blue-700 transition-colors">
+                        Baca Selengkapnya →
+                    </span>
+                </div>
+            </a>
+            @empty
+            <!-- Fallback if no blogs from database -->
+            @foreach($data['latest_articles'] as $article)
             <div class="card-hover bg-white rounded-2xl overflow-hidden shadow-lg border border-gray-100">
                 <div class="aspect-video overflow-hidden">
                     <img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400&h=225&fit=crop" 
@@ -658,60 +706,22 @@
                          loading="lazy">
                 </div>
                 <div class="p-5">
-                    <div class="text-xs text-gray-500 mb-2">15 Agustus 2025</div>
-                    <h3 class="text-base font-bold text-gray-900 mb-2">Tren Pernikahan 2025: Sustainable Wedding</h3>
+                    <div class="text-xs text-gray-500 mb-2">{{ $article['date'] }}</div>
+                    <h3 class="text-base font-bold text-gray-900 mb-2">{{ $article['title'] }}</h3>
                     <p class="text-xs text-gray-600 leading-relaxed mb-3">
-                        Eksplorasi tren pernikahan ramah lingkungan yang semakin populer di kalangan milenial Indonesia...
+                        {{ $article['excerpt'] }}
                     </p>
                     <a href="#blog" class="text-blue-600 font-semibold text-xs hover:text-blue-700 transition-colors">
                         Baca Selengkapnya →
                     </a>
                 </div>
             </div>
-            
-            <!-- Article 2 -->
-            <div class="card-hover bg-white rounded-2xl overflow-hidden shadow-lg border border-gray-100">
-                <div class="aspect-video overflow-hidden">
-                    <img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=400&h=225&fit=crop" 
-                         alt="Wedding budget planning and calculation" 
-                         class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                         loading="lazy">
-                </div>
-                <div class="p-5">
-                    <div class="text-xs text-gray-500 mb-2">12 Agustus 2025</div>
-                    <h3 class="text-base font-bold text-gray-900 mb-2">Tips Manajemen Budget Wedding yang Efektif</h3>
-                    <p class="text-xs text-gray-600 leading-relaxed mb-3">
-                        Strategi jitu untuk wedding organizer dalam membantu klien mengelola budget pernikahan...
-                    </p>
-                    <a href="#blog" class="text-blue-600 font-semibold text-xs hover:text-blue-700 transition-colors">
-                        Baca Selengkapnya →
-                    </a>
-                </div>
-            </div>
-            
-            <!-- Article 3 -->
-            <div class="card-hover bg-white rounded-2xl overflow-hidden shadow-lg border border-gray-100">
-                <div class="aspect-video overflow-hidden">
-                    <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&h=225&fit=crop" 
-                         alt="Digital marketing analytics and social media" 
-                         class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                         loading="lazy">
-                </div>
-                <div class="p-5">
-                    <div class="text-xs text-gray-500 mb-2">10 Agustus 2025</div>
-                    <h3 class="text-base font-bold text-gray-900 mb-2">Digital Marketing untuk Wedding Organizer</h3>
-                    <p class="text-xs text-gray-600 leading-relaxed mb-3">
-                        Panduan lengkap memanfaatkan media sosial dan digital marketing untuk bisnis wedding organizer...
-                    </p>
-                    <a href="#blog" class="text-blue-600 font-semibold text-xs hover:text-blue-700 transition-colors">
-                        Baca Selengkapnya →
-                    </a>
-                </div>
-            </div>
+            @endforeach
+            @endforelse
         </div>
         
         <div class="text-center">
-            <a href="#blog" class="inline-flex items-center px-6 py-3 border-2 border-gray-800 text-gray-800 font-semibold text-sm rounded-full hover:bg-gray-800 hover:text-white transition-all duration-300">
+            <a href="{{ route('blog') }}" class="inline-flex items-center px-6 py-3 border-2 border-gray-800 text-gray-800 font-semibold text-sm rounded-full hover:bg-gray-800 hover:text-white transition-all duration-300">
                 <i class="fas fa-blog mr-2 text-xs"></i>
                 Lihat Semua Artikel
             </a>

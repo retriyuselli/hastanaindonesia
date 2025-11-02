@@ -9,6 +9,9 @@ use App\Filament\Admin\Resources\EventHastanas\Pages\ViewEventHastana;
 use App\Filament\Admin\Resources\EventHastanas\Schemas\EventHastanaForm;
 use App\Filament\Admin\Resources\EventHastanas\Schemas\EventHastanaInfolist;
 use App\Filament\Admin\Resources\EventHastanas\Tables\EventHastanasTable;
+use App\Filament\Admin\Resources\EventHastanas\Widgets\EventStatsOverview;
+use App\Filament\Admin\Resources\EventHastanas\Widgets\EventParticipantChart;
+use App\Filament\Admin\Resources\EventHastanas\Widgets\EventRevenueChart;
 use App\Models\EventHastana;
 use BackedEnum;
 use Filament\Resources\Resource;
@@ -41,6 +44,15 @@ class EventHastanaResource extends Resource
     {
         return [
             //
+        ];
+    }
+
+    public static function getWidgets(): array
+    {
+        return [
+            EventStatsOverview::class,
+            EventParticipantChart::class,
+            EventRevenueChart::class,
         ];
     }
 

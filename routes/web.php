@@ -88,6 +88,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/events/{slug}/register', [EventController::class, 'register'])->name('events.register');
     Route::post('/events/{slug}/register', [EventController::class, 'storeRegistration'])->name('events.register.store');
     
+    // Event Review Routes
+    Route::post('/events/{slug}/review', [EventController::class, 'storeReview'])->name('events.review.store');
+    
     // E-Ticket Routes
     Route::get('/my-tickets/{registrationCode}', [EventController::class, 'showTicket'])->name('tickets.show');
     Route::get('/my-tickets/{registrationCode}/download', [EventController::class, 'downloadTicket'])->name('tickets.download');

@@ -17,39 +17,124 @@ class BlogsTable
     {
         return $table
             ->columns([
+                ImageColumn::make('featured_image')
+                    ->label('Image')
+                    ->circular()
+                    ->defaultImageUrl(url('/images/placeholder-blog.png')),
+                
                 TextColumn::make('title')
-                    ->searchable(),
+                    ->label('Judul')
+                    ->searchable()
+                    ->sortable()
+                    ->limit(50)
+                    ->tooltip(function (TextColumn $column): ?string {
+                        $state = $column->getState();
+                        if (strlen($state) <= 50) {
+                            return null;
+                        }
+                        return $state;
+                    }),
+                
                 TextColumn::make('slug')
-                    ->searchable(),
-                ImageColumn::make('featured_image'),
-                TextColumn::make('blog_category_id')
-                    ->numeric()
-                    ->sortable(),
-                TextColumn::make('author_name')
-                    ->searchable(),
-                TextColumn::make('author_avatar')
-                    ->searchable(),
-                TextColumn::make('meta_title')
-                    ->searchable(),
+                    ->label('Slug')
+                    ->searchable()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->copyable()
+                    ->copyMessage('Slug copied!')
+                    ->limit(30),
+                
+                TextColumn::make('category.name')
+                    ->label('Kategori')
+                    ->searchable()
+                    ->sortable()
+                    ->badge()
+                    ->color('info'),
+                
+                TextColumn::make('author.name')
+                    ->label('Penulis')
+                    ->searchable()
+                    ->sortable()
+                    ->description(fn ($record) => $record->author?->email),
+                
                 TextColumn::make('read_time')
+                    ->label('Waktu Baca')
                     ->numeric()
-                    ->sortable(),
+                    ->sortable()
+                    ->suffix(' menit')
+                    ->alignCenter(),
+                
                 TextColumn::make('views_count')
+                    ->label('Views')
                     ->numeric()
-                    ->sortable(),
+                    ->sortable()
+                    ->alignCenter()
+                    ->badge()
+                    ->color('success'),
+                
+                TextColumn::make('likes_count')
+                    ->label('Likes')
+                    ->numeric()
+                    ->sortable()
+                    ->alignCenter()
+                    ->badge()
+                    ->color('danger'),
+                
+                TextColumn::make('comments_count')
+                    ->label('Comments')
+                    ->numeric()
+                    ->sortable()
+                    ->alignCenter()
+                    ->badge()
+                    ->color('warning')
+                    ->toggleable(isToggledHiddenByDefault: true),
+                
                 IconColumn::make('is_published')
-                    ->boolean(),
+                    ->label('Published')
+                    ->boolean()
+                    ->trueIcon('heroicon-o-check-circle')
+                    ->falseIcon('heroicon-o-x-circle')
+                    ->trueColor('success')
+                    ->falseColor('danger')
+                    ->alignCenter(),
+                
                 IconColumn::make('is_featured')
-                    ->boolean(),
-                TextColumn::make('published_at')
-                    ->dateTime()
+                    ->label('Featured')
+                    ->boolean()
+                    ->trueIcon('heroicon-o-star')
+                    ->falseIcon('heroicon-o-star')
+                    ->trueColor('warning')
+                    ->falseColor('gray')
+                    ->alignCenter(),
+                
+                TextColumn::make('status')
+                    ->label('Status')
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'draft' => 'gray',
+                        'published' => 'success',
+                        'scheduled' => 'info',
+                        'archived' => 'danger',
+                        default => 'gray',
+                    })
+                    ->searchable()
                     ->sortable(),
+                
+                TextColumn::make('published_at')
+                    ->label('Tanggal Publikasi')
+                    ->dateTime('d M Y, H:i')
+                    ->sortable()
+                    ->toggleable(),
+                
                 TextColumn::make('created_at')
-                    ->dateTime()
+                    ->label('Dibuat')
+                    ->dateTime('d M Y')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
+                
                 TextColumn::make('updated_at')
-                    ->dateTime()
+                    ->label('Diupdate')
+                    ->dateTime('d M Y')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
@@ -64,6 +149,7 @@ class BlogsTable
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),
-            ]);
+            ])
+            ->defaultSort('created_at', 'desc');
     }
 }

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Portfolio;
 use App\Models\WeddingOrganizer;
+use App\Models\EventHastana;
+use App\Models\Blog;
 
 class HomeController extends Controller
 {
@@ -31,6 +33,21 @@ class HomeController extends Controller
             ->where('is_active', true)
             ->inRandomOrder()
             ->limit(10)
+            ->get();
+
+        // Get upcoming events (active and future events)
+        $upcomingEvents = EventHastana::where('is_active', true)
+            ->where('status', 'published')
+            ->where('start_date', '>=', now())
+            ->orderBy('start_date', 'asc')
+            ->limit(4)
+            ->get();
+
+        // Get latest blog articles (featured or latest published)
+        $latestBlogs = Blog::where('status', 'published')
+            ->where('is_published', true)
+            ->orderBy('published_at', 'desc')
+            ->limit(3)
             ->get();
 
         // Data dummy untuk demo - nanti bisa diganti dengan data dari database
@@ -109,6 +126,6 @@ class HomeController extends Controller
             ]
         ];
 
-        return view('front.home', compact('data', 'featuredPortfolios', 'featuredWeddingOrganizers', 'featuredProducts'));
+        return view('front.home', compact('data', 'featuredPortfolios', 'featuredWeddingOrganizers', 'featuredProducts', 'upcomingEvents', 'latestBlogs'));
     }
 }

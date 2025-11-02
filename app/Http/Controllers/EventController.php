@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\EventHastana;
 use App\Models\EventCategory;
 use App\Models\EventParticipant;
+use App\Models\EventReview;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -163,7 +164,7 @@ class EventController extends Controller
      */
     public function show($slug)
     {
-        $event = EventHastana::with('eventCategory')
+        $event = EventHastana::with(['eventCategory', 'approvedReviews.user'])
             ->where('slug', $slug)
             ->where('status', 'published')
             ->where('is_active', true)
@@ -179,6 +180,15 @@ class EventController extends Controller
             ->limit(4)
             ->get();
 
+        // Get reviews with pagination
+        $reviews = $event->approvedReviews()
+            ->with('user')
+            ->latest()
+            ->paginate(10);
+
+        // Get rating distribution
+        $ratingDistribution = $event->getRatingDistribution();
+
         // Parse benefits and requirements
         $benefits = $event->benefits ? explode(',', $event->benefits) : [];
         $requirements = $event->requirements ? explode(',', $event->requirements) : [];
@@ -186,6 +196,8 @@ class EventController extends Controller
         return view('events.show', compact(
             'event',
             'relatedEvents',
+            'reviews',
+            'ratingDistribution',
             'benefits',
             'requirements'
         ));
@@ -423,5 +435,69 @@ class EventController extends Controller
         
         // Fallback: Return printable HTML page
         return view('tickets.download', compact('participant'));
+    }
+
+    /**
+     * Store event review
+     */
+    public function storeReview(Request $request, $slug)
+    {
+        $event = EventHastana::where('slug', $slug)->firstOrFail();
+
+        // Validate that user has attended the event
+        $hasAttended = EventParticipant::where('event_hastana_id', $event->id)
+            ->where('user_id', Auth::id())
+            ->where('status', 'attended')
+            ->exists();
+
+        if (!$hasAttended) {
+            return redirect()->back()
+                ->with('error', 'Anda harus menghadiri event ini terlebih dahulu untuk memberikan review.');
+        }
+
+        // Check if user already reviewed
+        $hasReviewed = EventReview::where('event_hastana_id', $event->id)
+            ->where('user_id', Auth::id())
+            ->exists();
+
+        if ($hasReviewed) {
+            return redirect()->back()
+                ->with('error', 'Anda sudah memberikan review untuk event ini.');
+        }
+
+        // Validate request
+        $validated = $request->validate([
+            'rating' => 'required|integer|min:1|max:5',
+            'title' => 'required|string|max:100',
+            'review' => 'required|string|min:10',
+            'pros' => 'nullable|string',
+            'cons' => 'nullable|string',
+            'would_recommend' => 'nullable|boolean',
+        ]);
+
+        // Get participant info to check if verified
+        $participant = EventParticipant::where('event_hastana_id', $event->id)
+            ->where('user_id', Auth::id())
+            ->where('status', 'attended')
+            ->first();
+
+        // Create review
+        EventReview::create([
+            'event_hastana_id' => $event->id,
+            'user_id' => Auth::id(),
+            'event_participant_id' => $participant ? $participant->id : null,
+            'rating' => $validated['rating'],
+            'title' => $validated['title'],
+            'review' => $validated['review'],
+            'pros' => $validated['pros'] ?? null,
+            'cons' => $validated['cons'] ?? null,
+            'would_recommend' => $request->has('would_recommend'),
+            'is_verified_participant' => true, // Auto-verified since they attended
+            'is_approved' => false, // Needs admin approval
+            'ip_address' => $request->ip(),
+        ]);
+
+        return redirect()->back()
+            ->with('success', 'Terima kasih! Review Anda telah dikirim dan akan ditampilkan setelah disetujui oleh admin.');
     }
 }
