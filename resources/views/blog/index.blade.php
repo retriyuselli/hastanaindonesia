@@ -189,9 +189,9 @@
                     
                     <div class="flex items-center justify-between">
                         <div class="post-stats">
-                            <span><i class="fas fa-eye mr-1"></i>{{ number_format($featuredPost->views_count) }} views</span>
-                            <span><i class="fas fa-heart mr-1"></i>{{ number_format($featuredPost->likes_count) }} likes</span>
-                            <span><i class="fas fa-comment mr-1"></i>{{ number_format($featuredPost->comments_count) }} comments</span>
+                            <span><i class="fas fa-eye mr-1"></i>{{ number_format($featuredPost->views_count ?? 0) }} views</span>
+                            <span><i class="fas fa-heart mr-1"></i>{{ number_format($featuredPost->likes_count ?? 0) }} likes</span>
+                            <span><i class="fas fa-comment mr-1"></i>{{ number_format($featuredPost->comments_count ?? 0) }} comments</span>
                         </div>
                         <a href="{{ route('blog.detail', $featuredPost->slug) }}" 
                            class="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-5 py-2.5 rounded-full hover:from-blue-700 hover:to-blue-800 transition-all font-semibold text-sm">
@@ -261,8 +261,8 @@
                     
                     <div class="flex items-center justify-between">
                         <div class="post-stats">
-                            <span><i class="fas fa-eye mr-1 text-gray-400"></i>{{ number_format($blog->views_count) }}</span>
-                            <span><i class="fas fa-heart mr-1 text-red-400"></i>{{ number_format($blog->likes_count) }}</span>
+                            <span><i class="fas fa-eye mr-1 text-gray-400"></i>{{ number_format($blog->views_count ?? 0) }}</span>
+                            <span><i class="fas fa-heart mr-1 text-red-400"></i>{{ number_format($blog->likes_count ?? 0) }}</span>
                         </div>
                         <a href="{{ route('blog.detail', $blog->slug) }}" 
                            class="text-blue-600 hover:text-blue-800 font-semibold text-xs">

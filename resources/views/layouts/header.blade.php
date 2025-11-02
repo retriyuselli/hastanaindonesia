@@ -400,10 +400,12 @@
                                     <i class="fas fa-user-circle text-xs"></i>
                                     Profil Saya
                                 </a>
-                                <a href="#" class="dropdown-item text-sm">
-                                    <i class="fas fa-ticket-alt text-xs"></i>
-                                    Event Saya
+                                @if(auth()->user()->role === 'admin')
+                                <a href="{{ url('/admin') }}" class="dropdown-item text-sm">
+                                    <i class="fas fa-cog text-xs"></i>
+                                    Admin Panel
                                 </a>
+                                @endif
                                 <div class="border-t border-gray-100"></div>
                                 <form method="POST" action="{{ route('logout') }}">
                                     @csrf
@@ -504,6 +506,12 @@
                                 <i class="fas fa-user-circle mr-2 text-xs w-4"></i>
                                 Profil Saya
                             </a>
+                            @if(auth()->user()->role === 'admin')
+                            <a href="{{ url('/admin') }}" class="mobile-dropdown-item flex items-center text-sm hover:bg-blue-50 transition-smooth rounded">
+                                <i class="fas fa-cog mr-2 text-xs w-4"></i>
+                                Admin Panel
+                            </a>
+                            @endif
                             <a href="#" class="mobile-dropdown-item flex items-center text-sm hover:bg-blue-50 transition-smooth rounded">
                                 <i class="fas fa-ticket-alt mr-2 text-xs w-4"></i>
                                 Event Saya

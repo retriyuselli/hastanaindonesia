@@ -205,4 +205,70 @@ class BlogEngagementController extends Controller
             ], 500);
         }
     }
+
+    /**
+     * Toggle like for a blog
+     */
+    public function toggleLike($blogId)
+    {
+        try {
+            // Find blog by ID or slug
+            $blog = Blog::where('id', $blogId)
+                       ->orWhere('slug', $blogId)
+                       ->firstOrFail();
+            
+            $ipAddress = request()->ip();
+            
+            // Toggle like
+            $result = $blog->toggleLike($ipAddress, request()->userAgent());
+            
+            // Refresh to get updated counts
+            $blog->refresh();
+            
+            return response()->json([
+                'success' => true,
+                'liked' => $result['liked'],
+                'likes_count' => $blog->likes_count ?? 0,
+                'message' => $result['liked'] ? 'Blog disukai!' : 'Like dibatalkan.',
+            ]);
+            
+        } catch (\Exception $e) {
+            Log::error('Error toggling blog like', [
+                'error' => $e->getMessage(),
+                'blog_id' => $blogId,
+            ]);
+            
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan saat memproses like.',
+            ], 500);
+        }
+    }
+
+    /**
+     * Check if user has liked a blog
+     */
+    public function checkLike($blogId)
+    {
+        try {
+            // Find blog by ID or slug
+            $blog = Blog::where('id', $blogId)
+                       ->orWhere('slug', $blogId)
+                       ->firstOrFail();
+            
+            $ipAddress = request()->ip();
+            $liked = $blog->isLikedBy($ipAddress);
+            
+            return response()->json([
+                'success' => true,
+                'liked' => $liked,
+            ]);
+            
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'liked' => false,
+            ], 500);
+        }
+    }
 }

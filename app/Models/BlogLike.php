@@ -69,14 +69,14 @@ class BlogLike extends Model
 
         if ($existing) {
             $existing->delete();
-            return ['action' => 'unliked', 'count' => Blog::find($blogId)->likes_count];
+            return ['liked' => false, 'action' => 'unliked', 'count' => Blog::find($blogId)->likes_count];
         } else {
             static::create([
                 'blog_id' => $blogId,
                 'ip_address' => $ipAddress,
                 'user_agent' => $userAgent
             ]);
-            return ['action' => 'liked', 'count' => Blog::find($blogId)->likes_count];
+            return ['liked' => true, 'action' => 'liked', 'count' => Blog::find($blogId)->likes_count];
         }
     }
 }

@@ -307,12 +307,12 @@
             @forelse($featuredProducts as $product)
             <div class="portfolio-marquee-item">
                 @if($product->weddingOrganizer && $product->weddingOrganizer->slug)
-                <a href="{{ route('members.product', ['slug' => $product->weddingOrganizer->slug, 'productId' => $product->id]) }}" class="block bg-white rounded-3xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 p-6 relative transform hover:-translate-y-2 cursor-pointer">
+                <a href="{{ route('members.product', ['slug' => $product->weddingOrganizer->slug, 'productId' => $product->id]) }}" class="block bg-white rounded-3xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 p-6 relative cursor-pointer">
                 @else
                 <div class="block bg-white rounded-3xl shadow-lg overflow-hidden p-6 relative opacity-75 cursor-not-allowed">
                 @endif
                     <!-- Deals Badge -->
-                    @if($product->limited_offer || $product->discount > 0)
+                    {{-- @if($product->limited_offer || $product->discount > 0)
                     <div class="absolute top-4 left-4 bg-red-500 text-white px-4 py-2 rounded-full text-xs font-semibold flex items-center gap-1 shadow-md z-10">
                         <i class="fas fa-tag"></i>
                         @if($product->limited_offer)
@@ -321,7 +321,7 @@
                         Deals Available
                         @endif
                     </div>
-                    @endif
+                    @endif --}}
                     
                     <!-- Product Image -->
                     <div class="flex justify-center mt-8 mb-6">
@@ -362,7 +362,7 @@
                     </div>
                     
                     <!-- Price & Discount -->
-                    <div class="text-center">
+                    {{-- <div class="text-center">
                         @if($product->discount > 0)
                         <div class="mb-1">
                             <span class="text-gray-400 line-through text-xs">Rp {{ number_format($product->original_price, 0, ',', '.') }}</span>
@@ -378,7 +378,7 @@
                             Rp {{ number_format($product->price, 0, ',', '.') }}
                         </div>
                         @endif
-                    </div>
+                    </div> --}}
                 @if($product->weddingOrganizer && $product->weddingOrganizer->slug)
                 </a>
                 @else
@@ -389,7 +389,7 @@
             <!-- Fallback jika tidak ada data -->
             @for ($i = 1; $i <= 10; $i++)
             <div class="portfolio-marquee-item">
-                <a href="{{ route('members') }}" class="block bg-white rounded-3xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 p-6 relative transform hover:-translate-y-2 cursor-pointer">
+                <a href="{{ route('members') }}" class="block bg-white rounded-3xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 p-6 relative cursor-pointer">
                     <!-- Deals Badge -->
                     <div class="absolute top-4 left-4 bg-red-500 text-white px-4 py-2 rounded-full text-xs font-semibold flex items-center gap-1 shadow-md z-10">
                         <i class="fas fa-tag"></i>
@@ -459,77 +459,101 @@
         </div>
         
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
-            <!-- Member 1 -->
-            <div class="card-hover bg-white p-5 rounded-2xl shadow-lg border border-gray-100 text-center">
-                <div class="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-3">
-                    <i class="fas fa-crown text-white text-xl"></i>
-                </div>
-                <h3 class="text-base font-bold text-gray-900 mb-1">Elegant Wedding Organizer</h3>
-                <p class="text-xs text-gray-600 mb-1">Jakarta Selatan</p>
-                <p class="text-xs text-blue-600 font-medium">Premium Member</p>
-                <div class="mt-3 flex justify-center space-x-1">
-                    <i class="fas fa-star text-yellow-400 text-xs"></i>
-                    <i class="fas fa-star text-yellow-400 text-xs"></i>
-                    <i class="fas fa-star text-yellow-400 text-xs"></i>
-                    <i class="fas fa-star text-yellow-400 text-xs"></i>
-                    <i class="fas fa-star text-yellow-400 text-xs"></i>
-                </div>
-            </div>
+            @php
+                $gradientColors = [
+                    ['from-blue-500', 'to-blue-600', 'text-blue-600'],
+                    ['from-red-500', 'to-red-600', 'text-red-600'],
+                    ['from-purple-500', 'to-purple-600', 'text-purple-600'],
+                    ['from-green-500', 'to-green-600', 'text-green-600'],
+                    ['from-pink-500', 'to-pink-600', 'text-pink-600'],
+                    ['from-indigo-500', 'to-indigo-600', 'text-indigo-600'],
+                    ['from-yellow-500', 'to-yellow-600', 'text-yellow-600'],
+                    ['from-teal-500', 'to-teal-600', 'text-teal-600'],
+                ];
+                $icons = ['crown', 'heart', 'gem', 'star', 'award', 'certificate', 'trophy', 'medal'];
+            @endphp
             
-            <!-- Member 2 -->
-            <div class="card-hover bg-white p-5 rounded-2xl shadow-lg border border-gray-100 text-center">
-                <div class="w-16 h-16 bg-gradient-to-br from-red-500 to-red-600 rounded-full flex items-center justify-center mx-auto mb-3">
-                    <i class="fas fa-heart text-white text-xl"></i>
-                </div>
-                <h3 class="text-base font-bold text-gray-900 mb-1">Bali Dream Wedding</h3>
-                <p class="text-xs text-gray-600 mb-1">Bali</p>
-                <p class="text-xs text-red-600 font-medium">Gold Member</p>
-                <div class="mt-3 flex justify-center space-x-1">
-                    <i class="fas fa-star text-yellow-400 text-xs"></i>
-                    <i class="fas fa-star text-yellow-400 text-xs"></i>
-                    <i class="fas fa-star text-yellow-400 text-xs"></i>
-                    <i class="fas fa-star text-yellow-400 text-xs"></i>
-                    <i class="fas fa-star text-yellow-400 text-xs"></i>
-                </div>
-            </div>
+            @forelse($featuredWeddingOrganizers->take(8) as $index => $wo)
+            @php
+                $colorIndex = $index % count($gradientColors);
+                $iconIndex = $index % count($icons);
+                $gradient = $gradientColors[$colorIndex];
+                $icon = $icons[$iconIndex];
+            @endphp
             
-            <!-- Member 3 -->
-            <div class="card-hover bg-white p-5 rounded-2xl shadow-lg border border-gray-100 text-center">
-                <div class="w-16 h-16 bg-gradient-to-br from-purple-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-3">
-                    <i class="fas fa-gem text-white text-xl"></i>
+            <a href="{{ route('members.show', $wo->slug) }}" class="card-hover bg-white p-5 rounded-2xl shadow-lg border border-gray-100 text-center block transition-all duration-300">
+                <!-- Logo or Icon -->
+                @if($wo->logo)
+                <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-3 overflow-hidden border-2 border-gray-100">
+                    <img src="{{ asset('storage/' . $wo->logo) }}" alt="{{ $wo->brand_name }}" class="w-full h-full object-cover">
                 </div>
-                <h3 class="text-base font-bold text-gray-900 mb-1">Surabaya Modern Wedding</h3>
-                <p class="text-xs text-gray-600 mb-1">Surabaya</p>
-                <p class="text-xs text-purple-600 font-medium">Silver Member</p>
+                @else
+                <div class="w-16 h-16 bg-gradient-to-br {{ $gradient[0] }} {{ $gradient[1] }} rounded-full flex items-center justify-center mx-auto mb-3">
+                    <i class="fas fa-{{ $icon }} text-white text-xl"></i>
+                </div>
+                @endif
+                
+                <!-- Brand Name -->
+                <h3 class="text-base font-bold text-gray-900 mb-1" title="{{ $wo->brand_name }}">
+                    {{ Str::limit($wo->brand_name, 25) }}
+                </h3>
+                
+                <!-- Location -->
+                <p class="text-xs text-gray-600 mb-2">
+                    {{ $wo->city }}{{ $wo->province ? ', ' . $wo->province : '' }}
+                </p>
+                
+                <!-- Verification Badge -->
+                @if($wo->verification_status === 'verified')
+                <div class="flex items-center justify-center gap-1 mb-2">
+                    <i class="fas fa-check-circle text-green-500 text-xs"></i>
+                    <span class="text-xs text-green-600 font-medium">Verified</span>
+                </div>
+                @endif
+                
+                <!-- Rating Stars -->
+                {{-- <div class="mt-3 flex justify-center space-x-1">
+                    @for($i = 1; $i <= 5; $i++)
+                        @if($i <= floor($rating))
+                            <i class="fas fa-star text-yellow-400 text-xs"></i>
+                        @elseif($i == ceil($rating) && $rating - floor($rating) >= 0.5)
+                            <i class="fas fa-star-half-alt text-yellow-400 text-xs"></i>
+                        @else
+                            <i class="far fa-star text-gray-300 text-xs"></i>
+                        @endif
+                    @endfor
+                </div> --}}
+            </a>
+            @empty
+            <!-- Fallback if no WO data -->
+            @foreach($data['featured_members'] as $index => $member)
+            @php
+                $colorIndex = $index % count($gradientColors);
+                $gradient = $gradientColors[$colorIndex];
+            @endphp
+            <div class="card-hover bg-white p-5 rounded-2xl shadow-lg border border-gray-100 text-center">
+                <div class="w-16 h-16 bg-gradient-to-br {{ $gradient[0] }} {{ $gradient[1] }} rounded-full flex items-center justify-center mx-auto mb-3">
+                    <i class="fas fa-{{ $member['icon'] }} text-white text-xl"></i>
+                </div>
+                <h3 class="text-base font-bold text-gray-900 mb-1">{{ $member['name'] }}</h3>
+                <p class="text-xs text-gray-600 mb-1">{{ $member['location'] }}</p>
+                <p class="text-xs {{ $gradient[2] }} font-medium">{{ $member['membership'] }}</p>
                 <div class="mt-3 flex justify-center space-x-1">
-                    <i class="fas fa-star text-yellow-400 text-xs"></i>
-                    <i class="fas fa-star text-yellow-400 text-xs"></i>
-                    <i class="fas fa-star text-yellow-400 text-xs"></i>
-                    <i class="fas fa-star text-yellow-400 text-xs"></i>
-                    <i class="fas fa-star text-gray-300 text-xs"></i>
+                    @for($i = 1; $i <= 5; $i++)
+                        @if($i <= $member['rating'])
+                            <i class="fas fa-star text-yellow-400 text-xs"></i>
+                        @else
+                            <i class="far fa-star text-gray-300 text-xs"></i>
+                        @endif
+                    @endfor
                 </div>
             </div>
-            
-            <!-- Member 4 -->
-            <div class="card-hover bg-white p-5 rounded-2xl shadow-lg border border-gray-100 text-center">
-                <div class="w-16 h-16 bg-gradient-to-br from-green-500 to-green-600 rounded-full flex items-center justify-center mx-auto mb-3">
-                    <i class="fas fa-leaf text-white text-xl"></i>
-                </div>
-                <h3 class="text-base font-bold text-gray-900 mb-1">Yogya Traditional Event</h3>
-                <p class="text-xs text-gray-600 mb-1">Yogyakarta</p>
-                <p class="text-xs text-green-600 font-medium">Silver Member</p>
-                <div class="mt-3 flex justify-center space-x-1">
-                    <i class="fas fa-star text-yellow-400 text-xs"></i>
-                    <i class="fas fa-star text-yellow-400 text-xs"></i>
-                    <i class="fas fa-star text-yellow-400 text-xs"></i>
-                    <i class="fas fa-star text-yellow-400 text-xs"></i>
-                    <i class="fas fa-star text-gray-300 text-xs"></i>
-                </div>
-            </div>
+            @endforeach
+            @endforelse
         </div>
         
         <div class="text-center">
-            <a href="#members" class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-gray-800 to-gray-900 text-white font-semibold text-sm rounded-full hover:from-gray-900 hover:to-black transition-all duration-300 shadow-lg hover:shadow-xl">
+            <a href="{{ route('members') }}" class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-gray-800 to-gray-900 text-white font-semibold text-sm rounded-full hover:from-gray-900 hover:to-black transition-all duration-300 shadow-lg hover:shadow-xl">
                 <i class="fas fa-users mr-2 text-xs"></i>
                 Lihat Semua Anggota
             </a>

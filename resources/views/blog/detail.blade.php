@@ -394,10 +394,40 @@
                             <i class="fas fa-clock"></i>
                             <span>{{ $blog->read_time ?? 5 }} menit</span>
                         </div>
+                        @auth
+                        <div onclick="toggleLike()" id="like-button" class="flex items-center gap-2 cursor-pointer transition-all hover:scale-105">
+                            <i class="fas fa-heart mr-1" id="heart-icon"></i>
+                            <span id="like-count">{{ number_format($blog->likes_count ?? 0) }}</span>
+                            <span id="like-text">likes</span>
+                        </div>
+                        @else
+                        <a href="{{ route('login') }}" class="flex items-center gap-2 hover:text-pink-500 transition-all">
+                            <i class="far fa-heart mr-1"></i>
+                            <span>{{ number_format($blog->likes_count ?? 0) }}</span>
+                            <span>likes</span>
+                        </a>
+                        @endauth
                     </div>
 
                     <!-- Title -->
-                    <h1 class="text-3xl font-bold text-gray-900 mb-6">{{ $blog->title }}</h1>
+                    <h1 class="text-3xl font-bold text-gray-900 mb-4">{{ $blog->title }}</h1>
+
+                    <!-- Engagement Stats -->
+                    {{-- <div class="flex items-center gap-6 mb-6 pb-6 border-b">
+                        <div class="flex items-center gap-2 text-sm text-gray-600">
+                            <i class="fas fa-eye text-blue-500"></i>
+                            <span>{{ number_format($blog->views_count ?? 0) }} views</span>
+                        </div>
+                        <button onclick="toggleLike()" id="like-button" class="flex items-center gap-2 text-sm font-medium transition-all hover:scale-105">
+                            <i class="fas fa-heart mr-1" id="heart-icon"></i>
+                            <span id="like-count">{{ number_format($blog->likes_count ?? 0) }}</span>
+                            <span id="like-text">likes</span>
+                        </button>
+                        <div class="flex items-center gap-2 text-sm text-gray-600">
+                            <i class="fas fa-comment text-gray-500"></i>
+                            <span>{{ number_format($blog->comments()->where('is_approved', true)->count()) }} comments</span>
+                        </div>
+                    </div> --}}
 
                     <!-- Excerpt -->
                     {{-- @if($blog->excerpt)
@@ -703,6 +733,75 @@ if (textarea && charCount) {
         }
     });
 }
+
+// Toggle blog like
+function toggleLike() {
+    @guest
+        window.location.href = '{{ route('login') }}';
+        return;
+    @endguest
+    
+    const blogSlug = '{{ $blog->slug }}';
+    const likeButton = document.getElementById('like-button');
+    const heartIcon = document.getElementById('heart-icon');
+    const likeCount = document.getElementById('like-count');
+    
+    fetch(`/api/blog/${blogSlug}/like`, {
+        method: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Update count
+            likeCount.textContent = new Intl.NumberFormat().format(data.likes_count);
+            
+            // Update button style
+            if (data.liked) {
+                likeButton.classList.remove('text-gray-600');
+                likeButton.classList.add('text-pink-500');
+                heartIcon.classList.remove('far');
+                heartIcon.classList.add('fas');
+            } else {
+                likeButton.classList.remove('text-pink-500');
+                likeButton.classList.add('text-gray-600');
+                heartIcon.classList.remove('fas');
+                heartIcon.classList.add('far');
+            }
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Terjadi kesalahan. Silakan coba lagi.');
+    });
+}
+
+// Initialize like button state
+document.addEventListener('DOMContentLoaded', function() {
+    const likeButton = document.getElementById('like-button');
+    const heartIcon = document.getElementById('heart-icon');
+    
+    // Check if user has liked this blog
+    @auth
+    if (likeButton && heartIcon) {
+        fetch(`/api/blog/{{ $blog->slug }}/check-like`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.liked) {
+                    likeButton.classList.add('text-pink-500');
+                    heartIcon.classList.add('fas');
+                } else {
+                    likeButton.classList.add('text-gray-600');
+                    heartIcon.classList.add('far');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+    }
+    @endauth
+});
 
 // Like comment
 function likeComment(commentId) {

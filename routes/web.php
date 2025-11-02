@@ -101,8 +101,7 @@ Route::get('/blog', function () {
                                 'comments' => function($query) {
                                     $query->where('is_approved', true);
                                 },
-                                'likes',
-                                'views'
+                                'likes'
                             ])
                             ->where('status', 'published');
     
@@ -143,8 +142,7 @@ Route::get('/blog/{slug}', function ($slug) {
                                'comments' => function($query) {
                                    $query->where('is_approved', true);
                                },
-                               'likes',
-                               'views'
+                               'likes'
                            ])
                            ->with(['category', 'author', 'comments' => function($query) {
                                $query->where('is_approved', true)
@@ -205,6 +203,7 @@ Route::prefix('api/blog')->group(function () {
     });
     
     Route::post('{blogId}/like', [BlogEngagementController::class, 'toggleLike'])->name('blog.toggle-like');
+    Route::get('{blogId}/check-like', [BlogEngagementController::class, 'checkLike'])->name('blog.check-like');
     Route::post('{blogId}/view', [BlogEngagementController::class, 'recordView'])->name('blog.record-view');
     Route::post('{blogId}/comment', [BlogEngagementController::class, 'storeComment'])->name('blog.store-comment');
     Route::get('{blogId}/comments', [BlogEngagementController::class, 'getComments'])->name('blog.get-comments');
