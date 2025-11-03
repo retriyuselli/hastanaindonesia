@@ -153,16 +153,16 @@
                 <div class="hidden lg:block text-white">
                     <div class="mb-8">
                         <div class="flex items-center mb-6">
-                            <div class="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm mr-4">
-                                <i class="fas fa-rings-wedding text-white text-2xl"></i>
+                            <div class="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm mr-4 p-2">
+                                <img src="{{ asset('images/logo/Logo Hastana Indonesia Putih.png') }}" alt="Hastana Indonesia Logo" class="w-full h-full object-contain">
                             </div>
                             <div>
-                                <h1 class="text-3xl font-bold">HASTANA</h1>
-                                <p class="text-sm opacity-90">Indonesia Wedding Organizer</p>
+                                <h1 class="text-3xl font-bold">HASTANA INDONESIA</h1>
+                                <p class="text-sm opacity-90">Himpunan Perusahaan Penata Acara Pernikahan Indonesia</p>
                             </div>
                         </div>
                         <h2 class="text-4xl font-bold mb-4 leading-tight">
-                            Selamat Datang di HASTANA
+                            Selamat Datang di HASTANA INDONESIA
                         </h2>
                         <p class="text-xl opacity-90 mb-8">
                             Kelola bisnis wedding organizer Anda dengan lebih profesional
@@ -172,7 +172,7 @@
                     <!-- Features -->
                     <div class="space-y-4">
                         <div class="feature-item">
-                            <div class="flex-shrink-0">
+                            <div class="shrink-0">
                                 <div class="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center">
                                     <i class="fas fa-chart-line text-2xl"></i>
                                 </div>
@@ -184,7 +184,7 @@
                         </div>
 
                         <div class="feature-item">
-                            <div class="flex-shrink-0">
+                            <div class="shrink-0">
                                 <div class="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center">
                                     <i class="fas fa-users text-2xl"></i>
                                 </div>
@@ -196,7 +196,7 @@
                         </div>
 
                         <div class="feature-item">
-                            <div class="flex-shrink-0">
+                            <div class="shrink-0">
                                 <div class="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center">
                                     <i class="fas fa-certificate text-2xl"></i>
                                 </div>
@@ -211,7 +211,7 @@
 
                 <!-- Mobile Logo -->
                 <div class="lg:hidden text-center mb-4 mt-20">
-                    <div class="w-20 h-20 bg-gradient-to-br from-blue-600 to-red-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <div class="w-20 h-20 bg-linear-to-br from-blue-600 to-red-600 rounded-full flex items-center justify-center mx-auto mb-4">
                         <i class="fas fa-rings-wedding text-white text-3xl"></i>
                     </div>
                     <h2 class="text-xl font-bold text-white">HASTANA Indonesia</h2>

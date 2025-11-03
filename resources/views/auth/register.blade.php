@@ -157,12 +157,12 @@
                 <div class="hidden lg:block text-white">
                     <div class="mb-8">
                         <div class="flex items-center mb-6">
-                            <div class="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm mr-4">
-                                <i class="fas fa-rings-wedding text-white text-2xl"></i>
+                            <div class="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm mr-4 p-2">
+                                <img src="{{ asset('images/logo/Logo Hastana Indonesia Putih.png') }}" alt="Hastana Indonesia Logo" class="w-full h-full object-contain">
                             </div>
                             <div>
-                                <h1 class="text-2xl font-bold">HASTANA</h1>
-                                <p class="text-xs opacity-90">Indonesia Wedding Organizer</p>
+                                <h1 class="text-2xl font-bold">HASTANA INDONESIA</h1>
+                                <p class="text-xs opacity-90">Himpunan Perusahaan Penata Acara Pernikahan Indonesia</p>
                             </div>
                         </div>
                         <h2 class="text-3xl font-bold mb-4 leading-tight">
