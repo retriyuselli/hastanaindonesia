@@ -153,7 +153,7 @@
                                     value="{{ old('name', $user->name) }}" 
                                     required 
                                     autofocus
-                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg"
                                     placeholder="Masukkan nama lengkap Anda">
                                 @error('name')
                                     <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
@@ -171,7 +171,7 @@
                                     type="email" 
                                     value="{{ old('email', $user->email) }}" 
                                     required
-                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg"
                                     placeholder="email@example.com">
                                 @error('email')
                                     <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
@@ -210,7 +210,7 @@
                                     name="phone" 
                                     type="tel" 
                                     value="{{ old('phone', $user->phone ?? '') }}" 
-                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg"
                                     placeholder="08xxxxxxxxxx">
                                 @error('phone')
                                     <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
@@ -256,7 +256,7 @@
                                     name="current_password" 
                                     type="password"
                                     autocomplete="current-password"
-                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition"
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg"
                                     placeholder="Masukkan password saat ini">
                                 @error('current_password', 'updatePassword')
                                     <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
@@ -273,7 +273,7 @@
                                     name="password" 
                                     type="password"
                                     autocomplete="new-password"
-                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition"
+                                    class="w-full px-4 py-3 border border-gray-300"
                                     placeholder="Masukkan password baru (minimal 8 karakter)">
                                 @error('password', 'updatePassword')
                                     <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
@@ -290,7 +290,7 @@
                                     name="password_confirmation" 
                                     type="password"
                                     autocomplete="new-password"
-                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition"
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg"
                                     placeholder="Masukkan ulang password baru">
                                 @error('password_confirmation', 'updatePassword')
                                     <p class="mt-2 text-sm text-red-600">{{ $message }}</p>

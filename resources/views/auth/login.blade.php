@@ -10,9 +10,18 @@
         background-size: cover, 100px 100px;
         min-height: 100vh;
         display: flex;
-        align-items: flex-end;
+        align-items: center;
         justify-content: center;
-        padding-bottom: 2rem;
+        padding: 2rem 0;
+    }
+
+    /* Mobile spacing adjustments */
+    @media (max-width: 1023px) {
+        .login-bg {
+            align-items: flex-start;
+            padding-top: 4rem;
+            padding-bottom: 2rem;
+        }
     }
 
     .login-card {
@@ -28,7 +37,7 @@
         padding-left: 3rem;
         border: 1px solid #e5e7eb;
         border-radius: 0.75rem;
-        font-size: 1rem;
+        font-size: 0.875rem;
         transition: all 0.3s ease;
     }
 
@@ -57,7 +66,7 @@
         background: linear-gradient(135deg, #1e40af, #dc2626);
         color: white;
         font-weight: 700;
-        font-size: 1.125rem;
+        font-size: 1rem;
         border: none;
         border-radius: 0.75rem;
         cursor: pointer;
@@ -200,21 +209,21 @@
                     </div>
                 </div>
 
+                <!-- Mobile Logo -->
+                <div class="lg:hidden text-center mb-4 mt-20">
+                    <div class="w-20 h-20 bg-gradient-to-br from-blue-600 to-red-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-rings-wedding text-white text-3xl"></i>
+                    </div>
+                    <h2 class="text-xl font-bold text-white">HASTANA Indonesia</h2>
+                    <p class="text-sm text-white">Wedding Organizer Platform</p>
+                </div>
+                
                 <!-- Right Side - Login Form -->
                 <div class="login-card">
                     <div class="p-8 lg:p-12">
-                        <!-- Mobile Logo -->
-                        <div class="lg:hidden text-center mb-8">
-                            <div class="w-20 h-20 bg-gradient-to-br from-blue-600 to-red-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                                <i class="fas fa-rings-wedding text-white text-3xl"></i>
-                            </div>
-                            <h2 class="text-2xl font-bold text-gray-900">HASTANA Indonesia</h2>
-                            <p class="text-gray-600">Wedding Organizer Platform</p>
-                        </div>
-
                         <div class="mb-8">
-                            <h2 class="text-3xl font-bold text-gray-900 mb-2">Login</h2>
-                            <p class="text-gray-600">Masuk ke akun Anda untuk melanjutkan</p>
+                            <h2 class="text-2xl font-bold text-gray-900 mb-2">Login</h2>
+                            <p class="text-sm text-gray-600">Masuk ke akun Anda untuk melanjutkan</p>
                         </div>
 
                         <!-- Session Status -->
@@ -249,7 +258,7 @@
 
                             <!-- Email Address -->
                             <div class="mb-6">
-                                <label for="email" class="block text-sm font-semibold text-gray-700 mb-2">
+                                <label for="email" class="block text-xs font-semibold text-gray-700 mb-2">
                                     Email Address
                                 </label>
                                 <div class="relative">
@@ -273,7 +282,7 @@
 
                             <!-- Password -->
                             <div class="mb-6">
-                                <label for="password" class="block text-sm font-semibold text-gray-700 mb-2">
+                                <label for="password" class="block text-xs font-semibold text-gray-700 mb-2">
                                     Password
                                 </label>
                                 <div class="relative">

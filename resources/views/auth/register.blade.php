@@ -5,14 +5,23 @@
 @push('styles')
 <style>
     .register-bg {
-        background: linear-gradient(135deg, rgba(220, 38, 38, 0.95), rgba(30, 64, 175, 0.9)),
+        background: linear-gradient(135deg, rgba(30, 64, 175, 0.95), rgba(220, 38, 38, 0.9)),
                    url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600"><defs><pattern id="diamond-pattern" x="0" y="0" width="100" height="100" patternUnits="userSpaceOnUse"><polygon points="50,0 100,50 50,100 0,50" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"/></pattern></defs><rect width="100%" height="100%" fill="url(%23diamond-pattern)"/></svg>');
         background-size: cover, 100px 100px;
         min-height: 100vh;
         display: flex;
-        align-items: flex-end;
+        align-items: center;
         justify-content: center;
-        padding-bottom: 0.5rem;
+        padding: 2rem 0;
+    }
+
+    /* Mobile spacing adjustments */
+    @media (max-width: 1023px) {
+        .register-bg {
+            align-items: flex-start;
+            padding-top: 4rem;
+            padding-bottom: 2rem;
+        }
     }
 
     .register-card {
@@ -28,7 +37,7 @@
         padding-left: 3rem;
         border: 1px solid #e5e7eb;
         border-radius: 0.75rem;
-        font-size: 1rem;
+        font-size: 0.875rem;
         transition: all 0.3s ease;
     }
 
@@ -57,7 +66,7 @@
         background: linear-gradient(135deg, #dc2626, #1e40af);
         color: white;
         font-weight: 700;
-        font-size: 1.125rem;
+        font-size: 1rem;
         border: none;
         border-radius: 0.75rem;
         cursor: pointer;
@@ -152,14 +161,14 @@
                                 <i class="fas fa-rings-wedding text-white text-2xl"></i>
                             </div>
                             <div>
-                                <h1 class="text-3xl font-bold">HASTANA</h1>
-                                <p class="text-sm opacity-90">Indonesia Wedding Organizer</p>
+                                <h1 class="text-2xl font-bold">HASTANA</h1>
+                                <p class="text-xs opacity-90">Indonesia Wedding Organizer</p>
                             </div>
                         </div>
-                        <h2 class="text-4xl font-bold mb-4 leading-tight">
+                        <h2 class="text-3xl font-bold mb-4 leading-tight">
                             Bergabunglah dengan Komunitas Terbesar!
                         </h2>
-                        <p class="text-xl opacity-90 mb-8">
+                        <p class="text-lg opacity-90 mb-8">
                             Tingkatkan profesionalisme wedding organizer Anda bersama HASTANA Indonesia
                         </p>
                     </div>
@@ -173,8 +182,8 @@
                                 </div>
                             </div>
                             <div>
-                                <h3 class="font-semibold text-lg mb-1">1000+ Member Aktif</h3>
-                                <p class="text-sm opacity-80">Jaringan wedding organizer di 34 provinsi</p>
+                                <h3 class="font-semibold text-base mb-1">1000+ Member Aktif</h3>
+                                <p class="text-xs opacity-80">Jaringan wedding organizer di 34 provinsi</p>
                             </div>
                         </div>
 
@@ -185,8 +194,8 @@
                                 </div>
                             </div>
                             <div>
-                                <h3 class="font-semibold text-lg mb-1">Sertifikasi Resmi</h3>
-                                <p class="text-sm opacity-80">Dapatkan sertifikasi yang diakui nasional</p>
+                                <h3 class="font-semibold text-base mb-1">Sertifikasi Resmi</h3>
+                                <p class="text-xs opacity-80">Dapatkan sertifikasi yang diakui nasional</p>
                             </div>
                         </div>
 
@@ -197,8 +206,8 @@
                                 </div>
                             </div>
                             <div>
-                                <h3 class="font-semibold text-lg mb-1">Pelatihan Eksklusif</h3>
-                                <p class="text-sm opacity-80">Workshop dan seminar untuk member</p>
+                                <h3 class="font-semibold text-base mb-1">Pelatihan Eksklusif</h3>
+                                <p class="text-xs opacity-80">Workshop dan seminar untuk member</p>
                             </div>
                         </div>
 
@@ -209,28 +218,28 @@
                                 </div>
                             </div>
                             <div>
-                                <h3 class="font-semibold text-lg mb-1">Kolaborasi Bisnis</h3>
-                                <p class="text-sm opacity-80">Partner dengan vendor terpercaya</p>
+                                <h3 class="font-semibold text-base mb-1">Kolaborasi Bisnis</h3>
+                                <p class="text-xs opacity-80">Partner dengan vendor terpercaya</p>
                             </div>
                         </div>
                     </div>
                 </div>
 
+                <!-- Mobile Logo -->
+                <div class="lg:hidden text-center mb-4 mt-20">
+                    <div class="w-20 h-20 bg-gradient-to-br from-red-600 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-rings-wedding text-white text-3xl"></i>
+                    </div>
+                    <h2 class="text-xl font-bold text-white">HASTANA Indonesia</h2>
+                    <p class="text-sm text-white">Wedding Organizer Platform</p>
+                </div>
+
                 <!-- Right Side - Registration Form -->
                 <div class="register-card">
                     <div class="p-8 lg:p-12">
-                        <!-- Mobile Logo -->
-                        <div class="lg:hidden text-center mb-8">
-                            <div class="w-20 h-20 bg-gradient-to-br from-red-600 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                                <i class="fas fa-rings-wedding text-white text-3xl"></i>
-                            </div>
-                            <h2 class="text-2xl font-bold text-gray-900">HASTANA Indonesia</h2>
-                            <p class="text-gray-600">Wedding Organizer Platform</p>
-                        </div>
-
-                        <div class="mb-8 mt-32">
-                            <h2 class="text-3xl font-bold text-gray-900 mb-2">Daftar Akun</h2>
-                            <p class="text-gray-600">Buat akun untuk mengakses semua fitur HASTANA</p>
+                        <div class="mb-8">
+                            <h2 class="text-2xl font-bold text-gray-900 mb-2">Daftar Akun</h2>
+                            <p class="text-sm text-gray-600">Buat akun untuk mengakses semua fitur HASTANA</p>
                         </div>
 
                         <!-- Error Messages -->
@@ -255,7 +264,7 @@
 
                             <!-- Name -->
                             <div class="mb-6">
-                                <label for="name" class="block text-sm font-semibold text-gray-700 mb-2">
+                                <label for="name" class="block text-xs font-semibold text-gray-700 mb-2">
                                     Nama Lengkap
                                 </label>
                                 <div class="relative">
@@ -279,7 +288,7 @@
 
                             <!-- Email Address -->
                             <div class="mb-6">
-                                <label for="email" class="block text-sm font-semibold text-gray-700 mb-2">
+                                <label for="email" class="block text-xs font-semibold text-gray-700 mb-2">
                                     Email Address
                                 </label>
                                 <div class="relative">
@@ -304,7 +313,7 @@
 
                             <!-- Password -->
                             <div class="mb-6">
-                                <label for="password" class="block text-sm font-semibold text-gray-700 mb-2">
+                                <label for="password" class="block text-xs font-semibold text-gray-700 mb-2">
                                     Password
                                 </label>
                                 <div class="relative">
@@ -332,7 +341,7 @@
 
                             <!-- Confirm Password -->
                             <div class="mb-6">
-                                <label for="password_confirmation" class="block text-sm font-semibold text-gray-700 mb-2">
+                                <label for="password_confirmation" class="block text-xs font-semibold text-gray-700 mb-2">
                                     Konfirmasi Password
                                 </label>
                                 <div class="relative">
