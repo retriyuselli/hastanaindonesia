@@ -591,39 +591,65 @@
             </div>
             @empty
             <!-- Fallback if no events from database -->
-            @foreach($data['upcoming_events'] as $index => $event)
+            @for ($i = 0; $i < 4; $i++)
             @php
-                $buttonColor = $index % 2 === 0 ? 'blue' : 'red';
+                $buttonColor = $i % 2 === 0 ? 'blue' : 'red';
                 $imageUrls = [
                     'https://images.unsplash.com/photo-1606491956689-2ea866880c84?w=600&h=337&fit=crop',
-                    'https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=600&h=337&fit=crop'
+                    'https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=600&h=337&fit=crop',
+                    'https://images.unsplash.com/photo-1505236858219-8359eb29e329?w=600&h=337&fit=crop',
+                    'https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=600&h=337&fit=crop'
+                ];
+                $eventTitles = [
+                    'Workshop Wedding Planning Professional',
+                    'Seminar Tren Pernikahan 2025',
+                    'Pelatihan Sertifikasi Wedding Organizer',
+                    'Networking Event Wedding Industry'
+                ];
+                $eventDates = [
+                    '15 Desember 2025',
+                    '20 Desember 2025',
+                    '10 Januari 2026',
+                    '25 Januari 2026'
+                ];
+                $eventLocations = [
+                    'Jakarta',
+                    'Bali',
+                    'Bandung',
+                    'Surabaya'
+                ];
+                $eventDescriptions = [
+                    'Pelajari teknik planning profesional untuk mengatur pernikahan yang sempurna',
+                    'Discover tren terbaru dalam industri pernikahan dan wedding decoration',
+                    'Dapatkan sertifikasi resmi sebagai wedding organizer profesional',
+                    'Bangun networking dengan profesional wedding industry se-Indonesia'
                 ];
             @endphp
             <div class="card-hover bg-white rounded-2xl overflow-hidden shadow-lg">
                 <div class="aspect-video overflow-hidden">
-                    <img src="{{ $imageUrls[$index] }}" 
-                         alt="{{ $event['title'] }}" 
+                    <img src="{{ $imageUrls[$i] }}" 
+                         alt="{{ $eventTitles[$i] }}" 
                          class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                          loading="lazy">
                 </div>
                 <div class="p-6">
                     <div class="flex items-center text-xs text-gray-500 mb-2">
                         <i class="fas fa-calendar mr-1.5"></i>
-                        <span>{{ $event['date'] }}</span>
+                        <span>{{ $eventDates[$i] }}</span>
                         <i class="fas fa-map-marker-alt ml-3 mr-1.5"></i>
-                        <span>{{ $event['location'] }}</span>
+                        <span>{{ $eventLocations[$i] }}</span>
                     </div>
-                    <h3 class="text-lg font-bold text-gray-900 mb-2">{{ $event['title'] }}</h3>
-                    <p class="text-sm text-gray-600 mb-4 leading-relaxed">
-                        {{ $event['description'] }}
+                    <h3 class="text-sm font-bold text-gray-900 mb-2 truncate" title="{{ $eventTitles[$i] }}">{{ $eventTitles[$i] }}</h3>
+                    <p class="text-xs text-gray-600 mb-4 leading-relaxed">
+                        {{ $eventDescriptions[$i] }}
                     </p>
-                    <a href="#events" class="inline-flex items-center text-{{ $buttonColor }}-600 font-semibold text-sm hover:text-{{ $buttonColor }}-700 transition-colors">
-                        Daftar Sekarang
+                    <a href="#events" class="inline-flex items-center text-{{ $buttonColor }}-600 font-semibold text-xs hover:text-{{ $buttonColor }}-700 transition-colors">
+                        Daftar
                         <i class="fas fa-arrow-right ml-2 text-xs"></i>
                     </a>
                 </div>
             </div>
-            @endforeach
+            @endfor
             @endforelse
         </div>
         

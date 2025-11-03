@@ -10,9 +10,9 @@
         background-size: cover, 100px 100px;
         min-height: 100vh;
         display: flex;
-        align-items: center;
+        align-items: flex-end;
         justify-content: center;
-        padding: 2rem 0;
+        padding-bottom: 0.5rem;
     }
 
     .register-card {
@@ -228,7 +228,7 @@
                             <p class="text-gray-600">Wedding Organizer Platform</p>
                         </div>
 
-                        <div class="mb-8 mt-20">
+                        <div class="mb-8 mt-32">
                             <h2 class="text-3xl font-bold text-gray-900 mb-2">Daftar Akun</h2>
                             <p class="text-gray-600">Buat akun untuk mengakses semua fitur HASTANA</p>
                         </div>

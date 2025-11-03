@@ -10,8 +10,9 @@
         background-size: cover, 100px 100px;
         min-height: 100vh;
         display: flex;
-        align-items: center;
+        align-items: flex-end;
         justify-content: center;
+        padding-bottom: 2rem;
     }
 
     .login-card {
@@ -152,7 +153,7 @@
                             </div>
                         </div>
                         <h2 class="text-4xl font-bold mb-4 leading-tight">
-                            Selamat Datang Kembali!
+                            Selamat Datang di HASTANA
                         </h2>
                         <p class="text-xl opacity-90 mb-8">
                             Kelola bisnis wedding organizer Anda dengan lebih profesional
