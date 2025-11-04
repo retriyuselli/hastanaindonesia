@@ -12,6 +12,10 @@ use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
 use Filament\Widgets\AccountWidget;
 use Filament\Widgets\FilamentInfoWidget;
+use App\Filament\Admin\Widgets\DashboardStatsOverview;
+use App\Filament\Admin\Widgets\ActivityTrendChart;
+use App\Filament\Admin\Widgets\LatestActivities;
+use App\Http\Middleware\AdminMiddleware;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
@@ -26,6 +30,7 @@ class AdminPanelProvider extends PanelProvider
         return $panel
             ->id('admin')
             ->path('admin')
+            ->default()
             ->colors([
                 'primary' => Color::Amber,
             ])
@@ -36,8 +41,11 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->discoverWidgets(in: app_path('Filament/Admin/Widgets'), for: 'App\Filament\Admin\Widgets')
             ->widgets([
+                DashboardStatsOverview::class,
+                ActivityTrendChart::class,
+                LatestActivities::class,
                 AccountWidget::class,
-                FilamentInfoWidget::class,
+                // FilamentInfoWidget::class,
             ])
             ->middleware([
                 EncryptCookies::class,
@@ -52,6 +60,8 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
-            ]);
+                AdminMiddleware::class,
+            ])
+            ->viteTheme('resources/css/filament/admin/theme.css');
     }
 }
