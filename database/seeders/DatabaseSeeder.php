@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use Illuminate\Container\Attributes\Auth;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -20,6 +21,7 @@ class DatabaseSeeder extends Seeder
             EventCategorySeeder::class,
             EventHastanaSeeder::class,
             EventParticipantSeeder::class,
+            AuthorSeeder::class,
             WeddingOrganizerSeeder::class,
             BlogCategorySeeder::class,
             BlogSeeder::class,
