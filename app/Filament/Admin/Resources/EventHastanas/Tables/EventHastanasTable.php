@@ -172,35 +172,27 @@ class EventHastanasTable
                     ->weight('bold')
                     ->icon(fn ($record): string => $record->is_free ? 'heroicon-o-gift' : 'heroicon-o-banknotes'),
 
-                TextColumn::make('participants')
+                TextColumn::make('current_participants')
                     ->label('Peserta')
-                    ->formatStateUsing(fn ($record): HtmlString => new HtmlString(
-                        '<div class="flex items-center gap-2">' .
-                        '<span class="font-semibold">' . $record->current_participants . '</span>' .
-                        '<span class="text-gray-400">/</span>' .
-                        '<span>' . ($record->max_participants ?? $record->quota ?? '∞') . '</span>' .
-                        '</div>'
-                    ))
-                    ->description(fn ($record): string => 
-                        $record->quota ? 
-                        'Sisa: ' . max(0, ($record->max_participants ?? $record->quota) - $record->current_participants) : 
-                        'Unlimited'
-                    )
-                    ->color(function ($record): string {
-                        if (!$record->max_participants && !$record->quota) return 'gray';
-                        $capacity = $record->max_participants ?? $record->quota;
-                        $percentage = ($record->current_participants / $capacity) * 100;
+                    ->numeric()
+                    ->sortable()
+                    ->formatStateUsing(function ($record): string {
+                        $current = $record->current_participants ?? 0;
+                        $max = $record->max_participants ?? $record->quota;
                         
-                        if ($percentage >= 90) return 'danger';
-                        if ($percentage >= 70) return 'warning';
-                        return 'success';
+                        if ($max) {
+                            return "{$current} / {$max}";
+                        }
+                        
+                        return (string) $current;
                     })
-                    ->icon('heroicon-o-user-group')
-                    ->tooltip(function ($record): string {
-                        if (!$record->max_participants && !$record->quota) return 'Kuota unlimited';
-                        $capacity = $record->max_participants ?? $record->quota;
-                        $percentage = round(($record->current_participants / $capacity) * 100);
-                        return "Kapasitas terisi {$percentage}%";
+                    ->description(function ($record): ?string {
+                        $max = $record->max_participants ?? $record->quota;
+                        if ($max && $max > 0) {
+                            $remaining = max(0, $max - ($record->current_participants ?? 0));
+                            return "Sisa: {$remaining}";
+                        }
+                        return null;
                     }),
 
                 // Ratings & Features
