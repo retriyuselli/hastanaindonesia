@@ -25,6 +25,10 @@ class DatabaseSeeder extends Seeder
             WeddingOrganizerSeeder::class,
             BlogCategorySeeder::class,
             BlogSeeder::class,
+            ProductSeeder::class,
+            GallerySeeder::class,
+            WeddingOrganizerSeeder::class,
+            EventReviewSeeder::class,
         ]);
     }
 }
