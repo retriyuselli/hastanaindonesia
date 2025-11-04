@@ -35,6 +35,7 @@ class BlogSeeder extends Seeder
         $blogs = [
             [
                 'title' => '10 Tips Budget Wedding yang Elegan dan Berkesan',
+                'featured_image' => 'https://images.unsplash.com/photo-1519741497674-611481863552?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
                 'excerpt' => 'Merencanakan pernikahan impian dengan budget terbatas? Temukan tips dan trik dari wedding planner profesional untuk menciptakan pernikahan yang elegan tanpa menguras kantong.',
                 'content' => '<h2>Pentingnya Perencanaan Budget Wedding</h2>
                 <p>Merencanakan pernikahan dengan budget terbatas memang tantangan tersendiri. Namun, dengan strategi yang tepat, Anda tetap bisa mengadakan acara pernikahan yang berkesan dan elegan.</p>
@@ -62,6 +63,7 @@ class BlogSeeder extends Seeder
             ],
             [
                 'title' => 'Trend Dekorasi Pernikahan 2024: Minimalis dan Sustainable',
+                'featured_image' => 'https://images.unsplash.com/photo-1520854221256-17451cc331bf?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
                 'excerpt' => 'Discover the hottest wedding decoration trends for 2024! From minimalist designs to eco-friendly sustainable decorations that are both beautiful and environmentally conscious.',
                 'content' => '<h2>Minimalis is The New Luxury</h2>
                 <p>Tahun 2024 menjadi momen di mana "less is more" benar-benar diterapkan dalam dekorasi pernikahan. Konsep minimalis tidak berarti sederhana, melainkan elegant simplicity.</p>
@@ -92,6 +94,7 @@ class BlogSeeder extends Seeder
             ],
             [
                 'title' => 'Panduan Lengkap Memilih Wedding Photographer yang Tepat',
+                'featured_image' => 'https://images.unsplash.com/photo-1606216794074-735e91aa2c92?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
                 'excerpt' => 'Tips memilih wedding photographer yang sesuai dengan style dan budget Anda. Pelajari hal-hal penting yang harus diperhatikan sebelum booking photographer pernikahan.',
                 'content' => '<h2>Mengapa Wedding Photography Begitu Penting?</h2>
                 <p>Fotografi pernikahan bukan sekadar dokumentasi, melainkan investasi untuk kenangan seumur hidup. Foto dan video pernikahan akan menjadi warisan yang akan Anda tunjukkan kepada anak cucu.</p>
@@ -128,6 +131,7 @@ class BlogSeeder extends Seeder
             ],
             [
                 'title' => 'Digital Wedding Invitation: Trend Modern yang Ramah Lingkungan',
+                'featured_image' => 'https://images.unsplash.com/photo-1586953208448-b95a79798f07?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
                 'excerpt' => 'Era digital mengubah cara kita mengundang tamu pernikahan. Pelajari keuntungan digital invitation dan bagaimana membuatnya menarik dan berkesan.',
                 'content' => '<h2>Mengapa Digital Invitation Semakin Populer?</h2>
                 <p>Digital wedding invitation bukan hanya tentang mengikuti trend teknologi, melainkan solusi praktis yang memberikan banyak keuntungan bagi pasangan modern.</p>
@@ -164,6 +168,7 @@ class BlogSeeder extends Seeder
             ],
             [
                 'title' => 'Venue Pernikahan Indoor vs Outdoor: Mana yang Tepat untuk Anda?',
+                'featured_image' => 'https://images.unsplash.com/photo-1519167758481-83f550bb49b3?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
                 'excerpt' => 'Bingung memilih venue indoor atau outdoor untuk pernikahan? Pelajari kelebihan dan kekurangan masing-masing serta faktor-faktor yang harus dipertimbangkan dalam memilih venue impian.',
                 'content' => '<h2>Pertimbangan Utama Memilih Venue</h2>
                 <p>Memilih venue adalah salah satu keputusan terpenting dalam perencanaan pernikahan. Venue tidak hanya menentukan suasana acara, tetapi juga mempengaruhi budget, jumlah tamu, dan konsep dekorasi secara keseluruhan.</p>
@@ -200,6 +205,7 @@ class BlogSeeder extends Seeder
             ],
             [
                 'title' => 'Wedding Catering: Panduan Menu dan Estimasi Budget',
+                'featured_image' => 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
                 'excerpt' => 'Perencanaan catering pernikahan yang tepat bisa menghemat budget hingga 40%. Pelajari tips memilih menu, vendor catering, dan strategi negosiasi harga terbaik.',
                 'content' => '<h2>Catering: 30-40% dari Total Budget Wedding</h2>
                 <p>Catering biasanya mengambil porsi terbesar dari budget pernikahan. Dengan perencanaan yang matang, Anda bisa mendapatkan menu berkualitas tanpa overspending.</p>
@@ -238,6 +244,7 @@ class BlogSeeder extends Seeder
             ],
             [
                 'title' => 'Tradisi Pernikahan Adat Indonesia yang Wajib Dilestarikan',
+                'featured_image' => 'https://images.unsplash.com/photo-1583939003579-730e3918a45a?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
                 'excerpt' => 'Indonesia kaya akan tradisi pernikahan yang unik dan bermakna. Kenali berbagai tradisi adat dari Sabang sampai Merauke yang bisa diintegrasikan dalam pernikahan modern.',
                 'content' => '<h2>Kekayaan Tradisi Pernikahan Nusantara</h2>
                 <p>Indonesia memiliki lebih dari 300 suku dengan tradisi pernikahan yang unik. Mengintegrasikan tradisi adat dalam pernikahan modern bukan hanya melestarikan budaya, tetapi juga memberikan makna spiritual yang mendalam.</p>
@@ -273,6 +280,7 @@ class BlogSeeder extends Seeder
             ],
             [
                 'title' => 'Honeymoon Planning: Destinasi Romantis dalam dan luar Negeri',
+                'featured_image' => 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
                 'excerpt' => 'Honeymoon adalah momen special untuk memulai kehidupan baru. Temukan destinasi honeymoon romantis, tips budget travel, dan panduan planning honeymoon yang memorable.',
                 'content' => '<h2>Honeymoon: The Perfect Start</h2>
                 <p>Honeymoon bukan sekadar liburan, melainkan quality time untuk memulai kehidupan pernikahan dengan romantic memories yang akan dikenang seumur hidup.</p>
@@ -317,6 +325,7 @@ class BlogSeeder extends Seeder
             ],
             [
                 'title' => 'Wedding Entertainment: Musik, MC, dan Hiburan yang Memorable',
+                'featured_image' => 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
                 'excerpt' => 'Entertainment yang tepat bisa membuat wedding reception unforgettable. Pelajari tips memilih MC, band, DJ, dan konsep hiburan yang sesuai dengan personality dan budget Anda.',
                 'content' => '<h2>Entertainment: Soul of the Party</h2>
                 <p>Wedding entertainment menentukan mood dan energy sepanjang resepsi. Investment yang tepat untuk entertainment akan menciptakan memorable moments untuk semua tamu.</p>
@@ -364,6 +373,7 @@ class BlogSeeder extends Seeder
             ],
             [
                 'title' => 'Post-Wedding: Mengawali Kehidupan Pernikahan yang Bahagia',
+                'featured_image' => 'https://images.unsplash.com/photo-1522673607200-164d1b6ce486?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
                 'excerpt' => 'Setelah euphoria wedding day, saatnya fokus pada kehidupan pernikahan yang sesungguhnya. Tips komunikasi, finansial planning, dan membangun keluarga yang harmonis.',
                 'content' => '<h2>From Wedding Day to Married Life</h2>
                 <p>Wedding day hanya satu hari, tapi pernikahan adalah seumur hidup. Transisi dari planning wedding ke building marriage memerlukan mindset dan strategy yang berbeda.</p>

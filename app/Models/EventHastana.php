@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
+use Illuminate\Support\Str;
 
 class EventHastana extends Model
 {
@@ -295,13 +296,29 @@ class EventHastana extends Model
     /**
      * Get image URL
      */
+    // public function getImageUrlAttribute(): ?string
+    // {
+    //     if (!$this->image) {
+    //         return 'https://images.unsplash.com/photo-1519741497674-611481863552?w=800&h=450&fit=crop&auto=format';
+    //     }
+    //     return Storage::url($this->image);
+    // }
+
     public function getImageUrlAttribute(): ?string
     {
         if (!$this->image) {
-            return null;
+            return 'https://images.unsplash.com/photo-1519741497674-611481863552?w=800&h=450&fit=crop&auto=format';
         }
-        return Storage::url($this->image);
+        
+        // If it's already a full URL, return as is
+        if (Str::startsWith($this->image, ['http://', 'https://'])) {
+            return $this->image;
+        }
+        
+        // Otherwise, it's a storage path
+        return asset('storage/' . $this->image);
     }
+    
 
     /**
      * Get status badge color

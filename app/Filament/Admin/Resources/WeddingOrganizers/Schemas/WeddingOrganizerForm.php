@@ -207,6 +207,7 @@ class WeddingOrganizerForm
                                 Select::make('certification_level')
                                     ->label('Level Sertifikasi')
                                     ->options(config('indonesia.certification_levels'))
+                                    ->default('basic')
                                     ->placeholder('Pilih level sertifikasi')
                                     ->prefixIcon('heroicon-o-academic-cap')
                                     ->helperText('Level kompetensi berdasarkan sertifikasi HASTANA'),
@@ -390,11 +391,9 @@ class WeddingOrganizerForm
                                     ->options([
                                         'PT' => 'Perseroan Terbatas (PT)',
                                         'CV' => 'Commanditaire Vennootschap (CV)',
-                                        'Firma' => 'Firma',
-                                        'UD' => 'Usaha Dagang (UD)',
-                                        'Koperasi' => 'Koperasi',
-                                        'Yayasan' => 'Yayasan',
+                                        'Perorangan' => 'Perorangan',
                                     ])
+                                    ->default('Perorangan')
                                     ->placeholder('Pilih jenis badan usaha')
                                     ->prefixIcon('heroicon-o-building-library')
                                     ->columnSpan(2),

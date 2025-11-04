@@ -593,11 +593,19 @@
                         Tentang Penulis
                     </h3>
                     <div class="text-center mb-4">
-                        <div class="w-20 h-20 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full mx-auto mb-3 flex items-center justify-center text-white text-2xl font-bold">
-                            {{ strtoupper(substr($blog->author ? $blog->author->name : 'A', 0, 1)) }}
-                        </div>
+                        @if($blog->author && $blog->author->avatar)
+                            <div class="w-20 h-20 rounded-full mx-auto mb-3 overflow-hidden border-4 border-white shadow-lg">
+                                <img src="{{ $blog->author->avatar_url }}" 
+                                     alt="{{ $blog->author->name }}" 
+                                     class="w-full h-full object-cover">
+                            </div>
+                        @else
+                            <div class="w-20 h-20 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full mx-auto mb-3 flex items-center justify-center text-white text-2xl font-bold border-4 border-white shadow-lg">
+                                {{ strtoupper(substr($blog->author ? $blog->author->name : 'A', 0, 1)) }}
+                            </div>
+                        @endif
                         <h4 class="font-semibold text-gray-900 text-sm">{{ $blog->author ? $blog->author->name : 'Anonymous' }}</h4>
-                        <p class="text-xs text-gray-500 mt-1">Content Writer</p>
+                        <p class="text-xs text-gray-500 mt-1">{{ $blog->author ? $blog->author->bio ?? 'Content Writer' : 'Content Writer' }}</p>
                     </div>
                     <p class="text-xs text-gray-600 text-center mb-4">Penulis artikel informatif seputar pernikahan dan event organizing</p>
                     <div class="flex justify-center gap-3">

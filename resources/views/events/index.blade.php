@@ -7,8 +7,8 @@
 <section class="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-12 mt-20">
     <div class="container mx-auto px-4">
         <div class="max-w-3xl mx-auto text-center">
-            <h1 class="text-3xl md:text-4xl font-bold mb-3">Event HASTANA Indonesia</h1>
-            <p class="text-lg text-blue-100">Temukan berbagai event menarik untuk mengembangkan diri Anda</p>
+            <h1 class="text-3xl md:text-4xl font-bold mb-3">EVENT HASTANA INDONESIA</h1>
+            <p class="text-sm text-blue-100">Temukan berbagai event menarik untuk mengembangkan diri Anda</p>
         </div>
     </div>
 </section>
@@ -27,8 +27,9 @@
             </div>
 
             <!-- Category Filter -->
-            <div>
-                <select name="category" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+            <div class="relative">
+                <i class="fas fa-list absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-xs"></i>
+                <select name="category" class="w-full pl-9 pr-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none bg-white">
                     <option value="">Semua Kategori</option>
                     @foreach($categories as $cat)
                         <option value="{{ $cat->id }}" {{ request('category') == $cat->id ? 'selected' : '' }}>
@@ -36,11 +37,13 @@
                         </option>
                     @endforeach
                 </select>
+                <i class="fas fa-chevron-down absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-xs pointer-events-none"></i>
             </div>
 
             <!-- City Filter -->
-            <div>
-                <select name="city" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+            <div class="relative">
+                <i class="fas fa-map-marker-alt absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-xs"></i>
+                <select name="city" class="w-full pl-9 pr-8 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none bg-white">
                     <option value="">Semua Kota</option>
                     @foreach($cities as $city)
                         <option value="{{ $city }}" {{ request('city') == $city ? 'selected' : '' }}>
@@ -48,6 +51,7 @@
                         </option>
                     @endforeach
                 </select>
+                <i class="fas fa-chevron-down absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-xs pointer-events-none"></i>
             </div>
 
             <!-- Submit Button -->
@@ -109,12 +113,12 @@
                     <!-- Events Grid -->
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                         @foreach($events as $event)
-                            <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition duration-300">
+                            <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition duration-300 flex flex-col h-full">
                                 <!-- Event Image -->
                                 <div class="relative h-44 bg-gray-200">
-                                    @if($event->image)
-                                        <img src="{{ Storage::url($event->image) }}" 
-                                             alt="{{ $event->title }}" 
+                                    @if($event->image_url)
+                                        <img src="{{ $event->image_url }}" 
+                                             alt="{{ $event->title }} - {{ $event->eventCategory->name ?? 'Event' }} di {{ $event->city }}" 
                                              class="w-full h-full object-cover">
                                     @else
                                         <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-500 to-blue-700">
@@ -140,7 +144,7 @@
                                     <div class="absolute top-2 right-2">
                                         @if($event->is_free)
                                             <span class="bg-green-500 text-white font-bold text-xs px-2.5 py-1 rounded-full">
-                                                <i class="fas fa-gift"></i> GRATIS
+                                                <i class="fas fa-gift"></i> Gratis
                                             </span>
                                         @else
                                             <span class="bg-blue-500 text-white font-bold text-xs px-2.5 py-1 rounded-full">
@@ -151,7 +155,7 @@
                                 </div>
 
                                 <!-- Event Content -->
-                                <div class="p-4">
+                                <div class="p-4 flex flex-col grow">
                                     <!-- Category -->
                                     <div class="mb-2">
                                         <span class="text-xs font-semibold text-blue-600 bg-blue-100 px-2 py-0.5 rounded">
@@ -173,7 +177,7 @@
                                     </p>
 
                                     <!-- Event Details -->
-                                    <div class="space-y-1.5 mb-3 text-xs text-gray-600">
+                                    <div class="space-y-1.5 mb-4 text-xs text-gray-600 grow">
                                         <div class="flex items-center">
                                             <i class="fas fa-calendar text-blue-500 w-4"></i>
                                             <span class="ml-2">{{ $event->start_date->format('d M Y') }}</span>
@@ -201,8 +205,8 @@
                                         @endif
                                     </div>
 
-                                    <!-- Action Buttons -->
-                                    <div class="flex gap-2">
+                                    <!-- Action Buttons - Always at bottom -->
+                                    <div class="flex gap-2 mt-auto">
                                         <a href="{{ route('events.show', $event->slug) }}" 
                                            class="flex-1 text-center bg-blue-600 text-white py-2 text-sm rounded-lg hover:bg-blue-700 transition duration-200">
                                             Lihat Detail <i class="fas fa-arrow-right ml-1 text-xs"></i>
@@ -253,7 +257,7 @@
                                     <div class="flex gap-2.5">
                                         <div class="w-16 h-16 rounded-lg bg-gray-200 flex-shrink-0 overflow-hidden">
                                             @if($featured->image)
-                                                <img src="{{ Storage::url($featured->image) }}" 
+                                                <img src="{{ $featured->image_url }}" 
                                                      alt="{{ $featured->title }}" 
                                                      class="w-full h-full object-cover">
                                             @else
@@ -296,7 +300,7 @@
                                     <div class="flex gap-2.5">
                                         <div class="w-16 h-16 rounded-lg bg-gray-200 flex-shrink-0 overflow-hidden">
                                             @if($trending->image)
-                                                <img src="{{ Storage::url($trending->image) }}" 
+                                                <img src="{{ $trending->image_url }}" 
                                                      alt="{{ $trending->title }}" 
                                                      class="w-full h-full object-cover">
                                             @else

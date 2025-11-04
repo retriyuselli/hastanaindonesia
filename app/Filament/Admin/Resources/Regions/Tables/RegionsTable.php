@@ -14,6 +14,8 @@ use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use App\Enums\ProvinsiEnum;
+use App\Models\Region;
 
 class RegionsTable
 {
@@ -26,8 +28,7 @@ class RegionsTable
                     ->circular()
                     ->disk('public')
                     ->defaultImageUrl(url('/images/default-region.png'))
-                    ->width(40)
-                    ->height(40),
+                    ->width(40),    
 
                 TextColumn::make('region_name')
                     ->label('Nama Wilayah')
@@ -133,42 +134,13 @@ class RegionsTable
             ->filters([
                 SelectFilter::make('province')
                     ->label('Provinsi')
-                    ->options([
-                        'Aceh' => 'Aceh',
-                        'Sumatera Utara' => 'Sumatera Utara',
-                        'Sumatera Barat' => 'Sumatera Barat',
-                        'Riau' => 'Riau',
-                        'Kepulauan Riau' => 'Kepulauan Riau',
-                        'Jambi' => 'Jambi',
-                        'Sumatera Selatan' => 'Sumatera Selatan',
-                        'Bangka Belitung' => 'Bangka Belitung',
-                        'Bengkulu' => 'Bengkulu',
-                        'Lampung' => 'Lampung',
-                        'DKI Jakarta' => 'DKI Jakarta',
-                        'Jawa Barat' => 'Jawa Barat',
-                        'Jawa Tengah' => 'Jawa Tengah',
-                        'DI Yogyakarta' => 'DI Yogyakarta',
-                        'Jawa Timur' => 'Jawa Timur',
-                        'Banten' => 'Banten',
-                        'Bali' => 'Bali',
-                        'Nusa Tenggara Barat' => 'Nusa Tenggara Barat',
-                        'Nusa Tenggara Timur' => 'Nusa Tenggara Timur',
-                        'Kalimantan Barat' => 'Kalimantan Barat',
-                        'Kalimantan Tengah' => 'Kalimantan Tengah',
-                        'Kalimantan Selatan' => 'Kalimantan Selatan',
-                        'Kalimantan Timur' => 'Kalimantan Timur',
-                        'Kalimantan Utara' => 'Kalimantan Utara',
-                        'Sulawesi Utara' => 'Sulawesi Utara',
-                        'Sulawesi Tengah' => 'Sulawesi Tengah',
-                        'Sulawesi Selatan' => 'Sulawesi Selatan',
-                        'Sulawesi Tenggara' => 'Sulawesi Tenggara',
-                        'Gorontalo' => 'Gorontalo',
-                        'Sulawesi Barat' => 'Sulawesi Barat',
-                        'Maluku' => 'Maluku',
-                        'Maluku Utara' => 'Maluku Utara',
-                        'Papua' => 'Papua',
-                        'Papua Barat' => 'Papua Barat',
-                    ])
+                    ->options(function () {
+                        return Region::distinct()
+                            ->whereNotNull('province')
+                            ->pluck('province', 'province')
+                            ->sort()
+                            ->toArray();
+                    })
                     ->placeholder('Semua Provinsi'),
 
                 TernaryFilter::make('is_active')

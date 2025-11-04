@@ -8,8 +8,12 @@ use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\BulkAction;
 use Filament\Support\Colors\Color;
 use App\Models\Region;
+use Illuminate\Database\Eloquent\Collection;
 
 class WeddingOrganizersTable
 {
@@ -327,6 +331,130 @@ class WeddingOrganizersTable
                     })
                     ->placeholder('Semua Provinsi')
                     ->searchable(),
+            ])
+            ->bulkActions([
+                BulkActionGroup::make([
+                    // Delete Bulk Action
+                    DeleteBulkAction::make()
+                        ->label('Hapus Terpilih')
+                        ->requiresConfirmation()
+                        ->modalHeading('Hapus Wedding Organizer')
+                        ->modalDescription('Apakah Anda yakin ingin menghapus wedding organizer yang dipilih? Tindakan ini tidak dapat dibatalkan.')
+                        ->modalSubmitActionLabel('Ya, Hapus')
+                        ->modalCancelActionLabel('Batal'),
+
+                    // Activate Bulk Action
+                    BulkAction::make('activate')
+                        ->label('Aktifkan')
+                        ->icon('heroicon-o-check-circle')
+                        ->color('success')
+                        ->requiresConfirmation()
+                        ->modalHeading('Aktifkan Wedding Organizer')
+                        ->modalDescription('Apakah Anda yakin ingin mengaktifkan wedding organizer yang dipilih?')
+                        ->modalSubmitActionLabel('Ya, Aktifkan')
+                        ->action(function (Collection $records) {
+                            $records->each(function ($record) {
+                                $record->update(['status' => 'active']);
+                            });
+                        })
+                        ->deselectRecordsAfterCompletion(),
+
+                    // Deactivate Bulk Action
+                    BulkAction::make('deactivate')
+                        ->label('Nonaktifkan')
+                        ->icon('heroicon-o-x-circle')
+                        ->color('danger')
+                        ->requiresConfirmation()
+                        ->modalHeading('Nonaktifkan Wedding Organizer')
+                        ->modalDescription('Apakah Anda yakin ingin menonaktifkan wedding organizer yang dipilih?')
+                        ->modalSubmitActionLabel('Ya, Nonaktifkan')
+                        ->action(function (Collection $records) {
+                            $records->each(function ($record) {
+                                $record->update(['status' => 'inactive']);
+                            });
+                        })
+                        ->deselectRecordsAfterCompletion(),
+
+                    // Verify Bulk Action
+                    BulkAction::make('verify')
+                        ->label('Verifikasi')
+                        ->icon('heroicon-o-shield-check')
+                        ->color('info')
+                        ->requiresConfirmation()
+                        ->modalHeading('Verifikasi Wedding Organizer')
+                        ->modalDescription('Apakah Anda yakin ingin memverifikasi wedding organizer yang dipilih?')
+                        ->modalSubmitActionLabel('Ya, Verifikasi')
+                        ->action(function (Collection $records) {
+                            $records->each(function ($record) {
+                                $record->update([
+                                    'verification_status' => 'verified',
+                                    'verified_at' => now(),
+                                ]);
+                            });
+                        })
+                        ->deselectRecordsAfterCompletion(),
+
+                    // Set as Featured Bulk Action
+                    BulkAction::make('set_featured')
+                        ->label('Jadikan Unggulan')
+                        ->icon('heroicon-o-star')
+                        ->color('warning')
+                        ->requiresConfirmation()
+                        ->modalHeading('Jadikan Wedding Organizer Unggulan')
+                        ->modalDescription('Apakah Anda yakin ingin menjadikan wedding organizer yang dipilih sebagai unggulan?')
+                        ->modalSubmitActionLabel('Ya, Jadikan Unggulan')
+                        ->action(function (Collection $records) {
+                            $records->each(function ($record) {
+                                $record->update(['is_featured' => true]);
+                            });
+                        })
+                        ->deselectRecordsAfterCompletion(),
+
+                    // Remove from Featured Bulk Action
+                    BulkAction::make('remove_featured')
+                        ->label('Hapus dari Unggulan')
+                        ->icon('heroicon-o-star')
+                        ->color('gray')
+                        ->requiresConfirmation()
+                        ->modalHeading('Hapus dari Wedding Organizer Unggulan')
+                        ->modalDescription('Apakah Anda yakin ingin menghapus wedding organizer yang dipilih dari daftar unggulan?')
+                        ->modalSubmitActionLabel('Ya, Hapus dari Unggulan')
+                        ->action(function (Collection $records) {
+                            $records->each(function ($record) {
+                                $record->update(['is_featured' => false]);
+                            });
+                        })
+                        ->deselectRecordsAfterCompletion(),
+
+                    // Export to CSV Bulk Action
+                    BulkAction::make('export')
+                        ->label('Export CSV (coming soon)')
+                        ->icon('heroicon-o-arrow-down-tray')
+                        ->color('success')
+                        ->action(function (Collection $records) {
+                            $csv = "Nama Organizer,Brand Name,Email,Telepon,Kota,Provinsi,Status,Level Sertifikasi,Rating\n";
+                            $records->each(function ($record) use (&$csv) {
+                                $csv .= sprintf(
+                                    "%s,%s,%s,%s,%s,%s,%s,%s,%.1f\n",
+                                    $record->organizer_name,
+                                    $record->brand_name ?? '',
+                                    $record->email ?? '',
+                                    $record->phone ?? '',
+                                    $record->city ?? '',
+                                    $record->province ?? '',
+                                    $record->status ?? '',
+                                    $record->certification_level ?? '',
+                                    $record->rating ?? 0
+                                );
+                            });
+                            
+                            $filename = 'wedding_organizers_' . now()->format('Y-m-d_H-i-s') . '.csv';
+                            
+                            return response($csv)
+                                ->header('Content-Type', 'text/csv')
+                                ->header('Content-Disposition', 'attachment; filename="' . $filename . '"');
+                        }),
+                ]),
             ])
             ->defaultSort('created_at', 'desc')
             ->striped()

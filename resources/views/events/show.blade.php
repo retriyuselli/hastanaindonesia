@@ -27,7 +27,7 @@
                     <!-- Event Image -->
                     <div class="relative h-80 bg-gray-200">
                         @if($event->image)
-                            <img src="{{ Storage::url($event->image) }}"
+                            <img src="{{ $event->image_url }}"
                                  alt="{{ $event->title }}" 
                                  class="w-full h-full object-cover">
                         @else
@@ -1029,7 +1029,7 @@
                                     <div class="border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition">
                                         <div class="h-28 bg-gray-200 relative">
                                             @if($related->image)
-                                                <img src="{{ Storage::url($related->image) }}" 
+                                                <img src="{{ $related->image_url }}" 
                                                      alt="{{ $related->title }}" 
                                                      class="w-full h-full object-cover">
                                             @else
@@ -1601,7 +1601,7 @@
 
                         <!-- Registration Info (Only for logged in users) -->
                         @auth
-                            <div class="bg-blue-50 border border-blue-200 rounded-lg p-2.5 mb-3">
+                            {{-- <div class="bg-blue-50 border border-blue-200 rounded-lg p-2.5 mb-3">
                                 <div class="flex items-start gap-2 text-blue-800 text-xs">
                                     <i class="fas fa-info-circle mt-0.5"></i>
                                     <div>
@@ -1609,7 +1609,7 @@
                                         <span class="block mt-0.5">✓ Konfirmasi instan ✓ E-ticket otomatis ✓ Reminder H-1</span>
                                     </div>
                                 </div>
-                            </div>
+                            </div> --}}
                         @endauth
                     @elseif($event->is_full)
                         <!-- Sold Out -->

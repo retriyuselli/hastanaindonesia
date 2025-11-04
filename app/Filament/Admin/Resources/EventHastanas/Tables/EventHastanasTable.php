@@ -30,7 +30,6 @@ class EventHastanasTable
                     ->label('Gambar')
                     ->circular()
                     ->defaultImageUrl(url('/images/placeholder-event.jpg'))
-                    ->size(60)
                     ->extraImgAttributes(['loading' => 'lazy'])
                     ->checkFileExistence(false),
 

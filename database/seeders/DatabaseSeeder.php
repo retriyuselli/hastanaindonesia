@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             CompanySeeder::class,
             EventCategorySeeder::class,
             EventHastanaSeeder::class,
+            EventParticipantSeeder::class,
             WeddingOrganizerSeeder::class,
             BlogCategorySeeder::class,
             BlogSeeder::class,

@@ -35,6 +35,7 @@ class EventHastanaSeeder extends Seeder
                 [
                     'title' => 'Workshop Digital Marketing & Social Media Strategy 2025',
                     'slug' => 'workshop-digital-marketing-social-media-strategy-2025',
+                    'image' => 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
                     'event_category_id' => $workshopCategory->id,
                     'event_type' => 'eksternal',
                     'location_type' => 'offline',
@@ -69,6 +70,7 @@ class EventHastanaSeeder extends Seeder
                 [
                     'title' => 'Workshop Content Creation: Fotografi & Videografi untuk Bisnis',
                     'slug' => 'workshop-content-creation-fotografi-videografi-bisnis',
+                    'image' => 'https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
                     'event_category_id' => $workshopCategory->id,
                     'event_type' => 'eksternal',
                     'location_type' => 'hybrid',
@@ -103,6 +105,7 @@ class EventHastanaSeeder extends Seeder
                 [
                     'title' => 'Pelatihan Microsoft Excel Advanced untuk Profesional',
                     'slug' => 'pelatihan-microsoft-excel-advanced-profesional',
+                    'image' => 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
                     'event_category_id' => $workshopCategory->id,
                     'event_type' => 'internal',
                     'location_type' => 'offline',
@@ -137,6 +140,7 @@ class EventHastanaSeeder extends Seeder
                 [
                     'title' => 'Workshop Graphic Design dengan Adobe Photoshop & Illustrator',
                     'slug' => 'workshop-graphic-design-adobe-photoshop-illustrator',
+                    'image' => 'https://images.unsplash.com/photo-1561070791-2526d30994b5?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
                     'event_category_id' => $workshopCategory->id,
                     'event_type' => 'eksternal',
                     'location_type' => 'offline',
@@ -171,6 +175,7 @@ class EventHastanaSeeder extends Seeder
                 [
                     'title' => 'Workshop Public Speaking & Presentation Skills',
                     'slug' => 'workshop-public-speaking-presentation-skills',
+                    'image' => 'https://images.unsplash.com/photo-1475721027785-f74eccf877e2?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
                     'event_category_id' => $workshopCategory->id,
                     'event_type' => 'eksternal',
                     'location_type' => 'offline',
@@ -205,6 +210,7 @@ class EventHastanaSeeder extends Seeder
                 [
                     'title' => 'Webinar: Future of Digital Business & AI Implementation',
                     'slug' => 'webinar-future-digital-business-ai-implementation',
+                    'image' => 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
                     'event_category_id' => $workshopCategory->id,
                     'event_type' => 'eksternal',
                     'location_type' => 'online',
@@ -248,6 +254,7 @@ class EventHastanaSeeder extends Seeder
                 [
                     'title' => 'Seminar Kewirausahaan: From Zero to Hero',
                     'slug' => 'seminar-kewirausahaan-from-zero-to-hero',
+                    'image' => 'https://images.unsplash.com/photo-1556761175-b413da4baf72?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
                     'event_category_id' => $seminarCategory->id,
                     'event_type' => 'eksternal',
                     'description' => '<p>Seminar inspiratif bersama para entrepreneur sukses yang memulai bisnis dari nol hingga mencapai kesuksesan luar biasa.</p><p><strong>Pembicara:</strong></p><ul><li>Budi Santoso - Founder Tech Startup Unicorn (Valuasi $1B+)</li><li>Siti Nurhaliza - CEO E-Commerce Fashion Terbesar</li><li>Ahmad Dhani - Owner 100+ Franchise F&B di Indonesia</li><li>Linda Wijaya - Social Media Influencer & Business Owner</li></ul><p>Dapatkan insight langsung dari perjalanan mereka membangun bisnis dari nol!</p>',
@@ -279,6 +286,7 @@ class EventHastanaSeeder extends Seeder
                 [
                     'title' => 'Talkshow: Future of Technology & Innovation 2025',
                     'slug' => 'talkshow-future-technology-innovation-2025',
+                    'image' => 'https://images.unsplash.com/photo-1518709268805-4e9042af2176?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
                     'event_category_id' => $seminarCategory->id,
                     'event_type' => 'eksternal',
                     'description' => '<p>Talkshow eksklusif membahas tren teknologi terkini dan masa depan inovasi digital.</p><p><strong>Topik Diskusi:</strong></p><ul><li>Artificial Intelligence & Machine Learning</li><li>Blockchain & Web3</li><li>Internet of Things (IoT)</li><li>Metaverse & Virtual Reality</li><li>Sustainable Technology</li></ul><p><strong>Narasumber:</strong> Tech Leaders dari Google, Microsoft, dan Startup Indonesia</p>',
@@ -310,6 +318,7 @@ class EventHastanaSeeder extends Seeder
                 [
                     'title' => 'Seminar Kesehatan Mental di Tempat Kerja',
                     'slug' => 'seminar-kesehatan-mental-tempat-kerja',
+                    'image' => 'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
                     'event_category_id' => $seminarCategory->id,
                     'event_type' => 'eksternal',
                     'description' => '<p>Seminar penting tentang menjaga kesehatan mental di lingkungan kerja yang dinamis dan penuh tekanan.</p><p><strong>Materi:</strong></p><ul><li>Mengenali Tanda-tanda Burnout</li><li>Stress Management Techniques</li><li>Work-Life Balance</li><li>Building Resilience</li><li>Mental Health First Aid</li></ul><p><strong>Pembicara:</strong> Psikolog Klinis dan HR Professionals</p>',
@@ -341,6 +350,7 @@ class EventHastanaSeeder extends Seeder
                 [
                     'title' => 'Talkshow Financial Planning untuk Generasi Milenial & Gen Z',
                     'slug' => 'talkshow-financial-planning-milenial-gen-z',
+                    'image' => 'https://images.unsplash.com/photo-1554224155-6726b3ff858f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
                     'event_category_id' => $seminarCategory->id,
                     'event_type' => 'eksternal',
                     'description' => '<p>Talkshow interaktif tentang perencanaan keuangan untuk generasi muda.</p><p><strong>Topik:</strong></p><ul><li>Budgeting & Saving Tips</li><li>Investasi untuk Pemula</li><li>Passive Income Strategy</li><li>Crypto & Digital Assets</li><li>Retirement Planning di Usia Muda</li></ul><p><strong>Pembicara:</strong> Certified Financial Planner & Successful Young Investor</p>',
@@ -372,6 +382,7 @@ class EventHastanaSeeder extends Seeder
                 [
                     'title' => 'Seminar Leadership Excellence: Leading in Digital Era',
                     'slug' => 'seminar-leadership-excellence-digital-era',
+                    'image' => 'https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
                     'event_category_id' => $seminarCategory->id,
                     'event_type' => 'internal',
                     'description' => '<p>Seminar kepemimpinan untuk para leader dan calon leader di era digital.</p><p><strong>Materi:</strong></p><ul><li>Digital Leadership Mindset</li><li>Leading Remote Teams</li><li>Change Management</li><li>Innovation & Agility</li><li>People Development</li></ul><p><strong>Target:</strong> Manager, Supervisor, Team Leader</p>',
@@ -411,7 +422,8 @@ class EventHastanaSeeder extends Seeder
             $allEvents = array_merge($allEvents, [
                 [
                     'title' => 'Wedding Expo Jakarta 2025: Your Dream Wedding Starts Here',
-                    'slug' => 'wedding-expo-jakarta-2025-dream-wedding',
+                    'slug' => 'wedding-expo-jakarta-2025-your-dream-wedding-starts-here',
+                    'image' => 'https://images.unsplash.com/photo-1469371670807-013ccf25f16a?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
                     'event_category_id' => $weddingCategory->id,
                     'event_type' => 'eksternal',
                     'description' => '<p>Pameran pernikahan terbesar di Jakarta dengan 200+ vendor wedding terbaik!</p><p><strong>Vendor yang hadir:</strong></p><ul><li>Wedding Organizer & Planner</li><li>Catering & Venue</li><li>Photography & Videography</li><li>Bridal & Makeup Artist</li><li>Wedding Decoration</li><li>Entertainment & Music</li><li>Honeymoon Packages</li></ul><p><strong>Special Promo:</strong> Diskon hingga 50% untuk booking di hari event!</p>',
@@ -443,6 +455,7 @@ class EventHastanaSeeder extends Seeder
                 [
                     'title' => 'Bandung Bridal Fair 2025',
                     'slug' => 'bandung-bridal-fair-2025',
+                    'image' => 'https://images.unsplash.com/photo-1606216794074-735e91aa2c92?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
                     'event_category_id' => $weddingCategory->id,
                     'event_type' => 'eksternal',
                     'description' => '<p>Pameran pernikahan eksklusif di Bandung dengan vendor pilihan dan fashion show.</p><p><strong>Highlight:</strong></p><ul><li>150+ Premium Wedding Vendors</li><li>Bridal Fashion Show</li><li>Wedding Talk & Tips</li><li>Live Music Performance</li><li>Photo Booth</li></ul><p>Dapatkan paket pernikahan impian Anda dengan harga spesial!</p>',
@@ -474,6 +487,7 @@ class EventHastanaSeeder extends Seeder
                 [
                     'title' => 'Surabaya Wedding Festival 2025',
                     'slug' => 'surabaya-wedding-festival-2025',
+                    'image' => 'https://images.unsplash.com/photo-1511578314322-379afb476865?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
                     'event_category_id' => $weddingCategory->id,
                     'event_type' => 'eksternal',
                     'description' => '<p>Festival pernikahan terbesar di Jawa Timur dengan konsep modern dan tradisional.</p><p><strong>Fasilitas:</strong></p><ul><li>100+ Wedding Vendors</li><li>Traditional & Modern Wedding Display</li><li>Prewedding Spot</li><li>Wedding Cake Competition</li><li>Live Entertainment</li></ul>',
@@ -505,6 +519,7 @@ class EventHastanaSeeder extends Seeder
                 [
                     'title' => 'Intimate Wedding Workshop & Expo Bali',
                     'slug' => 'intimate-wedding-workshop-expo-bali',
+                    'image' => 'https://images.unsplash.com/photo-1537633552985-df8429e8048b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
                     'event_category_id' => $weddingCategory->id,
                     'event_type' => 'eksternal',
                     'description' => '<p>Workshop dan expo khusus intimate wedding di destinasi pernikahan favorit, Bali.</p><p><strong>Acara:</strong></p><ul><li>Workshop Planning Intimate Wedding</li><li>Bali Wedding Vendors Showcase</li><li>Beach Wedding Simulation</li><li>Destination Wedding Tips</li><li>Meet & Greet Wedding Celebrities</li></ul>',
@@ -536,6 +551,7 @@ class EventHastanaSeeder extends Seeder
                 [
                     'title' => 'Muslim Wedding Expo 2025',
                     'slug' => 'muslim-wedding-expo-2025',
+                    'image' => 'https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
                     'event_category_id' => $weddingCategory->id,
                     'event_type' => 'eksternal',
                     'description' => '<p>Pameran pernikahan islami dengan vendor yang sesuai syariah dan konsep pernikahan muslim modern.</p><p><strong>Vendor Syariah:</strong></p><ul><li>Halal Catering</li><li>Syariah Wedding Organizer</li><li>Muslimah Bridal & MUA</li><li>Akad Nikah Package</li><li>Islamic Decoration</li><li>Nasyid & Marawis Entertainment</li></ul>',
@@ -576,6 +592,7 @@ class EventHastanaSeeder extends Seeder
                 [
                     'title' => 'Sertifikasi Wedding Organizer Profesional',
                     'slug' => 'sertifikasi-wedding-organizer-profesional',
+                    'image' => 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
                     'event_category_id' => $sertifikasiCategory->id,
                     'event_type' => 'internal',
                     'description' => '<p>Program sertifikasi resmi untuk menjadi Wedding Organizer profesional yang diakui industri.</p><p><strong>Materi Sertifikasi:</strong></p><ul><li>Wedding Industry Overview</li><li>Wedding Planning & Management</li><li>Vendor Coordination</li><li>Budget & Timeline Management</li><li>Problem Solving on Wedding Day</li><li>Marketing & Branding for WO</li><li>Legal & Contract</li></ul><p><strong>Benefit:</strong> Sertifikat resmi HASTANA yang diakui industri pernikahan Indonesia</p>',
@@ -607,6 +624,7 @@ class EventHastanaSeeder extends Seeder
                 [
                     'title' => 'Sertifikasi Event Organizer & MICE Professional',
                     'slug' => 'sertifikasi-event-organizer-mice-professional',
+                    'image' => 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
                     'event_category_id' => $sertifikasiCategory->id,
                     'event_type' => 'internal',
                     'description' => '<p>Program sertifikasi untuk Event Organizer dan MICE (Meeting, Incentive, Convention, Exhibition) Professional.</p><p><strong>Kurikulum:</strong></p><ul><li>Event Management Fundamentals</li><li>MICE Industry Standards</li><li>Event Marketing & Sponsorship</li><li>Venue & Logistics Management</li><li>Risk Management</li><li>Post-Event Evaluation</li></ul>',
@@ -638,6 +656,7 @@ class EventHastanaSeeder extends Seeder
                 [
                     'title' => 'Sertifikasi Digital Marketing Specialist',
                     'slug' => 'sertifikasi-digital-marketing-specialist',
+                    'image' => 'https://images.unsplash.com/photo-1432888622747-4eb9a8efeb07?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
                     'event_category_id' => $sertifikasiCategory->id,
                     'event_type' => 'internal',
                     'description' => '<p>Program sertifikasi digital marketing dengan kurikulum terkini dan praktek langsung.</p><p><strong>Materi:</strong></p><ul><li>Digital Marketing Strategy</li><li>SEO & SEM</li><li>Social Media Marketing</li><li>Content Marketing</li><li>Email Marketing</li><li>Analytics & Reporting</li><li>Paid Advertising (Google Ads, Meta Ads)</li></ul><p>Termasuk ujian sertifikasi dan capstone project!</p>',
@@ -669,6 +688,7 @@ class EventHastanaSeeder extends Seeder
                 [
                     'title' => 'Sertifikasi Project Management Professional (PMP Preparation)',
                     'slug' => 'sertifikasi-project-management-pmp-preparation',
+                    'image' => 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
                     'event_category_id' => $sertifikasiCategory->id,
                     'event_type' => 'internal',
                     'description' => '<p>Program persiapan sertifikasi Project Management Professional dengan standar internasional.</p><p><strong>Coverage:</strong></p><ul><li>Project Management Framework</li><li>Initiating & Planning</li><li>Executing & Monitoring</li><li>Controlling & Closing</li><li>Agile & Hybrid Approaches</li><li>PMP Exam Simulation</li></ul>',
@@ -700,6 +720,7 @@ class EventHastanaSeeder extends Seeder
                 [
                     'title' => 'Sertifikasi HR Professional & Talent Management',
                     'slug' => 'sertifikasi-hr-professional-talent-management',
+                    'image' => 'https://images.unsplash.com/photo-1521791136064-7986c2920216?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
                     'event_category_id' => $sertifikasiCategory->id,
                     'event_type' => 'internal',
                     'description' => '<p>Program sertifikasi untuk HR Professional dengan fokus pada talent management dan people development.</p><p><strong>Materi:</strong></p><ul><li>Strategic HRM</li><li>Talent Acquisition & Recruitment</li><li>Performance Management</li><li>Learning & Development</li><li>Compensation & Benefits</li><li>Employee Relations</li><li>HR Analytics</li></ul>',

@@ -37,22 +37,22 @@
                     organizer profesional di Indonesia.
                 </p>
                 <div class="flex space-x-3">
-                    <a href="#"
+                    {{-- <a href="https://www.facebook.com/hastanaindonesia" target="_blank" 
                         class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center hover:bg-blue-700 transition-colors">
                         <i class="fab fa-facebook-f text-white text-xs"></i>
-                    </a>
-                    <a href="#"
+                    </a> --}}
+                    <a href="https://www.instagram.com/hastana_indonesia" target="_blank"
                         class="w-8 h-8 bg-pink-600 rounded-full flex items-center justify-center hover:bg-pink-700 transition-colors">
                         <i class="fab fa-instagram text-white text-xs"></i>
                     </a>
-                    <a href="#"
+                    {{-- <a href="https://twitter.com/hastanaindonesia" target="_blank"
                         class="w-8 h-8 bg-blue-400 rounded-full flex items-center justify-center hover:bg-blue-500 transition-colors">
                         <i class="fab fa-twitter text-white text-xs"></i>
                     </a>
-                    <a href="#"
+                    <a href="https://www.youtube.com/@hastanaindonesia" target="_blank"
                         class="w-8 h-8 bg-red-600 rounded-full flex items-center justify-center hover:bg-red-700 transition-colors">
                         <i class="fab fa-youtube text-white text-xs"></i>
-                    </a>
+                    </a> --}}
                 </div>
             </div>
 
@@ -95,36 +95,23 @@
                         <i class="fas fa-map-marker-alt text-red-500 mt-1 text-xs"></i>
                         <div>
                             <p class="text-sm text-gray-300">
-                                Jl. Wedding Organizer No. 123<br>
-                                Jakarta Selatan 12345<br>
-                                Indonesia
+                                Ruko Kelapa Hijau, Jl. Brojomulyo No.13-14 13-14, Gejayan, Condongcatur, Kec. Depok, Kabupaten Sleman, Daerah Istimewa Yogyakarta 55281<br>
                             </p>
                         </div>
                     </div>
                     <div class="flex items-center space-x-2">
                         <i class="fas fa-phone text-blue-500 text-xs"></i>
-                        <p class="text-sm text-gray-300">+62 21 1234 5678</p>
+                        <p class="text-sm text-gray-300">+62 811-3130-612</p>
                     </div>
                     <div class="flex items-center space-x-2">
                         <i class="fas fa-envelope text-green-500 text-xs"></i>
-                        <p class="text-sm text-gray-300">info@hastana.id</p>
+                        <p class="text-sm text-gray-300">info@hastanaindonesia.id</p>
                     </div>
                     <div class="flex items-center space-x-2">
                         <i class="fas fa-globe text-purple-500 text-xs"></i>
-                        <p class="text-sm text-gray-300">www.hastana.id</p>
+                        <p class="text-sm text-gray-300">www.hastanaindonesia.id</p>
                     </div>
                 </div>
-
-                <!-- Newsletter -->
-                {{-- <div class="mt-8">
-                    <h5 class="font-semibold mb-3">Newsletter</h5>
-                    <div class="flex">
-                        <input type="email" placeholder="Email Anda" class="flex-1 px-4 py-2 bg-gray-800 text-white rounded-l-full focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        <button class="px-6 py-2 bg-gradient-to-r from-blue-600 to-red-600 text-white rounded-r-full hover:from-blue-700 hover:to-red-700 transition-all">
-                            <i class="fas fa-paper-plane"></i>
-                        </button>
-                    </div>
-                </div> --}}
             </div>
         </div>
 
@@ -148,9 +135,9 @@
                 <div class="text-center">
                     <p class="text-gray-400 text-xs">
                         <i class="fas fa-code text-blue-500 mr-1 text-xs"></i>
-                        Developed by <span class="text-white font-semibold">Makna Wedding & Event Planner</span>
-                    </p>
-                    <p class="text-gray-500 text-xs mt-1">PT. Makna Kreatif Indonesia</p>
+                        Developed by <span class="text-white font-semibold">PT. Makna Kreatif Indonesia</span>
+                    </p>        
+                    <p class="text-gray-500 text-xs mt-1">Makna Wedding & Event Planner</p>
                 </div>
             </div>
         </div>
@@ -159,7 +146,7 @@
 
 <!-- Floating WhatsApp Button -->
 <div class="fixed bottom-6 left-6 z-50">
-    <a href="https://wa.me/6281234567890?text=Halo%20HASTANA%20Indonesia,%20saya%20ingin%20berkonsultasi%20tentang%20layanan%20wedding%20organizer"
+    <a href="https://wa.me/628113130612?text=Halo%20Kak,%20saya%20ingin%20berkonsultasi%20tentang%20HASTANA%20INDONESIA"
         target="_blank"
         class="group bg-green-500 hover:bg-green-600 text-white p-4 rounded-full shadow-2xl transition-all duration-300 hover:scale-110 flex items-center justify-center">
         <i class="fab fa-whatsapp text-2xl"></i>
