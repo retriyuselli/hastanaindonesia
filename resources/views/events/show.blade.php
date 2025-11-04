@@ -420,41 +420,602 @@
                     background: linear-gradient(90deg, transparent 0%, #3b82f6 50%, transparent 100%);
                     margin: 2rem 0;
                 }
+
+                /* Benefits Description - Same styling as Event Description */
+                .benefits-description {
+                    font-family: 'Poppins', 'Inter', system-ui, -apple-system, sans-serif;
+                    line-height: 1.8;
+                    color: #374151;
+                }
+
+                /* Paragraphs */
+                .benefits-description p {
+                    font-size: 14px;
+                    margin-bottom: 1rem;
+                    text-align: justify;
+                    color: #4b5563;
+                }
+
+                /* Headings */
+                .benefits-description h1 {
+                    font-size: 26px;
+                    font-weight: 700;
+                    margin: 1.5rem 0 1rem 0;
+                    color: #1f2937;
+                    padding-left: 1rem;
+                    border-left: 5px solid transparent;
+                    background: linear-gradient(90deg, #10b981 0%, #059669 100%);
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                    background-clip: text;
+                    position: relative;
+                }
+
+                .benefits-description h1::before {
+                    content: '';
+                    position: absolute;
+                    left: 0;
+                    top: 0;
+                    bottom: 0;
+                    width: 5px;
+                    background: linear-gradient(180deg, #10b981 0%, #059669 100%);
+                    border-radius: 2px;
+                }
+
+                .benefits-description h2 {
+                    font-size: 22px;
+                    font-weight: 700;
+                    margin: 1.5rem 0 1rem 0;
+                    color: #1f2937;
+                    padding-left: 1rem;
+                    border-left: 4px solid transparent;
+                    background: linear-gradient(90deg, #10b981 0%, #059669 100%);
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                    background-clip: text;
+                    position: relative;
+                }
+
+                .benefits-description h2::before {
+                    content: '';
+                    position: absolute;
+                    left: 0;
+                    top: 0;
+                    bottom: 0;
+                    width: 4px;
+                    background: linear-gradient(180deg, #10b981 0%, #059669 100%);
+                    border-radius: 2px;
+                }
+
+                .benefits-description h3 {
+                    font-size: 18px;
+                    font-weight: 600;
+                    margin: 1.25rem 0 0.75rem 0;
+                    color: #1f2937;
+                    padding-left: 0.75rem;
+                    border-left: 3px solid #10b981;
+                }
+
+                .benefits-description h4 {
+                    font-size: 16px;
+                    font-weight: 600;
+                    margin: 1rem 0 0.5rem 0;
+                    color: #374151;
+                    padding-left: 0.5rem;
+                    border-left: 2px solid #34d399;
+                }
+
+                /* Lists */
+                .benefits-description ul,
+                .benefits-description ol {
+                    margin: 1rem 0;
+                    padding-left: 1.5rem;
+                }
+
+                .benefits-description ul li {
+                    font-size: 14px;
+                    margin-bottom: 0.5rem;
+                    color: #4b5563;
+                    position: relative;
+                    padding-left: 1.5rem;
+                    list-style: none;
+                }
+
+                .benefits-description ul li::before {
+                    content: "▸";
+                    position: absolute;
+                    left: 0;
+                    color: #10b981;
+                    font-weight: bold;
+                    font-size: 16px;
+                }
+
+                .benefits-description ol {
+                    counter-reset: item;
+                }
+
+                .benefits-description ol li {
+                    font-size: 14px;
+                    margin-bottom: 0.5rem;
+                    color: #4b5563;
+                    position: relative;
+                    padding-left: 2rem;
+                    list-style: none;
+                    counter-increment: item;
+                }
+
+                .benefits-description ol li::before {
+                    content: counter(item);
+                    position: absolute;
+                    left: 0;
+                    top: 0;
+                    width: 24px;
+                    height: 24px;
+                    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+                    color: white;
+                    border-radius: 50%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 12px;
+                    font-weight: 600;
+                }
+
+                /* Blockquote */
+                .benefits-description blockquote {
+                    font-size: 14px;
+                    padding: 1rem 1rem 1rem 3.5rem;
+                    margin: 1.5rem 0;
+                    background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%);
+                    border-left: 4px solid #10b981;
+                    border-radius: 0.5rem;
+                    position: relative;
+                    font-style: italic;
+                    color: #065f46;
+                }
+
+                .benefits-description blockquote::before {
+                    content: '"';
+                    position: absolute;
+                    left: 1rem;
+                    top: 0.5rem;
+                    font-size: 48px;
+                    color: #10b981;
+                    opacity: 0.3;
+                    font-family: Georgia, serif;
+                    line-height: 1;
+                }
+
+                /* Strong Text */
+                .benefits-description strong {
+                    font-weight: 600;
+                    color: #1f2937;
+                    background: linear-gradient(180deg, transparent 60%, #d1fae5 60%);
+                    padding: 0 0.2em;
+                }
+
+                /* Emphasis */
+                .benefits-description em {
+                    font-style: italic;
+                    color: #059669;
+                }
+
+                /* Links */
+                .benefits-description a {
+                    color: #10b981;
+                    text-decoration: none;
+                    font-weight: 500;
+                    position: relative;
+                    transition: color 0.2s;
+                }
+
+                .benefits-description a::after {
+                    content: '';
+                    position: absolute;
+                    left: 0;
+                    bottom: -2px;
+                    width: 0;
+                    height: 2px;
+                    background: linear-gradient(90deg, #10b981 0%, #059669 100%);
+                    transition: width 0.3s ease;
+                }
+
+                .benefits-description a:hover {
+                    color: #059669;
+                }
+
+                .benefits-description a:hover::after {
+                    width: 100%;
+                }
+
+                /* Code */
+                .benefits-description code {
+                    font-size: 13px;
+                    padding: 0.2em 0.5em;
+                    background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+                    border: 1px solid #10b981;
+                    border-radius: 0.25rem;
+                    font-family: 'Courier New', monospace;
+                    color: #065f46;
+                }
+
+                .benefits-description pre {
+                    background: #064e3b;
+                    padding: 1rem;
+                    border-radius: 0.5rem;
+                    overflow-x: auto;
+                    margin: 1rem 0;
+                }
+
+                .benefits-description pre code {
+                    background: transparent;
+                    border: none;
+                    color: #a7f3d0;
+                    padding: 0;
+                }
+
+                /* Images */
+                .benefits-description img {
+                    max-width: 100%;
+                    height: auto;
+                    border-radius: 0.5rem;
+                    margin: 1.5rem auto;
+                    display: block;
+                    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+                    transition: transform 0.3s ease;
+                }
+
+                .benefits-description img:hover {
+                    transform: scale(1.02);
+                }
+
+                /* Tables */
+                .benefits-description table {
+                    width: 100%;
+                    border-collapse: collapse;
+                    margin: 1.5rem 0;
+                    font-size: 13px;
+                    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+                    border-radius: 0.5rem;
+                    overflow: hidden;
+                }
+
+                .benefits-description table thead {
+                    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+                    color: white;
+                }
+
+                .benefits-description table th {
+                    padding: 0.75rem;
+                    text-align: left;
+                    font-weight: 600;
+                    font-size: 13px;
+                }
+
+                .benefits-description table td {
+                    padding: 0.75rem;
+                    border-bottom: 1px solid #e5e7eb;
+                }
+
+                .benefits-description table tbody tr:nth-child(even) {
+                    background-color: #f0fdf4;
+                }
+
+                .benefits-description table tbody tr:hover {
+                    background-color: #ecfdf5;
+                }
+
+                /* Horizontal Rule */
+                .benefits-description hr {
+                    border: none;
+                    height: 2px;
+                    background: linear-gradient(90deg, transparent 0%, #10b981 50%, transparent 100%);
+                    margin: 2rem 0;
+                }
+
+
+
+                /* Requirements Description - Same styling as Event Description */
+                .requirements-description {
+                    font-family: 'Poppins', 'Inter', system-ui, -apple-system, sans-serif;
+                    line-height: 1.8;
+                    color: #374151;
+                    font-size: 16px;
+
+                }
+
+                /* Paragraphs */
+                .requirements-description p {
+                    font-size: 14px;
+                    margin-bottom: 1rem;
+                    text-align: justify;
+                    color: #4b5563;
+                }
+
+                /* Headings */
+                .requirements-description h1 {
+                    font-size: 26px;
+                    font-weight: 700;
+                    margin: 1.5rem 0 1rem 0;
+                    color: #1f2937;
+                    padding-left: 1rem;
+                    border-left: 5px solid transparent;
+                    background: linear-gradient(90deg, #f59e0b 0%, #d97706 100%);
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                    background-clip: text;
+                    position: relative;
+                }
+
+                .requirements-description h1::before {
+                    content: '';
+                    position: absolute;
+                    left: 0;
+                    top: 0;
+                    bottom: 0;
+                    width: 5px;
+                    background: linear-gradient(180deg, #f59e0b 0%, #d97706 100%);
+                    border-radius: 2px;
+                }
+
+                .requirements-description h2 {
+                    font-size: 22px;
+                    font-weight: 700;
+                    margin: 1.5rem 0 1rem 0;
+                    color: #1f2937;
+                    padding-left: 1rem;
+                    border-left: 4px solid transparent;
+                    background: linear-gradient(90deg, #f59e0b 0%, #ea580c 100%);
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                    background-clip: text;
+                    position: relative;
+                }
+
+                .requirements-description h2::before {
+                    content: '';
+                    position: absolute;
+                    left: 0;
+                    top: 0;
+                    bottom: 0;
+                    width: 4px;
+                    background: linear-gradient(180deg, #f59e0b 0%, #ea580c 100%);
+                    border-radius: 2px;
+                }
+
+                .requirements-description h3 {
+                    font-size: 18px;
+                    font-weight: 600;
+                    margin: 1.25rem 0 0.75rem 0;
+                    color: #1f2937;
+                    padding-left: 0.75rem;
+                    border-left: 3px solid #f59e0b;
+                }
+
+                .requirements-description h4 {
+                    font-size: 16px;
+                    font-weight: 600;
+                    margin: 1rem 0 0.5rem 0;
+                    color: #374151;
+                    padding-left: 0.5rem;
+                    border-left: 2px solid #fbbf24;
+                }
+
+                /* Lists */
+                .requirements-description ul,
+                .requirements-description ol {
+                    margin: 1rem 0;
+                    padding-left: 1.5rem;
+                }
+
+                .requirements-description ul li {
+                    font-size: 16px;
+                    margin-bottom: 0.5rem;
+                    color: #4b5563;
+                    position: relative;
+                    padding-left: 1.5rem;
+                    list-style: none;
+                }
+
+                .requirements-description ul li::before {
+                    content: "▸";
+                    position: absolute;
+                    left: 0;
+                    color: #f59e0b;
+                    font-weight: bold;
+                    font-size: 16px;
+                }
+
+                .requirements-description ol {
+                    counter-reset: item;
+                }
+
+                .requirements-description ol li {
+                    font-size: 14px;
+                    margin-bottom: 0.5rem;
+                    color: #4b5563;
+                    position: relative;
+                    padding-left: 2rem;
+                    list-style: none;
+                    counter-increment: item;
+                }
+
+                .requirements-description ol li::before {
+                    content: counter(item);
+                    position: absolute;
+                    left: 0;
+                    top: 0;
+                    width: 24px;
+                    height: 24px;
+                    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+                    color: white;
+                    border-radius: 50%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 12px;
+                    font-weight: 600;
+                }
+
+                /* Blockquote */
+                .requirements-description blockquote {
+                    font-size: 14px;
+                    padding: 1rem 1rem 1rem 3.5rem;
+                    margin: 1.5rem 0;
+                    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+                    border-left: 4px solid #f59e0b;
+                    border-radius: 0.5rem;
+                    position: relative;
+                    font-style: italic;
+                    color: #92400e;
+                }
+
+                .requirements-description blockquote::before {
+                    content: '"';
+                    position: absolute;
+                    left: 1rem;
+                    top: 0.5rem;
+                    font-size: 48px;
+                    color: #f59e0b;
+                    opacity: 0.3;
+                    font-family: Georgia, serif;
+                    line-height: 1;
+                }
+
+                /* Strong Text */
+                .requirements-description strong {
+                    font-weight: 600;
+                    color: #1f2937;
+                    background: linear-gradient(180deg, transparent 60%, #fef3c7 60%);
+                    padding: 0 0.2em;
+                }
+
+                /* Emphasis */
+                .requirements-description em {
+                    font-style: italic;
+                    color: #d97706;
+                }
+
+                /* Links */
+                .requirements-description a {
+                    color: #f59e0b;
+                    text-decoration: none;
+                    font-weight: 500;
+                    position: relative;
+                    transition: color 0.2s;
+                }
+
+                .requirements-description a::after {
+                    content: '';
+                    position: absolute;
+                    left: 0;
+                    bottom: -2px;
+                    width: 0;
+                    height: 2px;
+                    background: linear-gradient(90deg, #f59e0b 0%, #d97706 100%);
+                    transition: width 0.3s ease;
+                }
+
+                .requirements-description a:hover {
+                    color: #d97706;
+                }
+
+                .requirements-description a:hover::after {
+                    width: 100%;
+                }
+
+                /* Code */
+                .requirements-description code {
+                    font-size: 13px;
+                    padding: 0.2em 0.5em;
+                    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+                    border: 1px solid #fbbf24;
+                    border-radius: 0.25rem;
+                    font-family: 'Courier New', monospace;
+                    color: #92400e;
+                }
+
+                .requirements-description pre {
+                    background: #451a03;
+                    padding: 1rem;
+                    border-radius: 0.5rem;
+                    overflow-x: auto;
+                    margin: 1rem 0;
+                }
+
+                .requirements-description pre code {
+                    background: transparent;
+                    border: none;
+                    color: #fbbf24;
+                    padding: 0;
+                }
+
+                /* Tables */
+                .requirements-description table {
+                    width: 100%;
+                    border-collapse: collapse;
+                    margin: 1.5rem 0;
+                    font-size: 13px;
+                    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+                    border-radius: 0.5rem;
+                    overflow: hidden;
+                }
+
+                .requirements-description table thead {
+                    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+                    color: white;
+                }
+
+                .requirements-description table th {
+                    padding: 0.75rem;
+                    text-align: left;
+                    font-weight: 600;
+                    font-size: 13px;
+                }
+
+                .requirements-description table td {
+                    padding: 0.75rem;
+                    border-bottom: 1px solid #e5e7eb;
+                }
+
+                .requirements-description table tbody tr:nth-child(even) {
+                    background-color: #fffbeb;
+                }
+
+                .requirements-description table tbody tr:hover {
+                    background-color: #fef3c7;
+                }
+
+                /* Horizontal Rule */
+                .requirements-description hr {
+                    border: none;
+                    height: 2px;
+                    background: linear-gradient(90deg, transparent 0%, #f59e0b 50%, transparent 100%);
+                    margin: 2rem 0;
+                }
                 </style>
 
                 <!-- Benefits -->
-                @if(count($benefits) > 0)
+                @if($event->benefits)
                     <div class="bg-white rounded-lg shadow-lg p-5 mb-5">
                         <h2 class="text-xl font-bold text-gray-900 mb-3 flex items-center">
                             <i class="fas fa-gift text-green-600 mr-2"></i> Yang Akan Anda Dapatkan
                         </h2>
-                        <ul class="space-y-2">
-                            @foreach($benefits as $benefit)
-                                <li class="flex items-start gap-2.5">
-                                    <i class="fas fa-check-circle text-green-500 mt-0.5"></i>
-                                    <span class="text-gray-700 text-sm">{{ trim($benefit) }}</span>
-                                </li>
-                            @endforeach
-                        </ul>
+                        <div class="benefits-description prose max-w-none text-gray-700">
+                            {!! $event->benefits !!}
+                        </div>
                     </div>
                 @endif
 
                 <!-- Requirements -->
-                @if(count($requirements) > 0)
-                    <div class="bg-white rounded-lg shadow-lg p-5 mb-5">
-                        <h2 class="text-xl font-bold text-gray-900 mb-3 flex items-center">
-                            <i class="fas fa-clipboard-list text-orange-600 mr-2"></i> Persyaratan
-                        </h2>
-                        <ul class="space-y-2">
-                            @foreach($requirements as $requirement)
-                                <li class="flex items-start gap-2.5">
-                                    <i class="fas fa-exclamation-circle text-orange-500 mt-0.5"></i>
-                                    <span class="text-gray-700 text-sm">{{ trim($requirement) }}</span>
-                                </li>
-                            @endforeach
-                        </ul>
+                <div class="bg-white rounded-lg shadow-lg p-5 mb-5">
+                    <h2 class="text-xl font-bold text-gray-900 mb-3 flex items-center">
+                        <i class="fas fa-clipboard-list text-orange-600 mr-2"></i> Persyaratan
+                    </h2>
+                    <div class="requirements-description prose max-w-none text-gray-700">
+                        {!! $event->requirements !!}
                     </div>
-                @endif
+                </div>
 
                 <!-- Related Events -->
                 @if($relatedEvents->count() > 0)
@@ -618,26 +1179,6 @@
                                 ->where('user_id', auth()->id())
                                 ->first();
                         @endphp
-
-                        {{-- DEBUG INFO - Remove after checking --}}
-                        <div class="bg-yellow-50 border-2 border-yellow-300 rounded-lg p-4 mb-5">
-                            <p class="text-xs font-bold text-yellow-900 mb-2">🔍 DEBUG INFO (Hapus setelah pengecekan):</p>
-                            <ul class="text-xs text-yellow-800 space-y-1">
-                                <li>✓ User sudah login: <strong>{{ auth()->check() ? 'Ya' : 'Tidak' }}</strong></li>
-                                <li>✓ User ID: <strong>{{ auth()->id() }}</strong></li>
-                                <li>✓ Event ID: <strong>{{ $event->id }}</strong></li>
-                                @if($participant)
-                                    <li>✓ Status Participant: <strong class="text-{{ $participant->status === 'attended' ? 'green' : 'red' }}-700">{{ strtoupper($participant->status) }}</strong></li>
-                                    <li>✓ Registration Code: <strong>{{ $participant->registration_code }}</strong></li>
-                                    <li>✓ Attended At: <strong>{{ $participant->attended_at ?? 'NULL' }}</strong></li>
-                                @else
-                                    <li>❌ <strong class="text-red-700">TIDAK ADA DATA PARTICIPANT</strong></li>
-                                @endif
-                                <li>✓ Has Attended: <strong class="text-{{ $hasAttended ? 'green' : 'red' }}-700">{{ $hasAttended ? 'YA' : 'TIDAK' }}</strong></li>
-                                <li>✓ Has Reviewed: <strong class="text-{{ $hasReviewed ? 'green' : 'red' }}-700">{{ $hasReviewed ? 'YA' : 'TIDAK' }}</strong></li>
-                                <li>✓ Form Review Akan Muncul: <strong class="text-{{ ($hasAttended && !$hasReviewed) ? 'green' : 'red' }}-700">{{ ($hasAttended && !$hasReviewed) ? 'YA ✓' : 'TIDAK ✗' }}</strong></li>
-                            </ul>
-                        </div>
 
                         @if($hasAttended && !$hasReviewed)
                             <div class="bg-gradient-to-r from-blue-50 to-purple-50 border-2 border-blue-200 rounded-lg p-5 mb-6">

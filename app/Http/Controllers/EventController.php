@@ -189,9 +189,72 @@ class EventController extends Controller
         // Get rating distribution
         $ratingDistribution = $event->getRatingDistribution();
 
-        // Parse benefits and requirements
-        $benefits = $event->benefits ? explode(',', $event->benefits) : [];
-        $requirements = $event->requirements ? explode(',', $event->requirements) : [];
+        // Parse benefits if available
+        $benefits = [];
+        if ($event->benefits) {
+            $benefitsText = $event->benefits;
+            
+            // Check if it's HTML format
+            if (strpos($benefitsText, '<li>') !== false) {
+                // Extract text from HTML list items
+                preg_match_all('/<li[^>]*><p>(.*?)<\/p><\/li>/', $benefitsText, $matches);
+                if (!empty($matches[1])) {
+                    $benefits = array_map('html_entity_decode', $matches[1]);
+                } else {
+                    // Fallback: extract any text between <li> tags
+                    preg_match_all('/<li[^>]*>(.*?)<\/li>/', $benefitsText, $matches);
+                    if (!empty($matches[1])) {
+                        $benefits = array_map(function($item) {
+                            return html_entity_decode(strip_tags($item));
+                        }, $matches[1]);
+                    }
+                }
+            } else {
+                // Handle literal \n characters
+                $benefitsText = str_replace('\\n', "\n", $benefitsText);
+                
+                // Check if it contains newlines, otherwise split by comma
+                if (strpos($benefitsText, "\n") !== false) {
+                    $benefits = array_filter(array_map('trim', explode("\n", $benefitsText)));
+                } else {
+                    $benefits = array_filter(array_map('trim', explode(',', $benefitsText)));
+                }
+            }
+        }
+
+        $requirements = [];
+        if ($event->requirements) {
+            $requirementsText = $event->requirements;
+            
+            // Check if it's HTML format
+            if (strpos($requirementsText, '<li>') !== false) {
+                // Extract text from HTML list items
+                preg_match_all('/<li[^>]*><p>(.*?)<\/p><\/li>/', $requirementsText, $matches);
+                if (!empty($matches[1])) {
+                    $requirements = array_map('html_entity_decode', $matches[1]);
+                } else {
+                    // Fallback: extract any text between <li> tags
+                    preg_match_all('/<li[^>]*>(.*?)<\/li>/', $requirementsText, $matches);
+                    if (!empty($matches[1])) {
+                        $requirements = array_map(function($item) {
+                            return html_entity_decode(strip_tags($item));
+                        }, $matches[1]);
+                    }
+                }
+            } else {
+                // First replace literal \n with actual newlines
+                $requirementsText = str_replace('\\n', "\n", $requirementsText);
+                
+                // Check if requirements contains newlines (bullet format) or commas (comma-separated format)
+                if (strpos($requirementsText, "\n") !== false) {
+                    // Newline separated with bullets
+                    $requirements = array_filter(array_map('trim', explode("\n", $requirementsText)));
+                } else {
+                    // Comma separated format
+                    $requirements = array_filter(array_map('trim', explode(',', $requirementsText)));
+                }
+            }
+        }
 
         return view('events.show', compact(
             'event',

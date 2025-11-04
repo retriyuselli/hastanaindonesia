@@ -4,6 +4,8 @@ cd /home/u380354370/domains/hastana.maknawedding.id/public_html
 
 cd /home/u380354370/domains/hastanaindonesia.id/public_html
 
+cd /home/u380354370/domains/demo.hastanaindonesia.id/public_html
+
 php artisan db:seed --class=AdminUserSeeder
 
 # Server Deployment Commands (Run setelah git pull)
