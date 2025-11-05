@@ -562,7 +562,7 @@
             <div class="card-hover bg-white rounded-2xl overflow-hidden shadow-lg">
                 <div class="aspect-video overflow-hidden">
                     @if($event->image)
-                        <img src="{{ asset('storage/' . $event->image) }}" 
+                        <img src="{{ $event->image_url }}" 
                              alt="{{ $event->title }}" 
                              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                              loading="lazy">
@@ -679,7 +679,7 @@
             <a href="{{ route('blog.detail', $blog->slug) }}" class="card-hover bg-white rounded-2xl overflow-hidden shadow-lg border border-gray-100 block">
                 <div class="aspect-video overflow-hidden">
                     @if($blog->featured_image)
-                        <img src="{{ asset('storage/' . $blog->featured_image) }}" 
+                        <img src="{{ $blog->featured_image }}" 
                              alt="{{ $blog->title }}" 
                              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                              loading="lazy">

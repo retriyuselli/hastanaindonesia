@@ -13,6 +13,7 @@ use Filament\Schemas\Schema;
 use App\Models\WeddingOrganizer;
 use Filament\Forms\Components\RichEditor;
 use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\Tabs;
 use Illuminate\Support\Str;
 
 class ProductForm
@@ -20,135 +21,159 @@ class ProductForm
     public static function configure(Schema $schema): Schema
     {
         return $schema
-            ->columns(3)
             ->components([
-                Section::make('Informasi Dasar')
-                    ->columns(2)
-                    ->columnSpan(2)
-                    ->schema([
-                        Select::make('wedding_organizer_id')
-                            ->label('Wedding Organizer')
-                            ->relationship('weddingOrganizer', 'organizer_name')
-                            ->searchable()
-                            ->preload()
-                            ->required()
-                            ->columnSpan(2),
-                        
-                        TextInput::make('name')
-                            ->label('Nama Produk')
-                            ->required()
-                            ->maxLength(255)
-                            ->live(onBlur: true)
-                            ->afterStateUpdated(fn (string $operation, $state, callable $set) => 
-                                $operation === 'create' ? $set('slug', Str::slug($state)) : null
-                            ),
-                        
-                        TextInput::make('slug')
-                            ->label('Slug')
-                            ->required()
-                            ->maxLength(255)
-                            ->unique(ignoreRecord: true)
-                            ->helperText('URL friendly name, auto-generate dari nama produk'),
-                        
-                        RichEditor::make('description')
-                            ->label('Deskripsi')
-                            ->columnSpanFull(),
-                    ]),
-                
-                Section::make('Harga')
-                    ->columns(2)
-                    ->columnSpan(2)
-                    ->schema([
-                        TextInput::make('original_price')
-                            ->label('Harga Asli')
-                            ->required()
-                            ->numeric()
-                            ->prefix('Rp')
-                            ->live(onBlur: true)
-                            ->afterStateUpdated(function ($get, callable $set) {
-                                $original = $get('original_price');
-                                $price = $get('price');
-                                if ($original && $price) {
-                                    $set('discount', $original - $price);
-                                }
-                            }),
-                        
-                        TextInput::make('price')
-                            ->label('Harga Jual')
-                            ->required()
-                            ->numeric()
-                            ->prefix('Rp')
-                            ->live(onBlur: true)
-                            ->afterStateUpdated(function ($get, callable $set) {
-                                $original = $get('original_price');
-                                $price = $get('price');
-                                if ($original && $price) {
-                                    $set('discount', $original - $price);
-                                }
-                            }),
-                        
-                        TextInput::make('discount')
-                            ->label('Diskon')
-                            ->numeric()
-                            ->prefix('Rp')
-                            ->disabled()
-                            ->dehydrated()
-                            ->helperText('Auto-calculated dari harga asli - harga jual')
-                            ->columnSpan(2),
-                    ]),
-                
-                Section::make('Media & Features')
-                    ->columns(1)
-                    ->columnSpan(2)
-                    ->schema([
-                        FileUpload::make('images')
-                            ->label('Gambar Produk')
-                            ->multiple()
-                            ->image()
-                            ->maxSize(2048)
-                            ->disk('public')
-                            ->directory('products')
-                            ->reorderable()
-                            ->helperText('Upload multiple gambar, gambar pertama akan menjadi thumbnail'),
-                        
-                        Repeater::make('features')
-                            ->label('Fitur/Benefit')
-                            ->simple(
-                                TextInput::make('feature')
-                                    ->label('Fitur')
-                                    ->required()
-                            )
-                            ->defaultItems(0)
-                            ->addActionLabel('Tambah Fitur')
-                            ->collapsible()
-                            ->helperText('Daftar fitur yang didapat customer'),
-                        
-                        TagsInput::make('badges')
-                            ->label('Badges')
-                            ->placeholder('Ketik dan tekan Enter')
-                            ->suggestions(['FREE PREWED', 'BEST DEAL', 'LIMITED', 'BEST VALUE', 'TRENDING'])
-                            ->helperText('Label/badge untuk produk (misal: FREE PREWED, BEST DEAL)'),
-                    ]),
-                
-                Section::make('Pengaturan')
-                    ->columnSpan(1)
-                    ->schema([
-                        Toggle::make('limited_offer')
-                            ->label('Penawaran Terbatas')
-                            ->default(false)
-                            ->helperText('Tampilkan badge "Harga Terbatas"'),
-                        
-                        Toggle::make('is_active')
-                            ->label('Aktif')
-                            ->default(true)
-                            ->helperText('Hanya produk aktif yang tampil di website'),
-                        
-                        TextInput::make('sort_order')
-                            ->label('Urutan')
-                            ->numeric()
-                            ->default(0)
-                            ->helperText('Urutan tampilan (kecil ke besar)'),
-                    ]),
+                Tabs::make('Product Management')
+                    ->tabs([
+                        Tabs\Tab::make('Informasi Dasar')
+                            ->icon('heroicon-o-information-circle')
+                            ->schema([
+                                Section::make('Detail Produk')
+                                    ->columns(2)
+                                    ->schema([
+                                        Select::make('wedding_organizer_id')
+                                            ->label('Wedding Organizer')
+                                            ->relationship('weddingOrganizer', 'organizer_name')
+                                            ->searchable()
+                                            ->preload()
+                                            ->required()
+                                            ->columnSpan(2),
+                                        
+                                        TextInput::make('name')
+                                            ->label('Nama Produk')
+                                            ->required()
+                                            ->maxLength(255)
+                                            ->live(onBlur: true)
+                                            ->afterStateUpdated(fn (string $operation, $state, callable $set) => 
+                                                $operation === 'create' ? $set('slug', Str::slug($state)) : null
+                                            ),
+                                        
+                                        TextInput::make('slug')
+                                            ->label('Slug')
+                                            ->required()
+                                            ->maxLength(255)
+                                            ->unique(ignoreRecord: true)
+                                            ->helperText('URL friendly name, auto-generate dari nama produk'),
+                                        
+                                        RichEditor::make('description')
+                                            ->label('Deskripsi')
+                                            ->columnSpanFull()
+                                            ->required(),
+                                    ]),
+                            ]),
+
+                        Tabs\Tab::make('Harga & Penawaran')
+                            ->icon('heroicon-o-banknotes')
+                            ->schema([
+                                Section::make('Penetapan Harga')
+                                    ->columns(2)
+                                    ->schema([
+                                        TextInput::make('original_price')
+                                            ->label('Harga Asli')
+                                            ->required()
+                                            ->numeric()
+                                            ->prefix('Rp')
+                                            ->live(onBlur: true)
+                                            ->afterStateUpdated(function ($get, callable $set) {
+                                                $original = $get('original_price');
+                                                $price = $get('price');
+                                                if ($original && $price) {
+                                                    $set('discount', $original - $price);
+                                                }
+                                            }),
+                                        
+                                        TextInput::make('price')
+                                            ->label('Harga Jual')
+                                            ->required()
+                                            ->numeric()
+                                            ->prefix('Rp')
+                                            ->live(onBlur: true)
+                                            ->afterStateUpdated(function ($get, callable $set) {
+                                                $original = $get('original_price');
+                                                $price = $get('price');
+                                                if ($original && $price) {
+                                                    $set('discount', $original - $price);
+                                                }
+                                            }),
+                                        
+                                        TextInput::make('discount')
+                                            ->label('Diskon')
+                                            ->numeric()
+                                            ->prefix('Rp')
+                                            ->disabled()
+                                            ->dehydrated()
+                                            ->helperText('Auto-calculated dari harga asli - harga jual')
+                                            ->columnSpan(2),
+                                    ]),
+
+                                Section::make('Penawaran Khusus')
+                                    ->columns(2)
+                                    ->schema([
+                                        Toggle::make('limited_offer')
+                                            ->label('Penawaran Terbatas')
+                                            ->default(false)
+                                            ->helperText('Tampilkan badge "Harga Terbatas"'),
+                                        
+                                        TagsInput::make('badges')
+                                            ->label('Badges')
+                                            ->placeholder('Ketik dan tekan Enter')
+                                            ->suggestions(['FREE PREWED', 'BEST DEAL', 'LIMITED', 'BEST VALUE', 'TRENDING'])
+                                            ->helperText('Label/badge untuk produk (misal: FREE PREWED, BEST DEAL)')
+                                            ->columnSpan(2),
+                                    ]),
+                            ]),
+
+                        Tabs\Tab::make('Media & Fitur')
+                            ->icon('heroicon-o-photo')
+                            ->schema([
+                                Section::make('Galeri Produk')
+                                    ->schema([
+                                        FileUpload::make('images')
+                                            ->label('Gambar Produk')
+                                            ->multiple()
+                                            ->image()
+                                            ->maxSize(2048)
+                                            ->disk('public')
+                                            ->directory('products')
+                                            ->reorderable()
+                                            ->helperText('Upload multiple gambar, gambar pertama akan menjadi thumbnail'),
+                                    ]),
+
+                                Section::make('Fitur & Benefit')
+                                    ->schema([
+                                        Repeater::make('features')
+                                            ->label('Fitur/Benefit')
+                                            ->simple(
+                                                TextInput::make('feature')
+                                                    ->label('Fitur')
+                                                    ->required()
+                                            )
+                                            ->defaultItems(0)
+                                            ->addActionLabel('Tambah Fitur')
+                                            ->collapsible()
+                                            ->helperText('Daftar fitur yang didapat customer'),
+                                    ]),
+                            ]),
+
+                        Tabs\Tab::make('Pengaturan')
+                            ->icon('heroicon-o-cog-6-tooth')
+                            ->schema([
+                                Section::make('Status & Visibilitas')
+                                    ->columns(2)
+                                    ->schema([
+                                        Toggle::make('is_active')
+                                            ->label('Aktif')
+                                            ->default(true)
+                                            ->helperText('Hanya produk aktif yang tampil di website'),
+                                        
+                                        TextInput::make('sort_order')
+                                            ->label('Urutan')
+                                            ->numeric()
+                                            ->default(0)
+                                            ->helperText('Urutan tampilan (kecil ke besar)'),
+                                    ]),
+                            ]),
+                    ])
+                    ->columnSpanFull(),
             ]);
     }
 }
