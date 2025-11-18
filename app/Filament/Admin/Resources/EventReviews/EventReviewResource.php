@@ -2,6 +2,7 @@
 
 namespace App\Filament\Admin\Resources\EventReviews;
 
+use App\Filament\Admin\Clusters\EventsCluster;
 use App\Filament\Admin\Resources\EventReviews\Pages\CreateEventReview;
 use App\Filament\Admin\Resources\EventReviews\Pages\EditEventReview;
 use App\Filament\Admin\Resources\EventReviews\Pages\ListEventReviews;
@@ -17,6 +18,8 @@ use Filament\Tables\Table;
 class EventReviewResource extends Resource
 {
     protected static ?string $model = EventReview::class;
+
+    protected static ?string $cluster = EventsCluster::class;
 
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-star';
 

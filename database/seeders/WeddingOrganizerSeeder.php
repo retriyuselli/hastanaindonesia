@@ -9,6 +9,8 @@ use App\Models\User;
 use App\Models\Region;
 use Carbon\Carbon;
 use Faker\Factory as Faker;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Hash;
 
 class WeddingOrganizerSeeder extends Seeder
 {
@@ -441,6 +443,107 @@ class WeddingOrganizerSeeder extends Seeder
             WeddingOrganizer::updateOrCreate(
                 ['organizer_name' => $organizer['organizer_name']],
                 $organizer
+            );
+        }
+
+        // Additional data from provided list (Sumsel & Lampung)
+        $regionAliasMap = [
+            'Sumsel' => 'Sumatera Selatan',
+            'Lampung' => 'Lampung',
+        ];
+
+        $sheetOrganizers = [
+            ['no_anggota' => 'HI.07.002', 'organizer_name' => 'Dhiary Wedding Organizer', 'email' => 'dhiary.wo@gmail.com', 'name' => 'M Fritran Garida', 'region_name' => 'Sumsel'],
+            ['no_anggota' => 'HI.07.003', 'organizer_name' => 'Makna Wedding & Event Planner', 'email' => 'ramadhona.utama@gmail.com', 'name' => 'Rama Dhona Utama', 'region_name' => 'Sumsel'],
+            ['no_anggota' => 'HI.07.004', 'organizer_name' => 'Sarana Wedding Planner & Organizer', 'email' => 'shesagroup@gmail.com', 'name' => 'Sheilla Andriani Rizky', 'region_name' => 'Sumsel'],
+            ['no_anggota' => 'HI.07.005', 'organizer_name' => 'Keluarga Baba', 'email' => 'emailkeluargababa@gmail.com', 'name' => 'Husni Wirya Kusuma', 'region_name' => 'Sumsel'],
+            ['no_anggota' => 'HI.07.006', 'organizer_name' => 'Filfin wedding organizer', 'email' => 'filfinweddingorganizer@gmail.com', 'name' => 'M. Abdhu', 'region_name' => 'Sumsel'],
+            ['no_anggota' => 'HI.07.007', 'organizer_name' => 'Cattleya Wedding Planner & Organizer', 'email' => 'cattleyaorganizer@gmail.com', 'name' => 'Medi ardiansyah', 'region_name' => 'Sumsel'],
+            ['no_anggota' => 'HI.07.008', 'organizer_name' => 'Project Manten WO', 'email' => 'dwi.cahyoyunagara@gmail.com', 'name' => 'Dwi Cahyo Nugraha', 'region_name' => 'Sumsel'],
+            ['no_anggota' => 'HI.07.009', 'organizer_name' => 'Jefri Wedding Planner & Organizer', 'email' => 'Jefriweddingorganizer@gmail.com', 'name' => 'Jefri Ahmad Hafiz', 'region_name' => 'Sumsel'],
+            ['no_anggota' => 'HI.07.012', 'organizer_name' => 'L6 Wo', 'email' => 'Elnam.wo@gmail.com', 'name' => 'Iqbal Caesar Ichsan, SE', 'region_name' => 'Sumsel'],
+            ['no_anggota' => 'HI.07.013', 'organizer_name' => '3D WEDDING ORGANIZER', 'email' => 'deptroduction13@gmail.com', 'name' => 'Dina Septianah', 'region_name' => 'Sumsel'],
+            ['no_anggota' => 'HI.07.015', 'organizer_name' => 'Bidadari Syurga', 'email' => 'eo.bidadarisyurga@gmail.com', 'name' => 'Wahyu Abdi Harianto', 'region_name' => 'Sumsel'],
+            ['no_anggota' => 'HI.07.017', 'organizer_name' => 'Dinar Wedding Organizer', 'email' => 'dinarweddingorganizer@gmail.com', 'name' => 'Ade Apriyanto', 'region_name' => 'Sumsel'],
+            ['no_anggota' => 'HI.07.018', 'organizer_name' => 'Putra Sakti WO', 'email' => 'ahmadokiputrasakti@gmail.com', 'name' => 'Ahmadokiputrasakti@gmail.com', 'region_name' => 'Sumsel'],
+            ['no_anggota' => 'HI.07.019', 'organizer_name' => 'DK Wedding Organizer', 'email' => 'deddykurniawan.w@gmail.com', 'name' => 'Kgs. Choirul Dedi Kurniawan', 'region_name' => 'Sumsel'],
+            ['no_anggota' => 'HI.07.020', 'organizer_name' => "Temen manten wedding organizer syar'i", 'email' => 'igunbagus@gmail.com', 'name' => 'Igun bagus saputra', 'region_name' => 'Sumsel'],
+            ['no_anggota' => 'HI.07.021', 'organizer_name' => 'Getmerits', 'email' => 'ifnialfionita@gmail.com', 'name' => 'Ifni Alfionita', 'region_name' => 'Sumsel'],
+
+            ['no_anggota' => 'HI.06.001', 'organizer_name' => 'Muli Mekhnai Production', 'email' => 'mulimekhnaiproduction@gmail.com', 'name' => 'Ruland Rachmat Mantiri', 'region_name' => 'Lampung'],
+            ['no_anggota' => 'HI.06.003', 'organizer_name' => 'SABILA PROJECT WO', 'email' => 'weddingsabila@gmail.com', 'name' => 'RIZKY SABILA AZHARI', 'region_name' => 'Lampung'],
+            ['no_anggota' => 'HI.06.005', 'organizer_name' => 'Dream Event Planner', 'email' => 'yunainivesi@gmail.com', 'name' => 'Yesi Yuniain', 'region_name' => 'Lampung'],
+            ['no_anggota' => 'HI.06.007', 'organizer_name' => "Bell's Organizer", 'email' => 'bells.organizer95@gmail.com', 'name' => 'Elyus Setiawan', 'region_name' => 'Lampung'],
+            ['no_anggota' => 'HI.06.009', 'organizer_name' => 'Gading Planner', 'email' => 'gadingplanner@gmail.com', 'name' => 'Oktavia Pancarani', 'region_name' => 'Lampung'],
+            ['no_anggota' => 'HI.06.010', 'organizer_name' => 'Samara Production', 'email' => 'gustianalfarzi1608@gmail.com', 'name' => 'Muhammad Gustian Alfarizi', 'region_name' => 'Lampung'],
+            ['no_anggota' => 'HI.06.012', 'organizer_name' => 'Ivan N Friends (belum isi gform)', 'email' => null, 'name' => '0', 'region_name' => 'Lampung'],
+            ['no_anggota' => 'HI.06.014', 'organizer_name' => 'Audrey Production', 'email' => 'hardykurniawan@gmail.com', 'name' => 'Hardi Kurniawan', 'region_name' => 'Lampung'],
+            ['no_anggota' => 'HI.06.016', 'organizer_name' => 'Helio official', 'email' => 'wiwinwidiatwo@gmail.com', 'name' => 'Wiwin widiawati', 'region_name' => 'Lampung'],
+            ['no_anggota' => 'HI.06.017', 'organizer_name' => 'Inscribe Organizer', 'email' => 'inscribe.organizer@gmail.com', 'name' => 'Viola Natalia Budiman', 'region_name' => 'Lampung'],
+            ['no_anggota' => 'HI.06.018', 'organizer_name' => 'WiBi PRO ORGANIZER', 'email' => 'wibipro@gmail.com', 'name' => 'Benny Fernando', 'region_name' => 'Lampung'],
+            ['no_anggota' => 'HI.06.021', 'organizer_name' => 'Malikastory Wedding Planner', 'email' => 'malika.weddingplanner@gmail.com', 'name' => 'Lisa Novita Z', 'region_name' => 'Lampung'],
+            ['no_anggota' => 'HI.06.006', 'organizer_name' => 'CENDANA PRODUCTION', 'email' => 'pebigitbasari@gmail.com', 'name' => 'Pebiti Gita Sari', 'region_name' => 'Lampung'],
+            ['no_anggota' => 'HI.06.022', 'organizer_name' => 'Abieproduction Wo & Planner', 'email' => 'abieproduction9@gmail.com', 'name' => 'Fhatur Rohman', 'region_name' => 'Lampung'],
+            ['no_anggota' => 'HI.06.023', 'organizer_name' => 'TY Wedding Organizer', 'email' => 'afrianromaldi@gmail.com', 'name' => 'Afrina romaldini s', 'region_name' => 'Lampung'],
+            ['no_anggota' => 'HI.06.024', 'organizer_name' => 'Jejakmoo.id', 'email' => 'egasasel@gmail.com', 'name' => 'Ega sasa remanda', 'region_name' => 'Lampung'],
+            ['no_anggota' => 'HI.06.025', 'organizer_name' => 'AKL Organizer (belum isi gform)', 'email' => null, 'name' => '0', 'region_name' => 'Lampung'],
+            ['no_anggota' => 'HI.06.026', 'organizer_name' => 'Sahas Production', 'email' => 'sahasproduction70@gmail.com', 'name' => 'Rizki ardiayanto', 'region_name' => 'Lampung'],
+            ['no_anggota' => 'HI.06.027', 'organizer_name' => 'Shine Organizer (belum isi gform)', 'email' => null, 'name' => '0', 'region_name' => 'Lampung'],
+        ];
+
+        foreach ($sheetOrganizers as $row) {
+            $mappedRegion = $regionAliasMap[$row['region_name']] ?? $row['region_name'];
+            $region = Region::where('region_name', $mappedRegion)->first();
+            $regionId = $region ? $region->id : ($regions[0] ?? null);
+
+            $hasValidUser = !empty($row['email']) && !empty($row['name']) && $row['name'] !== '0';
+            if ($hasValidUser) {
+                $user = User::updateOrCreate(
+                    ['email' => strtolower($row['email'])],
+                    [
+                        'name' => $row['name'],
+                        'password' => Hash::make('password123'),
+                        'role' => 'member',
+                        'status' => 'active',
+                        'email_verified_at' => Carbon::now(),
+                        'no_anggota' => $row['no_anggota'],
+                    ]
+                );
+            } else {
+                $placeholderEmail = 'member+' . Str::slug($row['no_anggota']) . '@hastana.local';
+                $user = User::updateOrCreate(
+                    ['email' => $placeholderEmail],
+                    [
+                        'name' => ($row['name'] && $row['name'] !== '0') ? $row['name'] : $row['organizer_name'],
+                        'password' => Hash::make('password123'),
+                        'role' => 'member',
+                        'status' => 'active',
+                        'email_verified_at' => Carbon::now(),
+                        'no_anggota' => $row['no_anggota'],
+                    ]
+                );
+            }
+            $userId = $user->id;
+
+            $slugBase = Str::slug($row['organizer_name']);
+            $slug = $slugBase;
+            // ensure unique slug by appending membership code if exists conflict
+            if (WeddingOrganizer::where('slug', $slug)->exists()) {
+                $slug .= '-' . Str::slug($row['no_anggota']);
+            }
+
+            WeddingOrganizer::updateOrCreate(
+                ['organizer_name' => $row['organizer_name']],
+                [
+                    'user_id' => $userId,
+                    'region_id' => $regionId,
+                    'organizer_name' => $row['organizer_name'],
+                    'slug' => $slug,
+                    'brand_name' => $row['organizer_name'],
+                    'email' => $row['email'],
+                    'status' => 'active',
+                    'verification_status' => 'verified',
+                ]
             );
         }
 

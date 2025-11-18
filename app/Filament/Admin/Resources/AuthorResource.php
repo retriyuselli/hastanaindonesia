@@ -2,6 +2,7 @@
 
 namespace App\Filament\Admin\Resources;
 
+use App\Filament\Admin\Clusters\ContentCluster;
 use App\Filament\Admin\Resources\AuthorResource\Pages;
 use App\Filament\Admin\Resources\AuthorResource\Schemas\AuthorForm;
 use App\Filament\Admin\Resources\AuthorResource\Tables\AuthorsTable;
@@ -15,6 +16,8 @@ use Filament\Tables\Table;
 class AuthorResource extends Resource
 {
     protected static ?string $model = Author::class;
+
+    protected static ?string $cluster = ContentCluster::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedUser;
 

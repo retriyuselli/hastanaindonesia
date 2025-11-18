@@ -2,6 +2,7 @@
 
 namespace App\Filament\Admin\Resources\WeddingOrganizers;
 
+use App\Filament\Admin\Clusters\OrganizationCluster;
 use App\Filament\Admin\Resources\WeddingOrganizers\Pages\CreateWeddingOrganizer;
 use App\Filament\Admin\Resources\WeddingOrganizers\Pages\EditWeddingOrganizer;
 use App\Filament\Admin\Resources\WeddingOrganizers\Pages\ListWeddingOrganizers;
@@ -17,6 +18,8 @@ use Filament\Tables\Table;
 class WeddingOrganizerResource extends Resource
 {
     protected static ?string $model = WeddingOrganizer::class;
+
+    protected static ?string $cluster = OrganizationCluster::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedBookmarkSlash;
 

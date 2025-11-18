@@ -2,6 +2,7 @@
 
 namespace App\Filament\Admin\Resources\Blogs;
 
+use App\Filament\Admin\Clusters\ContentCluster;
 use App\Filament\Admin\Resources\Blogs\Pages\CreateBlog;
 use App\Filament\Admin\Resources\Blogs\Pages\EditBlog;
 use App\Filament\Admin\Resources\Blogs\Pages\ListBlogs;
@@ -19,6 +20,8 @@ use Filament\Tables\Table;
 class BlogResource extends Resource
 {
     protected static ?string $model = Blog::class;
+
+    protected static ?string $cluster = ContentCluster::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 

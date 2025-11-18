@@ -2,6 +2,7 @@
 
 namespace App\Filament\Admin\Resources\Products;
 
+use App\Filament\Admin\Clusters\ContentCluster;
 use App\Filament\Admin\Resources\Products\Pages\CreateProduct;
 use App\Filament\Admin\Resources\Products\Pages\EditProduct;
 use App\Filament\Admin\Resources\Products\Pages\ListProducts;
@@ -19,6 +20,8 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class ProductResource extends Resource
 {
     protected static ?string $model = Product::class;
+
+    protected static ?string $cluster = ContentCluster::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 

@@ -37,6 +37,13 @@ class RegionsTable
                     ->weight('bold')
                     ->description(fn ($record): string => $record->province ?? 'Provinsi tidak diset'),
 
+                TextColumn::make('dpc_name')
+                    ->label('Nama DPC')
+                    ->searchable()
+                    ->sortable()
+                    ->placeholder('Belum diisi')
+                    ->toggleable(isToggledHiddenByDefault: true),
+
                 TextColumn::make('province')
                     ->label('Provinsi')
                     ->searchable()

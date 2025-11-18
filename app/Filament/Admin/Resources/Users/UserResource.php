@@ -2,6 +2,7 @@
 
 namespace App\Filament\Admin\Resources\Users;
 
+use App\Filament\Admin\Clusters\UsersCluster;
 use App\Filament\Admin\Resources\Users\Pages\CreateUser;
 use App\Filament\Admin\Resources\Users\Pages\EditUser;
 use App\Filament\Admin\Resources\Users\Pages\ListUsers;
@@ -18,6 +19,8 @@ use Filament\Tables\Table;
 class UserResource extends Resource
 {
     protected static ?string $model = User::class;
+
+    protected static ?string $cluster = UsersCluster::class;
 
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-users';
 

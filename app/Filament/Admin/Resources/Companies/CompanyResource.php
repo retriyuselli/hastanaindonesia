@@ -2,6 +2,7 @@
 
 namespace App\Filament\Admin\Resources\Companies;
 
+use App\Filament\Admin\Clusters\OrganizationCluster;
 use App\Filament\Admin\Resources\Companies\Pages\CreateCompany;
 use App\Filament\Admin\Resources\Companies\Pages\EditCompany;
 use App\Filament\Admin\Resources\Companies\Pages\ListCompanies;
@@ -17,6 +18,8 @@ use Filament\Tables\Table;
 class CompanyResource extends Resource
 {
     protected static ?string $model = Company::class;
+
+    protected static ?string $cluster = OrganizationCluster::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::BuildingLibrary;
 

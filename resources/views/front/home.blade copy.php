@@ -286,7 +286,145 @@
             </div>
         </div>
     </div>
+</section>
 
+<!-- Portfolio WO Preview -->
+<section class="py-16 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+                Paket <span class="gradient-text">Spesial</span>
+            </h2>
+            <p class="text-lg text-gray-600 max-w-3xl mx-auto mb-6">
+                Penawaran terbaik dari wedding organizer anggota HASTANA untuk pernikahan impian Anda
+            </p>
+        </div>
+    </div>
+    
+    <!-- Wedding Organizer Card -->
+    <div class="portfolio-marquee">
+        <div class="portfolio-marquee-content">
+            @forelse($featuredProducts as $product)
+            <div class="portfolio-marquee-item">
+                @if($product->weddingOrganizer && $product->weddingOrganizer->slug)
+                <a href="{{ route('members.product', ['slug' => $product->weddingOrganizer->slug, 'productId' => $product->id]) }}" class="block bg-white rounded-3xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 p-6 relative cursor-pointer">
+                @else
+                <div class="block bg-white rounded-3xl shadow-lg overflow-hidden p-6 relative opacity-75 cursor-not-allowed">
+                @endif
+                    <!-- Deals Badge -->
+                    {{-- @if($product->limited_offer || $product->discount > 0)
+                    <div class="absolute top-4 left-4 bg-red-500 text-white px-4 py-2 rounded-full text-xs font-semibold flex items-center gap-1 shadow-md z-10">
+                        <i class="fas fa-tag"></i>
+                        @if($product->limited_offer)
+                        Limited Offer
+                        @else
+                        Deals Available
+                        @endif
+                    </div>
+                    @endif --}}
+                    
+                    <!-- Product Image -->
+                    <div class="flex justify-center mt-8 mb-6">
+                        <div class="relative">
+                            @if($product->images && count($product->images) > 0)
+                            <div class="w-40 h-40 rounded-full overflow-hidden shadow-xl border-4 border-gray-100">
+                                @if(str_starts_with($product->images[0], 'http'))
+                                <img src="{{ $product->images[0] }}" alt="{{ $product->name }}" class="w-full h-full object-cover">
+                                @else
+                                <img src="{{ asset('storage/' . $product->images[0]) }}" alt="{{ $product->name }}" class="w-full h-full object-cover">
+                                @endif
+                            </div>
+                            @else
+                            <div class="w-40 h-40 rounded-full bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center text-white text-5xl font-bold shadow-xl">
+                                {{ strtoupper(substr($product->name, 0, 1)) }}
+                            </div>
+                            @endif
+                            <!-- Verified Badge (if WO is verified) -->
+                            @if($product->weddingOrganizer && $product->weddingOrganizer->verification_status === 'verified')
+                            <div class="absolute bottom-0 right-0 bg-yellow-400 w-12 h-12 rounded-full flex items-center justify-center shadow-lg border-4 border-white">
+                                <i class="fas fa-check text-white text-lg"></i>
+                            </div>
+                            @endif
+                        </div>
+                    </div>
+                    
+                    <!-- Product Info -->
+                    <div class="text-center mb-4">
+                        <h3 class="text-sm font-bold text-gray-900 mb-2" title="{{ $product->name }}">
+                            {{ Str::limit($product->name, 25) }}
+                        </h3>
+                        @if($product->weddingOrganizer)
+                        <p class="text-gray-600 text-xs mb-1">{{ $product->weddingOrganizer->brand_name }}</p>
+                        <p class="text-gray-500 text-xs">
+                            {{ $product->weddingOrganizer->city ?? 'Indonesia' }}{{ $product->weddingOrganizer->province ? ', ' . $product->weddingOrganizer->province : '' }}
+                        </p>
+                        @endif
+                    </div>
+                    
+                    <!-- Price & Discount -->
+                    {{-- <div class="text-center">
+                        @if($product->discount > 0)
+                        <div class="mb-1">
+                            <span class="text-gray-400 line-through text-xs">Rp {{ number_format($product->original_price, 0, ',', '.') }}</span>
+                        </div>
+                        <div class="text-lg font-bold text-red-600">
+                            Rp {{ number_format($product->price, 0, ',', '.') }}
+                        </div>
+                        <div class="text-xs text-green-600 font-semibold">
+                            Hemat Rp {{ number_format($product->discount, 0, ',', '.') }}
+                        </div>
+                        @else
+                        <div class="text-lg font-bold text-gray-900">
+                            Rp {{ number_format($product->price, 0, ',', '.') }}
+                        </div>
+                        @endif
+                    </div> --}}
+                @if($product->weddingOrganizer && $product->weddingOrganizer->slug)
+                </a>
+                @else
+                </div>
+                @endif
+            </div>
+            @empty
+            <!-- Fallback jika tidak ada data -->
+            @for ($i = 1; $i <= 10; $i++)
+            <div class="portfolio-marquee-item">
+                <a href="{{ route('members') }}" class="block bg-white rounded-3xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 p-6 relative cursor-pointer">
+                    <!-- Product Image -->
+                    <div class="flex justify-center mt-2 mb-6">
+                        <div class="relative">
+                            <div class="w-40 h-40 rounded-full bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center text-white text-5xl font-bold shadow-xl">
+                                {{ chr(65 + ($i % 26)) }}
+                            </div>
+                            <!-- Verified Badge -->
+                            <div class="absolute bottom-0 right-0 bg-yellow-400 w-12 h-12 rounded-full flex items-center justify-center shadow-lg border-4 border-white">
+                                <i class="fas fa-check text-white text-lg"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Product Info -->
+                    <div class="text-center mb-4">
+                        <h3 class="text-sm font-bold text-gray-900 mb-2">Paket Wedding {{ $i }}</h3>
+                        <p class="text-gray-600 text-xs mb-1">Wedding Organizer {{ $i }}</p>
+                        <p class="text-gray-500 text-xs">Denpasar, Bali</p>
+                    </div>
+                </a>
+            </div>
+            @endfor
+            @endforelse
+        </div>
+    </div>
+    
+    
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mt-10">
+            <a href="{{ route('members') }}" class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-red-600 text-white font-semibold text-sm rounded-full hover:from-blue-700 hover:to-red-700 transition-all duration-300 shadow-lg hover:shadow-xl">
+                <i class="fas fa-shopping-bag mr-2 text-xs"></i>
+                Lihat Semua Paket
+            </a>
+        </div>
+    </div>
 </section>
 
 <!-- Daftar Anggota WO Preview -->

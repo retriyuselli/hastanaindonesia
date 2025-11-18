@@ -2,6 +2,7 @@
 
 namespace App\Filament\Admin\Resources\EventHastanas;
 
+use App\Filament\Admin\Clusters\EventsCluster;
 use App\Filament\Admin\Resources\EventHastanas\Pages\CreateEventHastana;
 use App\Filament\Admin\Resources\EventHastanas\Pages\EditEventHastana;
 use App\Filament\Admin\Resources\EventHastanas\Pages\ListEventHastanas;
@@ -22,6 +23,8 @@ use Filament\Tables\Table;
 class EventHastanaResource extends Resource
 {
     protected static ?string $model = EventHastana::class;
+
+    protected static ?string $cluster = EventsCluster::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 

@@ -2,6 +2,7 @@
 
 namespace App\Filament\Admin\Resources\EventParticipants;
 
+use App\Filament\Admin\Clusters\EventsCluster;
 use App\Filament\Admin\Resources\EventParticipants\Pages\CreateEventParticipant;
 use App\Filament\Admin\Resources\EventParticipants\Pages\EditEventParticipant;
 use App\Filament\Admin\Resources\EventParticipants\Pages\ListEventParticipants;
@@ -19,6 +20,8 @@ use Filament\Tables\Table;
 class EventParticipantResource extends Resource
 {
     protected static ?string $model = EventParticipant::class;
+
+    protected static ?string $cluster = EventsCluster::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 

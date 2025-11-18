@@ -17,11 +17,17 @@ class User extends Authenticatable
         'email',
         'avatar',
         'phone',
+        'address',
         'date_of_birth',
         'gender',
+        'status_menikah',
         'password',
         'role',
-        'email_verified_at'
+        'status',
+        'email_verified_at',
+        'no_anggota',
+        'agama',
+        'no_ktp'
     ];
 
     protected $hidden = [
@@ -35,14 +41,6 @@ class User extends Authenticatable
         'date_of_birth' => 'date',
         'role' => 'string',
     ];
-
-    /**
-     * Get member profile for this user
-     */
-    public function member()
-    {
-        return $this->hasOne(Member::class);
-    }
 
     /**
      * Get companies verified by this user
@@ -66,6 +64,11 @@ class User extends Authenticatable
     public function verifiedWeddingOrganizers()
     {
         return $this->hasMany(WeddingOrganizer::class, 'verified_by');
+    }
+
+    public function weddingOrganizer()
+    {
+        return $this->hasOne(WeddingOrganizer::class);
     }
 
     /**

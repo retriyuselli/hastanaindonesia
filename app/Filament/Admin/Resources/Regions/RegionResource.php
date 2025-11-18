@@ -2,6 +2,7 @@
 
 namespace App\Filament\Admin\Resources\Regions;
 
+use App\Filament\Admin\Clusters\OrganizationCluster;
 use App\Filament\Admin\Resources\Regions\Pages\CreateRegion;
 use App\Filament\Admin\Resources\Regions\Pages\EditRegion;
 use App\Filament\Admin\Resources\Regions\Pages\ListRegions;
@@ -17,6 +18,8 @@ use Filament\Tables\Table;
 class RegionResource extends Resource
 {
     protected static ?string $model = Region::class;
+
+    protected static ?string $cluster = OrganizationCluster::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::HomeModern;
 

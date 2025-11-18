@@ -68,13 +68,7 @@ class Company extends Model
         return $this->belongsTo(Region::class);
     }
 
-    /**
-     * Get all members for this company
-     */
-    public function members()
-    {
-        return $this->hasMany(Member::class);
-    }
+    
 
     /**
      * Get all event registrations for this company

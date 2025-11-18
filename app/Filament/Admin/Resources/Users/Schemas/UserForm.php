@@ -12,6 +12,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use App\Models\WeddingOrganizer;
 
 class UserForm
 {
@@ -61,6 +62,13 @@ class UserForm
                     ->placeholder('081234567890')
                     ->suffixIcon('heroicon-m-phone'),
 
+                TextInput::make('no_anggota')
+                    ->label('No Anggota')
+                    ->maxLength(50)
+                    ->placeholder('Nomor anggota HASTANA')
+                    ->unique(User::class, 'no_anggota', ignoreRecord: true)
+                    ->suffixIcon('heroicon-m-hashtag'),
+
                 DatePicker::make('date_of_birth')
                     ->label('Tanggal Lahir')
                     ->nullable()
@@ -76,6 +84,38 @@ class UserForm
                     ])
                     ->nullable()
                     ->placeholder('Pilih jenis kelamin'),
+
+                Select::make('status_menikah')
+                    ->label('Status Menikah')
+                    ->options([
+                        'single' => 'Belum Menikah',
+                        'married' => 'Menikah',
+                        'divorced' => 'Cerai',
+                        'widowed' => 'Duda/Janda',
+                    ])
+                    ->nullable()
+                    ->placeholder('Pilih status menikah'),
+
+                Select::make('agama')
+                    ->label('Agama')
+                    ->options([
+                        'Islam' => 'Islam',
+                        'Kristen' => 'Kristen',
+                        'Katolik' => 'Katolik',
+                        'Hindu' => 'Hindu',
+                        'Buddha' => 'Buddha',
+                        'Konghucu' => 'Konghucu',
+                        'Lainnya' => 'Lainnya',
+                    ])
+                    ->nullable()
+                    ->placeholder('Pilih agama'),
+
+                TextInput::make('no_ktp')
+                    ->label('No KTP')
+                    ->maxLength(20)
+                    ->placeholder('Masukkan nomor KTP')
+                    ->unique(User::class, 'no_ktp', ignoreRecord: true)
+                    ->suffixIcon('heroicon-m-identification'),
 
                 Select::make('role')
                     ->label('Role Pengguna')
@@ -119,6 +159,30 @@ class UserForm
                     ->imageResizeTargetWidth('200')
                     ->imageResizeTargetHeight('200')
                     ->columnSpanFull(),
+
+                Select::make('wedding_organizer_id')
+                    ->label('Wedding Organizer')
+                    ->options(WeddingOrganizer::whereNull('user_id')->orderBy('brand_name')->pluck('brand_name', 'id'))
+                    ->searchable()
+                    ->getOptionLabelUsing(fn ($value) => WeddingOrganizer::find($value)?->brand_name)
+                    ->getSearchResultsUsing(function (string $search) {
+                        return WeddingOrganizer::query()
+                            ->whereNull('user_id')
+                            ->where('brand_name', 'like', "%{$search}%")
+                            ->orderBy('brand_name')
+                            ->limit(50)
+                            ->pluck('brand_name', 'id')
+                            ->toArray();
+                    })
+                    ->placeholder('Pilih WO terkait (opsional)')
+                    ->helperText('Hanya menampilkan WO yang belum terhubung; WO terhubung saat ini tetap dipilih')
+                    ->prefixIcon('heroicon-o-briefcase')
+                    ->afterStateHydrated(function ($component, $state, $record) {
+                        if ($record) {
+                            $component->state(optional($record->weddingOrganizer)->id);
+                        }
+                    })
+                    ->columnSpan(2),
             ])
             ->columns(3);
     }

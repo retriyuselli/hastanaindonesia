@@ -14,7 +14,7 @@ class AdminUserSeeder extends Seeder
     public function run(): void
     {
         // Administrator
-        User::firstOrCreate(
+        User::updateOrCreate(
             ['email' => 'admin@hastana.com'],
             [
                 'name' => 'Administrator HASTANA',
@@ -24,11 +24,12 @@ class AdminUserSeeder extends Seeder
                 'gender' => 'male',
                 'date_of_birth' => '1985-01-15',
                 'email_verified_at' => now(),
+                'no_anggota' => 'HST-ADM-0001',
             ]
         );
 
         // Admin dari daftar
-        User::firstOrCreate(
+        User::updateOrCreate(
             ['email' => 'sidorabiweddingorganizer@gmail.com'],
             [
                 'name' => 'Kiki Indah Permata',
@@ -38,10 +39,11 @@ class AdminUserSeeder extends Seeder
                 'gender' => 'female',
                 'date_of_birth' => '1990-01-01',
                 'email_verified_at' => now(),
+                'no_anggota' => 'HST-ADM-0002',
             ]
         );
 
-        User::firstOrCreate(
+        User::updateOrCreate(
             ['email' => 'rulandmantiri0@gmail.com'],
             [
                 'name' => 'Ruland R. Mantiri',
@@ -51,10 +53,11 @@ class AdminUserSeeder extends Seeder
                 'gender' => 'male',
                 'date_of_birth' => '1988-02-15',
                 'email_verified_at' => now(),
+                'no_anggota' => 'HST-ADM-0003',
             ]
         );
 
-        User::firstOrCreate(
+        User::updateOrCreate(
             ['email' => 'myudhij@gmail.com'],
             [
                 'name' => 'M. Yudhi J',
@@ -64,10 +67,11 @@ class AdminUserSeeder extends Seeder
                 'gender' => 'male',
                 'date_of_birth' => '1985-03-20',
                 'email_verified_at' => now(),
+                'no_anggota' => 'HST-ADM-0004',
             ]
         );
 
-        User::firstOrCreate(
+        User::updateOrCreate(
             ['email' => 'weddinghalal@gmail.com'],
             [
                 'name' => 'Risa Risdiasari',
@@ -77,10 +81,11 @@ class AdminUserSeeder extends Seeder
                 'gender' => 'female',
                 'date_of_birth' => '1992-04-10',
                 'email_verified_at' => now(),
+                'no_anggota' => 'HST-ADM-0005',
             ]
         );
 
-        User::firstOrCreate(
+        User::updateOrCreate(
             ['email' => 'fleur.wo@yahoo.com'],
             [
                 'name' => 'Reza Fahlafi Saragih',
@@ -90,10 +95,11 @@ class AdminUserSeeder extends Seeder
                 'gender' => 'male',
                 'date_of_birth' => '1987-05-25',
                 'email_verified_at' => now(),
+                'no_anggota' => 'HST-ADM-0006',
             ]
         );
 
-        User::firstOrCreate(
+        User::updateOrCreate(
             ['email' => 'specialweddingmanagement@gmail.com'],
             [
                 'name' => 'Toro',
@@ -103,10 +109,11 @@ class AdminUserSeeder extends Seeder
                 'gender' => 'male',
                 'date_of_birth' => '1989-06-12',
                 'email_verified_at' => now(),
+                'no_anggota' => 'HST-ADM-0007',
             ]
         );
 
-        User::firstOrCreate(
+        User::updateOrCreate(
             ['email' => 'patronwedding@gmail.com'],
             [
                 'name' => 'Yunarsih',
@@ -116,10 +123,11 @@ class AdminUserSeeder extends Seeder
                 'gender' => 'female',
                 'date_of_birth' => '1991-07-08',
                 'email_verified_at' => now(),
+                'no_anggota' => 'HST-ADM-0008',
             ]
         );
 
-        User::firstOrCreate(
+        User::updateOrCreate(
             ['email' => 'projectwo@gmail.com'],
             [
                 'name' => 'Yura Febriatma H',
@@ -129,10 +137,11 @@ class AdminUserSeeder extends Seeder
                 'gender' => 'female',
                 'date_of_birth' => '1993-08-18',
                 'email_verified_at' => now(),
+                'no_anggota' => 'HST-ADM-0009',
             ]
         );
 
-        User::firstOrCreate(
+        User::updateOrCreate(
             ['email' => 'ramadhona.utama@gmail.com'],
             [
                 'name' => 'Rama Dhona Utama',
@@ -142,11 +151,12 @@ class AdminUserSeeder extends Seeder
                 'gender' => 'male',
                 'date_of_birth' => '1986-09-22',
                 'email_verified_at' => now(),
+                'no_anggota' => 'HST-ADM-0010',
             ]
         );
 
         // Operator (menggunakan role admin karena enum terbatas)
-        User::firstOrCreate(
+        User::updateOrCreate(
             ['email' => 'operator@hastana.com'],
             [
                 'name' => 'Operator HASTANA',
@@ -156,11 +166,12 @@ class AdminUserSeeder extends Seeder
                 'gender' => 'female',
                 'date_of_birth' => '1990-03-20',
                 'email_verified_at' => now(),
+                'no_anggota' => 'HST-OPR-0001',
             ]
         );
 
         // Member Regular
-        User::firstOrCreate(
+        User::updateOrCreate(
             ['email' => 'member@hastana.com'],
             [
                 'name' => 'Member HASTANA',
@@ -170,11 +181,12 @@ class AdminUserSeeder extends Seeder
                 'gender' => 'male',
                 'date_of_birth' => '1992-07-10',
                 'email_verified_at' => now(),
+                'no_anggota' => 'HST-MEM-0001',
             ]
         );
 
         // Customer
-        User::firstOrCreate(
+        User::updateOrCreate(
             ['email' => 'customer@hastana.com'],
             [
                 'name' => 'Customer HASTANA',
@@ -184,6 +196,7 @@ class AdminUserSeeder extends Seeder
                 'gender' => 'female',
                 'date_of_birth' => '1988-11-25',
                 'email_verified_at' => now(),
+                'no_anggota' => 'HST-CUS-0001',
             ]
         );
 

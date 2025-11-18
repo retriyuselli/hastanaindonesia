@@ -2,6 +2,7 @@
 
 namespace App\Filament\Admin\Resources\Galleries;
 
+use App\Filament\Admin\Clusters\ContentCluster;
 use App\Filament\Admin\Resources\Galleries\Pages\CreateGallery;
 use App\Filament\Admin\Resources\Galleries\Pages\EditGallery;
 use App\Filament\Admin\Resources\Galleries\Pages\ListGalleries;
@@ -21,6 +22,8 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class GalleryResource extends Resource
 {
     protected static ?string $model = Gallery::class;
+
+    protected static ?string $cluster = ContentCluster::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 

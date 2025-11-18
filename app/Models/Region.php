@@ -11,6 +11,7 @@ class Region extends Model
 
     protected $fillable = [
         'region_name',
+        'dpc_name',
         'province',
         'description',
         'contact_email',

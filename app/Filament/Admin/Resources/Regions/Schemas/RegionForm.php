@@ -35,6 +35,25 @@ class RegionForm
                     ->searchable()
                     ->placeholder('Pilih Provinsi')
                     ->native(false),
+                    
+                Select::make('dpc_name')
+                    ->label('Nama DPC (Kota/Kabupaten)')
+                    ->options(function (callable $get) {
+                        $province = $get('province');
+                        if (!$province) return [];
+                        return array_combine(
+                            \App\Enums\ProvinsiEnum::getKotaKabupaten($province),
+                            \App\Enums\ProvinsiEnum::getKotaKabupaten($province)
+                        );
+                    })
+                    ->searchable()
+                    ->preload()
+                    ->native(false)
+                    ->live()
+                    ->disabled(fn (callable $get) => !$get('province'))
+                    ->placeholder('Pilih Kota/Kabupaten dari provinsi')
+                    ->helperText('Daftar DPC (ibukota & kabupaten) diisi otomatis berdasarkan provinsi'),
+
 
                 DatePicker::make('establishment_date')
                     ->label('Tanggal Pendirian')

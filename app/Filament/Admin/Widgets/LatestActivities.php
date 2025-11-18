@@ -5,7 +5,6 @@ namespace App\Filament\Admin\Widgets;
 use App\Models\Blog;
 use App\Models\EventHastana;
 use App\Models\EventParticipant;
-use App\Models\Member;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Filament\Widgets\TableWidget as BaseWidget;

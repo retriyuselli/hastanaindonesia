@@ -2,6 +2,7 @@
 
 namespace App\Filament\Admin\Resources\AboutPages;
 
+use App\Filament\Admin\Clusters\ContentCluster;
 use App\Filament\Admin\Resources\AboutPages\Pages\CreateAboutPage;
 use App\Filament\Admin\Resources\AboutPages\Pages\EditAboutPage;
 use App\Filament\Admin\Resources\AboutPages\Pages\ListAboutPages;
@@ -19,6 +20,8 @@ use Filament\Tables\Table;
 class AboutPageResource extends Resource
 {
     protected static ?string $model = AboutPage::class;
+
+    protected static ?string $cluster = ContentCluster::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
     
