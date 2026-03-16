@@ -2,7 +2,7 @@ php artisan migrate --path=database/migrations/
 
 cd /home/u380354370/domains/hastana.maknawedding.id/public\_html
 
-cd /home/u380354370/domains/hastanaindonesia.id/
+cd /home/u380354370/domains/hastanaindonesia.id/public\_html
 
 cd /home/u380354370/domains/demo.hastanaindonesia.id/public\_html
 
