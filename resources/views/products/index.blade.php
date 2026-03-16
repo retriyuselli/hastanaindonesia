@@ -31,8 +31,14 @@
             @endif
             
             <!-- Header -->
-            <div class="flex items-center justify-between mb-6">
-                <h2 class="text-2xl font-bold text-gray-900">Daftar Produk</h2>
+            <div class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between mb-6">
+                <div class="flex items-center gap-3">
+                    <a href="{{ route('members.show', $weddingOrganizer->slug) }}" class="inline-flex items-center px-4 py-2 border border-gray-300 text-gray-700 text-sm font-semibold rounded-lg hover:bg-gray-50 transition">
+                        <i class="fas fa-arrow-left mr-2"></i>
+                        Kembali
+                    </a>
+                    <h2 class="text-2xl font-bold text-gray-900">Daftar Produk</h2>
+                </div>
                 <a href="{{ route('products.create', $weddingOrganizer->slug) }}" class="inline-flex items-center px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition">
                     <i class="fas fa-plus mr-2"></i>
                     Tambah Produk

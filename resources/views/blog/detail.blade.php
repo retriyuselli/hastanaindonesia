@@ -401,7 +401,7 @@
                             <span id="like-text">likes</span>
                         </div>
                         @else
-                        <a href="{{ route('login') }}" class="flex items-center gap-2 hover:text-pink-500 transition-all">
+                        <a href="{{ route('login', absolute: false) }}" class="flex items-center gap-2 hover:text-pink-500 transition-all">
                             <i class="far fa-heart mr-1"></i>
                             <span>{{ number_format($blog->likes_count ?? 0) }}</span>
                             <span>likes</span>
@@ -519,7 +519,7 @@
                                 <p class="text-xs text-gray-600 mb-3">
                                     Silakan login terlebih dahulu untuk memberikan komentar pada artikel ini.
                                 </p>
-                                <a href="{{ route('login') }}" class="inline-flex items-center gap-2 bg-amber-500 text-white px-4 py-2 rounded-lg hover:bg-amber-600 font-semibold text-xs">
+                                <a href="{{ route('login', absolute: false) }}" class="inline-flex items-center gap-2 bg-amber-500 text-white px-4 py-2 rounded-lg hover:bg-amber-600 font-semibold text-xs">
                                     <i class="fas fa-sign-in-alt"></i>
                                     Login Sekarang
                                 </a>
@@ -745,7 +745,7 @@ if (textarea && charCount) {
 // Toggle blog like
 function toggleLike() {
     @guest
-        window.location.href = '{{ route('login') }}';
+        window.location.href = '{{ route('login', absolute: false) }}';
         return;
     @endguest
     

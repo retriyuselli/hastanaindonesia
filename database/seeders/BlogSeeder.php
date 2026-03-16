@@ -1,15 +1,14 @@
 <?php
 
-
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
-use App\Models\Blog;
 use App\Models\Author;
+use App\Models\Blog;
 use App\Models\BlogCategory;
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class BlogSeeder extends Seeder
 {
@@ -18,6 +17,12 @@ class BlogSeeder extends Seeder
      */
     public function run(): void
     {
+        if (! app()->environment(['local', 'testing'])) {
+            $this->command?->warn('BlogSeeder dilewati (hanya untuk local/testing).');
+
+            return;
+        }
+
         // Clear existing blogs (handle foreign key constraints)
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         Blog::truncate();
@@ -29,6 +34,7 @@ class BlogSeeder extends Seeder
 
         if ($categories->isEmpty() || $authors->isEmpty()) {
             $this->command->error('❌ Please run BlogCategorySeeder and AuthorSeeder first!');
+
             return;
         }
 
@@ -423,27 +429,27 @@ class BlogSeeder extends Seeder
             // Assign random category and author
             $category = $categories->random();
             $author = $authors->random();
-            
+
             // Ensure slug is properly formatted
             $blogData['slug'] = Str::slug($blogData['title']);
             $blogData['blog_category_id'] = $category->id;
             $blogData['author_id'] = $author->id;
-            
+
             // Calculate engagement metrics
             $blogData['views_count'] = rand(150, 2500);
             $blogData['likes_count'] = rand(10, 150);
             $blogData['comments_count'] = rand(2, 25);
             $blogData['engagement_score'] = round(
-                ($blogData['likes_count'] + $blogData['comments_count'] * 2) / 
+                ($blogData['likes_count'] + $blogData['comments_count'] * 2) /
                 max($blogData['views_count'], 1) * 100, 2
             );
-            
+
             Blog::create($blogData);
-            
+
             $this->command->info("✅ Created blog: {$blogData['title']}");
         }
 
-        $this->command->info('🎉 Successfully seeded ' . count($blogs) . ' blog posts!');
+        $this->command->info('🎉 Successfully seeded '.count($blogs).' blog posts!');
         $this->command->info('📊 All blogs have realistic engagement metrics and are published.');
         $this->command->info('🏷️ Blogs are randomly assigned to categories and authors.');
     }

@@ -2,6 +2,10 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Widgets\ActivityTrendChart;
+use App\Filament\Widgets\DashboardStatsOverview;
+use App\Filament\Widgets\LatestActivities;
+use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -11,11 +15,6 @@ use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
 use Filament\Widgets\AccountWidget;
-use Filament\Widgets\FilamentInfoWidget;
-use App\Filament\Admin\Widgets\DashboardStatsOverview;
-use App\Filament\Admin\Widgets\ActivityTrendChart;
-use App\Filament\Admin\Widgets\LatestActivities;
-use App\Http\Middleware\AdminMiddleware;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
@@ -34,19 +33,16 @@ class AdminPanelProvider extends PanelProvider
             ->colors([
                 'primary' => Color::Amber,
             ])
-            ->discoverResources(in: app_path('Filament/Admin/Resources'), for: 'App\Filament\Admin\Resources')
-            ->discoverClusters(in: app_path('Filament/Admin/Clusters'), for: 'App\\Filament\\Admin\\Clusters')
-            ->discoverPages(in: app_path('Filament/Admin/Pages'), for: 'App\Filament\Admin\Pages')
+            ->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')
             ->pages([
                 Dashboard::class,
             ])
-            ->discoverWidgets(in: app_path('Filament/Admin/Widgets'), for: 'App\Filament\Admin\Widgets')
+            ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
                 DashboardStatsOverview::class,
                 ActivityTrendChart::class,
                 LatestActivities::class,
                 AccountWidget::class,
-                // FilamentInfoWidget::class,
             ])
             ->middleware([
                 EncryptCookies::class,
@@ -59,9 +55,16 @@ class AdminPanelProvider extends PanelProvider
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
             ])
+            ->plugins([
+                FilamentShieldPlugin::make()
+                    ->navigationLabel('Roles & Permissions')
+                    ->navigationIcon('heroicon-o-shield-check')
+                    ->activeNavigationIcon('heroicon-s-shield-check')
+                    ->navigationGroup('Pengaturan')
+                    ->navigationSort(100),
+            ])
             ->authMiddleware([
                 Authenticate::class,
-                AdminMiddleware::class,
             ])
             ->viteTheme('resources/css/filament/admin/theme.css');
     }

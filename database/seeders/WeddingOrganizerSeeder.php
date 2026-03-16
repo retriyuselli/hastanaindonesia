@@ -2,15 +2,14 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Illuminate\Database\Seeder;
-use App\Models\WeddingOrganizer;
-use App\Models\User;
 use App\Models\Region;
+use App\Models\User;
+use App\Models\WeddingOrganizer;
 use Carbon\Carbon;
 use Faker\Factory as Faker;
-use Illuminate\Support\Str;
+use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class WeddingOrganizerSeeder extends Seeder
 {
@@ -19,12 +18,30 @@ class WeddingOrganizerSeeder extends Seeder
      */
     public function run(): void
     {
+        if (app()->environment('production') && ! ($this->command?->option('force') ?? false)) {
+            $this->command?->warn('WeddingOrganizerSeeder dilewati di production. Jalankan dengan --force jika benar-benar dibutuhkan.');
+
+            return;
+        }
+
         $faker = Faker::create('id_ID');
-        
+
+        $businessTypeMap = [
+            'individual' => 'Perorangan',
+            'partnership' => 'CV',
+            'company' => 'PT',
+        ];
+
+        $legalEntityTypeMap = [
+            'individual' => 'Perorangan',
+            'partnership' => 'CV',
+            'company' => 'PT',
+        ];
+
         // Get available users and regions
         $users = User::where('id', '>', 2)->pluck('id')->toArray(); // Skip admin users
         $regions = Region::pluck('id')->toArray();
-        
+
         $weddingOrganizers = [
             // Premium Wedding Organizers
             [
@@ -197,7 +214,7 @@ class WeddingOrganizerSeeder extends Seeder
                 'npwp_number' => '05.678.901.2-345.000',
                 'legal_document_status' => 'verified',
             ],
-            
+
             // Emerging Wedding Organizers
             [
                 'user_id' => $faker->randomElement($users),
@@ -440,6 +457,18 @@ class WeddingOrganizerSeeder extends Seeder
         ];
 
         foreach ($weddingOrganizers as $organizer) {
+            if (isset($organizer['province']) && $organizer['province'] === 'D.I. Yogyakarta') {
+                $organizer['province'] = 'DI Yogyakarta';
+            }
+
+            if (isset($organizer['business_type']) && isset($businessTypeMap[$organizer['business_type']])) {
+                $organizer['business_type'] = $businessTypeMap[$organizer['business_type']];
+            }
+
+            if (isset($organizer['legal_entity_type']) && isset($legalEntityTypeMap[$organizer['legal_entity_type']])) {
+                $organizer['legal_entity_type'] = $legalEntityTypeMap[$organizer['legal_entity_type']];
+            }
+
             WeddingOrganizer::updateOrCreate(
                 ['organizer_name' => $organizer['organizer_name']],
                 $organizer
@@ -496,7 +525,7 @@ class WeddingOrganizerSeeder extends Seeder
             $region = Region::where('region_name', $mappedRegion)->first();
             $regionId = $region ? $region->id : ($regions[0] ?? null);
 
-            $hasValidUser = !empty($row['email']) && !empty($row['name']) && $row['name'] !== '0';
+            $hasValidUser = ! empty($row['email']) && ! empty($row['name']) && $row['name'] !== '0';
             if ($hasValidUser) {
                 $user = User::updateOrCreate(
                     ['email' => strtolower($row['email'])],
@@ -510,7 +539,7 @@ class WeddingOrganizerSeeder extends Seeder
                     ]
                 );
             } else {
-                $placeholderEmail = 'member+' . Str::slug($row['no_anggota']) . '@hastana.local';
+                $placeholderEmail = 'member+'.Str::slug($row['no_anggota']).'@hastana.local';
                 $user = User::updateOrCreate(
                     ['email' => $placeholderEmail],
                     [
@@ -529,7 +558,7 @@ class WeddingOrganizerSeeder extends Seeder
             $slug = $slugBase;
             // ensure unique slug by appending membership code if exists conflict
             if (WeddingOrganizer::where('slug', $slug)->exists()) {
-                $slug .= '-' . Str::slug($row['no_anggota']);
+                $slug .= '-'.Str::slug($row['no_anggota']);
             }
 
             WeddingOrganizer::updateOrCreate(
@@ -547,6 +576,6 @@ class WeddingOrganizerSeeder extends Seeder
             );
         }
 
-        $this->command->info('WeddingOrganizer seeder completed! Created ' . count($weddingOrganizers) . ' wedding organizers with diverse profiles.');
+        $this->command->info('WeddingOrganizer seeder completed! Created '.count($weddingOrganizers).' wedding organizers with diverse profiles.');
     }
 }

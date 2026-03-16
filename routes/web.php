@@ -1,14 +1,21 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\HomeController;
+use App\Http\Controllers\AdminFileController;
 use App\Http\Controllers\BlogEngagementController;
-use App\Http\Controllers\EventController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\EventController;
+use App\Http\Controllers\Front\AboutController;
 use App\Http\Controllers\GalleryController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\JoinController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProfileController;
+use App\Models\Blog;
+use App\Models\BlogCategory;
+use App\Models\Product;
+use App\Models\WeddingOrganizer;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 
@@ -22,16 +29,17 @@ Route::get('/gallery/{id}', [GalleryController::class, 'show'])->name('gallery.s
 Route::middleware('auth')->group(function () {
     Route::get('/bergabung', [JoinController::class, 'index'])->name('join');
     Route::post('/bergabung', [JoinController::class, 'store'])->name('join.store');
-    
+
     // Product Management routes - fallback redirect
-    Route::get('/products', function() {
-        $weddingOrganizer = \App\Models\WeddingOrganizer::where('user_id', auth()->id())->first();
-        if (!$weddingOrganizer) {
+    Route::get('/products', function () {
+        $weddingOrganizer = WeddingOrganizer::where('user_id', Auth::id())->first();
+        if (! $weddingOrganizer) {
             return redirect()->route('join')->with('error', 'Anda belum memiliki Wedding Organizer. Silakan daftar terlebih dahulu.');
         }
+
         return redirect()->route('products.manage', $weddingOrganizer->slug);
     });
-    
+
     // Product Management routes with slug
     Route::get('/{slug}/products', [ProductController::class, 'index'])->name('products.manage');
     Route::get('/{slug}/products/create', [ProductController::class, 'create'])->name('products.create');
@@ -63,15 +71,20 @@ Route::get('/anggota/{slug}', [MemberController::class, 'show'])->name('members.
 Route::get('/anggota/{slug}/product/{productId}', [MemberController::class, 'showProduct'])->name('members.product');
 
 // Debug route - hapus setelah selesai debug
-Route::get('/debug-product/{id}', function($id) {
-    $product = \App\Models\Product::findOrFail($id);
+Route::get('/debug-product/{id}', function ($id) {
+    if (! app()->environment(['local', 'testing'])) {
+        abort(404);
+    }
+
+    $product = Product::findOrFail($id);
+
     return response()->json([
         'id' => $product->id,
         'name' => $product->name,
         'images_raw' => $product->images,
         'images_type' => gettype($product->images),
         'images_count' => is_array($product->images) ? count($product->images) : 0,
-        'images_with_storage_url' => is_array($product->images) ? array_map(fn($img) => Storage::url($img), $product->images) : [],
+        'images_with_storage_url' => is_array($product->images) ? array_map(fn ($img) => Storage::url($img), $product->images) : [],
     ]);
 });
 
@@ -87,93 +100,108 @@ Route::get('/events/{slug}', [EventController::class, 'show'])->name('events.sho
 Route::middleware(['auth'])->group(function () {
     Route::get('/events/{slug}/register', [EventController::class, 'register'])->name('events.register');
     Route::post('/events/{slug}/register', [EventController::class, 'storeRegistration'])->name('events.register.store');
-    
+
     // Event Review Routes
     Route::post('/events/{slug}/review', [EventController::class, 'storeReview'])->name('events.review.store');
-    
+
     // E-Ticket Routes
     Route::get('/my-tickets/{registrationCode}', [EventController::class, 'showTicket'])->name('tickets.show');
     Route::get('/my-tickets/{registrationCode}/download', [EventController::class, 'downloadTicket'])->name('tickets.download');
 });
 
+Route::middleware('auth')->prefix('admin/files')->group(function () {
+    Route::get('wedding-organizers/{weddingOrganizer}/legal/{index}', [AdminFileController::class, 'downloadWeddingOrganizerLegalDocument'])
+        ->whereNumber('index')
+        ->name('admin.files.wedding-organizers.legal');
 
+    Route::get('event-participants/{eventParticipant}/payment-proof', [AdminFileController::class, 'downloadEventParticipantPaymentProof'])
+        ->name('admin.files.event-participants.payment-proof');
+});
 
 Route::get('/blog', function () {
-    $query = \App\Models\Blog::with('category', 'author')
-                            ->withCount([
-                                'comments' => function($query) {
-                                    $query->where('is_approved', true);
-                                },
-                                'likes'
-                            ])
-                            ->where('status', 'published');
-    
+    $query = Blog::with('category', 'author')
+        ->withCount([
+            'comments' => function ($query) {
+                $query->where('is_approved', true);
+            },
+            'likes',
+        ])
+        ->where('status', 'published');
+
     // Handle search query
     if (request()->has('search') && request('search') != '') {
         $searchTerm = request('search');
-        $query->where(function($q) use ($searchTerm) {
-            $q->where('title', 'like', '%' . $searchTerm . '%')
-              ->orWhere('content', 'like', '%' . $searchTerm . '%')
-              ->orWhere('excerpt', 'like', '%' . $searchTerm . '%')
-              ->orWhereHas('category', function($categoryQuery) use ($searchTerm) {
-                  $categoryQuery->where('name', 'like', '%' . $searchTerm . '%');
-              });
+        $query->where(function ($q) use ($searchTerm) {
+            $q->where('title', 'like', '%'.$searchTerm.'%')
+                ->orWhere('content', 'like', '%'.$searchTerm.'%')
+                ->orWhere('excerpt', 'like', '%'.$searchTerm.'%')
+                ->orWhereHas('category', function ($categoryQuery) use ($searchTerm) {
+                    $categoryQuery->where('name', 'like', '%'.$searchTerm.'%');
+                });
         });
     }
-    
+
     $blogs = $query->orderBy('created_at', 'desc')->paginate(10);
-    
-    $categories = \App\Models\BlogCategory::withCount(['blogs' => function($query) {
+
+    $categories = BlogCategory::withCount(['blogs' => function ($query) {
         $query->where('status', 'published');
     }])->get();
-    
+
     return view('blog.index', compact('blogs', 'categories'));
 })->name('blog');
 
 Route::get('/blog/debug', function () {
+    if (! app()->environment(['local', 'testing'])) {
+        abort(404);
+    }
+
     return view('blog.debug');
 })->name('blog.debug');
 
 Route::get('/debug-views', function () {
+    if (! app()->environment(['local', 'testing'])) {
+        abort(404);
+    }
+
     return view('debug-views');
 })->name('debug.views');
 
 Route::get('/blog/{slug}', function ($slug) {
     // Get blog from database with comments
-    $blog = \App\Models\Blog::where('slug', $slug)
-                           ->withCount([
-                               'comments' => function($query) {
-                                   $query->where('is_approved', true);
-                               },
-                               'likes'
-                           ])
-                           ->with(['category', 'author', 'comments' => function($query) {
-                               $query->where('is_approved', true)
-                                     ->orderBy('created_at', 'desc');
-                           }])
-                           ->first();
-    
-    if (!$blog) {
+    $blog = Blog::where('slug', $slug)
+        ->withCount([
+            'comments' => function ($query) {
+                $query->where('is_approved', true);
+            },
+            'likes',
+        ])
+        ->with(['category', 'author', 'comments' => function ($query) {
+            $query->where('is_approved', true)
+                ->orderBy('created_at', 'desc');
+        }])
+        ->first();
+
+    if (! $blog) {
         abort(404);
     }
-    
+
     // Increment views count
     $blog->incrementViews(
         request()->ip(),
         request()->userAgent(),
         request()->headers->get('referer')
     );
-    
+
     // Refresh to get updated views_count
     $blog->refresh();
-    
+
     return view('blog.detail', compact('blog'));
 })->name('blog.detail');
 
 // Blog Comment Route (requires authentication)
 Route::middleware(['auth'])->group(function () {
     Route::post('/blog/{slug}/comment', [BlogEngagementController::class, 'storeCommentWeb'])->name('blog.comment.store');
-    
+
     // Comment Actions API Routes
     Route::prefix('api/comments')->group(function () {
         Route::post('/{id}/like', [BlogEngagementController::class, 'likeComment'])->name('api.comment.like');
@@ -185,26 +213,31 @@ Route::middleware(['auth'])->group(function () {
 // Blog Engagement AJAX Routes
 Route::prefix('api/blog')->group(function () {
     // Debug route to test blog finding
-    Route::get('debug/{blogId}', function($blogId) {
+    Route::get('debug/{blogId}', function ($blogId) {
+        if (! app()->environment(['local', 'testing'])) {
+            abort(404);
+        }
+
         try {
-            $blog = \App\Models\Blog::findOrFail($blogId);
+            $blog = Blog::findOrFail($blogId);
+
             return response()->json([
                 'success' => true,
                 'blog_found' => true,
                 'blog_id' => $blog->id,
                 'blog_title' => $blog->title,
-                'message' => 'Blog found successfully'
+                'message' => 'Blog found successfully',
             ]);
         } catch (Exception $e) {
             return response()->json([
                 'success' => false,
                 'blog_found' => false,
                 'error' => $e->getMessage(),
-                'blogId_searched' => $blogId
+                'blogId_searched' => $blogId,
             ], 404);
         }
     });
-    
+
     Route::post('{blogId}/like', [BlogEngagementController::class, 'toggleLike'])->name('blog.toggle-like');
     Route::get('{blogId}/check-like', [BlogEngagementController::class, 'checkLike'])->name('blog.check-like');
     Route::post('{blogId}/view', [BlogEngagementController::class, 'recordView'])->name('blog.record-view');
@@ -212,26 +245,27 @@ Route::prefix('api/blog')->group(function () {
     Route::get('{blogId}/comments', [BlogEngagementController::class, 'getComments'])->name('blog.get-comments');
     Route::patch('{blogId}/duration', [BlogEngagementController::class, 'updateDuration'])->name('blog.update-duration');
     Route::get('{blogId}/stats', [BlogEngagementController::class, 'getStats'])->name('blog.get-stats');
-    Route::get('{blog}', function($blogId) {
-        $blog = \App\Models\Blog::findOrFail($blogId);
+    Route::get('{blog}', function ($blogId) {
+        $blog = Blog::findOrFail($blogId);
+
         return response()->json([
             'id' => $blog->id,
             'title' => $blog->title,
-            'views_count' => $blog->views_count
+            'views_count' => $blog->views_count,
         ]);
     });
-    Route::get('{blog}/view-pixel', function($blogId) {
+    Route::get('{blog}/view-pixel', function ($blogId) {
         try {
-            $blog = \App\Models\Blog::findOrFail($blogId);
+            $blog = Blog::findOrFail($blogId);
             $blog->incrementViews(request()->ip(), 'Fallback Pixel Tracking');
-            
+
             // Return 1x1 transparent pixel
             return response(base64_decode('R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'))
                 ->header('Content-Type', 'image/gif')
                 ->header('Cache-Control', 'no-cache, no-store, must-revalidate')
                 ->header('Pragma', 'no-cache')
                 ->header('Expires', '0');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return response('', 404);
         }
     });
@@ -241,7 +275,7 @@ Route::get('/contact', function () {
     return view('front.contact');
 })->name('contact');
 
-Route::get('/about', [App\Http\Controllers\Front\AboutController::class, 'index'])->name('about');
+Route::get('/about', [AboutController::class, 'index'])->name('about');
 
 Route::get('/header-demo', function () {
     return view('layouts.header');

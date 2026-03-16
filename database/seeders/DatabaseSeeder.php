@@ -2,8 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
-use Illuminate\Container\Attributes\Auth;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -14,10 +12,18 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        if (app()->environment('production') && ! ($this->command?->option('force') ?? false)) {
+            $this->command?->warn('DatabaseSeeder dibatalkan di production. Jalankan dengan --force jika benar-benar dibutuhkan.');
+
+            return;
+        }
+
         $this->call([
+            RoleSeeder::class,
             AdminUserSeeder::class,
             RegionSeeder::class,
             CompanySeeder::class,
+            AboutPageSeeder::class,
             EventCategorySeeder::class,
             EventHastanaSeeder::class,
             EventParticipantSeeder::class,
@@ -27,7 +33,6 @@ class DatabaseSeeder extends Seeder
             BlogSeeder::class,
             ProductSeeder::class,
             GallerySeeder::class,
-            WeddingOrganizerSeeder::class,
             EventReviewSeeder::class,
         ]);
     }

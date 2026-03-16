@@ -1259,20 +1259,30 @@
                             <p class="text-sm text-blue-800 font-semibold mb-2">
                                 <i class="fas fa-file-check mr-2"></i>Dokumen yang sudah diupload:
                             </p>
-                            <ul class="text-sm text-blue-700 space-y-1 mb-2">
-                                ${legalDocs.map(doc => {
-                                    const fileName = doc.split('/').pop();
-                                    return `<li class="flex items-center">
-                                        <i class="fas fa-paperclip mr-2 text-blue-500"></i>
-                                        <span>${fileName}</span>
-                                    </li>`;
-                                }).join('')}
-                            </ul>
+                            <ul class="text-sm text-blue-700 space-y-1 mb-2"></ul>
                             <p class="text-xs text-blue-600 italic">
                                 <i class="fas fa-info-circle mr-1"></i>
                                 Upload file baru jika ingin mengganti dokumen yang sudah ada.
                             </p>
                         `;
+
+                        const list = existingFilesInfo.querySelector('ul');
+                        legalDocs.forEach((doc) => {
+                            const fileName = String(doc).split('/').pop() ?? '';
+
+                            const li = document.createElement('li');
+                            li.className = 'flex items-center';
+
+                            const icon = document.createElement('i');
+                            icon.className = 'fas fa-paperclip mr-2 text-blue-500';
+
+                            const text = document.createElement('span');
+                            text.textContent = fileName;
+
+                            li.appendChild(icon);
+                            li.appendChild(text);
+                            list.appendChild(li);
+                        });
                         
                         fileContainer.appendChild(existingFilesInfo);
                         console.log('Legal documents info added successfully');

@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\EventHastana;
 use App\Models\EventCategory;
+use App\Models\EventHastana;
 use App\Models\EventParticipant;
 use App\Models\EventReview;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -69,12 +70,12 @@ class EventController extends Controller
                 case 'this_week':
                     $query->whereBetween('start_date', [
                         $now->startOfWeek(),
-                        $now->copy()->endOfWeek()
+                        $now->copy()->endOfWeek(),
                     ]);
                     break;
                 case 'this_month':
                     $query->whereMonth('start_date', $now->month)
-                          ->whereYear('start_date', $now->year);
+                        ->whereYear('start_date', $now->year);
                     break;
                 case 'upcoming':
                     $query->where('start_date', '>=', $now);
@@ -88,18 +89,19 @@ class EventController extends Controller
         // Search
         if ($request->has('search') && $request->search != '') {
             $search = $request->search;
-            $query->where(function($q) use ($search) {
+            $query->where(function ($q) use ($search) {
                 $q->where('title', 'like', "%{$search}%")
-                  ->orWhere('description', 'like', "%{$search}%")
-                  ->orWhere('city', 'like', "%{$search}%")
-                  ->orWhere('location', 'like', "%{$search}%");
+                    ->orWhere('description', 'like', "%{$search}%")
+                    ->orWhere('city', 'like', "%{$search}%")
+                    ->orWhere('location', 'like', "%{$search}%");
             });
         }
 
         // Sorting
         $sortBy = $request->get('sort_by', 'start_date');
-        $sortOrder = $request->get('sort_order', 'asc');
-        
+        $sortOrder = strtolower((string) $request->get('sort_order', 'asc'));
+        $sortOrder = in_array($sortOrder, ['asc', 'desc'], true) ? $sortOrder : 'asc';
+
         switch ($sortBy) {
             case 'popular':
                 $query->orderBy('current_participants', 'desc');
@@ -193,18 +195,18 @@ class EventController extends Controller
         $benefits = [];
         if ($event->benefits) {
             $benefitsText = $event->benefits;
-            
+
             // Check if it's HTML format
             if (strpos($benefitsText, '<li>') !== false) {
                 // Extract text from HTML list items
                 preg_match_all('/<li[^>]*><p>(.*?)<\/p><\/li>/', $benefitsText, $matches);
-                if (!empty($matches[1])) {
+                if (! empty($matches[1])) {
                     $benefits = array_map('html_entity_decode', $matches[1]);
                 } else {
                     // Fallback: extract any text between <li> tags
                     preg_match_all('/<li[^>]*>(.*?)<\/li>/', $benefitsText, $matches);
-                    if (!empty($matches[1])) {
-                        $benefits = array_map(function($item) {
+                    if (! empty($matches[1])) {
+                        $benefits = array_map(function ($item) {
                             return html_entity_decode(strip_tags($item));
                         }, $matches[1]);
                     }
@@ -212,7 +214,7 @@ class EventController extends Controller
             } else {
                 // Handle literal \n characters
                 $benefitsText = str_replace('\\n', "\n", $benefitsText);
-                
+
                 // Check if it contains newlines, otherwise split by comma
                 if (strpos($benefitsText, "\n") !== false) {
                     $benefits = array_filter(array_map('trim', explode("\n", $benefitsText)));
@@ -225,18 +227,18 @@ class EventController extends Controller
         $requirements = [];
         if ($event->requirements) {
             $requirementsText = $event->requirements;
-            
+
             // Check if it's HTML format
             if (strpos($requirementsText, '<li>') !== false) {
                 // Extract text from HTML list items
                 preg_match_all('/<li[^>]*><p>(.*?)<\/p><\/li>/', $requirementsText, $matches);
-                if (!empty($matches[1])) {
+                if (! empty($matches[1])) {
                     $requirements = array_map('html_entity_decode', $matches[1]);
                 } else {
                     // Fallback: extract any text between <li> tags
                     preg_match_all('/<li[^>]*>(.*?)<\/li>/', $requirementsText, $matches);
-                    if (!empty($matches[1])) {
-                        $requirements = array_map(function($item) {
+                    if (! empty($matches[1])) {
+                        $requirements = array_map(function ($item) {
                             return html_entity_decode(strip_tags($item));
                         }, $matches[1]);
                     }
@@ -244,7 +246,7 @@ class EventController extends Controller
             } else {
                 // First replace literal \n with actual newlines
                 $requirementsText = str_replace('\\n', "\n", $requirementsText);
-                
+
                 // Check if requirements contains newlines (bullet format) or commas (comma-separated format)
                 if (strpos($requirementsText, "\n") !== false) {
                     // Newline separated with bullets
@@ -363,10 +365,10 @@ class EventController extends Controller
 
         // Check if registration is still open
         $capacity = $event->max_participants ?? $event->quota;
-        
+
         // TIDAK redirect jika sudah terdaftar, biarkan form tetap ditampilkan
         // Tombol submit akan otomatis disabled di blade
-        
+
         // Check availability using model methods
         if ($event->is_full || $event->is_past) {
             return redirect()->route('events.show', $slug)
@@ -397,7 +399,7 @@ class EventController extends Controller
         ];
 
         // Add payment validation for paid events
-        if (!$event->is_free) {
+        if (! $event->is_free) {
             $rules['payment_method'] = 'required|string|in:bca,mandiri,bni,bri';
             $rules['payment_proof'] = 'required|image|mimes:jpeg,jpg,png|max:2048';
         }
@@ -407,16 +409,16 @@ class EventController extends Controller
         // Check if user already registered (double check)
         if (Auth::check()) {
             $existingRegistration = EventParticipant::where('event_hastana_id', $event->id)
-                ->where(function($query) {
+                ->where(function ($query) {
                     $query->where('user_id', Auth::id())
-                          ->orWhere('email', Auth::user()->email);
+                        ->orWhere('email', Auth::user()->email);
                 })
                 ->whereIn('status', ['pending', 'confirmed', 'attended'])
                 ->first();
-            
+
             if ($existingRegistration) {
                 return redirect()->route('events.show', $slug)
-                    ->with('info', 'Anda sudah terdaftar di event ini! Kode registrasi: ' . $existingRegistration->registration_code);
+                    ->with('info', 'Anda sudah terdaftar di event ini! Kode registrasi: '.$existingRegistration->registration_code);
             }
         }
 
@@ -428,8 +430,8 @@ class EventController extends Controller
 
         // Handle payment proof upload
         $paymentProofPath = null;
-        if (!$event->is_free && $request->hasFile('payment_proof')) {
-            $paymentProofPath = $request->file('payment_proof')->store('payment_proofs', 'public');
+        if (! $event->is_free && $request->hasFile('payment_proof')) {
+            $paymentProofPath = $request->file('payment_proof')->store('payment_proofs', 'private');
         }
 
         // Save to database
@@ -452,7 +454,7 @@ class EventController extends Controller
         $event->increment('current_participants');
 
         return redirect()->route('events.show', $slug)
-            ->with('success', 'Pendaftaran berhasil! Kode registrasi Anda: ' . $participant->registration_code . '. Kami akan mengirimkan konfirmasi ke email Anda.');
+            ->with('success', 'Pendaftaran berhasil! Kode registrasi Anda: '.$participant->registration_code.'. Kami akan mengirimkan konfirmasi ke email Anda.');
     }
 
     /**
@@ -492,10 +494,11 @@ class EventController extends Controller
 
         // Check if DomPDF is installed
         if (class_exists('\Barryvdh\DomPDF\Facade\Pdf')) {
-            $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('tickets.pdf', compact('participant'));
-            return $pdf->download('E-Ticket-' . $registrationCode . '.pdf');
+            $pdf = Pdf::loadView('tickets.pdf', compact('participant'));
+
+            return $pdf->download('E-Ticket-'.$registrationCode.'.pdf');
         }
-        
+
         // Fallback: Return printable HTML page
         return view('tickets.download', compact('participant'));
     }
@@ -513,7 +516,7 @@ class EventController extends Controller
             ->where('status', 'attended')
             ->exists();
 
-        if (!$hasAttended) {
+        if (! $hasAttended) {
             return redirect()->back()
                 ->with('error', 'Anda harus menghadiri event ini terlebih dahulu untuk memberikan review.');
         }

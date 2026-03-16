@@ -360,7 +360,7 @@
 
                     <!-- Login Link for Guest (Desktop) -->
                     @guest
-                        <a href="{{ route('login') }}" class="nav-link {{ Request::routeIs('login') ? 'active' : '' }} text-gray-700 text-sm font-medium px-4 py-2 hover:text-hastana-blue transition-smooth">
+                        <a href="{{ route('login', absolute: false) }}" class="nav-link {{ Request::routeIs('login') ? 'active' : '' }} text-gray-700 text-sm font-medium px-4 py-2 hover:text-hastana-blue transition-smooth">
                             <i class="fas fa-sign-in-alt mr-1 text-xs"></i>
                             Login
                         </a>
@@ -400,7 +400,7 @@
                                     <i class="fas fa-user-circle text-xs"></i>
                                     Profil Saya
                                 </a>
-                                @if(auth()->user()->role === 'admin')
+                                @if(auth()->user()->hasAnyRole(['admin', 'super_admin']))
                                 <a href="{{ url('/admin') }}" class="dropdown-item text-sm">
                                     <i class="fas fa-cog text-xs"></i>
                                     Admin Panel
@@ -535,7 +535,7 @@
                             <i class="fas fa-chevron-down text-sm transition-transform duration-300" id="akun-arrow"></i>
                         </button>
                         <div class="mobile-dropdown-menu" id="akun-dropdown">
-                            <a href="{{ route('login') }}" class="mobile-dropdown-item flex items-center text-sm hover:bg-blue-50 transition-smooth rounded">
+                            <a href="{{ route('login', absolute: false) }}" class="mobile-dropdown-item flex items-center text-sm hover:bg-blue-50 transition-smooth rounded">
                                 <i class="fas fa-sign-in-alt mr-2 text-xs w-4"></i>
                                 Login
                             </a>

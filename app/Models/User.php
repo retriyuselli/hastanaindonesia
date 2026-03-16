@@ -2,15 +2,16 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Filament\Models\Contracts\FilamentUser;
+use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
+use Spatie\Permission\Traits\HasRoles;
 
-class User extends Authenticatable
+class User extends Authenticatable implements FilamentUser
 {
-    use HasFactory, Notifiable, Notifiable;
+    use HasFactory, HasRoles, Notifiable;
 
     protected $fillable = [
         'name',
@@ -27,7 +28,7 @@ class User extends Authenticatable
         'email_verified_at',
         'no_anggota',
         'agama',
-        'no_ktp'
+        'no_ktp',
     ];
 
     protected $hidden = [
@@ -53,10 +54,10 @@ class User extends Authenticatable
     /**
      * Get members verified by this user
      */
-    public function verifiedMembers()
-    {
-        return $this->hasMany(Member::class, 'legal_verified_by');
-    }
+    // public function verifiedMembers()
+    // {
+    //     return $this->hasMany(Member::class, 'legal_verified_by');
+    // }
 
     /**
      * Get wedding organizers verified by this user
@@ -71,23 +72,19 @@ class User extends Authenticatable
         return $this->hasOne(WeddingOrganizer::class);
     }
 
-    /**
-     * Check if user has a specific role
-     */
-    public function hasRole($role)
+    public function canAccessPanel(Panel $panel): bool
     {
-        if (is_array($role)) {
-            return in_array($this->role, $role);
-        }
-        return $this->role === $role;
+        $superAdminRole = config('filament-shield.super_admin.name', 'super_admin');
+        $panelUserRole = config('filament-shield.panel_user.name', 'panel_user');
+
+        return $this->hasAnyRole(['admin', $superAdminRole, $panelUserRole]);
     }
 
-    /**
-     * Check if user is admin
-     */
-    public function isAdmin()
+    public function isAdmin(): bool
     {
-        return in_array($this->role, ['admin', 'super_admin']);
+        $superAdminRole = config('filament-shield.super_admin.name', 'super_admin');
+
+        return $this->hasAnyRole(['admin', $superAdminRole]);
     }
 
     /**
@@ -100,9 +97,11 @@ class User extends Authenticatable
             if (filter_var($this->avatar, FILTER_VALIDATE_URL)) {
                 return $this->avatar;
             }
+
             // If avatar is a storage path
-            return asset('storage/' . $this->avatar);
+            return asset('storage/'.$this->avatar);
         }
+
         return null;
     }
 }

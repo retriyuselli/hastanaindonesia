@@ -2,11 +2,10 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Illuminate\Database\Seeder;
 use App\Models\Company;
-use App\Models\Region;
+use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Database\Seeder;
 
 class CompanySeeder extends Seeder
 {
@@ -15,6 +14,17 @@ class CompanySeeder extends Seeder
      */
     public function run(): void
     {
+        if (app()->environment('production') && ! ($this->command?->option('force') ?? false)) {
+            $this->command?->warn('CompanySeeder dilewati di production. Jalankan dengan --force jika benar-benar dibutuhkan.');
+
+            return;
+        }
+
+        $legalVerifierId = User::query()
+            ->whereIn('role', ['super_admin', 'admin'])
+            ->orderByRaw("FIELD(role, 'super_admin', 'admin')")
+            ->value('id');
+
         $company = [
             'company_name' => 'Himpunan Perusahaan Penata Acara Indonesia',
             'business_license' => 'SIUP/001/HASTANA/2020',
@@ -30,7 +40,7 @@ class CompanySeeder extends Seeder
             'logo_url' => '/images/hastana-logo.png',
             'established_year' => 2020,
             'employee_count' => 25,
-            
+
             // Data Legalitas
             'legal_entity_type' => 'Perkumpulan',
             'deed_of_establishment' => 'No. 01 Tahun 2020',
@@ -46,14 +56,14 @@ class CompanySeeder extends Seeder
             'legal_document_status' => 'verified',
             'legal_document_notes' => 'Semua dokumen legal telah diverifikasi dan sesuai dengan peraturan yang berlaku.',
             'legal_verified_at' => Carbon::parse('2020-03-01'),
-            'legal_verified_by' => 1, // Admin user ID
-            'legal_documents' => json_encode([
-                'akta_pendirian' => '/documents/hastana/akta-pendirian.pdf',
-                'sk_kemenkumham' => '/documents/hastana/sk-kemenkumham.pdf',
-                'nib_document' => '/documents/hastana/nib-hastana.pdf',
-                'npwp_document' => '/documents/hastana/npwp-hastana.pdf',
-                'domicile_letter' => '/documents/hastana/surat-domisili.pdf'
-            ])
+            'legal_verified_by' => $legalVerifierId,
+            'legal_documents' => [
+                '/documents/hastana/akta-pendirian.pdf',
+                '/documents/hastana/sk-kemenkumham.pdf',
+                '/documents/hastana/nib-hastana.pdf',
+                '/documents/hastana/npwp-hastana.pdf',
+                '/documents/hastana/surat-domisili.pdf',
+            ],
         ];
 
         Company::updateOrCreate(

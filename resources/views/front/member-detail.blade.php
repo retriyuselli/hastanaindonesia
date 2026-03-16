@@ -379,7 +379,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         
                         @if($member->established_year)
                         <div>
-                            <p class="text-xs text-gray-600">Aktif <span class="font-semibold text-gray-900">{{ date('Y') - $member->established_year }} tahun lalu</span></p>
+                            <p class="text-xs text-gray-600">Tahun Berdiri <span class="font-semibold text-gray-900">{{ date('Y') - $member->established_year }} tahun lalu</span></p>
                         </div>
                         @endif
                     </div>
@@ -393,7 +393,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         @endif
                         
                         @auth
-                            @if($member->user_id == auth()->id() && $member->slug)
+                            @if(($member->user_id == auth()->id() || auth()->user()->hasRole('super_admin')) && $member->slug)
                             <a href="{{ route('products.manage', $member->slug) }}" class="block w-full px-4 py-2.5 border border-gray-300 text-gray-700 text-sm font-semibold rounded-lg hover:bg-gray-50 transition-colors text-center">
                                 <i class="fas fa-edit mr-2"></i>Edit Produk
                             </a>
@@ -405,38 +405,45 @@ document.addEventListener('DOMContentLoaded', function() {
                     <div class="space-y-3 pt-6 border-t border-gray-200">
                         @if($member->website)
                         <div class="flex items-center text-xs">
-                            <i class="fas fa-globe text-gray-400 mr-3 w-5"></i>
+                            <i class="fas fa-globe text-gray-400 mr-3 w-3"></i>
                             <a href="{{ $member->website }}" target="_blank" class="text-blue-600 hover:underline truncate">{{ str_replace(['http://', 'https://'], '', $member->website) }}</a>
                         </div>
                         @endif
                         
                         @if($member->email)
                         <div class="flex items-center text-xs">
-                            <i class="fas fa-envelope text-gray-400 mr-3 w-5"></i>
+                            <i class="fas fa-envelope text-gray-400 mr-3 w-3"></i>
                             <a href="mailto:{{ $member->email }}" class="text-blue-600 hover:underline truncate">{{ $member->email }}</a>
                         </div>
                         @endif
                         
                         @if($member->phone)
                         <div class="flex items-center text-xs">
-                            <i class="fas fa-phone text-gray-400 mr-3 w-5"></i>
+                            <i class="fas fa-phone text-gray-400 mr-3 w-3"></i>
                             <span class="text-gray-700">{{ $member->phone }}</span>
                         </div>
                         @endif
                         
                         @if($member->instagram)
-                        <div class="flex items-center text-xs">
-                            <i class="fab fa-instagram text-gray-400 mr-3 w-5"></i>
-                            <a href="https://instagram.com/{{ $member->instagram }}" target="_blank" class="text-blue-600 hover:underline">{{ $member->instagram }}</a>
+                        <div class="flex items-center text-xs min-w-0">
+                            <i class="fab fa-instagram text-gray-400 mr-3 w-3"></i>
+                            @php
+                                $instagramLabel = trim(preg_replace('#^https?://(www\.)?instagram\.com/#', '', $member->instagram), "/ \t\n\r\0\x0B");
+                                $instagramLabel = ltrim($instagramLabel, '@');
+                                $instagramHref = str_starts_with($member->instagram, 'http://') || str_starts_with($member->instagram, 'https://')
+                                    ? $member->instagram
+                                    : ('https://instagram.com/' . $instagramLabel);
+                            @endphp
+                            <a href="{{ $instagramHref }}" target="_blank" class="text-blue-600 hover:underline truncate flex-1 min-w-0" title="{{ $instagramLabel }}">{{ $instagramLabel }}</a>
                         </div>
                         @endif
                     </div>
                     
                     <!-- Media Sosial -->
                     @if($member->instagram || $member->website)
-                    <div class="pt-6 border-t border-gray-200 mt-6">
+                    <div class="pt-6 border-t border-gray-200 mt-6 text-left">
                         <p class="text-xs font-semibold mb-3 text-gray-700">Media Sosial</p>
-                        <div class="flex space-x-3">
+                        <div class="flex w-full justify-start self-start space-x-3">
                             @if($member->instagram)
                             <a href="https://instagram.com/{{ $member->instagram }}" target="_blank" class="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center hover:bg-pink-100 transition-colors">
                                 <i class="fab fa-instagram text-gray-700 text-sm"></i>
@@ -687,7 +694,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     </div>
                     
                     <!-- Tab Harga -->
-                    {{-- <div id="tab-harga" class="tab-content">
+                    <div id="tab-harga" class="tab-content">
                         <h2 class="text-xl font-bold mb-6 text-gray-900">Daftar Harga</h2>
                         
                         <div class="space-y-6">
@@ -812,10 +819,10 @@ document.addEventListener('DOMContentLoaded', function() {
                                 <strong>Catatan:</strong> Harga dapat disesuaikan dengan kebutuhan dan budget Anda. Hubungi kami untuk konsultasi gratis dan penawaran khusus.
                             </p>
                         </div>
-                    </div> --}}
+                    </div>
                     
                     <!-- Tab Info -->
-                    <div id="tab-info" class="tab-content">
+                    {{-- <div id="tab-info" class="tab-content">
                         <h2 class="text-xl font-bold mb-6 text-gray-900">Informasi Vendor</h2>
                         
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -936,7 +943,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             </div>
                         </div>
                         @endif
-                    </div>
+                    </div> --}}
                     
                     <!-- Tab Tentang Kami -->
                     <div id="tab-tentang" class="tab-content">

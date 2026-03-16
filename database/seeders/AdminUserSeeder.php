@@ -5,6 +5,8 @@ namespace Database\Seeders;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\PermissionRegistrar;
 
 class AdminUserSeeder extends Seeder
 {
@@ -13,8 +15,39 @@ class AdminUserSeeder extends Seeder
      */
     public function run(): void
     {
+        if (app()->environment('production') && ! ($this->command?->option('force') ?? false)) {
+            $this->command?->warn('AdminUserSeeder dilewati di production. Jalankan dengan --force jika benar-benar dibutuhkan.');
+
+            return;
+        }
+
+        app(PermissionRegistrar::class)->forgetCachedPermissions();
+
+        $guardName = config('auth.defaults.guard', 'web');
+        $superAdminRole = config('filament-shield.super_admin.name', 'super_admin');
+
+        Role::findOrCreate('admin', $guardName);
+        Role::findOrCreate($superAdminRole, $guardName);
+        Role::findOrCreate('member', $guardName);
+        Role::findOrCreate('customer', $guardName);
+
+        $superAdmin = User::updateOrCreate(
+            ['email' => 'superadmin@hastana.com'],
+            [
+                'name' => 'Super Admin HASTANA',
+                'password' => Hash::make('password123'),
+                'role' => 'super_admin',
+                'phone' => '081234567889',
+                'gender' => 'male',
+                'date_of_birth' => '1984-12-10',
+                'email_verified_at' => now(),
+                'no_anggota' => 'HST-SADM-0001',
+            ]
+        );
+        $superAdmin->syncRoles([$superAdminRole]);
+
         // Administrator
-        User::updateOrCreate(
+        $admin = User::updateOrCreate(
             ['email' => 'admin@hastana.com'],
             [
                 'name' => 'Administrator HASTANA',
@@ -27,9 +60,10 @@ class AdminUserSeeder extends Seeder
                 'no_anggota' => 'HST-ADM-0001',
             ]
         );
+        $admin->syncRoles(['admin']);
 
         // Admin dari daftar
-        User::updateOrCreate(
+        $adminTeam1 = User::updateOrCreate(
             ['email' => 'sidorabiweddingorganizer@gmail.com'],
             [
                 'name' => 'Kiki Indah Permata',
@@ -42,8 +76,9 @@ class AdminUserSeeder extends Seeder
                 'no_anggota' => 'HST-ADM-0002',
             ]
         );
+        $adminTeam1->syncRoles(['admin']);
 
-        User::updateOrCreate(
+        $adminTeam2 = User::updateOrCreate(
             ['email' => 'rulandmantiri0@gmail.com'],
             [
                 'name' => 'Ruland R. Mantiri',
@@ -56,8 +91,9 @@ class AdminUserSeeder extends Seeder
                 'no_anggota' => 'HST-ADM-0003',
             ]
         );
+        $adminTeam2->syncRoles(['admin']);
 
-        User::updateOrCreate(
+        $adminTeam3 = User::updateOrCreate(
             ['email' => 'myudhij@gmail.com'],
             [
                 'name' => 'M. Yudhi J',
@@ -70,8 +106,9 @@ class AdminUserSeeder extends Seeder
                 'no_anggota' => 'HST-ADM-0004',
             ]
         );
+        $adminTeam3->syncRoles(['admin']);
 
-        User::updateOrCreate(
+        $adminTeam4 = User::updateOrCreate(
             ['email' => 'weddinghalal@gmail.com'],
             [
                 'name' => 'Risa Risdiasari',
@@ -84,8 +121,9 @@ class AdminUserSeeder extends Seeder
                 'no_anggota' => 'HST-ADM-0005',
             ]
         );
+        $adminTeam4->syncRoles(['admin']);
 
-        User::updateOrCreate(
+        $adminTeam5 = User::updateOrCreate(
             ['email' => 'fleur.wo@yahoo.com'],
             [
                 'name' => 'Reza Fahlafi Saragih',
@@ -98,8 +136,9 @@ class AdminUserSeeder extends Seeder
                 'no_anggota' => 'HST-ADM-0006',
             ]
         );
+        $adminTeam5->syncRoles(['admin']);
 
-        User::updateOrCreate(
+        $adminTeam6 = User::updateOrCreate(
             ['email' => 'specialweddingmanagement@gmail.com'],
             [
                 'name' => 'Toro',
@@ -112,8 +151,9 @@ class AdminUserSeeder extends Seeder
                 'no_anggota' => 'HST-ADM-0007',
             ]
         );
+        $adminTeam6->syncRoles(['admin']);
 
-        User::updateOrCreate(
+        $adminTeam7 = User::updateOrCreate(
             ['email' => 'patronwedding@gmail.com'],
             [
                 'name' => 'Yunarsih',
@@ -126,8 +166,9 @@ class AdminUserSeeder extends Seeder
                 'no_anggota' => 'HST-ADM-0008',
             ]
         );
+        $adminTeam7->syncRoles(['admin']);
 
-        User::updateOrCreate(
+        $adminTeam8 = User::updateOrCreate(
             ['email' => 'projectwo@gmail.com'],
             [
                 'name' => 'Yura Febriatma H',
@@ -140,8 +181,9 @@ class AdminUserSeeder extends Seeder
                 'no_anggota' => 'HST-ADM-0009',
             ]
         );
+        $adminTeam8->syncRoles(['admin']);
 
-        User::updateOrCreate(
+        $adminTeam9 = User::updateOrCreate(
             ['email' => 'ramadhona.utama@gmail.com'],
             [
                 'name' => 'Rama Dhona Utama',
@@ -154,9 +196,10 @@ class AdminUserSeeder extends Seeder
                 'no_anggota' => 'HST-ADM-0010',
             ]
         );
+        $adminTeam9->syncRoles(['admin']);
 
         // Operator (menggunakan role admin karena enum terbatas)
-        User::updateOrCreate(
+        $operator = User::updateOrCreate(
             ['email' => 'operator@hastana.com'],
             [
                 'name' => 'Operator HASTANA',
@@ -169,9 +212,10 @@ class AdminUserSeeder extends Seeder
                 'no_anggota' => 'HST-OPR-0001',
             ]
         );
+        $operator->syncRoles(['admin']);
 
         // Member Regular
-        User::updateOrCreate(
+        $member = User::updateOrCreate(
             ['email' => 'member@hastana.com'],
             [
                 'name' => 'Member HASTANA',
@@ -184,9 +228,10 @@ class AdminUserSeeder extends Seeder
                 'no_anggota' => 'HST-MEM-0001',
             ]
         );
+        $member->syncRoles(['member']);
 
         // Customer
-        User::updateOrCreate(
+        $customer = User::updateOrCreate(
             ['email' => 'customer@hastana.com'],
             [
                 'name' => 'Customer HASTANA',
@@ -199,14 +244,16 @@ class AdminUserSeeder extends Seeder
                 'no_anggota' => 'HST-CUS-0001',
             ]
         );
+        $customer->syncRoles(['customer']);
 
         $this->command->info('User seeder completed successfully!');
         $this->command->info('Created users with available roles:');
+        $this->command->info('- Super Admin: superadmin@hastana.com (password: password123)');
         $this->command->info('- Admin: admin@hastana.com, operator@hastana.com (password: password123)');
         $this->command->info('- Admin Team: sidorabiweddingorganizer@gmail.com, rulandmantiri0@gmail.com, myudhij@gmail.com, etc. (password: password123)');
         $this->command->info('- Member: member@hastana.com (password: password123)');
         $this->command->info('- Customer: customer@hastana.com (password: password123)');
-        $this->command->info('Note: Role enum currently supports: admin, member, customer');
-        $this->command->info('Total Admin accounts: ' . User::where('role', 'admin')->count());
+        $this->command->info('Note: Role enum currently supports: super_admin, admin, member, customer');
+        $this->command->info('Total Admin accounts: '.User::whereIn('role', ['admin', 'super_admin'])->count());
     }
 }

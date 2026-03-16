@@ -33,6 +33,27 @@ class BlogEngagement {
         this.init();
     }
 
+    escapeHtml(value) {
+        return String(value ?? "")
+            .replaceAll("&", "&amp;")
+            .replaceAll("<", "&lt;")
+            .replaceAll(">", "&gt;")
+            .replaceAll('"', "&quot;")
+            .replaceAll("'", "&#039;");
+    }
+
+    safeUrl(value) {
+        try {
+            const url = new URL(String(value ?? ""), window.location.origin);
+            if (url.protocol !== "http:" && url.protocol !== "https:") {
+                return null;
+            }
+            return url.toString();
+        } catch {
+            return null;
+        }
+    }
+
     init() {
         console.log("🚀 BlogEngagement initialized for blog ID:", this.blogId);
         this.setupEventListeners();
@@ -287,7 +308,7 @@ class BlogEngagement {
         const notification = document.createElement("div");
         notification.className =
             "fixed bottom-4 right-4 bg-green-500 text-white px-4 py-2 rounded-lg text-sm z-50 opacity-0 transition-opacity duration-300";
-        notification.innerHTML = `📊 View recorded! Total: ${viewsCount}`;
+        notification.textContent = `📊 View recorded! Total: ${viewsCount}`;
 
         document.body.appendChild(notification);
 
@@ -480,23 +501,25 @@ class BlogEngagement {
     }
 
     generateCommentHTML(comment, includeReplies = false) {
+        const name = this.escapeHtml(comment.name);
+        const formattedDate = this.escapeHtml(comment.formatted_date);
+        const commentText = this.escapeHtml(comment.comment);
+        const avatarUrl =
+            this.safeUrl(comment.avatar_url) ?? "/images/default-avatar.png";
+
         let html = `
             <div class="comment mb-6 p-4 bg-gray-50 rounded-lg" data-comment-id="${
                 comment.id
             }">
                 <div class="flex items-start space-x-3">
-                    <img src="${comment.avatar_url}" alt="${comment.name}" 
+                    <img src="${avatarUrl}" alt="${name}" 
                          class="w-10 h-10 rounded-full object-cover">
                     <div class="flex-1">
                         <div class="flex items-center space-x-2 mb-2">
-                            <h4 class="font-semibold text-gray-900">${
-                                comment.name
-                            }</h4>
-                            <span class="text-sm text-gray-500">${
-                                comment.formatted_date
-                            }</span>
+                            <h4 class="font-semibold text-gray-900">${name}</h4>
+                            <span class="text-sm text-gray-500">${formattedDate}</span>
                         </div>
-                        <p class="text-gray-700 mb-3">${comment.comment}</p>
+                        <p class="text-gray-700 mb-3">${commentText}</p>
                         <button class="reply-button text-sm text-blue-600 hover:text-blue-800" 
                                 data-comment-id="${comment.id}">
                             Balas

@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
 use App\Models\Author;
-use Illuminate\Support\Str;
+use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class AuthorSeeder extends Seeder
 {
@@ -14,6 +14,12 @@ class AuthorSeeder extends Seeder
      */
     public function run(): void
     {
+        if (! app()->environment(['local', 'testing'])) {
+            $this->command?->warn('AuthorSeeder dilewati (hanya untuk local/testing).');
+
+            return;
+        }
+
         // Clear existing authors (handle foreign key constraints)
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         Author::truncate();
@@ -103,13 +109,13 @@ class AuthorSeeder extends Seeder
         foreach ($authors as $authorData) {
             // Ensure slug is properly formatted
             $authorData['slug'] = Str::slug($authorData['name']);
-            
+
             Author::create($authorData);
-            
+
             $this->command->info("✅ Created author: {$authorData['name']}");
         }
 
-        $this->command->info('🎉 Successfully seeded ' . count($authors) . ' authors with comprehensive profiles!');
+        $this->command->info('🎉 Successfully seeded '.count($authors).' authors with comprehensive profiles!');
         $this->command->info('📝 All authors have detailed bios, social media links, and are set as active.');
     }
 }

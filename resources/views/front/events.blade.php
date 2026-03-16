@@ -123,7 +123,10 @@
                class="filter-tab {{ request('type') == $category->slug ? 'active' : '' }} px-5 py-2.5 rounded-full border-2 border-gray-300 bg-white text-gray-700 text-sm font-semibold hover:bg-blue-50 hover:border-blue-500 transition-all duration-300"
                style="--category-color: {{ $category->color ?? '#3B82F6' }}">
                 @if($category->icon)
-                <i class="fas fa-{{ $category->icon }} mr-1.5 text-xs"></i>
+                @php($icon = $category->icon)
+                @if(!str_starts_with($icon, 'heroicon-'))
+                <i class="{{ str_contains($icon, ' ') ? $icon : ('fas fa-'.$icon) }} mr-1.5 text-xs"></i>
+                @endif
                 @endif
                 {{ $category->name }}
             </a>

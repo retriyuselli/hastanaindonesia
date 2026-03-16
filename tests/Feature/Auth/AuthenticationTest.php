@@ -19,7 +19,7 @@ class AuthenticationTest extends TestCase
 
     public function test_users_can_authenticate_using_the_login_screen(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->createOne();
 
         $response = $this->post('/login', [
             'email' => $user->email,
@@ -32,7 +32,7 @@ class AuthenticationTest extends TestCase
 
     public function test_users_can_not_authenticate_with_invalid_password(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->createOne();
 
         $this->post('/login', [
             'email' => $user->email,
@@ -44,11 +44,14 @@ class AuthenticationTest extends TestCase
 
     public function test_users_can_logout(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->createOne();
+        assert($user instanceof User);
 
         $response = $this->actingAs($user)->post('/logout');
 
         $this->assertGuest();
-        $response->assertRedirect('/');
+        $response->assertRedirect();
+        $path = parse_url($response->headers->get('Location'), PHP_URL_PATH) ?? '/';
+        $this->assertSame('/', $path);
     }
 }

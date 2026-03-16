@@ -79,6 +79,13 @@
                         <input type="text" name="badges" id="badges" value="{{ old('badges', is_array($product->badges) ? implode(', ', $product->badges) : $product->badges) }}" placeholder="Pisahkan dengan koma (contoh: Best Seller, Promo)" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
                         <p class="text-xs text-gray-500 mt-1">Masukkan badge dan pisahkan dengan koma</p>
                     </div>
+
+                    <!-- Yang Anda Dapatkan (Features) -->
+                    <div class="mb-6">
+                        <label for="features" class="block text-sm font-semibold text-gray-700 mb-2">Yang Anda Dapatkan</label>
+                        <textarea name="features" id="features" rows="6" placeholder="Satu item per baris (contoh: Dekorasi premium, Tim WO, Dokumentasi foto/video)" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">{{ old('features', is_array($product->features) ? implode("\n", $product->features) : $product->features) }}</textarea>
+                        <p class="text-xs text-gray-500 mt-1">Akan ditampilkan di halaman detail produk sebagai daftar.</p>
+                    </div>
                     
                     <!-- Gambar Produk -->
                     <div class="mb-6">

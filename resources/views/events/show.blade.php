@@ -1577,7 +1577,7 @@
                         @else
                             <!-- User not logged in - show login prompt -->
                             <div class="mb-3">
-                                <a href="{{ route('login') }}?redirect={{ urlencode(route('events.register', $event->slug)) }}" 
+                                <a href="{{ route('login', absolute: false) }}?redirect={{ urlencode(route('events.register', $event->slug, absolute: false)) }}" 
                                    class="block w-full text-center bg-gradient-to-r from-blue-600 to-blue-700 text-white py-3 rounded-lg font-bold hover:from-blue-700 hover:to-blue-800 transition duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 text-sm">
                                     <i class="fas fa-sign-in-alt mr-2"></i> Login untuk Mendaftar
                                 </a>

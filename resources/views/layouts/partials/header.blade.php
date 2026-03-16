@@ -86,7 +86,7 @@
                 <!-- CTA Button & Auth Links -->
                 <div class="hidden lg:flex items-center space-x-4">
                     @guest
-                        <a href="{{ route('login') }}" class="text-hastana-blue hover:text-hastana-red transition-colors">
+                        <a href="{{ route('login', absolute: false) }}" class="text-hastana-blue hover:text-hastana-red transition-colors">
                             <i class="fas fa-sign-in-alt mr-1"></i>Masuk
                         </a>
                         <a href="{{ route('register') }}" class="bg-hastana-red text-white px-6 py-2 rounded-full hover:bg-red-700 transition-colors">
@@ -171,7 +171,7 @@
                 <hr class="my-4">
                 
                 @guest
-                    <a href="{{ route('login') }}" class="mobile-nav-link">
+                    <a href="{{ route('login', absolute: false) }}" class="mobile-nav-link">
                         <i class="fas fa-sign-in-alt mr-3"></i>Masuk
                     </a>
                     <a href="{{ route('register') }}" class="mobile-nav-link">

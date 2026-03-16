@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Illuminate\Database\Seeder;
 use App\Models\Product;
 use App\Models\WeddingOrganizer;
+use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
 
 class ProductSeeder extends Seeder
 {
@@ -14,11 +14,18 @@ class ProductSeeder extends Seeder
      */
     public function run(): void
     {
+        if (app()->environment('production') && ! ($this->command?->option('force') ?? false)) {
+            $this->command?->warn('ProductSeeder dilewati di production. Jalankan dengan --force jika benar-benar dibutuhkan.');
+
+            return;
+        }
+
         // Get all wedding organizers
         $organizers = WeddingOrganizer::all();
 
         if ($organizers->isEmpty()) {
             $this->command->warn('No wedding organizers found. Please run WeddingOrganizerSeeder first.');
+
             return;
         }
 
@@ -211,46 +218,62 @@ class ProductSeeder extends Seeder
         // Create products for each organizer (first 3 organizers get all products)
         foreach ($organizers->take(3) as $index => $organizer) {
             $this->command->info("Creating products for {$organizer->organizer_name}...");
-            
+
             foreach ($products as $productIndex => $productData) {
-                Product::create([
-                    'wedding_organizer_id' => $organizer->id,
-                    'name' => $productData['name'],
-                    'slug' => \Illuminate\Support\Str::slug($productData['name']) . '-' . $organizer->id . '-' . $productIndex,
-                    'description' => $productData['description'],
-                    'original_price' => $productData['original_price'],
-                    'price' => $productData['price'],
-                    'images' => $productData['images'],
-                    'features' => $productData['features'],
-                    'badges' => $productData['badges'],
-                    'limited_offer' => $productData['limited_offer'],
-                    'is_active' => $productData['is_active'],
-                    'sort_order' => $productData['sort_order'],
-                ]);
+                $slug = Str::slug($productData['name']).'-'.$organizer->id.'-'.($productIndex + 1);
+
+                Product::updateOrCreate(
+                    ['slug' => $slug],
+                    [
+                        'wedding_organizer_id' => $organizer->id,
+                        'name' => $productData['name'],
+                        'slug' => $slug,
+                        'description' => $productData['description'],
+                        'original_price' => $productData['original_price'],
+                        'price' => $productData['price'],
+                        'images' => $productData['images'],
+                        'features' => $productData['features'],
+                        'badges' => $productData['badges'],
+                        'limited_offer' => $productData['limited_offer'],
+                        'is_active' => $productData['is_active'],
+                        'sort_order' => $productData['sort_order'],
+                    ]
+                );
             }
         }
 
-        // Remaining organizers get 2-3 random products
+        // Remaining organizers get 2-3 deterministic products (stable across re-runs)
         foreach ($organizers->skip(3) as $organizer) {
             $this->command->info("Creating random products for {$organizer->organizer_name}...");
-            
-            $randomProducts = collect($products)->random(rand(2, 3));
-            
+
+            $count = ($organizer->id % 2) + 2; // 2-3 products
+            $start = $organizer->id % count($products);
+            $ordered = collect($products)->values();
+            $slice = $ordered->slice($start, $count);
+            $randomProducts = $slice->count() === $count
+                ? $slice
+                : $slice->merge($ordered->slice(0, $count - $slice->count()));
+
             foreach ($randomProducts as $productIndex => $productData) {
-                Product::create([
-                    'wedding_organizer_id' => $organizer->id,
-                    'name' => $productData['name'],
-                    'slug' => \Illuminate\Support\Str::slug($productData['name']) . '-' . $organizer->id . '-' . time() . '-' . rand(1000, 9999),
-                    'description' => $productData['description'],
-                    'original_price' => $productData['original_price'],
-                    'price' => $productData['price'],
-                    'images' => $productData['images'],
-                    'features' => $productData['features'],
-                    'badges' => $productData['badges'],
-                    'limited_offer' => $productData['limited_offer'],
-                    'is_active' => $productData['is_active'],
-                    'sort_order' => $productData['sort_order'],
-                ]);
+                $slug = Str::slug($productData['name']).'-'.$organizer->id.'-'.($productIndex + 1);
+
+                Product::updateOrCreate(
+                    ['slug' => $slug],
+                    [
+                        'wedding_organizer_id' => $organizer->id,
+                        'name' => $productData['name'],
+                        'slug' => $slug,
+                        'description' => $productData['description'],
+                        'original_price' => $productData['original_price'],
+                        'price' => $productData['price'],
+                        'images' => $productData['images'],
+                        'features' => $productData['features'],
+                        'badges' => $productData['badges'],
+                        'limited_offer' => $productData['limited_offer'],
+                        'is_active' => $productData['is_active'],
+                        'sort_order' => $productData['sort_order'],
+                    ]
+                );
             }
         }
 

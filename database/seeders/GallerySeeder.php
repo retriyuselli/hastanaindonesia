@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\Gallery;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class GallerySeeder extends Seeder
@@ -13,6 +12,12 @@ class GallerySeeder extends Seeder
      */
     public function run(): void
     {
+        if (app()->environment('production') && ! ($this->command?->option('force') ?? false)) {
+            $this->command?->warn('GallerySeeder dilewati di production. Jalankan dengan --force jika benar-benar dibutuhkan.');
+
+            return;
+        }
+
         // Create specific featured galleries
         $featuredGalleries = [
             [
@@ -219,8 +224,8 @@ class GallerySeeder extends Seeder
             ->create();
 
         $this->command->info('Gallery seeded successfully!');
-        $this->command->info('Total galleries: ' . Gallery::count());
-        $this->command->info('Featured galleries: ' . Gallery::featured()->count());
-        $this->command->info('Published galleries: ' . Gallery::published()->count());
+        $this->command->info('Total galleries: '.Gallery::count());
+        $this->command->info('Featured galleries: '.Gallery::featured()->count());
+        $this->command->info('Published galleries: '.Gallery::published()->count());
     }
 }

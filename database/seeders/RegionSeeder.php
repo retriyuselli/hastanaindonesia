@@ -2,10 +2,9 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Illuminate\Database\Seeder;
 use App\Models\Region;
 use Carbon\Carbon;
+use Illuminate\Database\Seeder;
 
 class RegionSeeder extends Seeder
 {
@@ -14,6 +13,12 @@ class RegionSeeder extends Seeder
      */
     public function run(): void
     {
+        if (app()->environment('production') && ! ($this->command?->option('force') ?? false)) {
+            $this->command?->warn('RegionSeeder dilewati di production. Jalankan dengan --force jika benar-benar dibutuhkan.');
+
+            return;
+        }
+
         $regions = [
             [
                 'region_name' => 'Sumatera Utara',
@@ -82,7 +87,7 @@ class RegionSeeder extends Seeder
             [
                 'region_name' => 'Jawa Tengah',
                 'province' => 'Jawa Tengah',
-                                'description' => 'Dewan Pimpinan Wilayah HASTANA Jawa Tengah, koordinasi wedding organizer di Jawa Tengah dan sekitarnya.',
+                'description' => 'Dewan Pimpinan Wilayah HASTANA Jawa Tengah, koordinasi wedding organizer di Jawa Tengah dan sekitarnya.',
                 'contact_email' => 'jateng@hastanaindonesia.id',
                 'contact_phone' => '+62-24-33445566',
                 'website' => 'https://hastanaindonesia.id/jawa-tengah',
@@ -94,7 +99,7 @@ class RegionSeeder extends Seeder
             [
                 'region_name' => 'Jawa Timur',
                 'province' => 'Jawa Timur',
-                                'description' => 'Dewan Pimpinan Wilayah HASTANA Jawa Timur, koordinasi wedding organizer di Jawa Timur dan sekitarnya.',
+                'description' => 'Dewan Pimpinan Wilayah HASTANA Jawa Timur, koordinasi wedding organizer di Jawa Timur dan sekitarnya.',
                 'contact_email' => 'jatim@hastanaindonesia.id',
                 'contact_phone' => '+62-31-77889900',
                 'website' => 'https://hastanaindonesia.id/jawa-timur',
@@ -112,6 +117,6 @@ class RegionSeeder extends Seeder
             );
         }
 
-        $this->command->info('Region seeder completed! Created ' . count($regions) . ' regions covering major areas in Indonesia.');
+        $this->command->info('Region seeder completed! Created '.count($regions).' regions covering major areas in Indonesia.');
     }
 }

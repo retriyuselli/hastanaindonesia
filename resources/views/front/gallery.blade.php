@@ -547,9 +547,17 @@
         document.getElementById('lightbox-category').textContent = gallery.category;
         document.getElementById('lightbox-title').textContent = gallery.title;
         document.getElementById('lightbox-description').textContent = gallery.description;
-        document.getElementById('lightbox-date').innerHTML = `<i class="fas fa-calendar mr-2"></i>${new Date(gallery.date).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })}`;
-        document.getElementById('lightbox-location').innerHTML = `<i class="fas fa-map-marker-alt mr-2"></i>${gallery.location}`;
-        document.getElementById('lightbox-photographer').innerHTML = `<i class="fas fa-camera mr-2"></i>${gallery.photographer}`;
+        const setIconText = (elementId, text) => {
+            const el = document.getElementById(elementId);
+            const icon = el.querySelector('i');
+            el.textContent = '';
+            el.appendChild(icon);
+            el.appendChild(document.createTextNode(text ?? ''));
+        };
+
+        setIconText('lightbox-date', new Date(gallery.date).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }));
+        setIconText('lightbox-location', gallery.location);
+        setIconText('lightbox-photographer', gallery.photographer);
     }
 
     // Close Lightbox

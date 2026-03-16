@@ -2,13 +2,12 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Illuminate\Database\Seeder;
-use App\Models\EventParticipant;
 use App\Models\EventHastana;
+use App\Models\EventParticipant;
 use App\Models\User;
 use Carbon\Carbon;
 use Faker\Factory as Faker;
+use Illuminate\Database\Seeder;
 
 class EventParticipantSeeder extends Seeder
 {
@@ -17,40 +16,48 @@ class EventParticipantSeeder extends Seeder
      */
     public function run(): void
     {
+        if (app()->environment('production') && ! ($this->command?->option('force') ?? false)) {
+            $this->command?->warn('EventParticipantSeeder dilewati di production. Jalankan dengan --force jika benar-benar dibutuhkan.');
+
+            return;
+        }
+
         $faker = Faker::create('id_ID');
-        
+
         // Get available events and users
         $events = EventHastana::pluck('id')->toArray();
         $users = User::pluck('id')->toArray();
-        
+
         if (empty($events)) {
             $this->command->error('No events found! Please run EventHastanaSeeder first.');
+
             return;
         }
-        
+
         if (empty($users)) {
             $this->command->error('No users found! Please run AdminUserSeeder first.');
+
             return;
         }
 
         $participants = [];
-        
+
         // Create participants for each event
         foreach ($events as $eventId) {
             $event = EventHastana::find($eventId);
             $participantCount = $faker->numberBetween(5, 25); // Random participants per event
-            
+
             for ($i = 0; $i < $participantCount; $i++) {
                 $registrationDate = $faker->dateTimeBetween($event->created_at ?? '-1 month', 'now');
                 $isConfirmed = $faker->boolean(70); // 70% chance of being confirmed
                 $isAttended = $isConfirmed ? $faker->boolean(80) : false; // 80% of confirmed participants attend
-                
+
                 // Determine payment status based on event
                 $paymentStatus = $event->is_free ? 'free' : $faker->randomElement(['pending', 'paid', 'refunded']);
                 if ($paymentStatus === 'paid') {
                     $isConfirmed = true; // Paid participants are automatically confirmed
                 }
-                
+
                 $participants[] = [
                     'event_hastana_id' => $eventId,
                     'user_id' => $faker->optional(0.6)->randomElement($users), // 60% have user accounts
@@ -70,16 +77,16 @@ class EventParticipantSeeder extends Seeder
                         'Business Owner',
                         'Freelancer',
                         'Student',
-                        'Consultant'
+                        'Consultant',
                     ]),
                     'notes' => $faker->optional(0.3)->sentence(10), // 30% have notes
                     'payment_method' => $event->is_free ? null : $faker->randomElement([
                         'bank_transfer',
                         'credit_card',
                         'e_wallet',
-                        'cash'
+                        'cash',
                     ]),
-                    'payment_proof' => ($paymentStatus === 'paid') ? 'payment_proofs/proof_' . $faker->uuid() . '.jpg' : null,
+                    'payment_proof' => ($paymentStatus === 'paid') ? 'payment_proofs/proof_'.$faker->uuid().'.jpg' : null,
                     'status' => $isConfirmed ? 'confirmed' : 'pending',
                     'payment_status' => $paymentStatus,
                     'registration_code' => strtoupper($faker->bothify('EVT-####-???')),
@@ -155,25 +162,46 @@ class EventParticipantSeeder extends Seeder
         // Merge regular and VIP participants
         $allParticipants = array_merge($participants, $vipParticipants);
 
-        // Insert participants in batches for better performance
+        // Insert/update participants in batches for better performance
         $chunks = array_chunk($allParticipants, 50);
         foreach ($chunks as $chunk) {
-            EventParticipant::insert($chunk);
+            EventParticipant::upsert(
+                $chunk,
+                ['registration_code'],
+                [
+                    'event_hastana_id',
+                    'user_id',
+                    'name',
+                    'email',
+                    'phone',
+                    'company',
+                    'position',
+                    'notes',
+                    'payment_method',
+                    'payment_proof',
+                    'status',
+                    'payment_status',
+                    'confirmed_at',
+                    'attended_at',
+                    'created_at',
+                    'updated_at',
+                ]
+            );
         }
 
-        $this->command->info('EventParticipant seeder completed! Created ' . count($allParticipants) . ' event participants across all events.');
+        $this->command->info('EventParticipant seeder completed! Created '.count($allParticipants).' event participants across all events.');
         $this->command->info('Statistics:');
-        $this->command->info('- Regular participants: ' . count($participants));
-        $this->command->info('- VIP participants: ' . count($vipParticipants));
-        $this->command->info('- Events covered: ' . count($events));
-        
+        $this->command->info('- Regular participants: '.count($participants));
+        $this->command->info('- VIP participants: '.count($vipParticipants));
+        $this->command->info('- Events covered: '.count($events));
+
         // Display some statistics
         $totalConfirmed = collect($allParticipants)->where('status', 'confirmed')->count();
         $totalPaid = collect($allParticipants)->where('payment_status', 'paid')->count();
         $totalAttended = collect($allParticipants)->whereNotNull('attended_at')->count();
-        
-        $this->command->info('- Confirmed participants: ' . $totalConfirmed);
-        $this->command->info('- Paid participants: ' . $totalPaid);
-        $this->command->info('- Attended participants: ' . $totalAttended);
+
+        $this->command->info('- Confirmed participants: '.$totalConfirmed);
+        $this->command->info('- Paid participants: '.$totalPaid);
+        $this->command->info('- Attended participants: '.$totalAttended);
     }
 }

@@ -2,11 +2,9 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Illuminate\Database\Seeder;
-use App\Models\EventHastana;
 use App\Models\EventCategory;
-use Illuminate\Support\Str;
+use App\Models\EventHastana;
+use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
 class EventHastanaSeeder extends Seeder
@@ -16,11 +14,18 @@ class EventHastanaSeeder extends Seeder
      */
     public function run(): void
     {
+        if (app()->environment('production') && ! ($this->command?->option('force') ?? false)) {
+            $this->command?->warn('EventHastanaSeeder dilewati di production. Jalankan dengan --force jika benar-benar dibutuhkan.');
+
+            return;
+        }
+
         // Ambil semua kategori
         $categories = EventCategory::all();
-        
+
         if ($categories->isEmpty()) {
             $this->command->warn('Event categories tidak ditemukan. Jalankan EventCategorySeeder terlebih dahulu.');
+
             return;
         }
 
@@ -42,8 +47,8 @@ class EventHastanaSeeder extends Seeder
                     'online_link' => null,
                     'description' => '<p>Workshop intensif 2 hari tentang strategi digital marketing terkini untuk meningkatkan brand awareness dan penjualan bisnis Anda.</p><p><strong>Materi yang akan dibahas:</strong></p><ul><li>Social Media Marketing Strategy (Instagram, TikTok, LinkedIn)</li><li>Content Marketing & SEO Optimization</li><li>Facebook & Instagram Ads</li><li>Google Ads & Analytics</li><li>Email Marketing Automation</li><li>Influencer Marketing</li></ul><p><strong>Instruktur:</strong> Tim praktisi digital marketing dengan pengalaman 10+ tahun di berbagai industri</p>',
                     'short_description' => 'Workshop intensif strategi digital marketing untuk meningkatkan brand awareness dan penjualan bisnis.',
-                    'start_date' => '2025-11-15',
-                    'end_date' => '2025-11-16',
+                    'start_date' => '2026-11-15',
+                    'end_date' => '2026-11-16',
                     'start_time' => '09:00:00',
                     'end_time' => '17:00:00',
                     'location' => 'Jl. Gatot Subroto Kav. 52-53, Jakarta Selatan 12950',
@@ -77,8 +82,8 @@ class EventHastanaSeeder extends Seeder
                     'online_link' => 'https://zoom.us/j/987654321?pwd=abcdef123',
                     'description' => '<p>Workshop praktis membuat konten visual menarik untuk meningkatkan engagement di social media bisnis Anda.</p><p><strong>Materi meliputi:</strong></p><ul><li>Dasar Fotografi Produk</li><li>Teknik Lighting & Komposisi</li><li>Video Marketing untuk Instagram Reels & TikTok</li><li>Mobile Photography & Editing</li><li>Copywriting untuk Visual Content</li><li>Planning & Scheduling Content</li></ul><p><strong>Format Hybrid:</strong> Peserta dapat mengikuti secara offline di studio atau online via Zoom</p>',
                     'short_description' => 'Workshop praktis fotografi dan videografi untuk konten bisnis yang engaging.',
-                    'start_date' => '2025-12-08',
-                    'end_date' => '2025-12-08',
+                    'start_date' => '2026-12-08',
+                    'end_date' => '2026-12-08',
                     'start_time' => '09:00:00',
                     'end_time' => '16:00:00',
                     'location' => 'Jl. Kemang Raya No. 12A, Jakarta Selatan 12560',
@@ -112,8 +117,8 @@ class EventHastanaSeeder extends Seeder
                     'online_link' => null,
                     'description' => '<p>Pelatihan intensif Microsoft Excel tingkat lanjut untuk meningkatkan produktivitas kerja dan analisis data.</p><p><strong>Materi yang dipelajari:</strong></p><ul><li>Advanced Formula & Functions (VLOOKUP, INDEX-MATCH, XLOOKUP)</li><li>Pivot Tables & Advanced Charts</li><li>Data Analysis & Visualization Techniques</li><li>Macro & VBA Automation untuk efisiensi</li><li>Dashboard Creation yang interaktif</li><li>Power Query & Power Pivot untuk Big Data</li><li>Financial Modeling & Forecasting</li></ul><p><strong>Target:</strong> Profesional yang ingin meningkatkan skill Excel untuk analisis data dan reporting</p>',
                     'short_description' => 'Pelatihan Excel tingkat lanjut untuk meningkatkan produktivitas kerja dan analisis data profesional.',
-                    'start_date' => '2025-11-25',
-                    'end_date' => '2025-11-26',
+                    'start_date' => '2026-11-25',
+                    'end_date' => '2026-11-26',
                     'start_time' => '09:00:00',
                     'end_time' => '17:00:00',
                     'location' => 'Jl. Sudirman Kav. 25, Jakarta Pusat 10270',
@@ -147,8 +152,8 @@ class EventHastanaSeeder extends Seeder
                     'online_link' => null,
                     'description' => '<p>Workshop praktis desain grafis menggunakan Adobe Photoshop dan Illustrator untuk pemula hingga menengah.</p><p><strong>Yang akan dipelajari:</strong></p><ul><li>Fundamental Design Principles</li><li>Adobe Photoshop: Photo Editing & Manipulation</li><li>Adobe Illustrator: Vector Design & Logo Creation</li><li>Typography & Color Theory</li><li>Social Media Design Assets</li><li>Portfolio Creation</li></ul><p><strong>Target:</strong> Pemula hingga menengah yang ingin menguasai design tools</p>',
                     'short_description' => 'Workshop desain grafis dengan Photoshop & Illustrator untuk pemula hingga menengah.',
-                    'start_date' => '2025-12-15',
-                    'end_date' => '2025-12-15',
+                    'start_date' => '2026-12-15',
+                    'end_date' => '2026-12-15',
                     'start_time' => '09:00:00',
                     'end_time' => '17:00:00',
                     'location' => 'Jl. Dago No. 56, Bandung 40135',
@@ -182,8 +187,8 @@ class EventHastanaSeeder extends Seeder
                     'online_link' => null,
                     'description' => '<p>Workshop praktis untuk meningkatkan kemampuan berbicara di depan umum dan presentasi yang memukau.</p><p><strong>Materi yang dipelajari:</strong></p><ul><li>Overcoming Stage Fright & Building Confidence</li><li>Body Language & Voice Control</li><li>Storytelling Techniques yang engaging</li><li>Slide Design yang Efektif dan menarik</li><li>Q&A Handling dengan percaya diri</li><li>Impromptu Speaking skills</li><li>Virtual Presentation untuk era digital</li></ul><p><strong>Metode:</strong> 70% praktek, 30% teori dengan video analysis</p>',
                     'short_description' => 'Workshop praktis untuk meningkatkan kemampuan public speaking dan presentasi yang memukau.',
-                    'start_date' => '2025-12-22',
-                    'end_date' => '2025-12-22',
+                    'start_date' => '2026-12-22',
+                    'end_date' => '2026-12-22',
                     'start_time' => '09:00:00',
                     'end_time' => '17:00:00',
                     'location' => 'Jl. Pemuda No. 123, Surabaya 60271',
@@ -217,8 +222,8 @@ class EventHastanaSeeder extends Seeder
                     'online_link' => 'https://zoom.us/j/123456789?pwd=webinar2025',
                     'description' => '<p>Webinar eksklusif membahas masa depan bisnis digital dan implementasi AI untuk meningkatkan efisiensi bisnis.</p><p><strong>Topik Bahasan:</strong></p><ul><li>Tren Digital Business 2025-2030</li><li>AI Tools untuk Automation bisnis</li><li>ChatGPT & AI untuk Marketing</li><li>Data Analytics dengan AI</li><li>Customer Service Automation</li><li>ROI Implementation AI in Business</li><li>Case Study: Successful AI Implementation</li></ul><p><strong>Bonus:</strong> Recording webinar + AI Tools List + Templates</p>',
                     'short_description' => 'Webinar eksklusif tentang masa depan bisnis digital dan implementasi AI untuk efisiensi bisnis.',
-                    'start_date' => '2025-11-20',
-                    'end_date' => '2025-11-20',
+                    'start_date' => '2026-11-20',
+                    'end_date' => '2026-11-20',
                     'start_time' => '19:00:00',
                     'end_time' => '21:00:00',
                     'location' => 'Online via Zoom Meeting',
@@ -259,8 +264,8 @@ class EventHastanaSeeder extends Seeder
                     'event_type' => 'eksternal',
                     'description' => '<p>Seminar inspiratif bersama para entrepreneur sukses yang memulai bisnis dari nol hingga mencapai kesuksesan luar biasa.</p><p><strong>Pembicara:</strong></p><ul><li>Budi Santoso - Founder Tech Startup Unicorn (Valuasi $1B+)</li><li>Siti Nurhaliza - CEO E-Commerce Fashion Terbesar</li><li>Ahmad Dhani - Owner 100+ Franchise F&B di Indonesia</li><li>Linda Wijaya - Social Media Influencer & Business Owner</li></ul><p>Dapatkan insight langsung dari perjalanan mereka membangun bisnis dari nol!</p>',
                     'short_description' => 'Seminar inspiratif bersama entrepreneur sukses yang memulai bisnis dari nol hingga sukses.',
-                    'start_date' => '2025-12-05',
-                    'end_date' => '2025-12-05',
+                    'start_date' => '2026-12-05',
+                    'end_date' => '2026-12-05',
                     'start_time' => '13:00:00',
                     'end_time' => '17:00:00',
                     'location' => 'Ballroom Hotel Santika',
@@ -291,8 +296,8 @@ class EventHastanaSeeder extends Seeder
                     'event_type' => 'eksternal',
                     'description' => '<p>Talkshow eksklusif membahas tren teknologi terkini dan masa depan inovasi digital.</p><p><strong>Topik Diskusi:</strong></p><ul><li>Artificial Intelligence & Machine Learning</li><li>Blockchain & Web3</li><li>Internet of Things (IoT)</li><li>Metaverse & Virtual Reality</li><li>Sustainable Technology</li></ul><p><strong>Narasumber:</strong> Tech Leaders dari Google, Microsoft, dan Startup Indonesia</p>',
                     'short_description' => 'Talkshow tentang tren teknologi dan inovasi digital masa depan.',
-                    'start_date' => '2025-11-22',
-                    'end_date' => '2025-11-22',
+                    'start_date' => '2026-11-22',
+                    'end_date' => '2026-11-22',
                     'start_time' => '14:00:00',
                     'end_time' => '17:00:00',
                     'location' => 'Auditorium Universitas Indonesia',
@@ -323,8 +328,8 @@ class EventHastanaSeeder extends Seeder
                     'event_type' => 'eksternal',
                     'description' => '<p>Seminar penting tentang menjaga kesehatan mental di lingkungan kerja yang dinamis dan penuh tekanan.</p><p><strong>Materi:</strong></p><ul><li>Mengenali Tanda-tanda Burnout</li><li>Stress Management Techniques</li><li>Work-Life Balance</li><li>Building Resilience</li><li>Mental Health First Aid</li></ul><p><strong>Pembicara:</strong> Psikolog Klinis dan HR Professionals</p>',
                     'short_description' => 'Seminar tentang menjaga kesehatan mental di lingkungan kerja.',
-                    'start_date' => '2025-11-28',
-                    'end_date' => '2025-11-28',
+                    'start_date' => '2026-11-28',
+                    'end_date' => '2026-11-28',
                     'start_time' => '14:00:00',
                     'end_time' => '17:00:00',
                     'location' => 'Auditorium Universitas Gadjah Mada',
@@ -355,8 +360,8 @@ class EventHastanaSeeder extends Seeder
                     'event_type' => 'eksternal',
                     'description' => '<p>Talkshow interaktif tentang perencanaan keuangan untuk generasi muda.</p><p><strong>Topik:</strong></p><ul><li>Budgeting & Saving Tips</li><li>Investasi untuk Pemula</li><li>Passive Income Strategy</li><li>Crypto & Digital Assets</li><li>Retirement Planning di Usia Muda</li></ul><p><strong>Pembicara:</strong> Certified Financial Planner & Successful Young Investor</p>',
                     'short_description' => 'Talkshow financial planning untuk generasi milenial dan Gen Z.',
-                    'start_date' => '2025-12-12',
-                    'end_date' => '2025-12-12',
+                    'start_date' => '2026-12-12',
+                    'end_date' => '2026-12-12',
                     'start_time' => '19:00:00',
                     'end_time' => '21:00:00',
                     'location' => 'Online via Zoom',
@@ -387,8 +392,8 @@ class EventHastanaSeeder extends Seeder
                     'event_type' => 'internal',
                     'description' => '<p>Seminar kepemimpinan untuk para leader dan calon leader di era digital.</p><p><strong>Materi:</strong></p><ul><li>Digital Leadership Mindset</li><li>Leading Remote Teams</li><li>Change Management</li><li>Innovation & Agility</li><li>People Development</li></ul><p><strong>Target:</strong> Manager, Supervisor, Team Leader</p>',
                     'short_description' => 'Seminar kepemimpinan untuk leader di era digital.',
-                    'start_date' => '2025-12-18',
-                    'end_date' => '2025-12-18',
+                    'start_date' => '2026-12-18',
+                    'end_date' => '2026-12-18',
                     'start_time' => '09:00:00',
                     'end_time' => '17:00:00',
                     'location' => 'Hotel Borobudur Jakarta',
@@ -428,8 +433,8 @@ class EventHastanaSeeder extends Seeder
                     'event_type' => 'eksternal',
                     'description' => '<p>Pameran pernikahan terbesar di Jakarta dengan 200+ vendor wedding terbaik!</p><p><strong>Vendor yang hadir:</strong></p><ul><li>Wedding Organizer & Planner</li><li>Catering & Venue</li><li>Photography & Videography</li><li>Bridal & Makeup Artist</li><li>Wedding Decoration</li><li>Entertainment & Music</li><li>Honeymoon Packages</li></ul><p><strong>Special Promo:</strong> Diskon hingga 50% untuk booking di hari event!</p>',
                     'short_description' => 'Pameran pernikahan terbesar di Jakarta dengan 200+ vendor wedding terbaik.',
-                    'start_date' => '2025-11-29',
-                    'end_date' => '2025-12-01',
+                    'start_date' => '2026-11-29',
+                    'end_date' => '2026-12-01',
                     'start_time' => '10:00:00',
                     'end_time' => '21:00:00',
                     'location' => 'Jakarta Convention Center (JCC)',
@@ -460,8 +465,8 @@ class EventHastanaSeeder extends Seeder
                     'event_type' => 'eksternal',
                     'description' => '<p>Pameran pernikahan eksklusif di Bandung dengan vendor pilihan dan fashion show.</p><p><strong>Highlight:</strong></p><ul><li>150+ Premium Wedding Vendors</li><li>Bridal Fashion Show</li><li>Wedding Talk & Tips</li><li>Live Music Performance</li><li>Photo Booth</li></ul><p>Dapatkan paket pernikahan impian Anda dengan harga spesial!</p>',
                     'short_description' => 'Pameran pernikahan eksklusif di Bandung dengan vendor pilihan.',
-                    'start_date' => '2025-12-13',
-                    'end_date' => '2025-12-14',
+                    'start_date' => '2026-12-13',
+                    'end_date' => '2026-12-14',
                     'start_time' => '10:00:00',
                     'end_time' => '20:00:00',
                     'location' => 'Trans Luxury Hotel Bandung',
@@ -492,8 +497,8 @@ class EventHastanaSeeder extends Seeder
                     'event_type' => 'eksternal',
                     'description' => '<p>Festival pernikahan terbesar di Jawa Timur dengan konsep modern dan tradisional.</p><p><strong>Fasilitas:</strong></p><ul><li>100+ Wedding Vendors</li><li>Traditional & Modern Wedding Display</li><li>Prewedding Spot</li><li>Wedding Cake Competition</li><li>Live Entertainment</li></ul>',
                     'short_description' => 'Festival pernikahan terbesar di Jawa Timur.',
-                    'start_date' => '2025-11-08',
-                    'end_date' => '2025-11-10',
+                    'start_date' => '2026-11-08',
+                    'end_date' => '2026-11-10',
                     'start_time' => '10:00:00',
                     'end_time' => '21:00:00',
                     'location' => 'Grand City Convention Hall Surabaya',
@@ -524,8 +529,8 @@ class EventHastanaSeeder extends Seeder
                     'event_type' => 'eksternal',
                     'description' => '<p>Workshop dan expo khusus intimate wedding di destinasi pernikahan favorit, Bali.</p><p><strong>Acara:</strong></p><ul><li>Workshop Planning Intimate Wedding</li><li>Bali Wedding Vendors Showcase</li><li>Beach Wedding Simulation</li><li>Destination Wedding Tips</li><li>Meet & Greet Wedding Celebrities</li></ul>',
                     'short_description' => 'Workshop dan expo khusus intimate wedding di Bali.',
-                    'start_date' => '2025-12-20',
-                    'end_date' => '2025-12-21',
+                    'start_date' => '2026-12-20',
+                    'end_date' => '2026-12-21',
                     'start_time' => '10:00:00',
                     'end_time' => '18:00:00',
                     'location' => 'The Mulia Resort Bali',
@@ -556,8 +561,8 @@ class EventHastanaSeeder extends Seeder
                     'event_type' => 'eksternal',
                     'description' => '<p>Pameran pernikahan islami dengan vendor yang sesuai syariah dan konsep pernikahan muslim modern.</p><p><strong>Vendor Syariah:</strong></p><ul><li>Halal Catering</li><li>Syariah Wedding Organizer</li><li>Muslimah Bridal & MUA</li><li>Akad Nikah Package</li><li>Islamic Decoration</li><li>Nasyid & Marawis Entertainment</li></ul>',
                     'short_description' => 'Pameran pernikahan islami dengan vendor syariah.',
-                    'start_date' => '2025-11-15',
-                    'end_date' => '2025-11-16',
+                    'start_date' => '2026-11-15',
+                    'end_date' => '2026-11-16',
                     'start_time' => '10:00:00',
                     'end_time' => '20:00:00',
                     'location' => 'Islamic Center Jakarta',
@@ -597,8 +602,8 @@ class EventHastanaSeeder extends Seeder
                     'event_type' => 'internal',
                     'description' => '<p>Program sertifikasi resmi untuk menjadi Wedding Organizer profesional yang diakui industri.</p><p><strong>Materi Sertifikasi:</strong></p><ul><li>Wedding Industry Overview</li><li>Wedding Planning & Management</li><li>Vendor Coordination</li><li>Budget & Timeline Management</li><li>Problem Solving on Wedding Day</li><li>Marketing & Branding for WO</li><li>Legal & Contract</li></ul><p><strong>Benefit:</strong> Sertifikat resmi HASTANA yang diakui industri pernikahan Indonesia</p>',
                     'short_description' => 'Program sertifikasi resmi Wedding Organizer profesional.',
-                    'start_date' => '2025-11-18',
-                    'end_date' => '2025-11-22',
+                    'start_date' => '2026-11-18',
+                    'end_date' => '2026-11-22',
                     'start_time' => '09:00:00',
                     'end_time' => '17:00:00',
                     'location' => 'HASTANA Training Center Jakarta',
@@ -629,8 +634,8 @@ class EventHastanaSeeder extends Seeder
                     'event_type' => 'internal',
                     'description' => '<p>Program sertifikasi untuk Event Organizer dan MICE (Meeting, Incentive, Convention, Exhibition) Professional.</p><p><strong>Kurikulum:</strong></p><ul><li>Event Management Fundamentals</li><li>MICE Industry Standards</li><li>Event Marketing & Sponsorship</li><li>Venue & Logistics Management</li><li>Risk Management</li><li>Post-Event Evaluation</li></ul>',
                     'short_description' => 'Program sertifikasi Event Organizer dan MICE Professional.',
-                    'start_date' => '2025-12-02',
-                    'end_date' => '2025-12-06',
+                    'start_date' => '2026-12-02',
+                    'end_date' => '2026-12-06',
                     'start_time' => '09:00:00',
                     'end_time' => '17:00:00',
                     'location' => 'HASTANA Training Center Jakarta',
@@ -661,8 +666,8 @@ class EventHastanaSeeder extends Seeder
                     'event_type' => 'internal',
                     'description' => '<p>Program sertifikasi digital marketing dengan kurikulum terkini dan praktek langsung.</p><p><strong>Materi:</strong></p><ul><li>Digital Marketing Strategy</li><li>SEO & SEM</li><li>Social Media Marketing</li><li>Content Marketing</li><li>Email Marketing</li><li>Analytics & Reporting</li><li>Paid Advertising (Google Ads, Meta Ads)</li></ul><p>Termasuk ujian sertifikasi dan capstone project!</p>',
                     'short_description' => 'Program sertifikasi Digital Marketing Specialist.',
-                    'start_date' => '2025-11-11',
-                    'end_date' => '2025-11-15',
+                    'start_date' => '2026-11-11',
+                    'end_date' => '2026-11-15',
                     'start_time' => '09:00:00',
                     'end_time' => '17:00:00',
                     'location' => 'HASTANA Digital Academy',
@@ -693,8 +698,8 @@ class EventHastanaSeeder extends Seeder
                     'event_type' => 'internal',
                     'description' => '<p>Program persiapan sertifikasi Project Management Professional dengan standar internasional.</p><p><strong>Coverage:</strong></p><ul><li>Project Management Framework</li><li>Initiating & Planning</li><li>Executing & Monitoring</li><li>Controlling & Closing</li><li>Agile & Hybrid Approaches</li><li>PMP Exam Simulation</li></ul>',
                     'short_description' => 'Program persiapan sertifikasi Project Management Professional.',
-                    'start_date' => '2025-12-09',
-                    'end_date' => '2025-12-13',
+                    'start_date' => '2026-12-09',
+                    'end_date' => '2026-12-13',
                     'start_time' => '09:00:00',
                     'end_time' => '18:00:00',
                     'location' => 'HASTANA Professional Institute',
@@ -725,8 +730,8 @@ class EventHastanaSeeder extends Seeder
                     'event_type' => 'internal',
                     'description' => '<p>Program sertifikasi untuk HR Professional dengan fokus pada talent management dan people development.</p><p><strong>Materi:</strong></p><ul><li>Strategic HRM</li><li>Talent Acquisition & Recruitment</li><li>Performance Management</li><li>Learning & Development</li><li>Compensation & Benefits</li><li>Employee Relations</li><li>HR Analytics</li></ul>',
                     'short_description' => 'Program sertifikasi HR Professional dan Talent Management.',
-                    'start_date' => '2025-11-25',
-                    'end_date' => '2025-11-29',
+                    'start_date' => '2026-11-25',
+                    'end_date' => '2026-11-29',
                     'start_time' => '09:00:00',
                     'end_time' => '17:00:00',
                     'location' => 'HASTANA HR Institute',
@@ -754,23 +759,23 @@ class EventHastanaSeeder extends Seeder
 
         // Insert semua events dengan handling foreign key constraints
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
-        
+
         foreach ($allEvents as $eventData) {
             try {
                 EventHastana::create($eventData);
             } catch (\Exception $e) {
                 $this->command->error("❌ Error creating event: {$eventData['title']}");
-                $this->command->error("   Error: " . $e->getMessage());
+                $this->command->error('   Error: '.$e->getMessage());
             }
         }
-        
+
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
         $this->command->info('✅ Event Hastana seeder berhasil dijalankan!');
-        $this->command->info('   📋 Total events created: ' . count($allEvents));
+        $this->command->info('   📋 Total events created: '.count($allEvents));
         $this->command->line('');
         $this->command->info('   📊 Breakdown per kategori:');
-        
+
         if ($workshopCategory) {
             $workshopCount = EventHastana::where('event_category_id', $workshopCategory->id)->count();
             $this->command->info("   - {$workshopCategory->name}: {$workshopCount} events");
