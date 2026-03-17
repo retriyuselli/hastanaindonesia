@@ -496,17 +496,25 @@ class EventHastana extends Model
     public function getRatingDistribution(): array
     {
         $distribution = [];
-        
+
+        $counts = $this->approvedReviews()
+            ->selectRaw('rating, count(*) as aggregate')
+            ->groupBy('rating')
+            ->pluck('aggregate', 'rating')
+            ->all();
+
+        $total = max((int) ($this->total_reviews ?? 0), array_sum($counts));
+
         for ($i = 5; $i >= 1; $i--) {
-            $count = $this->approvedReviews()->where('rating', $i)->count();
-            $percentage = $this->total_reviews > 0 ? ($count / $this->total_reviews) * 100 : 0;
-            
+            $count = (int) ($counts[$i] ?? 0);
+            $percentage = $total > 0 ? ($count / $total) * 100 : 0;
+
             $distribution[$i] = [
                 'count' => $count,
                 'percentage' => round($percentage, 1),
             ];
         }
-        
+
         return $distribution;
     }
 }

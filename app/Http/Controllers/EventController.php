@@ -9,6 +9,7 @@ use App\Models\EventReview;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 
 class EventController extends Controller
 {
@@ -123,34 +124,48 @@ class EventController extends Controller
         $events = $query->paginate(12)->withQueryString();
 
         // Get categories for filter
-        $categories = EventCategory::where('is_active', true)
-            ->orderBy('name')
-            ->get();
+        $categories = Cache::remember('events:categories', now()->addMinutes(30), function () {
+            return EventCategory::where('is_active', true)
+                ->orderBy('name')
+                ->get();
+        });
 
         // Get available cities for filter
-        $cities = EventHastana::where('status', 'published')
-            ->where('is_active', true)
-            ->distinct()
-            ->orderBy('city')
-            ->pluck('city');
+        $cities = Cache::remember('events:cities', now()->addMinutes(30), function () {
+            return EventHastana::where('status', 'published')
+                ->where('is_active', true)
+                ->whereNotNull('city')
+                ->where('city', '!=', '')
+                ->distinct()
+                ->orderBy('city')
+                ->pluck('city');
+        });
 
         // Get featured events (for sidebar or highlighted section)
-        $featuredEvents = EventHastana::where('status', 'published')
-            ->where('is_active', true)
-            ->where('is_featured', true)
-            ->where('start_date', '>=', now())
-            ->orderBy('start_date')
-            ->limit(5)
-            ->get();
+        $featuredEvents = Cache::remember('events:featured', now()->addMinutes(10), function () {
+            return EventHastana::query()
+                ->published()
+                ->active()
+                ->featured()
+                ->where('start_date', '>=', now())
+                ->with('eventCategory')
+                ->orderBy('start_date')
+                ->limit(5)
+                ->get();
+        });
 
         // Get trending events
-        $trendingEvents = EventHastana::where('status', 'published')
-            ->where('is_active', true)
-            ->where('is_trending', true)
-            ->where('start_date', '>=', now())
-            ->orderBy('current_participants', 'desc')
-            ->limit(5)
-            ->get();
+        $trendingEvents = Cache::remember('events:trending', now()->addMinutes(10), function () {
+            return EventHastana::query()
+                ->published()
+                ->active()
+                ->trending()
+                ->where('start_date', '>=', now())
+                ->with('eventCategory')
+                ->orderBy('current_participants', 'desc')
+                ->limit(5)
+                ->get();
+        });
 
         return view('events.index', compact(
             'events',
@@ -173,11 +188,13 @@ class EventController extends Controller
             ->firstOrFail();
 
         // Get related events (same category, upcoming)
-        $relatedEvents = EventHastana::where('event_category_id', $event->event_category_id)
+        $relatedEvents = EventHastana::query()
+            ->where('event_category_id', $event->event_category_id)
             ->where('id', '!=', $event->id)
-            ->where('status', 'published')
-            ->where('is_active', true)
+            ->published()
+            ->active()
             ->where('start_date', '>=', now())
+            ->with('eventCategory')
             ->orderBy('start_date')
             ->limit(4)
             ->get();
@@ -188,75 +205,72 @@ class EventController extends Controller
             ->latest()
             ->paginate(10);
 
-        // Get rating distribution
-        $ratingDistribution = $event->getRatingDistribution();
+        $ratingDistribution = Cache::remember(
+            'event:rating_distribution:'.$event->id.':'.$event->updated_at?->timestamp,
+            now()->addMinutes(10),
+            fn () => $event->getRatingDistribution()
+        );
 
         // Parse benefits if available
-        $benefits = [];
-        if ($event->benefits) {
-            $benefitsText = $event->benefits;
+        ['benefits' => $benefits, 'requirements' => $requirements] = Cache::remember(
+            'event:parsed_fields:'.$event->id.':'.$event->updated_at?->timestamp,
+            now()->addMinutes(10),
+            function () use ($event) {
+                $benefits = [];
+                if ($event->benefits) {
+                    $benefitsText = $event->benefits;
 
-            // Check if it's HTML format
-            if (strpos($benefitsText, '<li>') !== false) {
-                // Extract text from HTML list items
-                preg_match_all('/<li[^>]*><p>(.*?)<\/p><\/li>/', $benefitsText, $matches);
-                if (! empty($matches[1])) {
-                    $benefits = array_map('html_entity_decode', $matches[1]);
-                } else {
-                    // Fallback: extract any text between <li> tags
-                    preg_match_all('/<li[^>]*>(.*?)<\/li>/', $benefitsText, $matches);
-                    if (! empty($matches[1])) {
-                        $benefits = array_map(function ($item) {
-                            return html_entity_decode(strip_tags($item));
-                        }, $matches[1]);
+                    if (strpos($benefitsText, '<li>') !== false) {
+                        preg_match_all('/<li[^>]*><p>(.*?)<\/p><\/li>/', $benefitsText, $matches);
+                        if (! empty($matches[1])) {
+                            $benefits = array_map('html_entity_decode', $matches[1]);
+                        } else {
+                            preg_match_all('/<li[^>]*>(.*?)<\/li>/', $benefitsText, $matches);
+                            if (! empty($matches[1])) {
+                                $benefits = array_map(function ($item) {
+                                    return html_entity_decode(strip_tags($item));
+                                }, $matches[1]);
+                            }
+                        }
+                    } else {
+                        $benefitsText = str_replace('\\n', "\n", $benefitsText);
+                        if (strpos($benefitsText, "\n") !== false) {
+                            $benefits = array_filter(array_map('trim', explode("\n", $benefitsText)));
+                        } else {
+                            $benefits = array_filter(array_map('trim', explode(',', $benefitsText)));
+                        }
                     }
                 }
-            } else {
-                // Handle literal \n characters
-                $benefitsText = str_replace('\\n', "\n", $benefitsText);
 
-                // Check if it contains newlines, otherwise split by comma
-                if (strpos($benefitsText, "\n") !== false) {
-                    $benefits = array_filter(array_map('trim', explode("\n", $benefitsText)));
-                } else {
-                    $benefits = array_filter(array_map('trim', explode(',', $benefitsText)));
-                }
-            }
-        }
+                $requirements = [];
+                if ($event->requirements) {
+                    $requirementsText = $event->requirements;
 
-        $requirements = [];
-        if ($event->requirements) {
-            $requirementsText = $event->requirements;
-
-            // Check if it's HTML format
-            if (strpos($requirementsText, '<li>') !== false) {
-                // Extract text from HTML list items
-                preg_match_all('/<li[^>]*><p>(.*?)<\/p><\/li>/', $requirementsText, $matches);
-                if (! empty($matches[1])) {
-                    $requirements = array_map('html_entity_decode', $matches[1]);
-                } else {
-                    // Fallback: extract any text between <li> tags
-                    preg_match_all('/<li[^>]*>(.*?)<\/li>/', $requirementsText, $matches);
-                    if (! empty($matches[1])) {
-                        $requirements = array_map(function ($item) {
-                            return html_entity_decode(strip_tags($item));
-                        }, $matches[1]);
+                    if (strpos($requirementsText, '<li>') !== false) {
+                        preg_match_all('/<li[^>]*><p>(.*?)<\/p><\/li>/', $requirementsText, $matches);
+                        if (! empty($matches[1])) {
+                            $requirements = array_map('html_entity_decode', $matches[1]);
+                        } else {
+                            preg_match_all('/<li[^>]*>(.*?)<\/li>/', $requirementsText, $matches);
+                            if (! empty($matches[1])) {
+                                $requirements = array_map(function ($item) {
+                                    return html_entity_decode(strip_tags($item));
+                                }, $matches[1]);
+                            }
+                        }
+                    } else {
+                        $requirementsText = str_replace('\\n', "\n", $requirementsText);
+                        if (strpos($requirementsText, "\n") !== false) {
+                            $requirements = array_filter(array_map('trim', explode("\n", $requirementsText)));
+                        } else {
+                            $requirements = array_filter(array_map('trim', explode(',', $requirementsText)));
+                        }
                     }
                 }
-            } else {
-                // First replace literal \n with actual newlines
-                $requirementsText = str_replace('\\n', "\n", $requirementsText);
 
-                // Check if requirements contains newlines (bullet format) or commas (comma-separated format)
-                if (strpos($requirementsText, "\n") !== false) {
-                    // Newline separated with bullets
-                    $requirements = array_filter(array_map('trim', explode("\n", $requirementsText)));
-                } else {
-                    // Comma separated format
-                    $requirements = array_filter(array_map('trim', explode(',', $requirementsText)));
-                }
+                return compact('benefits', 'requirements');
             }
-        }
+        );
 
         return view('events.show', compact(
             'event',

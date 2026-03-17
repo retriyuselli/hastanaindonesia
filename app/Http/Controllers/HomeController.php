@@ -7,6 +7,8 @@ use App\Models\Portfolio;
 use App\Models\WeddingOrganizer;
 use App\Models\EventHastana;
 use App\Models\Blog;
+use App\Models\Product;
+use Illuminate\Support\Facades\Cache;
 
 class HomeController extends Controller
 {
@@ -16,39 +18,56 @@ class HomeController extends Controller
     public function index()
     {
         // Get featured portfolios
-        $featuredPortfolios = Portfolio::featured()
-            ->with('weddingOrganizer')
-            ->limit(4)
-            ->get();
+        $featuredPortfolios = Cache::remember('home:featured_portfolios', now()->addMinutes(10), function () {
+            return Portfolio::featured()
+                ->with('weddingOrganizer')
+                ->limit(4)
+                ->get();
+        });
 
         // Get featured wedding organizers (verified and active)
-        $featuredWeddingOrganizers = WeddingOrganizer::where('verification_status', 'verified')
-            ->where('status', 'active')
-            ->inRandomOrder()
-            ->limit(10)
-            ->get();
+        $featuredWeddingOrganizers = Cache::remember('home:featured_wedding_organizers', now()->addMinutes(10), function () {
+            return WeddingOrganizer::query()
+                ->verified()
+                ->active()
+                ->with(['region', 'user'])
+                ->inRandomOrder()
+                ->limit(10)
+                ->get();
+        });
 
         // Get featured products with their wedding organizer
-        $featuredProducts = \App\Models\Product::with('weddingOrganizer')
-            ->where('is_active', true)
-            ->inRandomOrder()
-            ->limit(10)
-            ->get();
+        $featuredProducts = Cache::remember('home:featured_products', now()->addMinutes(10), function () {
+            return Product::query()
+                ->active()
+                ->with(['weddingOrganizer.region'])
+                ->inRandomOrder()
+                ->limit(10)
+                ->get();
+        });
 
         // Get upcoming events (active and future events)
-        $upcomingEvents = EventHastana::where('is_active', true)
-            ->where('status', 'published')
-            ->where('start_date', '>=', now())
-            ->orderBy('start_date', 'asc')
-            ->limit(4)
-            ->get();
+        $upcomingEvents = Cache::remember('home:upcoming_events', now()->addMinutes(5), function () {
+            return EventHastana::query()
+                ->active()
+                ->published()
+                ->where('start_date', '>=', now())
+                ->with('eventCategory')
+                ->orderBy('start_date', 'asc')
+                ->limit(4)
+                ->get();
+        });
 
         // Get latest blog articles (featured or latest published)
-        $latestBlogs = Blog::where('status', 'published')
-            ->where('is_published', true)
-            ->orderBy('published_at', 'desc')
-            ->limit(3)
-            ->get();
+        $latestBlogs = Cache::remember('home:latest_blogs', now()->addMinutes(5), function () {
+            return Blog::query()
+                ->where('status', 'published')
+                ->published()
+                ->with(['category', 'author'])
+                ->orderBy('published_at', 'desc')
+                ->limit(3)
+                ->get();
+        });
 
         // Data dummy untuk demo - nanti bisa diganti dengan data dari database
         $data = [
