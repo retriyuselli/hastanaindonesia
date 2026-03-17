@@ -45,7 +45,7 @@ class WeddingOrganizerForm
                                         Select::make('region_id')
                                             ->label('Wilayah')
                                             ->options(Region::pluck('region_name', 'id'))
-                                            ->nullable()
+                                            ->required()
                                             ->searchable()
                                             ->placeholder('Pilih wilayah')
                                             ->helperText('Wilayah operasional wedding organizer (diisi oleh admin)')
@@ -66,26 +66,52 @@ class WeddingOrganizerForm
                                             ->placeholder('Contoh: Elegant Wedding Bali')
                                             ->prefixIcon('heroicon-o-sparkles')
                                             ->columnSpan(2)
-                                            ->reactive()
+                                            ->live(debounce: 400)
                                             ->afterStateUpdated(fn ($state, callable $set) => $set('slug', Str::slug($state))),
 
                                         TextInput::make('slug')
                                             ->label('Slug (URL)')
                                             ->required()
+                                            ->readOnly()
                                             ->maxLength(255)
                                             ->placeholder('elegant-wedding-bali')
                                             ->prefixIcon('heroicon-o-link')
                                             ->columnSpan(2)
                                             ->unique(ignoreRecord: true)
-                                            ->helperText('URL-friendly identifier (otomatis dibuat dari nama, bisa diubah)')
+                                            ->afterStateHydrated(function ($state, callable $set, callable $get) {
+                                                if (filled($state)) {
+                                                    return;
+                                                }
+
+                                                $name = $get('organizer_name');
+                                                if (filled($name)) {
+                                                    $set('slug', Str::slug($name));
+                                                }
+                                            })
+                                            ->helperText('URL-friendly identifier (otomatis dibuat dari nama)')
                                             ->rules(['regex:/^[a-z0-9]+(?:-[a-z0-9]+)*$/']),
+
+                                        Select::make('business_type')
+                                            ->label('Jenis Usaha')
+                                            ->options(config('indonesia.business_types'))
+                                            ->default('Perorangan')
+                                            ->required()
+                                            ->prefixIcon('heroicon-o-briefcase')
+                                            ->helperText('Bentuk badan usaha')
+                                            ->live()
+                                            ->afterStateUpdated(function ($state, callable $set) {
+                                                if ($state === 'Perorangan') {
+                                                    $set('brand_name', null);
+                                                }
+                                            }),
 
                                         TextInput::make('brand_name')
                                             ->label('Nama PT/CV (Optional)')
                                             ->maxLength(255)
                                             ->placeholder('Contoh: PT Elegant Wedding Indonesia')
                                             ->prefixIcon('heroicon-o-building-office')
-                                            ->columnSpan(2),
+                                            ->columnSpan(1)
+                                            ->hidden(fn (callable $get) => $get('business_type') === 'Perorangan'),
 
                                         Textarea::make('description')
                                             ->label('Deskripsi')
@@ -101,12 +127,6 @@ class WeddingOrganizerForm
                                             ->directory('wedding-organizer-logos')
                                             ->image()
                                             ->maxSize(2048)
-                                            ->imageEditor()
-                                            ->imageEditorAspectRatios([
-                                                '1:1',
-                                                '16:9',
-                                                '4:3',
-                                            ])
                                             ->openable()
                                             ->downloadable()
                                             ->previewable()
@@ -221,14 +241,6 @@ class WeddingOrganizerForm
                                             ->placeholder(date('Y'))
                                             ->prefixIcon('heroicon-o-calendar')
                                             ->helperText('Tahun mulai beroperasi'),
-
-                                        Select::make('business_type')
-                                            ->label('Jenis Usaha')
-                                            ->options(config('indonesia.business_types'))
-                                            ->default('Perorangan')
-                                            ->required()
-                                            ->prefixIcon('heroicon-o-briefcase')
-                                            ->helperText('Bentuk badan usaha'),
 
                                         TextInput::make('business_license')
                                             ->label('Nomor Izin Usaha')
@@ -386,26 +398,10 @@ class WeddingOrganizerForm
                         // Tab 7: Dokumen Legal
                         Tab::make('Dokumen Legal')
                             ->icon('heroicon-o-document-text')
+                            ->visible(fn (callable $get) => $get('business_type') !== 'Perorangan')
                             ->schema([
                                 Grid::make(2)
                                     ->schema([
-                                        Select::make('legal_entity_type')
-                                            ->label('Jenis Badan Usaha')
-                                            ->options([
-                                                'PT' => 'Perseroan Terbatas (PT)',
-                                                'CV' => 'Commanditaire Vennootschap (CV)',
-                                                'Perorangan' => 'Perorangan',
-                                                'Firma' => 'Firma',
-                                                'UD' => 'Usaha Dagang (UD)',
-                                                'Koperasi' => 'Koperasi',
-                                                'Yayasan' => 'Yayasan',
-                                                'Perkumpulan' => 'Perkumpulan',
-                                            ])
-                                            ->default('Perorangan')
-                                            ->placeholder('Pilih jenis badan usaha')
-                                            ->prefixIcon('heroicon-o-building-library')
-                                            ->columnSpan(2),
-
                                         TextInput::make('deed_of_establishment')
                                             ->label('Nomor Akta Pendirian')
                                             ->maxLength(100)

@@ -32,12 +32,6 @@ class WeddingOrganizerSeeder extends Seeder
             'company' => 'PT',
         ];
 
-        $legalEntityTypeMap = [
-            'individual' => 'Perorangan',
-            'partnership' => 'CV',
-            'company' => 'PT',
-        ];
-
         // Get available users and regions
         $users = User::where('id', '>', 2)->pluck('id')->toArray(); // Skip admin users
         $regions = Region::pluck('id')->toArray();
@@ -73,7 +67,6 @@ class WeddingOrganizerSeeder extends Seeder
                 'is_featured' => true,
                 'status' => 'active',
                 'verified_at' => Carbon::now()->subMonths(6),
-                'legal_entity_type' => 'company',
                 'nib_number' => '1234567890123456',
                 'npwp_number' => '01.234.567.8-901.000',
                 'legal_document_status' => 'verified',
@@ -107,7 +100,6 @@ class WeddingOrganizerSeeder extends Seeder
                 'is_featured' => true,
                 'status' => 'active',
                 'verified_at' => Carbon::now()->subMonths(4),
-                'legal_entity_type' => 'partnership',
                 'nib_number' => '2345678901234567',
                 'npwp_number' => '02.345.678.9-012.000',
                 'legal_document_status' => 'verified',
@@ -141,7 +133,6 @@ class WeddingOrganizerSeeder extends Seeder
                 'is_featured' => false,
                 'status' => 'active',
                 'verified_at' => Carbon::now()->subMonths(2),
-                'legal_entity_type' => 'partnership',
                 'nib_number' => '3456789012345678',
                 'npwp_number' => '03.456.789.0-123.000',
                 'legal_document_status' => 'verified',
@@ -175,7 +166,6 @@ class WeddingOrganizerSeeder extends Seeder
                 'is_featured' => true,
                 'status' => 'active',
                 'verified_at' => Carbon::now()->subMonth(),
-                'legal_entity_type' => 'company',
                 'nib_number' => '4567890123456789',
                 'npwp_number' => '04.567.890.1-234.000',
                 'legal_document_status' => 'verified',
@@ -209,7 +199,6 @@ class WeddingOrganizerSeeder extends Seeder
                 'is_featured' => false,
                 'status' => 'active',
                 'verified_at' => Carbon::now()->subWeeks(3),
-                'legal_entity_type' => 'partnership',
                 'nib_number' => '5678901234567890',
                 'npwp_number' => '05.678.901.2-345.000',
                 'legal_document_status' => 'verified',
@@ -245,7 +234,6 @@ class WeddingOrganizerSeeder extends Seeder
                 'is_featured' => false,
                 'status' => 'active',
                 'verified_at' => null,
-                'legal_entity_type' => 'individual',
                 'nib_number' => null,
                 'npwp_number' => '06.789.012.3-456.000',
                 'legal_document_status' => 'pending_review',
@@ -279,7 +267,6 @@ class WeddingOrganizerSeeder extends Seeder
                 'is_featured' => false,
                 'status' => 'active',
                 'verified_at' => null,
-                'legal_entity_type' => 'partnership',
                 'nib_number' => '7890123456789012',
                 'npwp_number' => '07.890.123.4-567.000',
                 'legal_document_status' => 'pending_review',
@@ -313,7 +300,6 @@ class WeddingOrganizerSeeder extends Seeder
                 'is_featured' => false,
                 'status' => 'active',
                 'verified_at' => Carbon::now()->subMonths(3),
-                'legal_entity_type' => 'company',
                 'nib_number' => '8901234567890123',
                 'npwp_number' => '08.901.234.5-678.000',
                 'legal_document_status' => 'verified',
@@ -347,7 +333,6 @@ class WeddingOrganizerSeeder extends Seeder
                 'is_featured' => true,
                 'status' => 'active',
                 'verified_at' => Carbon::now()->subMonths(8),
-                'legal_entity_type' => 'company',
                 'nib_number' => '9012345678901234',
                 'npwp_number' => '09.012.345.6-789.000',
                 'legal_document_status' => 'verified',
@@ -381,7 +366,6 @@ class WeddingOrganizerSeeder extends Seeder
                 'is_featured' => false,
                 'status' => 'active',
                 'verified_at' => Carbon::now()->subMonths(5),
-                'legal_entity_type' => 'partnership',
                 'nib_number' => '0123456789012345',
                 'npwp_number' => '10.123.456.7-890.000',
                 'legal_document_status' => 'verified',
@@ -415,7 +399,6 @@ class WeddingOrganizerSeeder extends Seeder
                 'is_featured' => true,
                 'status' => 'active',
                 'verified_at' => Carbon::now()->subMonths(7),
-                'legal_entity_type' => 'company',
                 'nib_number' => '1234567890123457',
                 'npwp_number' => '11.234.567.8-901.000',
                 'legal_document_status' => 'verified',
@@ -449,7 +432,6 @@ class WeddingOrganizerSeeder extends Seeder
                 'is_featured' => false,
                 'status' => 'active',
                 'verified_at' => Carbon::now()->subMonths(2),
-                'legal_entity_type' => 'company',
                 'nib_number' => '2345678901234568',
                 'npwp_number' => '12.345.678.9-012.000',
                 'legal_document_status' => 'verified',
@@ -463,10 +445,6 @@ class WeddingOrganizerSeeder extends Seeder
 
             if (isset($organizer['business_type']) && isset($businessTypeMap[$organizer['business_type']])) {
                 $organizer['business_type'] = $businessTypeMap[$organizer['business_type']];
-            }
-
-            if (isset($organizer['legal_entity_type']) && isset($legalEntityTypeMap[$organizer['legal_entity_type']])) {
-                $organizer['legal_entity_type'] = $legalEntityTypeMap[$organizer['legal_entity_type']];
             }
 
             WeddingOrganizer::updateOrCreate(

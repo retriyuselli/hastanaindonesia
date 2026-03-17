@@ -26,9 +26,9 @@ class WeddingOrganizersTable
                 ImageColumn::make('logo')
                     ->label('')
                     ->circular()
-                    ->defaultImageUrl('/images/default-avatar.png')
-                    ->toggleable()
-                    ->toggledHiddenByDefault(),
+                    ->disk('public')
+                    ->visibility('public')
+                    ->defaultImageUrl('/images/default-avatar.png'),
 
                 // Core Information
                 TextColumn::make('organizer_name')
@@ -226,12 +226,6 @@ class WeddingOrganizersTable
                     ->toggledHiddenByDefault(),
 
                 // Legal Document Information
-                TextColumn::make('legal_entity_type')
-                    ->label('🏛️ Jenis Badan Hukum')
-                    ->badge()
-                    ->toggleable()
-                    ->toggledHiddenByDefault(),
-
                 TextColumn::make('nib_number')
                     ->label('📃 NIB')
                     ->searchable()

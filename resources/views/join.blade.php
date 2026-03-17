@@ -188,15 +188,15 @@
             
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
                 <div class="bg-white/10 backdrop-blur-sm rounded-xl p-6">
-                    <div class="text-2xl font-bold mb-2">1000+</div>
+                    <div class="text-2xl font-bold mb-2">{{ number_format($totalWeddingOrganizers) }}</div>
                     <div class="text-xs opacity-80">Anggota Aktif</div>
                 </div>
                 <div class="bg-white/10 backdrop-blur-sm rounded-xl p-6">
-                    <div class="text-2xl font-bold mb-2">34</div>
+                    <div class="text-2xl font-bold mb-2">{{ number_format($totalRegions) }}</div>
                     <div class="text-xs opacity-80">Provinsi</div>
                 </div>
                 <div class="bg-white/10 backdrop-blur-sm rounded-xl p-6">
-                    <div class="text-2xl font-bold mb-2">5</div>
+                    <div class="text-2xl font-bold mb-2">{{ $companyYearsExperience ?? 0 }}</div>
                     <div class="text-xs opacity-80">Tahun Berpengalaman</div>
                 </div>
             </div>
@@ -438,14 +438,43 @@
                             <p class="text-xs text-gray-500 mt-1">Nama resmi perusahaan WO Anda</p>
                             @enderror
                         </div>
-                        
+
                         <div class="form-group">
+                            <label class="form-label">Jenis Usaha *</label>
+                            <select name="business_type" class="form-select @error('business_type') border-red-500 @enderror" required>
+                                <option value="">Pilih Jenis Usaha</option>
+                                @foreach(config('indonesia.business_types') as $value => $label)
+                                <option value="{{ $value }}" {{ old('business_type') == $value ? 'selected' : '' }}>{{ $label }}</option>
+                                @endforeach
+                            </select>
+                            @error('business_type')
+                            <p class="text-xs text-red-600 mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+                        
+                        <div id="brand-name-group" class="form-group {{ old('business_type') === 'Perorangan' ? 'hidden' : '' }}">
                             <label class="form-label">Nama PT/CV (Optional)</label>
                             <input type="text" name="brand_name" class="form-input @error('brand_name') border-red-500 @enderror" placeholder="Elegant WO" value="{{ old('brand_name') }}">
                             @error('brand_name')
                             <p class="text-xs text-red-600 mt-1">{{ $message }}</p>
                             @else
                             <p class="text-xs text-gray-500 mt-1">Nama brand untuk pemasaran (opsional)</p>
+                            @enderror
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Logo Wedding Organizer</label>
+                            <input type="file" name="logo" class="form-input @error('logo') border-red-500 @enderror" accept=".jpg,.jpeg,.png,.webp">
+                            @error('logo')
+                            <p class="text-xs text-red-600 mt-1">{{ $message }}</p>
+                            @else
+                            <p class="text-xs text-gray-500 mt-1">Format: JPG/PNG/WEBP, max 2MB (opsional)</p>
+                            @if($existingOrganizer?->logo)
+                            <p class="text-xs text-gray-500 mt-1">
+                                Logo saat ini:
+                                <a class="text-blue-600 underline" href="{{ asset('storage/'.$existingOrganizer->logo) }}" target="_blank" rel="noopener">Lihat</a>
+                            </p>
+                            @endif
                             @enderror
                         </div>
                         
@@ -473,18 +502,6 @@
                             @enderror
                         </div>
                         
-                        <div class="form-group">
-                            <label class="form-label">Jenis Usaha *</label>
-                            <select name="business_type" class="form-select @error('business_type') border-red-500 @enderror" required>
-                                <option value="">Pilih Jenis Usaha</option>
-                                @foreach(config('indonesia.business_types') as $value => $label)
-                                <option value="{{ $value }}" {{ old('business_type') == $value ? 'selected' : '' }}>{{ $label }}</option>
-                                @endforeach
-                            </select>
-                            @error('business_type')
-                            <p class="text-xs text-red-600 mt-1">{{ $message }}</p>
-                            @enderror
-                        </div>
                     </div>
                     
                     <div class="form-group">
@@ -604,7 +621,8 @@
                             <label class="form-label">Harga Minimum Paket</label>
                             <div class="relative">
                                 <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500">Rp</span>
-                                <input type="number" name="price_range_min" class="form-input pl-12 @error('price_range_min') border-red-500 @enderror" placeholder="50000000" value="{{ old('price_range_min') }}" min="0">
+                                <input type="hidden" name="price_range_min" id="price_range_min" value="{{ old('price_range_min') }}">
+                                <input type="text" id="price_range_min_display" inputmode="numeric" autocomplete="off" class="form-input pl-12 @error('price_range_min') border-red-500 @enderror" placeholder="50,000,000" value="{{ old('price_range_min') ? number_format((int) old('price_range_min')) : '' }}">
                             </div>
                             @error('price_range_min')
                             <p class="text-xs text-red-600 mt-1">{{ $message }}</p>
@@ -617,7 +635,8 @@
                             <label class="form-label">Harga Maksimum Paket</label>
                             <div class="relative">
                                 <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500">Rp</span>
-                                <input type="number" name="price_range_max" class="form-input pl-12 @error('price_range_max') border-red-500 @enderror" placeholder="500000000" value="{{ old('price_range_max') }}" min="0">
+                                <input type="hidden" name="price_range_max" id="price_range_max" value="{{ old('price_range_max') }}">
+                                <input type="text" id="price_range_max_display" inputmode="numeric" autocomplete="off" class="form-input pl-12 @error('price_range_max') border-red-500 @enderror" placeholder="500,000,000" value="{{ old('price_range_max') ? number_format((int) old('price_range_max')) : '' }}">
                             </div>
                             @error('price_range_max')
                             <p class="text-xs text-red-600 mt-1">{{ $message }}</p>
@@ -664,7 +683,7 @@
                 </div>
                 
                 <!-- Legal Documents -->
-                <div class="mb-12">
+                <div id="legal-info-section" class="mb-12 {{ old('business_type') === 'Perorangan' ? 'hidden' : '' }}">
                     <h3 class="text-2xl font-bold text-gray-900 mb-6 border-b border-gray-200 pb-3">
                         <i class="fas fa-file-contract text-red-600 mr-3"></i>
                         Informasi Legal
@@ -672,7 +691,7 @@
                     
                     <div class="form-group">
                         <label class="form-label">Nomor Izin Usaha (NIB/SIUP/TDP) *</label>
-                        <input type="text" name="business_license" class="form-input @error('business_license') border-red-500 @enderror" placeholder="1234567890123456" value="{{ old('business_license') }}" required>
+                        <input type="text" name="business_license" class="form-input @error('business_license') border-red-500 @enderror" placeholder="1234567890123456" value="{{ old('business_license') }}" {{ old('business_type') === 'Perorangan' ? 'disabled' : 'required' }}>
                         @error('business_license')
                         <p class="text-xs text-red-600 mt-1">{{ $message }}</p>
                         @else
@@ -688,22 +707,6 @@
                         </h4>
                         
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div class="form-group mb-0">
-                                <label class="form-label">Jenis Badan Hukum</label>
-                                <select name="legal_entity_type" class="form-select @error('legal_entity_type') border-red-500 @enderror">
-                                    <option value="">Pilih Jenis Badan Hukum</option>
-                                    <option value="PT" {{ old('legal_entity_type') == 'PT' ? 'selected' : '' }}>Perseroan Terbatas (PT)</option>
-                                    <option value="CV" {{ old('legal_entity_type') == 'CV' ? 'selected' : '' }}>Commanditaire Vennootschap (CV)</option>
-                                    <option value="Firma" {{ old('legal_entity_type') == 'Firma' ? 'selected' : '' }}>Firma</option>
-                                    <option value="UD" {{ old('legal_entity_type') == 'UD' ? 'selected' : '' }}>Usaha Dagang (UD)</option>
-                                    <option value="Koperasi" {{ old('legal_entity_type') == 'Koperasi' ? 'selected' : '' }}>Koperasi</option>
-                                    <option value="Yayasan" {{ old('legal_entity_type') == 'Yayasan' ? 'selected' : '' }}>Yayasan</option>
-                                </select>
-                                @error('legal_entity_type')
-                                <p class="text-xs text-red-600 mt-1">{{ $message }}</p>
-                                @enderror
-                            </div>
-
                             <div class="form-group mb-0">
                                 <label class="form-label">Nomor Akta Pendirian</label>
                                 <input type="text" name="deed_of_establishment" class="form-input @error('deed_of_establishment') border-red-500 @enderror" placeholder="No. 123/2020" value="{{ old('deed_of_establishment') }}">
@@ -942,7 +945,6 @@
             @php
                 $missingLegalFields = [];
                 $legalFields = [
-                    'legal_entity_type' => 'Jenis Badan Hukum',
                     'deed_of_establishment' => 'Nomor Akta Pendirian',
                     'deed_date' => 'Tanggal Akta',
                     'notary_name' => 'Nama Notaris',
@@ -1082,6 +1084,34 @@
 
 @push('scripts')
 <script>
+    function formatThousands(value) {
+        const digits = String(value ?? '').replace(/[^\d]/g, '');
+
+        return digits.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    }
+
+    function bindThousandInput(displayEl, hiddenEl) {
+        if (!displayEl || !hiddenEl) {
+            return null;
+        }
+
+        const syncFromHidden = () => {
+            displayEl.value = formatThousands(hiddenEl.value);
+        };
+
+        const syncFromDisplay = () => {
+            const digits = String(displayEl.value ?? '').replace(/[^\d]/g, '');
+            hiddenEl.value = digits;
+            displayEl.value = formatThousands(digits);
+        };
+
+        displayEl.addEventListener('input', syncFromDisplay);
+        displayEl.addEventListener('blur', syncFromDisplay);
+        syncFromHidden();
+
+        return { syncFromHidden, syncFromDisplay };
+    }
+
     // Already Registered Modal
     @if($alreadyRegistered)
     // Data wedding organizer yang sudah terdaftar
@@ -1127,7 +1157,7 @@
             'price_range_min', 'price_range_max', 'completed_events',
             'certification_level', 'region_id',
             // Legal fields
-            'legal_entity_type', 'deed_of_establishment', 'deed_date',
+            'deed_of_establishment', 'deed_date',
             'notary_name', 'notary_license_number', 'nib_number',
             'nib_issued_date', 'nib_valid_until', 'npwp_number',
             'npwp_issued_date', 'tax_office'
@@ -1294,6 +1324,47 @@
         } else {
             console.log('No legal_documents field in existingData');
         }
+
+        const businessTypeSelect = document.querySelector('select[name="business_type"]');
+        const brandNameGroup = document.getElementById('brand-name-group');
+        const brandNameInput = document.querySelector('input[name="brand_name"]');
+        const legalInfoSection = document.getElementById('legal-info-section');
+        const businessLicenseInput = document.querySelector('input[name="business_license"]');
+        const isPerorangan = businessTypeSelect?.value === 'Perorangan';
+
+        if (brandNameGroup) {
+            brandNameGroup.classList.toggle('hidden', isPerorangan);
+        }
+        if (brandNameInput) {
+            brandNameInput.disabled = isPerorangan;
+            if (isPerorangan) {
+                brandNameInput.value = '';
+            }
+        }
+
+        if (legalInfoSection) {
+            legalInfoSection.classList.toggle('hidden', isPerorangan);
+        }
+
+        if (businessLicenseInput) {
+            businessLicenseInput.required = ! isPerorangan;
+            businessLicenseInput.disabled = isPerorangan;
+        }
+
+        if (legalInfoSection) {
+            legalInfoSection.querySelectorAll('input, select, textarea, button').forEach((el) => {
+                if (el === businessTypeSelect) {
+                    return;
+                }
+                if (el === businessLicenseInput) {
+                    return;
+                }
+                el.disabled = isPerorangan;
+            });
+        }
+
+        window.priceMinBinding?.syncFromHidden?.();
+        window.priceMaxBinding?.syncFromHidden?.();
     }
 
     // Function to close modal and enable edit
@@ -1329,6 +1400,50 @@
 
     // Form validation and interactive elements
     document.addEventListener('DOMContentLoaded', function() {
+        const businessTypeSelect = document.querySelector('select[name="business_type"]');
+        const brandNameGroup = document.getElementById('brand-name-group');
+        const brandNameInput = document.querySelector('input[name="brand_name"]');
+        const legalInfoSection = document.getElementById('legal-info-section');
+        const businessLicenseInput = document.querySelector('input[name="business_license"]');
+        window.priceMinBinding = bindThousandInput(document.getElementById('price_range_min_display'), document.getElementById('price_range_min'));
+        window.priceMaxBinding = bindThousandInput(document.getElementById('price_range_max_display'), document.getElementById('price_range_max'));
+
+        function syncLegalVisibility() {
+            const value = businessTypeSelect?.value ?? '';
+            const isPerorangan = value === 'Perorangan';
+
+            if (brandNameGroup) {
+                brandNameGroup.classList.toggle('hidden', isPerorangan);
+            }
+            if (brandNameInput) {
+                brandNameInput.disabled = isPerorangan;
+                if (isPerorangan) {
+                    brandNameInput.value = '';
+                }
+            }
+
+            if (legalInfoSection) {
+                legalInfoSection.classList.toggle('hidden', isPerorangan);
+            }
+
+            if (businessLicenseInput) {
+                businessLicenseInput.required = ! isPerorangan;
+                businessLicenseInput.disabled = isPerorangan;
+            }
+
+            if (legalInfoSection) {
+                legalInfoSection.querySelectorAll('input, select, textarea, button').forEach((el) => {
+                    if (el === businessTypeSelect) {
+                        return;
+                    }
+                    if (el === businessLicenseInput) {
+                        return;
+                    }
+                    el.disabled = isPerorangan;
+                });
+            }
+        }
+
         // Membership type selection highlighting
         const membershipRadios = document.querySelectorAll('input[name="membership_type"]');
         membershipRadios.forEach(radio => {
@@ -1409,6 +1524,14 @@
         if (oldProvince) {
             updateCities(oldProvince);
         }
+
+        if (businessTypeSelect) {
+            businessTypeSelect.addEventListener('change', syncLegalVisibility);
+        }
+        syncLegalVisibility();
+
+        window.priceMinBinding?.syncFromHidden?.();
+        window.priceMaxBinding?.syncFromHidden?.();
     });
 </script>
 @endpush

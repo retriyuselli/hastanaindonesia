@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Region;
+use App\Models\Company;
 use App\Models\WeddingOrganizer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class JoinController extends Controller
@@ -27,11 +29,18 @@ class JoinController extends Controller
 
         // Get all regions
         $regions = Region::orderBy('region_name')->get();
+        $totalWeddingOrganizers = WeddingOrganizer::query()->count();
+        $totalRegions = Region::query()->count();
+        $companyEstablishedYear = Company::query()->orderBy('id')->value('established_year');
+        $companyYearsExperience = $companyEstablishedYear ? max(0, now()->year - (int) $companyEstablishedYear) : null;
 
         return view('join', [
             'alreadyRegistered' => $alreadyRegistered,
             'existingOrganizer' => $existingOrganizer,
             'regions' => $regions,
+            'totalWeddingOrganizers' => $totalWeddingOrganizers,
+            'totalRegions' => $totalRegions,
+            'companyYearsExperience' => $companyYearsExperience,
         ]);
     }
 
@@ -50,7 +59,6 @@ class JoinController extends Controller
                 'is_update' => $isUpdate,
                 'has_legal_documents' => $request->hasFile('legal_documents'),
                 'legal_documents_count' => is_array($request->file('legal_documents')) ? count($request->file('legal_documents')) : 0,
-                'legal_entity_type' => $request->input('legal_entity_type'),
             ]);
         }
 
@@ -79,11 +87,11 @@ class JoinController extends Controller
             'completed_events' => 'nullable|integer|min:0',
             'awards' => 'nullable|string',
             'certification_level' => 'nullable|string|in:'.implode(',', array_keys(config('indonesia.certification_levels', []))),
-            'business_license' => 'required|string|max:100',
+            'business_license' => 'nullable|string|max:100|required_unless:business_type,Perorangan',
+            'logo' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
             'legal_documents' => 'nullable|array',
             'legal_documents.*' => 'nullable|file|mimes:pdf,jpg,jpeg,png,webp|max:5120',
             // Legal detail fields (optional)
-            'legal_entity_type' => 'nullable|string|in:PT,CV,Firma,UD,Koperasi,Yayasan,Perorangan,Perkumpulan',
             'deed_of_establishment' => 'nullable|string|max:100',
             'deed_date' => 'nullable|date',
             'notary_name' => 'nullable|string|max:255',
@@ -166,6 +174,17 @@ class JoinController extends Controller
             }
         }
 
+        if ($request->hasFile('logo')) {
+            $newLogoPath = $request->file('logo')->store('wedding-organizer-logos', 'public');
+            $validated['logo'] = $newLogoPath;
+
+            if ($isUpdate && $existingOrganizer?->logo && $existingOrganizer->logo !== $newLogoPath) {
+                if (Storage::disk('public')->exists($existingOrganizer->logo)) {
+                    Storage::disk('public')->delete($existingOrganizer->logo);
+                }
+            }
+        }
+
         // Generate slug from organizer name (only for new registration)
         if (! $isUpdate) {
             $validated['slug'] = Str::slug($validated['organizer_name']);
@@ -201,7 +220,6 @@ class JoinController extends Controller
                     'organizer_name' => $validated['organizer_name'],
                     'has_legal_documents' => isset($validated['legal_documents']),
                     'legal_fields' => [
-                        'legal_entity_type' => $validated['legal_entity_type'] ?? null,
                         'deed_of_establishment' => $validated['deed_of_establishment'] ?? null,
                         'notary_name' => $validated['notary_name'] ?? null,
                         'nib_number' => $validated['nib_number'] ?? null,

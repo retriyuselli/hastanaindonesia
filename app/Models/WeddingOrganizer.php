@@ -44,7 +44,6 @@ class WeddingOrganizer extends Model
         'status',
         'verified_at',
         'verified_by',
-        'legal_entity_type',
         'deed_of_establishment',
         'deed_date',
         'notary_name',
@@ -59,18 +58,18 @@ class WeddingOrganizer extends Model
         'legal_document_notes',
         'legal_verified_at',
         'legal_verified_by',
-        'legal_documents'
+        'legal_documents',
     ];
 
     protected $casts = [
         'specializations' => 'array',
         'services' => 'array',
         'legal_documents' => 'array',
-        'price_range_min' => 'decimal:2',
-        'price_range_max' => 'decimal:2',
+        'price_range_min' => 'integer',
+        'price_range_max' => 'integer',
         'established_year' => 'integer',
         'completed_events' => 'integer',
-        'rating' => 'decimal:1',
+        'rating' => 'integer',
         'is_featured' => 'boolean',
         'is_approved' => 'boolean',
         'is_active' => 'boolean',
@@ -80,7 +79,7 @@ class WeddingOrganizer extends Model
         'nib_issued_date' => 'date',
         'nib_valid_until' => 'date',
         'npwp_issued_date' => 'date',
-        'legal_verified_at' => 'datetime'
+        'legal_verified_at' => 'datetime',
     ];
 
     /**
@@ -169,8 +168,9 @@ class WeddingOrganizer extends Model
     public function getPriceRangeFormattedAttribute()
     {
         if ($this->price_range_min && $this->price_range_max) {
-            return 'Rp ' . number_format($this->price_range_min) . ' - Rp ' . number_format($this->price_range_max);
+            return 'Rp '.number_format($this->price_range_min).' - Rp '.number_format($this->price_range_max);
         }
+
         return 'Harga belum ditentukan';
     }
 
@@ -182,6 +182,7 @@ class WeddingOrganizer extends Model
         if ($this->established_year) {
             return now()->year - $this->established_year;
         }
+
         return null;
     }
 
@@ -190,8 +191,8 @@ class WeddingOrganizer extends Model
      */
     public function hasCompleteLegalDocuments()
     {
-        return $this->legal_document_status === 'verified' && 
-               !empty($this->nib_number) && 
-               !empty($this->npwp_number);
+        return $this->legal_document_status === 'verified' &&
+               ! empty($this->nib_number) &&
+               ! empty($this->npwp_number);
     }
 }

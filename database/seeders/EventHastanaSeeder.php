@@ -762,7 +762,10 @@ class EventHastanaSeeder extends Seeder
 
         foreach ($allEvents as $eventData) {
             try {
-                EventHastana::create($eventData);
+                EventHastana::updateOrCreate(
+                    ['slug' => $eventData['slug']],
+                    $eventData
+                );
             } catch (\Exception $e) {
                 $this->command->error("❌ Error creating event: {$eventData['title']}");
                 $this->command->error('   Error: '.$e->getMessage());
