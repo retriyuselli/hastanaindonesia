@@ -23,7 +23,7 @@ class AboutPageResource extends Resource
 
     protected static string|UnitEnum|null $navigationGroup = 'Content';
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedInformationCircle;
 
     protected static ?string $navigationLabel = 'Tentang Kami';
 

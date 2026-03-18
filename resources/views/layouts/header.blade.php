@@ -329,16 +329,23 @@
                     <a href="{{ route('blog') }}" class="nav-link {{ Request::routeIs('blog') ? 'active' : '' }} text-gray-700 text-sm font-medium px-2 py-1">
                         Blog
                     </a>
-                    <a href="{{ route('about') }}" class="nav-link {{ Request::routeIs('about') ? 'active' : '' }} text-gray-700 text-sm font-medium px-2 py-1">
-                        About
+                    <a href="{{ route('regions.index') }}" class="nav-link {{ Request::routeIs('regions.*') ? 'active' : '' }} text-gray-700 text-sm font-medium px-2 py-1">
+                        Region
+                    </a>
+                    <a href="{{ route('members') }}" class="nav-link {{ Request::routeIs('members*') ? 'active' : '' }} text-gray-700 text-sm font-medium px-2 py-1">
+                        Anggota
                     </a>
                     <!-- Kontak Dropdown -->
                     <div class="dropdown">
-                        <a href="{{ route('contact') }}" class="nav-link {{ Request::routeIs('contact') || Request::routeIs('portfolio*') || Request::routeIs('members') ? 'active' : '' }} text-gray-700 text-sm font-medium px-2 py-1 flex items-center">
+                        <a href="{{ route('contact') }}" class="nav-link {{ Request::routeIs('contact') || Request::routeIs('portfolio*') || Request::routeIs('about') ? 'active' : '' }} text-gray-700 text-sm font-medium px-2 py-1 flex items-center">
                             Kontak
                             <i class="fas fa-chevron-down ml-1 text-xs dropdown-arrow"></i>
                         </a>
                         <div class="dropdown-menu">
+                            <a href="{{ route('about') }}" class="dropdown-item text-sm">
+                                <i class="fas fa-info-circle text-xs"></i>
+                                About
+                            </a>
                             <a href="{{ route('contact') }}" class="dropdown-item text-sm">
                                 <i class="fas fa-envelope text-xs"></i>
                                 Hubungi Kami
@@ -351,10 +358,6 @@
                                 <i class="fas fa-briefcase text-xs"></i>
                                 Portfolio WO
                             </a> --}}
-                            <a href="{{ route('members') }}" class="dropdown-item text-sm">
-                                <i class="fas fa-users text-xs"></i>
-                                Daftar Anggota WO
-                            </a>
                         </div>
                     </div>
 
@@ -447,10 +450,18 @@
                     <i class="fas fa-blog mr-3 text-sm w-5"></i>
                     <span class="font-medium">Blog</span>
                 </a>
+                <a href="{{ route('regions.index') }}" class="mobile-menu-item {{ Request::routeIs('regions.*') ? 'active' : '' }} flex items-center py-4 px-4 text-gray-700 hover:text-hastana-blue hover:bg-blue-50 rounded-lg transition-smooth border-b border-gray-100">
+                    <i class="fas fa-map-marked-alt mr-3 text-sm w-5"></i>
+                    <span class="font-medium">Region</span>
+                </a>
+                <a href="{{ route('members') }}" class="mobile-menu-item {{ Request::routeIs('members*') ? 'active' : '' }} flex items-center py-4 px-4 text-gray-700 hover:text-hastana-blue hover:bg-blue-50 rounded-lg transition-smooth border-b border-gray-100">
+                    <i class="fas fa-users mr-3 text-sm w-5"></i>
+                    <span class="font-medium">Anggota</span>
+                </a>
                 
                 <!-- Mobile Kontak Dropdown -->
                 <div class="border-b border-gray-100">
-                    <button class="mobile-menu-item {{ Request::routeIs('contact') || Request::routeIs('portfolio*') || Request::routeIs('members') ? 'active' : '' }} w-full flex items-center justify-between py-4 px-4 text-gray-700 hover:text-hastana-blue hover:bg-blue-50 rounded-lg transition-smooth" onclick="toggleMobileDropdown('kontak')">
+                    <button class="mobile-menu-item {{ Request::routeIs('contact') || Request::routeIs('portfolio*') || Request::routeIs('about') ? 'active' : '' }} w-full flex items-center justify-between py-4 px-4 text-gray-700 hover:text-hastana-blue hover:bg-blue-50 rounded-lg transition-smooth" onclick="toggleMobileDropdown('kontak')">
                         <div class="flex items-center">
                             <i class="fas fa-envelope mr-3 text-sm w-5"></i>
                             <span class="font-medium">Kontak</span>
@@ -458,6 +469,10 @@
                         <i class="fas fa-chevron-down text-sm transition-transform duration-300" id="kontak-arrow"></i>
                     </button>
                     <div class="mobile-dropdown-menu" id="kontak-dropdown">
+                        <a href="{{ route('about') }}" class="mobile-dropdown-item flex items-center text-sm hover:bg-blue-50 transition-smooth rounded">
+                            <i class="fas fa-info-circle mr-2 text-xs w-4"></i>
+                            About
+                        </a>
                         <a href="{{ route('contact') }}" class="mobile-dropdown-item flex items-center text-sm hover:bg-blue-50 transition-smooth rounded">
                             <i class="fas fa-envelope mr-2 text-xs w-4"></i>
                             Hubungi Kami
@@ -470,10 +485,6 @@
                             <i class="fas fa-briefcase mr-2 text-xs w-4"></i>
                             Portfolio WO
                         </a> --}}
-                        <a href="{{ route('members') }}" class="mobile-dropdown-item flex items-center text-sm hover:bg-blue-50 transition-smooth rounded">
-                            <i class="fas fa-users mr-2 text-xs w-4"></i>
-                            Daftar Anggota WO
-                        </a>
                     </div>
                 </div>
                 

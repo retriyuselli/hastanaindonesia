@@ -12,14 +12,15 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        padding: 2rem 0;
+        padding-top: 7rem;
+        padding-bottom: 2rem;
     }
 
     /* Mobile spacing adjustments */
     @media (max-width: 1023px) {
         .login-bg {
             align-items: flex-start;
-            padding-top: 4rem;
+            padding-top: 7rem;
             padding-bottom: 2rem;
         }
     }
@@ -29,6 +30,14 @@
         border-radius: 1.5rem;
         box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
         overflow: hidden;
+        width: 100%;
+    }
+
+    @media (min-width: 1024px) {
+        .login-card {
+            max-width: 460px;
+            margin-left: auto;
+        }
     }
 
     .login-input {
@@ -191,7 +200,7 @@
                             </div>
                             <div>
                                 <h3 class="font-semibold text-lg mb-1">Jaringan Profesional</h3>
-                                <p class="text-sm opacity-80">Terhubung dengan 1000+ wedding organizer</p>
+                                <p class="text-sm opacity-80">Terhubung dengan {{ number_format($totalWeddingOrganizers ?? 0) }}+ wedding organizer</p>
                             </div>
                         </div>
 

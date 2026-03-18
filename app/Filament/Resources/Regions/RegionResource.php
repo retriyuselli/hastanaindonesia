@@ -23,6 +23,12 @@ class RegionResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::HomeModern;
 
+    protected static ?string $navigationLabel = 'Profile Region';
+
+    protected static ?string $modelLabel = 'Profile Region';
+
+    protected static ?string $pluralModelLabel = 'Profile Region';
+
     protected static ?string $recordTitleAttribute = 'Region';
 
     public static function form(Schema $schema): Schema

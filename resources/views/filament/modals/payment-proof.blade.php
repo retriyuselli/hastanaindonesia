@@ -64,7 +64,7 @@
 
     <!-- Bukti Pembayaran -->
     <div>
-        <h3 class="text-lg font-semibold mb-3">Bukti Transfer11</h3>
+        <h3 class="text-lg font-semibold mb-3">Bukti Transfer</h3>
         <div class="border border-gray-200 rounded-lg overflow-hidden bg-gray-50">
             <img src="{{ $imageUrl }}" 
                  alt="Bukti Pembayaran {{ $record->name }}" 

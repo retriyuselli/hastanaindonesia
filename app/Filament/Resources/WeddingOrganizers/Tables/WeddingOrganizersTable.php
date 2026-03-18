@@ -24,11 +24,87 @@ class WeddingOrganizersTable
             ->columns([
                 // Avatar/Logo (if available)
                 ImageColumn::make('logo')
-                    ->label('')
+                    ->label('Logo')
                     ->circular()
                     ->disk('public')
                     ->visibility('public')
                     ->defaultImageUrl('/images/default-avatar.png'),
+
+                TextColumn::make('wo_completion')
+                    ->label('Kelengkapan')
+                    ->getStateUsing(function ($record) {
+                        $baseFields = [
+                            'organizer_name',
+                            'business_type',
+                            'region_id',
+                            'description',
+                            'phone',
+                            'email',
+                            'address',
+                            'city',
+                            'province',
+                            'logo',
+                            'established_year',
+                            'certification_level',
+                            'specializations',
+                            'services',
+                            'price_range_min',
+                            'price_range_max',
+                            'instagram',
+                            'website',
+                        ];
+
+                        $corporateFields = [
+                            'brand_name',
+                            'business_license',
+                            'deed_of_establishment',
+                            'deed_date',
+                            'notary_name',
+                            'nib_number',
+                            'npwp_number',
+                            'legal_documents',
+                        ];
+
+                        $isPerorangan = ($record->business_type ?? null) === 'Perorangan';
+                        $fields = $isPerorangan ? $baseFields : array_merge($baseFields, $corporateFields);
+
+                        $filled = 0;
+                        foreach ($fields as $field) {
+                            $value = $record->$field;
+
+                            if (is_string($value)) {
+                                $value = trim($value);
+                            }
+
+                            if (is_array($value)) {
+                                if (! empty($value)) {
+                                    $filled++;
+                                }
+                                continue;
+                            }
+
+                            if ($value !== null && $value !== '') {
+                                $filled++;
+                            }
+                        }
+
+                        return round(($filled / max(1, count($fields))) * 100);
+                    })
+                    ->formatStateUsing(fn ($state): string => $state.'%')
+                    ->badge()
+                    ->color(fn ($state): string => match (true) {
+                        $state == 100 => 'success',
+                        $state >= 75 => 'warning',
+                        $state >= 50 => 'info',
+                        default => 'danger',
+                    })
+                    ->icon(fn ($state): string => match (true) {
+                        $state == 100 => 'heroicon-m-check-circle',
+                        $state >= 50 => 'heroicon-m-clock',
+                        default => 'heroicon-m-exclamation-triangle',
+                    })
+                    ->sortable()
+                    ->toggleable(),
 
                 // Core Information
                 TextColumn::make('organizer_name')

@@ -12,14 +12,15 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        padding: 2rem 0;
+        padding-top: 7rem;
+        padding-bottom: 2rem;
     }
 
     /* Mobile spacing adjustments */
     @media (max-width: 1023px) {
         .register-bg {
             align-items: flex-start;
-            padding-top: 4rem;
+            padding-top: 7rem;
             padding-bottom: 2rem;
         }
     }
@@ -182,7 +183,7 @@
                                 </div>
                             </div>
                             <div>
-                                <h3 class="font-semibold text-base mb-1">1000+ Member Aktif</h3>
+                                <h3 class="font-semibold text-base mb-1">{{ number_format($totalWeddingOrganizers ?? 0) }}+ Member Aktif</h3>
                                 <p class="text-xs opacity-80">Jaringan wedding organizer di 34 provinsi</p>
                             </div>
                         </div>

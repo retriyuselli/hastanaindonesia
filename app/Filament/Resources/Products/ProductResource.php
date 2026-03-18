@@ -23,7 +23,7 @@ class ProductResource extends Resource
 
     protected static string|UnitEnum|null $navigationGroup = 'Content';
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedShoppingBag;
 
     public static function form(Schema $schema): Schema
     {

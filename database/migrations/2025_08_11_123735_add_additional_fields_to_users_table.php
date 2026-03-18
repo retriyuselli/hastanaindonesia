@@ -16,7 +16,7 @@ return new class extends Migration
             $table->date('date_of_birth')->nullable()->after('phone');
             $table->string('avatar')->nullable()->after('phone');
             $table->enum('gender', ['male', 'female'])->nullable()->after('date_of_birth');
-            $table->enum('role', ['admin', 'member', 'customer'])->default('customer')->after('password');
+            $table->enum('role', ['super_admin', 'admin', 'member', 'customer'])->default('customer')->after('password');
         });
     }
 

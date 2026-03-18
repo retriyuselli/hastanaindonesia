@@ -9,8 +9,10 @@ use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\JoinController;
 use App\Http\Controllers\MemberController;
+use App\Http\Controllers\PrivateFileController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RegionProfileController;
 use App\Models\Blog;
 use App\Models\BlogCategory;
 use App\Models\Product;
@@ -70,6 +72,9 @@ Route::get('/anggota', [MemberController::class, 'index'])->name('members');
 Route::get('/anggota/{slug}', [MemberController::class, 'show'])->name('members.show');
 Route::get('/anggota/{slug}/product/{productId}', [MemberController::class, 'showProduct'])->name('members.product');
 
+Route::get('/profile-region', [RegionProfileController::class, 'index'])->name('regions.index');
+Route::get('/profile-region/{region}', [RegionProfileController::class, 'show'])->name('regions.show');
+
 // Debug route - hapus setelah selesai debug
 Route::get('/debug-product/{id}', function ($id) {
     if (! app()->environment(['local', 'testing'])) {
@@ -116,6 +121,11 @@ Route::middleware('auth')->prefix('admin/files')->group(function () {
 
     Route::get('event-participants/{eventParticipant}/payment-proof', [AdminFileController::class, 'downloadEventParticipantPaymentProof'])
         ->name('admin.files.event-participants.payment-proof');
+});
+
+Route::middleware('auth')->prefix('files')->group(function () {
+    Route::get('event-participants/{eventParticipant}/payment-proof', [PrivateFileController::class, 'showEventParticipantPaymentProof'])
+        ->name('files.event-participants.payment-proof');
 });
 
 Route::get('/blog', function () {

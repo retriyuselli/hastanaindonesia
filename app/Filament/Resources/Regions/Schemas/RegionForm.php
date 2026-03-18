@@ -176,6 +176,19 @@ class RegionForm
                     ])
                     ->helperText('Upload logo resmi DPW (maksimal 2MB, format: JPG, PNG, WebP)')
                     ->columnSpan(2),
+
+                FileUpload::make('gallery_images')
+                    ->label('Galeri Foto Region')
+                    ->disk('public')
+                    ->directory('region-gallery')
+                    ->multiple()
+                    ->reorderable()
+                    ->image()
+                    ->maxSize(4096)
+                    ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
+                    ->imageEditor()
+                    ->helperText('Upload beberapa foto (maks 4MB per file, format: JPG, PNG, WebP)')
+                    ->columnSpan(2),
             ]);
     }
 }

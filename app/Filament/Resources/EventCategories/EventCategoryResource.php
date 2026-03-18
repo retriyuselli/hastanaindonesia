@@ -7,7 +7,6 @@ use App\Filament\Resources\EventCategories\Pages\EditEventCategory;
 use App\Filament\Resources\EventCategories\Pages\ListEventCategories;
 use App\Filament\Resources\EventCategories\Pages\ViewEventCategory;
 use App\Filament\Resources\EventCategories\Schemas\EventCategoryForm;
-use App\Filament\Resources\EventCategories\Schemas\EventCategoryInfolist;
 use App\Filament\Resources\EventCategories\Tables\EventCategoriesTable;
 use App\Models\EventCategory;
 use BackedEnum;
@@ -34,7 +33,7 @@ class EventCategoryResource extends Resource
 
     public static function infolist(Schema $schema): Schema
     {
-        return EventCategoryInfolist::configure($schema);
+        return $schema->schema([]);
     }
 
     public static function table(Table $table): Table

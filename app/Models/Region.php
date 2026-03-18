@@ -22,6 +22,7 @@ class Region extends Model
         'establishment_date',
         'is_active',
         'logo',
+        'gallery_images',
         'ketua_dpw',
         'wk_ketua_dpw',
         'sekretaris_dpw',
@@ -34,6 +35,7 @@ class Region extends Model
     protected $casts = [
         'is_active' => 'boolean',
         'establishment_date' => 'date',
+        'gallery_images' => 'array',
     ];
 
     /**

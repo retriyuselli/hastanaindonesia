@@ -15,6 +15,7 @@ use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Schema;
+use Filament\Support\RawJs;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
@@ -273,9 +274,11 @@ class WeddingOrganizerForm
                                     ->schema([
                                         TextInput::make('price_range_min')
                                             ->label('Harga Minimum Paket')
-                                            ->numeric()
-                                            ->prefix('Rp')
-                                            ->placeholder('10000000.00')
+                                            ->prefix('Rp. ')
+                                            ->mask(RawJs::make('$money($input)'))
+                                            ->stripCharacters(',')
+                                            ->dehydrateStateUsing(fn ($state) => (int) preg_replace('/[^\d]/', '', (string) $state))
+                                            ->placeholder('0')
                                             ->step(0.01)
                                             ->minValue(0)
                                             ->helperText('Contoh: 50000000 (50 juta)')
@@ -290,9 +293,11 @@ class WeddingOrganizerForm
 
                                         TextInput::make('price_range_max')
                                             ->label('Harga Maksimum Paket')
-                                            ->numeric()
-                                            ->prefix('Rp')
-                                            ->placeholder('200000000.00')
+                                            ->prefix('Rp. ')
+                                            ->mask(RawJs::make('$money($input)'))
+                                            ->stripCharacters(',')
+                                            ->dehydrateStateUsing(fn ($state) => (int) preg_replace('/[^\d]/', '', (string) $state))
+                                            ->placeholder('0')
                                             ->step(0.01)
                                             ->minValue(0)
                                             ->helperText('Contoh: 500000000 (500 juta)')

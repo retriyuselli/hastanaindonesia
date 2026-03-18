@@ -6,8 +6,8 @@ use App\Filament\Resources\EventHastanas\Pages\CreateEventHastana;
 use App\Filament\Resources\EventHastanas\Pages\EditEventHastana;
 use App\Filament\Resources\EventHastanas\Pages\ListEventHastanas;
 use App\Filament\Resources\EventHastanas\Pages\ViewEventHastana;
+use App\Filament\Resources\EventHastanas\RelationManagers\EventParticipantsRelationManager;
 use App\Filament\Resources\EventHastanas\Schemas\EventHastanaForm;
-use App\Filament\Resources\EventHastanas\Schemas\EventHastanaInfolist;
 use App\Filament\Resources\EventHastanas\Tables\EventHastanasTable;
 use App\Filament\Resources\EventHastanas\Widgets\EventParticipantChart;
 use App\Filament\Resources\EventHastanas\Widgets\EventRevenueChart;
@@ -26,7 +26,7 @@ class EventHastanaResource extends Resource
 
     protected static string|UnitEnum|null $navigationGroup = 'Events';
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedCalendarDays;
 
     public static function form(Schema $schema): Schema
     {
@@ -35,7 +35,7 @@ class EventHastanaResource extends Resource
 
     public static function infolist(Schema $schema): Schema
     {
-        return EventHastanaInfolist::configure($schema);
+        return $schema->schema([]);
     }
 
     public static function table(Table $table): Table
@@ -46,7 +46,7 @@ class EventHastanaResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            EventParticipantsRelationManager::class,
         ];
     }
 

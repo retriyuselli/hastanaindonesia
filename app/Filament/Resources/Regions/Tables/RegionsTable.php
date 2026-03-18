@@ -72,15 +72,33 @@ class RegionsTable
                 TextColumn::make('dpw_completion')
                     ->label('Kelengkapan DPW')
                     ->getStateUsing(function ($record) {
-                        $positions = ['ketua_dpw', 'wk_ketua_dpw', 'sekretaris_dpw', 'bendahara_dpw'];
+                        $fields = [
+                            'ketua_dpw',
+                            'wk_ketua_dpw',
+                            'sekretaris_dpw',
+                            'bendahara_dpw',
+                            'dpc_name',
+                            'contact_email',
+                            'contact_phone',
+                            'website',
+                            'logo',
+                            'establishment_date',
+                            'province',
+                        ];
                         $filled = 0;
-                        foreach ($positions as $position) {
-                            if (! is_null($record->$position)) {
+                        foreach ($fields as $field) {
+                            $value = $record->$field;
+
+                            if (is_string($value)) {
+                                $value = trim($value);
+                            }
+
+                            if ($value !== null && $value !== '') {
                                 $filled++;
                             }
                         }
 
-                        return round(($filled / count($positions)) * 100);
+                        return round(($filled / count($fields)) * 100);
                     })
                     ->formatStateUsing(fn ($state): string => $state.'%')
                     ->badge()

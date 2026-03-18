@@ -174,7 +174,7 @@
 
                                             @if($participant->payment_proof)
                                                 <button class="inline-flex items-center px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 transition duration-200" 
-                                                        onclick="openPaymentProofModal('{{ asset('storage/' . $participant->payment_proof) }}')">
+                                                        onclick="openPaymentProofModal('{{ route('files.event-participants.payment-proof', $participant) }}')">
                                                     <i class="fas fa-receipt mr-2"></i>
                                                     Lihat Bukti Pembayaran
                                                 </button>

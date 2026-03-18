@@ -69,6 +69,9 @@
                     <a href="{{ route('members') }}" class="nav-link {{ request()->routeIs('members') ? 'active' : '' }}">
                         <i class="fas fa-id-card mr-2"></i>Anggota
                     </a>
+                    <a href="{{ route('regions.index') }}" class="nav-link {{ request()->routeIs('regions.*') ? 'active' : '' }}">
+                        <i class="fas fa-map-marked-alt mr-2"></i>Profile Region
+                    </a>
                     <a href="{{ route('portfolio') }}" class="nav-link {{ request()->routeIs('portfolio*') ? 'active' : '' }}">
                         <i class="fas fa-camera mr-2"></i>Portfolio
                     </a>
@@ -154,6 +157,9 @@
                 
                 <a href="{{ route('members') }}" class="mobile-nav-link {{ request()->routeIs('members') ? 'active' : '' }}">
                     <i class="fas fa-id-card mr-3"></i>Anggota
+                </a>
+                <a href="{{ route('regions.index') }}" class="mobile-nav-link {{ request()->routeIs('regions.*') ? 'active' : '' }}">
+                    <i class="fas fa-map-marked-alt mr-3"></i>Profile Region
                 </a>
                 <a href="{{ route('portfolio') }}" class="mobile-nav-link {{ request()->routeIs('portfolio*') ? 'active' : '' }}">
                     <i class="fas fa-camera mr-3"></i>Portfolio
