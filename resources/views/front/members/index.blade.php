@@ -177,7 +177,7 @@
         <!-- Stats -->
         <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
             <div class="bg-gradient-to-r from-blue-500 to-blue-600 text-white p-6 rounded-xl text-center">
-                <div class="text-3xl font-bold">{{ $members->total() }}</div>
+                <div class="text-3xl font-bold">{{ number_format($totalWeddingOrganizers ?? 0) }}</div>
                 <div class="text-sm opacity-90">Total Anggota</div>
             </div>
             <div class="bg-gradient-to-r from-green-500 to-green-600 text-white p-6 rounded-xl text-center">

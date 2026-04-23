@@ -60,11 +60,11 @@ Route::get('/kebijakan-privasi', function () {
 })->name('privacy');
 
 Route::get('/portfolio', function () {
-    return view('front.portfolio');
+    return view('front.portfolio.index');
 })->name('portfolio');
 
 Route::get('/portfolio/detail/{id?}', function ($id = 1) {
-    return view('front.portfolio-detail');
+    return view('front.portfolio.detail');
 })->name('portfolio.detail');
 
 // Members/Anggota routes
@@ -282,7 +282,7 @@ Route::prefix('api/blog')->group(function () {
 });
 
 Route::get('/contact', function () {
-    return view('front.contact');
+    return view('front.contact.index');
 })->name('contact');
 
 Route::get('/about', [AboutController::class, 'index'])->name('about');

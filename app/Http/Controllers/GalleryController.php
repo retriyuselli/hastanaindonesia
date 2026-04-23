@@ -35,7 +35,7 @@ class GalleryController extends Controller
         
         $categories = array_merge(['Semua' => $galleries->count()], $categories);
 
-        return view('front.gallery', compact('galleries', 'categories'));
+        return view('front.gallery.index', compact('galleries', 'categories'));
     }
 
     public function show($slug)

@@ -6,6 +6,7 @@ use App\Models\WeddingOrganizer;
 use App\Models\Region;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Cache;
 
 class MemberController extends Controller
 {
@@ -76,14 +77,22 @@ class MemberController extends Controller
         // Paginate results
         $members = $query->paginate(12);
 
+        $totalWeddingOrganizers = Cache::remember('members:total_wedding_organizers_with_name', now()->addMinutes(30), function () {
+            return WeddingOrganizer::query()
+                ->whereNotNull('organizer_name')
+                ->where('organizer_name', '!=', '')
+                ->count();
+        });
+
         // Get filter options
         $regions = Region::orderBy('region_name')->get();
         $provinces = config('indonesia.provinces', []);
         $certificationLevels = config('indonesia.certification_levels', []);
 
-        return view('front.members', compact(
+        return view('front.members.index', compact(
             'members',
             'featuredMembers',
+            'totalWeddingOrganizers',
             'regions',
             'provinces',
             'certificationLevels'
@@ -111,7 +120,7 @@ class MemberController extends Controller
             ->limit(4)
             ->get();
 
-        return view('front.member-detail', compact('member', 'relatedMembers'));
+        return view('front.members.show', compact('member', 'relatedMembers'));
     }
 
     /**
@@ -180,6 +189,6 @@ class MemberController extends Controller
             ->limit(4)
             ->get();
 
-        return view('front.product-detail', compact('member', 'product', 'relatedMembers'));
+        return view('front.members.product-detail', compact('member', 'product', 'relatedMembers'));
     }
 }

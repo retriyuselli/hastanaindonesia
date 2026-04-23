@@ -8,6 +8,7 @@ use App\Models\WeddingOrganizer;
 use App\Models\EventHastana;
 use App\Models\Blog;
 use App\Models\Product;
+use App\Models\Region;
 use Illuminate\Support\Facades\Cache;
 
 class HomeController extends Controller
@@ -44,6 +45,17 @@ class HomeController extends Controller
                 ->inRandomOrder()
                 ->limit(10)
                 ->get();
+        });
+
+        $totalWeddingOrganizers = Cache::remember('home:total_wedding_organizers_with_name', now()->addMinutes(30), function () {
+            return WeddingOrganizer::query()
+                ->whereNotNull('organizer_name')
+                ->where('organizer_name', '!=', '')
+                ->count();
+        });
+
+        $totalRegions = Cache::remember('home:total_regions', now()->addMinutes(30), function () {
+            return Region::query()->count();
         });
 
         // Get upcoming events (active and future events)
@@ -145,6 +157,6 @@ class HomeController extends Controller
             ]
         ];
 
-        return view('front.home', compact('data', 'featuredPortfolios', 'featuredWeddingOrganizers', 'featuredProducts', 'upcomingEvents', 'latestBlogs'));
+        return view('front.home.modern', compact('data', 'featuredPortfolios', 'featuredWeddingOrganizers', 'featuredProducts', 'totalWeddingOrganizers', 'totalRegions', 'upcomingEvents', 'latestBlogs'));
     }
 }

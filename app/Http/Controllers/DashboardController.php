@@ -57,7 +57,7 @@ class DashboardController extends Controller
         // Ambil Wedding Organizer milik user
         $myWeddingOrganizer = WeddingOrganizer::where('user_id', $user->id)->first();
 
-        return view('dashboard', compact(
+        return view('front.dashboard.index', compact(
             'totalRegistered',
             'upcomingEvents',
             'completedEvents',
