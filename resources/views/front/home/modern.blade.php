@@ -125,7 +125,7 @@
                             @forelse($featuredWeddingOrganizers->take(4) as $wo)
                                 <a href="{{ route('members.show', $wo->slug) }}" class="rounded-2xl border border-white/10 bg-white/5 p-4 hover:bg-white/10 transition home-card">
                                     <div class="flex items-center gap-3">
-                                        <div class="w-10 h-10 rounded-xl overflow-hidden bg-white/10 flex items-center justify-center text-white/80">
+                                        <div class="w-10 h-10 shrink-0 rounded-xl overflow-hidden bg-white/10 flex items-center justify-center text-white/80">
                                             @if($wo->logo)
                                                 <img src="{{ asset('storage/' . $wo->logo) }}" alt="{{ $wo->brand_name ?? $wo->organizer_name }}" class="w-full h-full object-cover">
                                             @else
@@ -239,7 +239,7 @@
                 @forelse($featuredWeddingOrganizers->take(8) as $wo)
                     <a href="{{ route('members.show', $wo->slug) }}" class="group rounded-2xl border border-slate-200 bg-white p-5 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition">
                         <div class="flex items-center gap-4">
-                            <div class="w-14 h-14 rounded-2xl overflow-hidden bg-slate-100 flex items-center justify-center text-slate-500">
+                            <div class="w-14 h-14 shrink-0 rounded-2xl overflow-hidden bg-slate-100 flex items-center justify-center text-slate-500">
                                 @if($wo->logo)
                                     <img src="{{ asset('storage/' . $wo->logo) }}" alt="{{ $wo->brand_name ?? $wo->organizer_name }}" class="w-full h-full object-cover">
                                 @else
@@ -247,7 +247,7 @@
                                 @endif
                             </div>
                             <div class="min-w-0">
-                                <div class="text-sm font-bold text-slate-900 truncate">{{ $wo->brand_name ?: $wo->organizer_name }}</div>
+                                <div class="text-sm font-bold text-slate-900 truncate">{{ \Illuminate\Support\Str::ucfirst($wo->brand_name ?: $wo->organizer_name) }}</div>
                                 <div class="text-xs text-slate-600 truncate">{{ $wo->city ?? '-' }}{{ $wo->province ? ', ' . $wo->province : '' }}</div>
                                 <div class="mt-2 inline-flex items-center gap-2">
                                     <span class="inline-flex items-center gap-1 text-xs font-semibold text-amber-600">

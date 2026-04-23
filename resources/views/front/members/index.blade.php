@@ -243,7 +243,7 @@
                         </p>
                         
                         <!-- Price Range -->
-                        <div class="text-gray-700 text-xs mb-2">
+                        <!-- <div class="text-gray-700 text-xs mb-2">
                             @if($member->price_range_min && $member->price_range_max)
                                 <span class="font-semibold">
                                     @if($member->price_range_min < 10000000)
@@ -257,14 +257,14 @@
                             @else
                                 <span class="font-semibold">$$</span>
                             @endif
-                            <span class="mx-1">|</span>
+                            <span class="mx-1">|</span> -->
                             <!-- Rating -->
-                            <span class="inline-flex items-center">
+                            <!-- <span class="inline-flex items-center">
                                 <i class="fas fa-star text-yellow-400 mr-1 text-xs"></i>
                                 <span class="font-semibold">{{ number_format($member->rating ?? 4.5, 1) }}/5</span>
                                 <span class="text-gray-500 ml-1">({{ $member->completed_events ?? 0 }} ulasan)</span>
-                            </span>
-                        </div>
+                            </span> -->
+                        <!-- </div> -->
                     </div>
                 </div>
             </a>
