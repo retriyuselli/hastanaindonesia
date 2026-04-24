@@ -134,20 +134,18 @@ class RegionForm
                     ->preload(),
 
                 Select::make('wk_ketua_dpw')
-                    ->label('Wakil Ketua DPW')
+                    ->label('Wakil Ketua 1')
                     ->options(User::whereIn('role', ['admin', 'member'])->pluck('name', 'id'))
                     ->searchable()
-                    ->placeholder('Pilih Wakil Ketua DPW')
-                    ->helperText('Wakil Ketua Dewan Pimpinan Wilayah')
+                    ->placeholder('Pilih Wakil Ketua 1')
                     ->native(false)
                     ->preload(),
 
                 Select::make('wk_ketua2_dpw')
-                    ->label('Wakil Ketua DPW 2')
+                    ->label('Wakil Ketua 2')
                     ->options(User::whereIn('role', ['admin', 'member'])->pluck('name', 'id'))
                     ->searchable()
-                    ->placeholder('Pilih Wakil Ketua DPW 2')
-                    ->helperText('Wakil Ketua tambahan (opsional)')
+                    ->placeholder('Pilih Wakil Ketua 2')
                     ->native(false)
                     ->preload(),
 
