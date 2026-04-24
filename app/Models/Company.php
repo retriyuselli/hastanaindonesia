@@ -28,7 +28,7 @@ class Company extends Model
         'membership_type',
         'joined_date',
         'region_id',
-        
+
         // Data Legalitas
         'legal_entity_type',
         'deed_of_establishment',
@@ -45,7 +45,7 @@ class Company extends Model
         'legal_document_notes',
         'legal_verified_at',
         'legal_verified_by',
-        'legal_documents'
+        'legal_documents',
     ];
 
     protected $casts = [
@@ -57,7 +57,7 @@ class Company extends Model
         'nib_valid_until' => 'date',
         'npwp_issued_date' => 'date',
         'legal_verified_at' => 'datetime',
-        'legal_documents' => 'array'
+        'legal_documents' => 'array',
     ];
 
     /**
@@ -67,8 +67,6 @@ class Company extends Model
     {
         return $this->belongsTo(Region::class);
     }
-
-    
 
     /**
      * Get all event registrations for this company
@@ -116,7 +114,7 @@ class Company extends Model
      */
     public function getRegionGovernanceInfo(): array
     {
-        if (!$this->region) {
+        if (! $this->region) {
             return [
                 'region_name' => 'No Region',
                 'dpw_completion' => 0,
@@ -151,7 +149,7 @@ class Company extends Model
      */
     public function getRegionGovernanceStatus(): string
     {
-        if (!$this->region) {
+        if (! $this->region) {
             return 'no_region';
         }
 

@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class BlogView extends Model
 {
@@ -16,12 +16,12 @@ class BlogView extends Model
         'user_agent',
         'viewed_at',
         'referrer',
-        'duration_seconds'
+        'duration_seconds',
     ];
 
     protected $casts = [
         'viewed_at' => 'datetime',
-        'duration_seconds' => 'integer'
+        'duration_seconds' => 'integer',
     ];
 
     /**
@@ -53,7 +53,7 @@ class BlogView extends Model
                 ->exists();
 
             // Only increment if no recent view from same IP
-            if (!$existingView) {
+            if (! $existingView) {
                 $view->blog->increment('views_count');
             }
         });
@@ -73,6 +73,7 @@ class BlogView extends Model
         // If already viewed recently, just update the timestamp
         if ($recentView) {
             $recentView->update(['viewed_at' => now()]);
+
             return $recentView;
         }
 
@@ -81,7 +82,7 @@ class BlogView extends Model
             'blog_id' => $blogId,
             'ip_address' => $ipAddress,
             'user_agent' => $userAgent,
-            'referrer' => $referrer
+            'referrer' => $referrer,
         ]);
     }
 
@@ -99,7 +100,7 @@ class BlogView extends Model
     public static function getUniqueViews($blogId, $days = null)
     {
         $query = static::where('blog_id', $blogId)
-                      ->distinct('ip_address');
+            ->distinct('ip_address');
 
         if ($days) {
             $query->where('viewed_at', '>=', Carbon::now()->subDays($days));
@@ -114,18 +115,18 @@ class BlogView extends Model
     public static function getAnalytics($blogId, $days = 30)
     {
         $query = static::where('blog_id', $blogId)
-                      ->where('viewed_at', '>=', Carbon::now()->subDays($days));
+            ->where('viewed_at', '>=', Carbon::now()->subDays($days));
 
         return [
             'total_views' => $query->count(),
             'unique_views' => $query->distinct('ip_address')->count(),
             'avg_duration' => $query->whereNotNull('duration_seconds')->avg('duration_seconds'),
             'top_referrers' => $query->whereNotNull('referrer')
-                                   ->selectRaw('referrer, COUNT(*) as count')
-                                   ->groupBy('referrer')
-                                   ->orderByDesc('count')
-                                   ->limit(5)
-                                   ->get()
+                ->selectRaw('referrer, COUNT(*) as count')
+                ->groupBy('referrer')
+                ->orderByDesc('count')
+                ->limit(5)
+                ->get(),
         ];
     }
 }

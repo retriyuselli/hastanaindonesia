@@ -25,6 +25,7 @@ class Region extends Model
         'gallery_images',
         'ketua_dpw',
         'wk_ketua_dpw',
+        'wk_ketua2_dpw',
         'sekretaris_dpw',
         'bendahara_dpw',
     ];
@@ -54,6 +55,11 @@ class Region extends Model
         return $this->belongsTo(User::class, 'wk_ketua_dpw');
     }
 
+    public function wkKetua2Dpw()
+    {
+        return $this->belongsTo(User::class, 'wk_ketua2_dpw');
+    }
+
     /**
      * Get the Sekretaris DPW (Regional Secretary)
      */
@@ -79,7 +85,7 @@ class Region extends Model
         $filled = 0;
 
         foreach ($positions as $position) {
-            if (!is_null($this->$position)) {
+            if (! is_null($this->$position)) {
                 $filled++;
             }
         }

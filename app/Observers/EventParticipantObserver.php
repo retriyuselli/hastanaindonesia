@@ -2,8 +2,8 @@
 
 namespace App\Observers;
 
-use App\Models\EventParticipant;
 use App\Models\EventHastana;
+use App\Models\EventParticipant;
 
 class EventParticipantObserver
 {
@@ -55,12 +55,12 @@ class EventParticipantObserver
      */
     private function updateEventParticipantsCount(?int $eventHastanaId): void
     {
-        if (!$eventHastanaId) {
+        if (! $eventHastanaId) {
             return;
         }
 
         $event = EventHastana::find($eventHastanaId);
-        if (!$event) {
+        if (! $event) {
             return;
         }
 

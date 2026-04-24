@@ -46,7 +46,7 @@ class RegionProfileController extends Controller
 
     public function show(Region $region)
     {
-        $region->load(['ketuaDpw', 'wkKetuaDpw', 'sekretarisDpw', 'bendaharaDpw']);
+        $region->load(['ketuaDpw', 'wkKetuaDpw', 'wkKetua2Dpw', 'sekretarisDpw', 'bendaharaDpw']);
 
         $members = WeddingOrganizer::query()
             ->with(['user'])

@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('user_agent')->nullable();
             $table->timestamp('liked_at');
             $table->timestamps();
-            
+
             // Prevent duplicate likes from same IP
             $table->unique(['blog_id', 'ip_address']);
             $table->index('blog_id');

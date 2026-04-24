@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\Portfolio;
-use App\Models\WeddingOrganizer;
-use App\Models\EventHastana;
 use App\Models\Blog;
+use App\Models\EventHastana;
+use App\Models\Portfolio;
 use App\Models\Product;
 use App\Models\Region;
+use App\Models\WeddingOrganizer;
 use Illuminate\Support\Facades\Cache;
 
 class HomeController extends Controller
@@ -90,7 +89,7 @@ class HomeController extends Controller
                     'membership' => 'Premium Member',
                     'rating' => 5,
                     'icon' => 'crown',
-                    'color' => 'blue'
+                    'color' => 'blue',
                 ],
                 [
                     'name' => 'Bali Dream Wedding',
@@ -98,7 +97,7 @@ class HomeController extends Controller
                     'membership' => 'Gold Member',
                     'rating' => 5,
                     'icon' => 'heart',
-                    'color' => 'red'
+                    'color' => 'red',
                 ],
                 [
                     'name' => 'Surabaya Modern Wedding',
@@ -106,7 +105,7 @@ class HomeController extends Controller
                     'membership' => 'Silver Member',
                     'rating' => 4,
                     'icon' => 'gem',
-                    'color' => 'purple'
+                    'color' => 'purple',
                 ],
                 [
                     'name' => 'Yogya Traditional Event',
@@ -114,8 +113,8 @@ class HomeController extends Controller
                     'membership' => 'Silver Member',
                     'rating' => 4,
                     'icon' => 'leaf',
-                    'color' => 'green'
-                ]
+                    'color' => 'green',
+                ],
             ],
             'upcoming_events' => [
                 [
@@ -124,7 +123,7 @@ class HomeController extends Controller
                     'location' => 'Jakarta',
                     'description' => 'Pelatihan intensif fotografi pernikahan dengan teknik modern dan equipment terbaru. Dipandu oleh fotografer profesional dengan pengalaman internasional.',
                     'type' => 'workshop',
-                    'color' => 'blue'
+                    'color' => 'blue',
                 ],
                 [
                     'title' => 'HASTANA Annual Networking Gala',
@@ -132,29 +131,29 @@ class HomeController extends Controller
                     'location' => 'Bali',
                     'description' => 'Acara networking tahunan HASTANA yang mempertemukan wedding organizer dari seluruh Indonesia. Kesempatan emas untuk membangun relasi profesional.',
                     'type' => 'networking',
-                    'color' => 'red'
-                ]
+                    'color' => 'red',
+                ],
             ],
             'latest_articles' => [
                 [
                     'title' => 'Tren Pernikahan 2025: Sustainable Wedding',
                     'date' => '15 Agustus 2025',
                     'excerpt' => 'Eksplorasi tren pernikahan ramah lingkungan yang semakin populer di kalangan milenial Indonesia...',
-                    'color' => 'pink'
+                    'color' => 'pink',
                 ],
                 [
                     'title' => 'Tips Manajemen Budget Wedding yang Efektif',
                     'date' => '12 Agustus 2025',
                     'excerpt' => 'Strategi jitu untuk wedding organizer dalam membantu klien mengelola budget pernikahan...',
-                    'color' => 'indigo'
+                    'color' => 'indigo',
                 ],
                 [
                     'title' => 'Digital Marketing untuk Wedding Organizer',
                     'date' => '10 Agustus 2025',
                     'excerpt' => 'Panduan lengkap memanfaatkan media sosial dan digital marketing untuk bisnis wedding organizer...',
-                    'color' => 'emerald'
-                ]
-            ]
+                    'color' => 'emerald',
+                ],
+            ],
         ];
 
         return view('front.home.modern', compact('data', 'featuredPortfolios', 'featuredWeddingOrganizers', 'featuredProducts', 'totalWeddingOrganizers', 'totalRegions', 'upcomingEvents', 'latestBlogs'));

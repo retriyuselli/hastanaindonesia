@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Region;
 use App\Models\Company;
+use App\Models\Region;
 use App\Models\WeddingOrganizer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;

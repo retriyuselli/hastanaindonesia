@@ -43,12 +43,12 @@ class AuthenticatedSessionController extends Controller
 
         // Clear all session data including flash messages
         $request->session()->flush();
-        
+
         $request->session()->invalidate();
 
         $request->session()->regenerateToken();
 
         // Redirect to home with timestamp to prevent cache
-        return redirect('/?t=' . time());
+        return redirect('/?t='.time());
     }
 }

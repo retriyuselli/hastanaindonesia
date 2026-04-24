@@ -28,7 +28,7 @@ return new class extends Migration
             $table->json('tags')->nullable(); // Tags for search
             $table->timestamps();
             $table->softDeletes(); // Soft delete support
-            
+
             // Indexes for better performance
             $table->index('category');
             $table->index('is_published');

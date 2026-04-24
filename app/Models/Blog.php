@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Support\Str;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Blog extends Model
 {
@@ -34,7 +34,7 @@ class Blog extends Model
         'is_published',
         'is_featured',
         'status',
-        'published_at'
+        'published_at',
     ];
 
     protected $casts = [
@@ -47,7 +47,7 @@ class Blog extends Model
         'views_count' => 'integer',
         'likes_count' => 'integer',
         'comments_count' => 'integer',
-        'engagement_score' => 'decimal:2'
+        'engagement_score' => 'decimal:2',
     ];
 
     /**
@@ -61,13 +61,13 @@ class Blog extends Model
             if (empty($blog->slug)) {
                 $blog->slug = Str::slug($blog->title);
             }
-            
-            if ($blog->is_published && !$blog->published_at) {
+
+            if ($blog->is_published && ! $blog->published_at) {
                 $blog->published_at = now();
             }
-            
+
             // Auto-calculate read time if not set
-            if (empty($blog->read_time) && !empty($blog->content)) {
+            if (empty($blog->read_time) && ! empty($blog->content)) {
                 $blog->read_time = $blog->calculateReadTime();
             }
         });
@@ -76,13 +76,13 @@ class Blog extends Model
             if ($blog->isDirty('title') && empty($blog->slug)) {
                 $blog->slug = Str::slug($blog->title);
             }
-            
-            if ($blog->isDirty('is_published') && $blog->is_published && !$blog->published_at) {
+
+            if ($blog->isDirty('is_published') && $blog->is_published && ! $blog->published_at) {
                 $blog->published_at = now();
             }
-            
+
             // Auto-recalculate read time if content changed
-            if ($blog->isDirty('content') && !empty($blog->content)) {
+            if ($blog->isDirty('content') && ! empty($blog->content)) {
                 $blog->read_time = $blog->calculateReadTime();
             }
         });
@@ -95,7 +95,7 @@ class Blog extends Model
     {
         return $this->belongsTo(BlogCategory::class);
     }
-    
+
     /**
      * Get the blog category (alias for easier access)
      */
@@ -134,9 +134,9 @@ class Blog extends Model
     public function topLevelComments()
     {
         return $this->hasMany(BlogComment::class)
-                    ->where('is_approved', true)
-                    ->whereNull('parent_id')
-                    ->orderBy('created_at', 'desc');
+            ->where('is_approved', true)
+            ->whereNull('parent_id')
+            ->orderBy('created_at', 'desc');
     }
 
     /**
@@ -161,8 +161,8 @@ class Blog extends Model
     public function scopePublished($query)
     {
         return $query->where('is_published', true)
-                    ->whereNotNull('published_at')
-                    ->where('published_at', '<=', now());
+            ->whereNotNull('published_at')
+            ->where('published_at', '<=', now());
     }
 
     /**
@@ -202,17 +202,17 @@ class Blog extends Model
      */
     public function getFeaturedImageUrlAttribute()
     {
-        if (!$this->featured_image) {
+        if (! $this->featured_image) {
             return 'https://images.unsplash.com/photo-1519741497674-611481863552?w=800&h=450&fit=crop&auto=format';
         }
-        
+
         // If it's already a full URL, return as is
         if (Str::startsWith($this->featured_image, ['http://', 'https://'])) {
             return $this->featured_image;
         }
-        
+
         // Otherwise, it's a storage path
-        return asset('storage/' . $this->featured_image);
+        return asset('storage/'.$this->featured_image);
     }
 
     /**
@@ -220,7 +220,7 @@ class Blog extends Model
      */
     public function getReadingTimeAttribute()
     {
-        return $this->read_time . ' min read';
+        return $this->read_time.' min read';
     }
 
     /**
@@ -233,14 +233,14 @@ class Blog extends Model
         if (empty($this->content)) {
             return 1; // Minimum 1 minute
         }
-        
+
         // Strip HTML tags and count words
         $text = strip_tags($this->content);
         $wordCount = str_word_count($text);
-        
+
         // Calculate minutes (225 words per minute)
         $minutes = ceil($wordCount / 225);
-        
+
         // Minimum 1 minute, even for short articles
         return max(1, $minutes);
     }
@@ -268,7 +268,7 @@ class Blog extends Model
     {
         // Record the view
         BlogView::record($this->id, $ipAddress, $userAgent, $referrer);
-        
+
         // Update engagement score
         $this->updateEngagementScore();
     }
@@ -288,6 +288,7 @@ class Blog extends Model
     {
         $result = BlogLike::toggle($this->id, $ipAddress, $userAgent);
         $this->updateEngagementScore();
+
         return $result;
     }
 
@@ -297,20 +298,20 @@ class Blog extends Model
     public function updateEngagementScore()
     {
         $score = 0;
-        
+
         // Views contribute 1 point each
         $score += $this->views_count * 1;
-        
+
         // Likes contribute 3 points each
         $score += $this->likes_count * 3;
-        
+
         // Comments contribute 5 points each
         $score += $this->comments_count * 5;
-        
+
         // Normalize by days since published (to favor recent content)
         $daysSincePublished = $this->published_at ? $this->published_at->diffInDays(now()) + 1 : 1;
         $normalizedScore = $score / $daysSincePublished;
-        
+
         $this->update(['engagement_score' => round($normalizedScore, 2)]);
     }
 
@@ -323,9 +324,9 @@ class Blog extends Model
             'views' => $this->views_count,
             'likes' => $this->likes_count,
             'comments' => $this->comments_count,
-            'engagement_rate' => $this->views_count > 0 ? 
+            'engagement_rate' => $this->views_count > 0 ?
                 round((($this->likes_count + $this->comments_count) / $this->views_count) * 100, 2) : 0,
-            'score' => $this->engagement_score
+            'score' => $this->engagement_score,
         ];
     }
 
@@ -335,7 +336,7 @@ class Blog extends Model
     public function scopeTrending($query, $days = 7)
     {
         return $query->where('published_at', '>=', Carbon::now()->subDays($days))
-                    ->orderBy('engagement_score', 'desc');
+            ->orderBy('engagement_score', 'desc');
     }
 
     /**

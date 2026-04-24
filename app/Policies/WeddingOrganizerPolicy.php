@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace App\Policies;
 
-use Illuminate\Foundation\Auth\User as AuthUser;
 use App\Models\WeddingOrganizer;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Foundation\Auth\User as AuthUser;
 
 class WeddingOrganizerPolicy
 {
     use HandlesAuthorization;
-    
+
     public function viewAny(AuthUser $authUser): bool
     {
         return $authUser->can('ViewAny:WeddingOrganizer');
@@ -66,5 +66,4 @@ class WeddingOrganizerPolicy
     {
         return $authUser->can('Reorder:WeddingOrganizer');
     }
-
 }

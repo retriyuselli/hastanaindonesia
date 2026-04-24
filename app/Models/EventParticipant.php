@@ -39,7 +39,7 @@ class EventParticipant extends Model
         'formatted_registration_date',
         'is_confirmed',
         'is_attended',
-        'event_title'
+        'event_title',
     ];
 
     /**
@@ -51,7 +51,7 @@ class EventParticipant extends Model
 
         static::creating(function ($model) {
             if (empty($model->registration_code)) {
-                $model->registration_code = 'REG-' . strtoupper(Str::random(10));
+                $model->registration_code = 'REG-'.strtoupper(Str::random(10));
             }
         });
     }
@@ -69,7 +69,7 @@ class EventParticipant extends Model
      */
     public function getStatusColorAttribute(): string
     {
-        return match($this->status) {
+        return match ($this->status) {
             'pending' => 'warning',
             'confirmed' => 'success',
             'cancelled' => 'danger',
@@ -83,36 +83,36 @@ class EventParticipant extends Model
      */
     public function getStatusBadgeAttribute(): array
     {
-        return match($this->status) {
+        return match ($this->status) {
             'pending' => [
                 'text' => 'Menunggu Konfirmasi',
                 'color' => 'yellow',
                 'filament_color' => 'warning',
-                'icon' => 'clock'
+                'icon' => 'clock',
             ],
             'confirmed' => [
                 'text' => 'Terkonfirmasi',
                 'color' => 'green',
                 'filament_color' => 'success',
-                'icon' => 'check-circle'
+                'icon' => 'check-circle',
             ],
             'cancelled' => [
                 'text' => 'Dibatalkan',
                 'color' => 'red',
                 'filament_color' => 'danger',
-                'icon' => 'times-circle'
+                'icon' => 'times-circle',
             ],
             'attended' => [
                 'text' => 'Hadir',
                 'color' => 'blue',
                 'filament_color' => 'info',
-                'icon' => 'user-check'
+                'icon' => 'user-check',
             ],
             default => [
                 'text' => ucfirst($this->status),
                 'color' => 'gray',
                 'filament_color' => 'secondary',
-                'icon' => 'info-circle'
+                'icon' => 'info-circle',
             ]
         };
     }
@@ -122,7 +122,7 @@ class EventParticipant extends Model
      */
     public function getPaymentStatusColorAttribute(): string
     {
-        return match($this->payment_status) {
+        return match ($this->payment_status) {
             'pending' => 'warning',
             'paid' => 'success',
             'refunded' => 'danger',
@@ -136,36 +136,36 @@ class EventParticipant extends Model
      */
     public function getPaymentStatusBadgeAttribute(): array
     {
-        return match($this->payment_status) {
+        return match ($this->payment_status) {
             'pending' => [
                 'text' => 'Menunggu Pembayaran',
                 'color' => 'yellow',
                 'filament_color' => 'warning',
-                'icon' => 'clock'
+                'icon' => 'clock',
             ],
             'paid' => [
                 'text' => 'Lunas',
                 'color' => 'green',
                 'filament_color' => 'success',
-                'icon' => 'check-circle'
+                'icon' => 'check-circle',
             ],
             'refunded' => [
                 'text' => 'Refund',
                 'color' => 'red',
                 'filament_color' => 'danger',
-                'icon' => 'undo'
+                'icon' => 'undo',
             ],
             'free' => [
                 'text' => 'Gratis',
                 'color' => 'blue',
                 'filament_color' => 'info',
-                'icon' => 'gift'
+                'icon' => 'gift',
             ],
             default => [
                 'text' => ucfirst($this->payment_status),
                 'color' => 'gray',
                 'filament_color' => 'secondary',
-                'icon' => 'info-circle'
+                'icon' => 'info-circle',
             ]
         };
     }
@@ -212,7 +212,7 @@ class EventParticipant extends Model
             'event_id' => $this->event_hastana_id,
             'participant_id' => $this->id,
             'name' => $this->name,
-            'email' => $this->email
+            'email' => $this->email,
         ]);
     }
 
@@ -255,6 +255,7 @@ class EventParticipant extends Model
     {
         $this->status = 'confirmed';
         $this->confirmed_at = now();
+
         return $this->save();
     }
 
@@ -265,11 +266,11 @@ class EventParticipant extends Model
     {
         $this->status = 'attended';
         $this->attended_at = now();
-        
-        if (!$this->confirmed_at) {
+
+        if (! $this->confirmed_at) {
             $this->confirmed_at = now();
         }
-        
+
         return $this->save();
     }
 
@@ -279,6 +280,7 @@ class EventParticipant extends Model
     public function cancel(): bool
     {
         $this->status = 'cancelled';
+
         return $this->save();
     }
 

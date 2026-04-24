@@ -136,12 +136,12 @@ class EventReview extends Model
 
         static::creating(function ($review) {
             // Auto-approve reviews from verified participants
-            if ($review->is_verified_participant && !isset($review->is_approved)) {
+            if ($review->is_verified_participant && ! isset($review->is_approved)) {
                 $review->is_approved = true;
             }
 
             // Set IP address if not set
-            if (!$review->ip_address && request()) {
+            if (! $review->ip_address && request()) {
                 $review->ip_address = request()->ip();
             }
         });

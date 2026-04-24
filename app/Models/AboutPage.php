@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class AboutPage extends Model
 {
@@ -15,13 +15,13 @@ class AboutPage extends Model
         'mission',
         'values',
         'programs',
-        'is_active'
+        'is_active',
     ];
 
     protected $casts = [
         'values' => 'array',
         'programs' => 'array',
-        'is_active' => 'boolean'
+        'is_active' => 'boolean',
     ];
 
     /**

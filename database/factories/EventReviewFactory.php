@@ -4,11 +4,12 @@ namespace Database\Factories;
 
 use App\Models\EventHastana;
 use App\Models\EventParticipant;
+use App\Models\EventReview;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\EventReview>
+ * @extends Factory<EventReview>
  */
 class EventReviewFactory extends Factory
 {
@@ -21,7 +22,7 @@ class EventReviewFactory extends Factory
     {
         $rating = fake()->numberBetween(1, 5);
         $wouldRecommend = $rating >= 4;
-        
+
         return [
             'event_hastana_id' => EventHastana::inRandomOrder()->first()?->id ?? EventHastana::factory(),
             'user_id' => User::inRandomOrder()->first()?->id ?? User::factory(),

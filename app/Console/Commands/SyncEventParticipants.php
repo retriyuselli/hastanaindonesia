@@ -2,9 +2,9 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
 use App\Models\EventHastana;
 use App\Models\EventParticipant;
+use Illuminate\Console\Command;
 
 class SyncEventParticipants extends Command
 {
@@ -32,8 +32,9 @@ class SyncEventParticipants extends Command
         if ($eventId) {
             // Sync specific event
             $event = EventHastana::find($eventId);
-            if (!$event) {
+            if (! $event) {
                 $this->error("Event with ID {$eventId} not found!");
+
                 return 1;
             }
 

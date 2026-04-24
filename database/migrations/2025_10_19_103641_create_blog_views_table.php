@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('referrer')->nullable();
             $table->integer('duration_seconds')->nullable(); // Time spent reading
             $table->timestamps();
-            
+
             // Allow multiple views from same IP but track them
             $table->index(['blog_id', 'ip_address']);
             $table->index('viewed_at');

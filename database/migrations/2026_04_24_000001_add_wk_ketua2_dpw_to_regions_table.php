@@ -6,23 +6,23 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::table('regions', function (Blueprint $table) {
-            $table->string('dpc_name')->nullable()->after('region_name');
+            $table
+                ->foreignId('wk_ketua2_dpw')
+                ->nullable()
+                ->after('wk_ketua_dpw')
+                ->constrained('users')
+                ->nullOnDelete();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::table('regions', function (Blueprint $table) {
-            $table->dropColumn('dpc_name');
+            $table->dropForeign(['wk_ketua2_dpw']);
+            $table->dropColumn('wk_ketua2_dpw');
         });
     }
 };

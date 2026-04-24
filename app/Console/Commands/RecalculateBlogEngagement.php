@@ -27,21 +27,22 @@ class RecalculateBlogEngagement extends Command
     {
         $this->info('🚀 Starting blog engagement recalculation...');
         $this->newLine();
-        
+
         $blogId = $this->option('blog_id');
         $options = $blogId ? ['--blog_id' => $blogId] : [];
-        
+
         // Recalculate Views
         $this->info('📊 Recalculating views...');
         $this->call('blog:recalculate-views', $options);
         $this->newLine();
-        
+
         // Recalculate Likes
         $this->info('❤️  Recalculating likes...');
         $this->call('blog:recalculate-likes', $options);
         $this->newLine();
-        
+
         $this->info('✅ All engagement metrics recalculated successfully!');
+
         return 0;
     }
 }

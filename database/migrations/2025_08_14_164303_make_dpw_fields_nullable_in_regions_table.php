@@ -16,12 +16,12 @@ return new class extends Migration
             $table->dropForeign(['wk_ketua_dpw']);
             $table->dropForeign(['sekretaris_dpw']);
             $table->dropForeign(['bendahara_dpw']);
-            
+
             $table->foreignId('ketua_dpw')->nullable()->change();
             $table->foreignId('wk_ketua_dpw')->nullable()->change();
             $table->foreignId('sekretaris_dpw')->nullable()->change();
             $table->foreignId('bendahara_dpw')->nullable()->change();
-            
+
             $table->foreign('ketua_dpw')->references('id')->on('users')->onDelete('set null');
             $table->foreign('wk_ketua_dpw')->references('id')->on('users')->onDelete('set null');
             $table->foreign('sekretaris_dpw')->references('id')->on('users')->onDelete('set null');
@@ -39,12 +39,12 @@ return new class extends Migration
             $table->dropForeign(['wk_ketua_dpw']);
             $table->dropForeign(['sekretaris_dpw']);
             $table->dropForeign(['bendahara_dpw']);
-            
+
             $table->foreignId('ketua_dpw')->nullable(false)->change();
             $table->foreignId('wk_ketua_dpw')->nullable(false)->change();
             $table->foreignId('sekretaris_dpw')->nullable(false)->change();
             $table->foreignId('bendahara_dpw')->nullable(false)->change();
-            
+
             $table->foreign('ketua_dpw')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('wk_ketua_dpw')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('sekretaris_dpw')->references('id')->on('users')->onDelete('cascade');

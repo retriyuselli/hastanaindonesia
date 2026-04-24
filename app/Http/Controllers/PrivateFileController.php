@@ -53,4 +53,3 @@ class PrivateFileController extends Controller
         abort(404);
     }
 }
-

@@ -15,12 +15,12 @@ class Portfolio extends Model
         'description',
         'images',
         'video_url',
-        'featured'
+        'featured',
     ];
 
     protected $casts = [
         'images' => 'array',
-        'featured' => 'boolean'
+        'featured' => 'boolean',
     ];
 
     /**
@@ -47,6 +47,7 @@ class Portfolio extends Model
         if ($this->images && is_array($this->images) && count($this->images) > 0) {
             return $this->images[0];
         }
+
         return null;
     }
 
@@ -58,6 +59,7 @@ class Portfolio extends Model
         if ($this->images && is_array($this->images)) {
             return count($this->images);
         }
+
         return 0;
     }
 
@@ -66,6 +68,6 @@ class Portfolio extends Model
      */
     public function hasVideo()
     {
-        return !empty($this->video_url);
+        return ! empty($this->video_url);
     }
 }

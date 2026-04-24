@@ -39,7 +39,7 @@ class EventRegistration extends Model
         'is_paid' => 'boolean',
         'is_certificate_provided' => 'boolean',
         'fee_amount' => 'integer',
-        'quota' => 'integer'
+        'quota' => 'integer',
     ];
 
     /**
@@ -96,8 +96,9 @@ class EventRegistration extends Model
     public function getFeeAmountFormattedAttribute()
     {
         if ($this->is_paid && $this->fee_amount) {
-            return 'Rp ' . number_format($this->fee_amount);
+            return 'Rp '.number_format($this->fee_amount);
         }
+
         return 'Gratis';
     }
 
@@ -107,6 +108,7 @@ class EventRegistration extends Model
     public function isOngoing(): bool
     {
         $now = now()->toDateString();
+
         return $this->start_date <= $now && ($this->end_date >= $now || is_null($this->end_date));
     }
 
@@ -118,6 +120,7 @@ class EventRegistration extends Model
         if (is_null($this->end_date)) {
             return $this->start_date < now()->toDateString();
         }
+
         return $this->end_date < now()->toDateString();
     }
 }

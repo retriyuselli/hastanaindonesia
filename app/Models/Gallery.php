@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Database\Factories\GalleryFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -9,7 +10,7 @@ use Illuminate\Support\Str;
 
 class Gallery extends Model
 {
-    /** @use HasFactory<\Database\Factories\GalleryFactory> */
+    /** @use HasFactory<GalleryFactory> */
     use HasFactory, SoftDeletes;
 
     /**
@@ -57,12 +58,12 @@ class Gallery extends Model
         static::creating(function ($gallery) {
             if (empty($gallery->slug)) {
                 $gallery->slug = Str::slug($gallery->title);
-                
+
                 // Ensure slug is unique
                 $count = 1;
                 $originalSlug = $gallery->slug;
                 while (static::where('slug', $gallery->slug)->exists()) {
-                    $gallery->slug = $originalSlug . '-' . $count++;
+                    $gallery->slug = $originalSlug.'-'.$count++;
                 }
             }
         });
@@ -158,19 +159,19 @@ class Gallery extends Model
         if (empty($this->image)) {
             return 'https://via.placeholder.com/800x800/e5e7eb/6b7280?text=No+Image';
         }
-        
+
         // If already full URL, return as is
         if (Str::startsWith($this->image, ['http://', 'https://'])) {
             return $this->image;
         }
-        
+
         // If starts with 'galleries/', it's uploaded file
         if (Str::startsWith($this->image, 'galleries/')) {
-            return asset('storage/' . $this->image);
+            return asset('storage/'.$this->image);
         }
-        
+
         // Otherwise, assume it's in storage
-        return asset('storage/' . $this->image);
+        return asset('storage/'.$this->image);
     }
 
     /**
@@ -199,7 +200,7 @@ class Gallery extends Model
      */
     public function getCategoryColorAttribute()
     {
-        return match($this->category) {
+        return match ($this->category) {
             'Resepsi' => 'blue',
             'Akad Nikah' => 'green',
             'Outdoor Wedding' => 'teal',

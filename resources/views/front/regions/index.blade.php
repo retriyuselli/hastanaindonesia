@@ -13,46 +13,47 @@
                 </div>
             </div>
 
-            @auth
-                @if(auth()->user()->hasRole(config('filament-shield.super_admin.name', 'super_admin')))
-                    <div class="mt-8 bg-white rounded-2xl shadow-sm border border-gray-100 p-4 md:p-6">
-                        <form method="GET" action="{{ route('regions.index') }}" class="grid grid-cols-1 md:grid-cols-12 gap-3">
-                            <div class="md:col-span-6">
-                                <label class="block text-xs font-medium text-gray-700 mb-1">Pencarian</label>
-                                <input
-                                    type="text"
-                                    name="search"
-                                    value="{{ request('search') }}"
-                                    placeholder="Cari nama region / DPC / provinsi"
-                                    class="w-full rounded-xl border-gray-200 focus:border-hastana-blue focus:ring-hastana-blue"
-                                >
-                            </div>
-                            <div class="md:col-span-4">
-                                <label class="block text-xs font-medium text-gray-700 mb-1">Provinsi</label>
-                                <select
-                                    name="province"
-                                    class="w-full rounded-xl border-gray-200 focus:border-hastana-blue focus:ring-hastana-blue"
-                                >
-                                    <option value="">Semua</option>
-                                    @foreach ($provinces as $province)
-                                        <option value="{{ $province }}" @selected(request('province') === $province)>
-                                            {{ $province }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="md:col-span-2 flex items-end gap-2">
-                                <button type="submit" class="w-full bg-hastana-blue text-white px-4 py-2 rounded-xl hover:bg-blue-800 transition-colors">
-                                    Filter
-                                </button>
-                                <a href="{{ route('regions.index') }}" class="w-full text-center px-4 py-2 rounded-xl border border-gray-200 text-gray-700 hover:bg-gray-50 transition-colors">
-                                    Reset
-                                </a>
-                            </div>
-                        </form>
+            <div class="mt-8 bg-white rounded-2xl shadow-sm border border-gray-100 p-4 md:p-6">
+                <form method="GET" action="{{ route('regions.index') }}" class="grid grid-cols-1 gap-4 md:grid-cols-12 md:gap-3">
+                    <div class="md:col-span-6">
+                        <label class="block text-xs font-medium text-gray-700 mb-1">Pencarian</label>
+                        <input
+                            type="text"
+                            name="search"
+                            value="{{ request('search') }}"
+                            placeholder="Cari nama region / DPC / provinsi"
+                            class="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm focus:border-hastana-blue focus:ring-hastana-blue"
+                        >
                     </div>
-                @endif
-            @endauth
+                    <div class="md:col-span-4">
+                        <label class="block text-xs font-medium text-gray-700 mb-1">Provinsi</label>
+                        <div class="relative">
+                            <select
+                                name="province"
+                                class="w-full appearance-none rounded-xl border border-gray-200 bg-white px-4 py-3 pr-10 text-sm focus:border-hastana-blue focus:ring-hastana-blue"
+                            >
+                                <option value="">Semua</option>
+                                @foreach ($provinces as $province)
+                                    <option value="{{ $province }}" @selected(request('province') === $province)>
+                                        {{ $province }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-4 text-gray-400">
+                                <i class="fas fa-chevron-down text-xs"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="md:col-span-2 grid grid-cols-2 items-end gap-2">
+                        <button type="submit" class="w-full rounded-xl bg-hastana-blue px-4 py-3 text-sm font-semibold text-white transition-colors hover:bg-blue-800">
+                            Filter
+                        </button>
+                        <a href="{{ route('regions.index') }}" class="w-full rounded-xl border border-gray-200 px-4 py-3 text-center text-sm font-semibold text-gray-700 transition-colors hover:bg-gray-50">
+                            Reset
+                        </a>
+                    </div>
+                </form>
+            </div>
 
             <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 @forelse ($regions as $region)

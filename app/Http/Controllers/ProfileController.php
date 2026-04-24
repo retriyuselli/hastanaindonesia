@@ -36,7 +36,7 @@ class ProfileController extends Controller
             if ($user->avatar) {
                 Storage::delete($user->avatar);
             }
-            
+
             // Store new avatar
             $avatarPath = $request->file('avatar')->store('avatars', 'public');
             $user->avatar = $avatarPath;

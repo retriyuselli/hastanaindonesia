@@ -3,12 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Gallery;
-use App\Models\WeddingOrganizer;
+use App\Models\Product;
 use App\Models\Region;
+use App\Models\WeddingOrganizer;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class MemberController extends Controller
@@ -45,10 +46,10 @@ class MemberController extends Controller
         // Search by name
         if ($request->filled('search')) {
             $search = $request->search;
-            $query->where(function($q) use ($search) {
+            $query->where(function ($q) use ($search) {
                 $q->where('organizer_name', 'like', "%{$search}%")
-                  ->orWhere('brand_name', 'like', "%{$search}%")
-                  ->orWhere('city', 'like', "%{$search}%");
+                    ->orWhere('brand_name', 'like', "%{$search}%")
+                    ->orWhere('city', 'like', "%{$search}%");
             });
         }
 
@@ -187,24 +188,25 @@ class MemberController extends Controller
             ->firstOrFail();
 
         // Get product from database
-        $productModel = \App\Models\Product::where('id', $productId)
+        $productModel = Product::where('id', $productId)
             ->where('wedding_organizer_id', $member->id)
             ->where('is_active', true)
             ->firstOrFail();
 
         // Process images to use storage URL
         $images = $productModel->images;
-        if (!empty($images) && is_array($images)) {
-            $images = array_map(function($image) {
+        if (! empty($images) && is_array($images)) {
+            $images = array_map(function ($image) {
                 // If image is already a full URL, return as is
                 if (str_starts_with($image, 'http://') || str_starts_with($image, 'https://')) {
                     return $image;
                 }
                 // Convert to storage URL and check if file exists
-                $storagePath = storage_path('app/public/' . $image);
+                $storagePath = storage_path('app/public/'.$image);
                 if (file_exists($storagePath)) {
                     return Storage::url($image);
                 }
+
                 // Return placeholder if file doesn't exist
                 return 'https://images.unsplash.com/photo-1519741497674-611481863552?w=800&h=800&fit=crop';
             }, $images);
@@ -234,7 +236,7 @@ class MemberController extends Controller
             ->where('id', '!=', $member->id)
             ->verified()
             ->active()
-            ->when($member->region_id, function($query) use ($member) {
+            ->when($member->region_id, function ($query) use ($member) {
                 $query->where('region_id', $member->region_id);
             })
             ->inRandomOrder()

@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Gallery;
-use Illuminate\Http\Request;
 
 class GalleryController extends Controller
 {
@@ -32,7 +31,7 @@ class GalleryController extends Controller
             ->groupBy('category')
             ->pluck('count', 'category')
             ->toArray();
-        
+
         $categories = array_merge(['Semua' => $galleries->count()], $categories);
 
         return view('front.gallery.index', compact('galleries', 'categories'));
@@ -43,10 +42,10 @@ class GalleryController extends Controller
         $gallery = Gallery::published()
             ->where('slug', $slug)
             ->firstOrFail();
-        
+
         // Increment views
         $gallery->incrementViews();
-        
+
         // Get related galleries (same category)
         $relatedGalleries = Gallery::published()
             ->where('category', $gallery->category)

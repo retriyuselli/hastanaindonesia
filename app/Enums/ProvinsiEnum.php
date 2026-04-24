@@ -50,7 +50,7 @@ enum ProvinsiEnum: string
 
     public static function getKotaKabupaten(string $provinsi): array
     {
-        return match($provinsi) {
+        return match ($provinsi) {
             self::DKI_JAKARTA->value => [
                 'Jakarta Pusat',
                 'Jakarta Utara',

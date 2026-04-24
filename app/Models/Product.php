@@ -5,8 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class Product extends Model
 {
@@ -47,7 +47,7 @@ class Product extends Model
             if (empty($product->slug)) {
                 $product->slug = Str::slug($product->name);
             }
-            
+
             // Auto calculate discount
             if ($product->original_price && $product->price) {
                 $product->discount = $product->original_price - $product->price;
@@ -59,7 +59,7 @@ class Product extends Model
             if ($product->isDirty('name') && empty($product->slug)) {
                 $product->slug = Str::slug($product->name);
             }
-            
+
             // Auto recalculate discount
             if ($product->isDirty(['original_price', 'price'])) {
                 $product->discount = $product->original_price - $product->price;
@@ -96,23 +96,23 @@ class Product extends Model
      */
     public function getMainImageAttribute()
     {
-        if (!is_array($this->images) || count($this->images) === 0) {
+        if (! is_array($this->images) || count($this->images) === 0) {
             return 'https://images.unsplash.com/photo-1519741497674-611481863552?w=500&h=500&fit=crop';
         }
 
         $firstImage = $this->images[0];
-        
+
         // If already a full URL, return as is
         if (str_starts_with($firstImage, 'http://') || str_starts_with($firstImage, 'https://')) {
             return $firstImage;
         }
-        
+
         // Check if file exists in storage
-        $storagePath = storage_path('app/public/' . $firstImage);
+        $storagePath = storage_path('app/public/'.$firstImage);
         if (file_exists($storagePath)) {
             return Storage::url($firstImage);
         }
-        
+
         // Return placeholder if file doesn't exist
         return 'https://images.unsplash.com/photo-1519741497674-611481863552?w=500&h=500&fit=crop';
     }
@@ -125,6 +125,7 @@ class Product extends Model
         if ($this->original_price > 0) {
             return round(($this->discount / $this->original_price) * 100);
         }
+
         return 0;
     }
 }

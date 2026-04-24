@@ -57,9 +57,9 @@ class Author extends Model
             if (filter_var($this->avatar, FILTER_VALIDATE_URL)) {
                 return $this->avatar;
             }
-            
+
             // Otherwise, it's a storage path
-            return asset('storage/' . $this->avatar);
+            return asset('storage/'.$this->avatar);
         }
 
         // Default avatar placeholder

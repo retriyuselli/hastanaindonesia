@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\EventParticipant;
 use App\Models\EventHastana;
+use App\Models\EventParticipant;
 use App\Models\WeddingOrganizer;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
@@ -22,7 +21,7 @@ class DashboardController extends Controller
         // Hitung event yang akan datang
         $upcomingEvents = EventParticipant::where('user_id', $user->id)
             ->whereIn('status', ['pending', 'confirmed', 'attended'])
-            ->whereHas('eventHastana', function($q) {
+            ->whereHas('eventHastana', function ($q) {
                 $q->where('start_date', '>=', now());
             })
             ->count();
@@ -30,7 +29,7 @@ class DashboardController extends Controller
         // Hitung event yang sudah selesai
         $completedEvents = EventParticipant::where('user_id', $user->id)
             ->whereIn('status', ['confirmed', 'attended'])
-            ->whereHas('eventHastana', function($q) {
+            ->whereHas('eventHastana', function ($q) {
                 $q->where('end_date', '<', now());
             })
             ->count();
@@ -46,9 +45,9 @@ class DashboardController extends Controller
         $recommendedEvents = EventHastana::with('eventCategory')
             ->where('status', 'published')
             ->where('start_date', '>=', now())
-            ->whereDoesntHave('participants', function($q) use ($user) {
+            ->whereDoesntHave('participants', function ($q) use ($user) {
                 $q->where('user_id', $user->id)
-                  ->whereIn('status', ['pending', 'confirmed', 'attended']);
+                    ->whereIn('status', ['pending', 'confirmed', 'attended']);
             })
             ->orderBy('start_date', 'asc')
             ->limit(6)

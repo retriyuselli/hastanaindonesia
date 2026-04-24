@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class BlogComment extends Model
 {
@@ -19,12 +19,12 @@ class BlogComment extends Model
         'ip_address',
         'user_agent',
         'is_approved',
-        'parent_id'
+        'parent_id',
     ];
 
     protected $casts = [
         'is_approved' => 'boolean',
-        'created_at' => 'datetime'
+        'created_at' => 'datetime',
     ];
 
     /**
@@ -96,7 +96,7 @@ class BlogComment extends Model
      */
     public function getAvatarUrlAttribute()
     {
-        return $this->avatar ?: 'https://ui-avatars.com/api/?name=' . urlencode($this->name) . '&background=3B82F6&color=fff';
+        return $this->avatar ?: 'https://ui-avatars.com/api/?name='.urlencode($this->name).'&background=3B82F6&color=fff';
     }
 
     /**
@@ -106,8 +106,9 @@ class BlogComment extends Model
     {
         $words = explode(' ', trim($this->name));
         if (count($words) >= 2) {
-            return strtoupper(substr($words[0], 0, 1) . substr($words[1], 0, 1));
+            return strtoupper(substr($words[0], 0, 1).substr($words[1], 0, 1));
         }
+
         return strtoupper(substr($this->name, 0, 2));
     }
 
@@ -142,18 +143,18 @@ class BlogComment extends Model
     {
         $spamKeywords = ['casino', 'viagra', 'lottery', 'prize', 'click here', 'buy now'];
         $commentLower = strtolower($this->comment);
-        
+
         foreach ($spamKeywords as $keyword) {
             if (str_contains($commentLower, $keyword)) {
                 return true;
             }
         }
-        
+
         // Check for excessive links
         if (substr_count($commentLower, 'http') > 2) {
             return true;
         }
-        
+
         return false;
     }
 

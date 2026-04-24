@@ -38,14 +38,14 @@ class NewCommentNotification extends Notification implements ShouldQueue
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->subject('Komentar Baru di Blog: ' . $this->comment->blog->title)
+            ->subject('Komentar Baru di Blog: '.$this->comment->blog->title)
             ->line('Ada komentar baru yang menunggu persetujuan.')
-            ->line('**Dari:** ' . $this->comment->name)
-            ->line('**Email:** ' . $this->comment->email)
-            ->line('**Artikel:** ' . $this->comment->blog->title)
+            ->line('**Dari:** '.$this->comment->name)
+            ->line('**Email:** '.$this->comment->email)
+            ->line('**Artikel:** '.$this->comment->blog->title)
             ->line('**Komentar:**')
-            ->line('"' . $this->comment->comment . '"')
-            ->action('Lihat & Setujui Komentar', url('/admin/blog-comments/' . $this->comment->id))
+            ->line('"'.$this->comment->comment.'"')
+            ->action('Lihat & Setujui Komentar', url('/admin/blog-comments/'.$this->comment->id))
             ->line('Terima kasih!');
     }
 
@@ -63,7 +63,7 @@ class NewCommentNotification extends Notification implements ShouldQueue
             'commenter_name' => $this->comment->name,
             'commenter_email' => $this->comment->email,
             'comment_excerpt' => substr($this->comment->comment, 0, 100),
-            'url' => url('/admin/blog-comments/' . $this->comment->id),
+            'url' => url('/admin/blog-comments/'.$this->comment->id),
         ];
     }
 }

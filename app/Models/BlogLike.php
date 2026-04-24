@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class BlogLike extends Model
 {
@@ -13,11 +13,11 @@ class BlogLike extends Model
         'blog_id',
         'ip_address',
         'user_agent',
-        'liked_at'
+        'liked_at',
     ];
 
     protected $casts = [
-        'liked_at' => 'datetime'
+        'liked_at' => 'datetime',
     ];
 
     /**
@@ -54,8 +54,8 @@ class BlogLike extends Model
     public static function hasLiked($blogId, $ipAddress)
     {
         return static::where('blog_id', $blogId)
-                    ->where('ip_address', $ipAddress)
-                    ->exists();
+            ->where('ip_address', $ipAddress)
+            ->exists();
     }
 
     /**
@@ -64,18 +64,20 @@ class BlogLike extends Model
     public static function toggle($blogId, $ipAddress, $userAgent = null)
     {
         $existing = static::where('blog_id', $blogId)
-                         ->where('ip_address', $ipAddress)
-                         ->first();
+            ->where('ip_address', $ipAddress)
+            ->first();
 
         if ($existing) {
             $existing->delete();
+
             return ['liked' => false, 'action' => 'unliked', 'count' => Blog::find($blogId)->likes_count];
         } else {
             static::create([
                 'blog_id' => $blogId,
                 'ip_address' => $ipAddress,
-                'user_agent' => $userAgent
+                'user_agent' => $userAgent,
             ]);
+
             return ['liked' => true, 'action' => 'liked', 'count' => Blog::find($blogId)->likes_count];
         }
     }

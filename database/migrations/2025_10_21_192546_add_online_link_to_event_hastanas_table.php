@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::table('event_hastanas', function (Blueprint $table) {
             $table->string('online_link', 500)
-                  ->nullable()
-                  ->after('location_type')
-                  ->comment('Link meeting online (Zoom, Google Meet, dll)');
+                ->nullable()
+                ->after('location_type')
+                ->comment('Link meeting online (Zoom, Google Meet, dll)');
         });
     }
 

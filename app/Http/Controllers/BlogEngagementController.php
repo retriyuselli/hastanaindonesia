@@ -1,12 +1,12 @@
 <?php
 
-
 namespace App\Http\Controllers;
 
 use App\Models\Blog;
 use App\Models\BlogComment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Validation\ValidationException;
 
 class BlogEngagementController extends Controller
 {
@@ -28,7 +28,7 @@ class BlogEngagementController extends Controller
 
             // Get authenticated user
             $user = auth()->user();
-            if (!$user) {
+            if (! $user) {
                 return redirect()
                     ->back()
                     ->with('error', 'Anda harus login terlebih dahulu untuk mengirim komentar.');
@@ -90,7 +90,7 @@ class BlogEngagementController extends Controller
                 ->back()
                 ->with('success', $message);
 
-        } catch (\Illuminate\Validation\ValidationException $e) {
+        } catch (ValidationException $e) {
             throw $e;
         } catch (\Exception $e) {
             Log::error('Error storing comment', [
@@ -113,10 +113,10 @@ class BlogEngagementController extends Controller
     {
         try {
             $comment = BlogComment::findOrFail($id);
-            
+
             // Session-based like tracking
             $likedComments = session('liked_comments', []);
-            
+
             if (in_array($id, $likedComments)) {
                 // Unlike
                 $likedComments = array_diff($likedComments, [$id]);
@@ -214,30 +214,30 @@ class BlogEngagementController extends Controller
         try {
             // Find blog by ID or slug
             $blog = Blog::where('id', $blogId)
-                       ->orWhere('slug', $blogId)
-                       ->firstOrFail();
-            
+                ->orWhere('slug', $blogId)
+                ->firstOrFail();
+
             $ipAddress = request()->ip();
-            
+
             // Toggle like
             $result = $blog->toggleLike($ipAddress, request()->userAgent());
-            
+
             // Refresh to get updated counts
             $blog->refresh();
-            
+
             return response()->json([
                 'success' => true,
                 'liked' => $result['liked'],
                 'likes_count' => $blog->likes_count ?? 0,
                 'message' => $result['liked'] ? 'Blog disukai!' : 'Like dibatalkan.',
             ]);
-            
+
         } catch (\Exception $e) {
             Log::error('Error toggling blog like', [
                 'error' => $e->getMessage(),
                 'blog_id' => $blogId,
             ]);
-            
+
             return response()->json([
                 'success' => false,
                 'message' => 'Terjadi kesalahan saat memproses like.',
@@ -253,17 +253,17 @@ class BlogEngagementController extends Controller
         try {
             // Find blog by ID or slug
             $blog = Blog::where('id', $blogId)
-                       ->orWhere('slug', $blogId)
-                       ->firstOrFail();
-            
+                ->orWhere('slug', $blogId)
+                ->firstOrFail();
+
             $ipAddress = request()->ip();
             $liked = $blog->isLikedBy($ipAddress);
-            
+
             return response()->json([
                 'success' => true,
                 'liked' => $liked,
             ]);
-            
+
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,

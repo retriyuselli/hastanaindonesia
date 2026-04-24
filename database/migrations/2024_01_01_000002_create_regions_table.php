@@ -15,7 +15,7 @@ return new class extends Migration
             $table->string('contact_email')->nullable();
             $table->string('contact_phone')->nullable();
             $table->text('description')->nullable();
-            
+
             // Struktur Kepengurusan DPW (Dewan Pimpinan Wilayah)
             $table->foreignId('ketua_dpw')
                 ->constrained('users')
@@ -29,7 +29,7 @@ return new class extends Migration
             $table->foreignId('bendahara_dpw')
                 ->constrained('users')
                 ->onDelete('cascade');
-            
+
             $table->timestamps();
         });
     }

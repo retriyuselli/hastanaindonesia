@@ -29,7 +29,7 @@ return new class extends Migration
         Schema::table('regions', function (Blueprint $table) {
             $table->dropColumn([
                 'website',
-                'address', 
+                'address',
                 'postal_code',
                 'establishment_date',
                 'is_active',

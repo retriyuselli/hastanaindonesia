@@ -44,4 +44,3 @@ class WeddingOrganizerOverviewWidget extends StatsOverviewWidget
         ];
     }
 }
-

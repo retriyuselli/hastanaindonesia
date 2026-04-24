@@ -14,15 +14,15 @@ return new class extends Migration
         Schema::table('galleries', function (Blueprint $table) {
             // Drop foreign key constraint if exists
             $table->dropForeign(['company_id']);
-            
+
             // Rename column
             $table->renameColumn('company_id', 'wedding_organizer_id');
-            
+
             // Add new foreign key constraint
             $table->foreign('wedding_organizer_id')
-                  ->references('id')
-                  ->on('wedding_organizers')
-                  ->onDelete('cascade');
+                ->references('id')
+                ->on('wedding_organizers')
+                ->onDelete('cascade');
         });
     }
 
@@ -34,15 +34,15 @@ return new class extends Migration
         Schema::table('galleries', function (Blueprint $table) {
             // Drop foreign key constraint
             $table->dropForeign(['wedding_organizer_id']);
-            
+
             // Rename column back
             $table->renameColumn('wedding_organizer_id', 'company_id');
-            
+
             // Add old foreign key constraint
             $table->foreign('company_id')
-                  ->references('id')
-                  ->on('companies')
-                  ->onDelete('cascade');
+                ->references('id')
+                ->on('companies')
+                ->onDelete('cascade');
         });
     }
 };

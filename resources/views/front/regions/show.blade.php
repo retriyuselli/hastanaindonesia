@@ -181,16 +181,20 @@
                                 <span class="text-gray-900 font-medium text-right">{{ $region->ketuaDpw?->name ?? '-' }}</span>
                             </div>
                             <div class="flex items-center justify-between gap-3">
-                                <span class="text-gray-500">Wakil Ketua DPW</span>
+                                <span class="text-gray-500">Wakil Ketua 1</span>
                                 <span class="text-gray-900 font-medium text-right">{{ $region->wkKetuaDpw?->name ?? '-' }}</span>
                             </div>
                             <div class="flex items-center justify-between gap-3">
-                                <span class="text-gray-500">Sekretaris DPW</span>
-                                <span class="text-gray-900 font-medium text-right">{{ $region->sekretarisDpw?->name ?? '-' }}</span>
+                                <span class="text-gray-500">Wakil Ketua 2</span>
+                                <span class="text-gray-900 font-medium text-right">{{ $region->wkKetua2Dpw?->name ?? '-' }}</span>
                             </div>
                             <div class="flex items-center justify-between gap-3">
-                                <span class="text-gray-500">Bendahara DPW</span>
-                                <span class="text-gray-900 font-medium text-right">{{ $region->bendaharaDpw?->name ?? '-' }}</span>
+                                <span class="text-gray-500">Sekretaris</span>
+                                <span class="text-gray-900 font-medium text-right">{{ $region->sekretari?->name ?? '-' }}</span>
+                            </div>
+                            <div class="flex items-center justify-between gap-3">
+                                <span class="text-gray-500">Bendahara</span>
+                                <span class="text-gray-900 font-medium text-right">{{ $region->bendahar?->name ?? '-' }}</span>
                             </div>
                         </div>
 
@@ -202,7 +206,7 @@
                                         <span class="text-sm font-semibold text-gray-900">{{ $region->getDpwCompletionPercentage() }}%</span>
                                     </div>
                                     <div class="mt-2 w-full h-2 rounded-full bg-gray-200 overflow-hidden">
-                                        <div class="h-2 rounded-full bg-hastana-blue" style="width: {{ $region->getDpwCompletionPercentage() }}%"></div>
+                                        <div class="h-2 rounded-full bg-hastana-blue" data-progress-width="{{ $region->getDpwCompletionPercentage() }}" style="width: 0%"></div>
                                     </div>
                                 </div>
                             @endif
@@ -267,6 +271,13 @@
 @push('scripts')
     <script>
         document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('[data-progress-width]').forEach((el) => {
+                const value = Number(el.dataset.progressWidth)
+                if (!Number.isFinite(value)) return
+                const clamped = Math.max(0, Math.min(100, value))
+                el.style.width = `${clamped}%`
+            })
+
             const track = document.getElementById('region-gallery-track')
             if (!track) return
             const prevButton = document.getElementById('region-gallery-prev')

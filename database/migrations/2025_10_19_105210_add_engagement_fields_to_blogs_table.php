@@ -26,11 +26,11 @@ return new class extends Migration
         Schema::table('blogs', function (Blueprint $table) {
             $table->dropColumn([
                 'likes_count',
-                'comments_count', 
+                'comments_count',
                 'status',
                 'seo_keywords',
                 'summary',
-                'engagement_score'
+                'engagement_score',
             ]);
         });
     }

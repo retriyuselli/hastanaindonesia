@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::table('event_hastanas', function (Blueprint $table) {
             $table->enum('location_type', ['offline', 'online', 'hybrid'])
-                  ->default('offline')
-                  ->after('event_type')
-                  ->comment('Tipe lokasi: offline (fisik), online (virtual), atau hybrid (keduanya)');
+                ->default('offline')
+                ->after('event_type')
+                ->comment('Tipe lokasi: offline (fisik), online (virtual), atau hybrid (keduanya)');
         });
     }
 

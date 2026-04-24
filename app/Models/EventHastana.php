@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
-use Carbon\Carbon;
 use Illuminate\Support\Str;
 
 class EventHastana extends Model
@@ -47,7 +47,7 @@ class EventHastana extends Model
         'quota',
         'event_type',
         'location_type',
-        'online_link'
+        'online_link',
     ];
 
     protected $casts = [
@@ -66,7 +66,7 @@ class EventHastana extends Model
         'is_active' => 'boolean',
         'tags' => 'array',
         'schedule' => 'array',
-        'quota' => 'integer'
+        'quota' => 'integer',
     ];
 
     protected $appends = [
@@ -83,7 +83,7 @@ class EventHastana extends Model
         'formatted_time',
         'image_url',
         'status_badge',
-        'category_name'
+        'category_name',
     ];
 
     /**
@@ -156,7 +156,7 @@ class EventHastana extends Model
     public function scopeOngoing($query)
     {
         return $query->where('start_date', '<=', now())
-                    ->where('end_date', '>=', now());
+            ->where('end_date', '>=', now());
     }
 
     /**
@@ -164,7 +164,7 @@ class EventHastana extends Model
      */
     public function isRegistrationOpen(): bool
     {
-        return $this->status === 'published' && 
+        return $this->status === 'published' &&
                $this->start_date > now() &&
                ($this->max_participants === null || $this->current_participants < $this->max_participants);
     }
@@ -177,6 +177,7 @@ class EventHastana extends Model
         if ($this->max_participants === null) {
             return null;
         }
+
         return max(0, $this->max_participants - $this->current_participants);
     }
 
@@ -190,7 +191,7 @@ class EventHastana extends Model
         if (array_key_exists('current_participants', $this->attributes)) {
             return (int) $this->attributes['current_participants'];
         }
-        
+
         // Otherwise, count from relationship (confirmed + attended)
         return $this->participants()
             ->whereIn('status', ['confirmed', 'attended'])
@@ -211,9 +212,10 @@ class EventHastana extends Model
     public function getRemainingQuotaAttribute(): int
     {
         $capacity = $this->capacity;
-        if (!$capacity) {
+        if (! $capacity) {
             return 0;
         }
+
         return max(0, $capacity - $this->current_participants);
     }
 
@@ -255,9 +257,10 @@ class EventHastana extends Model
     public function getCapacityPercentageAttribute(): float
     {
         $capacity = $this->capacity;
-        if (!$capacity || $capacity <= 0) {
+        if (! $capacity || $capacity <= 0) {
             return 0;
         }
+
         return ($this->current_participants / $capacity) * 100;
     }
 
@@ -269,7 +272,8 @@ class EventHastana extends Model
         if ($this->is_free) {
             return 'GRATIS';
         }
-        return 'Rp ' . number_format($this->price, 0, ',', '.');
+
+        return 'Rp '.number_format($this->price, 0, ',', '.');
     }
 
     /**
@@ -285,11 +289,12 @@ class EventHastana extends Model
      */
     public function getFormattedTimeAttribute(): string
     {
-        if (!$this->start_time) {
+        if (! $this->start_time) {
             return '-';
         }
         $start = Carbon::parse($this->start_time)->format('H:i');
         $end = $this->end_time ? Carbon::parse($this->end_time)->format('H:i') : '';
+
         return $end ? "$start - $end WIB" : "$start WIB";
     }
 
@@ -306,26 +311,25 @@ class EventHastana extends Model
 
     public function getImageUrlAttribute(): ?string
     {
-        if (!$this->image) {
+        if (! $this->image) {
             return 'https://images.unsplash.com/photo-1519741497674-611481863552?w=800&h=450&fit=crop&auto=format';
         }
-        
+
         // If it's already a full URL, return as is
         if (Str::startsWith($this->image, ['http://', 'https://'])) {
             return $this->image;
         }
-        
+
         // Otherwise, it's a storage path
-        return asset('storage/' . $this->image);
+        return asset('storage/'.$this->image);
     }
-    
 
     /**
      * Get status badge color
      */
     public function getStatusBadgeAttribute(): array
     {
-        return match($this->status) {
+        return match ($this->status) {
             'published' => ['text' => 'Published', 'color' => 'green'],
             'draft' => ['text' => 'Draft', 'color' => 'gray'],
             'archived' => ['text' => 'Archived', 'color' => 'red'],
@@ -346,10 +350,10 @@ class EventHastana extends Model
      */
     public function canRegister(): bool
     {
-        return $this->status === 'published' 
-            && $this->is_active 
-            && !$this->is_full 
-            && !$this->is_past;
+        return $this->status === 'published'
+            && $this->is_active
+            && ! $this->is_full
+            && ! $this->is_past;
     }
 
     /**
@@ -357,7 +361,7 @@ class EventHastana extends Model
      */
     public function getEventTypeBadgeAttribute(): array
     {
-        return match($this->event_type) {
+        return match ($this->event_type) {
             'online' => ['text' => 'Online', 'color' => 'blue', 'icon' => 'globe'],
             'offline' => ['text' => 'Offline', 'color' => 'green', 'icon' => 'map-marker-alt'],
             'hybrid' => ['text' => 'Hybrid', 'color' => 'purple', 'icon' => 'random'],
@@ -375,16 +379,16 @@ class EventHastana extends Model
                 'text' => 'Event Sudah Berakhir',
                 'color' => 'gray',
                 'icon' => 'clock',
-                'available' => false
+                'available' => false,
             ];
         }
 
-        if (!$this->is_active) {
+        if (! $this->is_active) {
             return [
                 'text' => 'Pendaftaran Ditutup',
                 'color' => 'red',
                 'icon' => 'ban',
-                'available' => false
+                'available' => false,
             ];
         }
 
@@ -393,7 +397,7 @@ class EventHastana extends Model
                 'text' => 'SOLD OUT',
                 'color' => 'red',
                 'icon' => 'times-circle',
-                'available' => false
+                'available' => false,
             ];
         }
 
@@ -402,7 +406,7 @@ class EventHastana extends Model
                 'text' => 'Hampir Penuh',
                 'color' => 'orange',
                 'icon' => 'exclamation-triangle',
-                'available' => true
+                'available' => true,
             ];
         }
 
@@ -410,7 +414,7 @@ class EventHastana extends Model
             'text' => 'Tersedia',
             'color' => 'green',
             'icon' => 'check-circle',
-            'available' => true
+            'available' => true,
         ];
     }
 
@@ -430,9 +434,9 @@ class EventHastana extends Model
         $parts = array_filter([
             $this->venue,
             $this->city,
-            $this->province
+            $this->province,
         ]);
-        
+
         return implode(', ', $parts) ?: 'Location TBA';
     }
 
@@ -466,15 +470,15 @@ class EventHastana extends Model
     public function updateRating(): void
     {
         $approvedReviews = $this->approvedReviews()->get();
-        
+
         $this->total_reviews = $approvedReviews->count();
-        
+
         if ($this->total_reviews > 0) {
             $this->rating = round($approvedReviews->avg('rating'), 2);
         } else {
             $this->rating = 0;
         }
-        
+
         $this->save();
     }
 

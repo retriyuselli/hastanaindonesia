@@ -2,9 +2,9 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
 use App\Models\Blog;
 use App\Models\BlogView;
+use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 
 class RecalculateBlogViews extends Command
@@ -29,14 +29,15 @@ class RecalculateBlogViews extends Command
     public function handle()
     {
         $this->info('🔄 Starting views count recalculation...');
-        
+
         $blogId = $this->option('blog_id');
-        
+
         if ($blogId) {
             // Recalculate for specific blog
             $blog = Blog::find($blogId);
-            if (!$blog) {
+            if (! $blog) {
                 $this->error("Blog with ID {$blogId} not found!");
+
                 return 1;
             }
             $this->recalculateBlog($blog);
@@ -45,20 +46,21 @@ class RecalculateBlogViews extends Command
             $blogs = Blog::all();
             $progressBar = $this->output->createProgressBar($blogs->count());
             $progressBar->start();
-            
+
             foreach ($blogs as $blog) {
                 $this->recalculateBlog($blog);
                 $progressBar->advance();
             }
-            
+
             $progressBar->finish();
             $this->newLine();
         }
-        
+
         $this->info('✅ Views count recalculation completed!');
+
         return 0;
     }
-    
+
     /**
      * Recalculate views for a single blog
      */
@@ -70,11 +72,11 @@ class RecalculateBlogViews extends Command
             ->groupBy('ip_address')
             ->get()
             ->count();
-        
+
         $oldCount = $blog->views_count;
         $blog->views_count = $uniqueViewsCount;
         $blog->save();
-        
+
         if ($this->option('verbose')) {
             $this->line("Blog #{$blog->id}: {$oldCount} → {$uniqueViewsCount} views");
         }

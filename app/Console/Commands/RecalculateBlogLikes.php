@@ -2,10 +2,9 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
 use App\Models\Blog;
 use App\Models\BlogLike;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Console\Command;
 
 class RecalculateBlogLikes extends Command
 {
@@ -29,14 +28,15 @@ class RecalculateBlogLikes extends Command
     public function handle()
     {
         $this->info('🔄 Starting likes count recalculation...');
-        
+
         $blogId = $this->option('blog_id');
-        
+
         if ($blogId) {
             // Recalculate for specific blog
             $blog = Blog::find($blogId);
-            if (!$blog) {
+            if (! $blog) {
                 $this->error("Blog with ID {$blogId} not found!");
+
                 return 1;
             }
             $this->recalculateBlog($blog);
@@ -45,20 +45,21 @@ class RecalculateBlogLikes extends Command
             $blogs = Blog::all();
             $progressBar = $this->output->createProgressBar($blogs->count());
             $progressBar->start();
-            
+
             foreach ($blogs as $blog) {
                 $this->recalculateBlog($blog);
                 $progressBar->advance();
             }
-            
+
             $progressBar->finish();
             $this->newLine();
         }
-        
+
         $this->info('✅ Likes count recalculation completed!');
+
         return 0;
     }
-    
+
     /**
      * Recalculate likes for a single blog
      */
@@ -68,11 +69,11 @@ class RecalculateBlogLikes extends Command
         $uniqueLikesCount = BlogLike::where('blog_id', $blog->id)
             ->distinct('ip_address')
             ->count('ip_address');
-        
+
         $oldCount = $blog->likes_count;
         $blog->likes_count = $uniqueLikesCount;
         $blog->save();
-        
+
         if ($this->option('verbose')) {
             $this->line("Blog #{$blog->id}: {$oldCount} → {$uniqueLikesCount} likes");
         }

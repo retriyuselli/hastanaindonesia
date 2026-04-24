@@ -30,7 +30,7 @@ return new class extends Migration
             $table->boolean('is_featured')->default(false);
             $table->timestamp('published_at')->nullable();
             $table->timestamps();
-            
+
             // Indexes for better performance
             $table->index(['is_published', 'published_at']);
             $table->index(['is_featured', 'published_at']);

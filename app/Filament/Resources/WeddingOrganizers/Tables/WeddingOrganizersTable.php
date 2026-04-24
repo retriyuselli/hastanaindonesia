@@ -80,6 +80,7 @@ class WeddingOrganizersTable
                                 if (! empty($value)) {
                                     $filled++;
                                 }
+
                                 continue;
                             }
 

@@ -23,7 +23,7 @@ return new class extends Migration
             $table->boolean('is_approved')->default(false);
             $table->foreignId('parent_id')->nullable()->constrained('blog_comments')->onDelete('cascade'); // For replies
             $table->timestamps();
-            
+
             // Indexes
             $table->index(['blog_id', 'is_approved']);
             $table->index('parent_id');

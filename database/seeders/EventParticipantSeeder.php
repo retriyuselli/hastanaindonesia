@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use App\Models\EventHastana;
 use App\Models\EventParticipant;
 use App\Models\User;
-use Carbon\Carbon;
 use Faker\Factory as Faker;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Storage;
