@@ -6,6 +6,11 @@
 @section('content')
     <div class="pt-28 pb-16 bg-gray-50 min-h-screen">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            @if(session('success'))
+                <div class="mb-6 rounded-2xl border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-800">
+                    {{ session('success') }}
+                </div>
+            @endif
             <div class="flex items-center justify-between gap-4">
                 <div>
                     <a href="{{ route('members') }}" class="inline-flex items-center text-sm text-gray-600 hover:text-hastana-blue">
@@ -44,19 +49,32 @@
                         </div>
                     @endif
                 </div>
-                <div class="hidden sm:block w-20 h-20 rounded-2xl overflow-hidden bg-white border border-gray-100 shadow-sm">
-                    @if($member->logo)
-                        <img src="{{ \Illuminate\Support\Facades\Storage::url($member->logo) }}" alt="{{ $member->organizer_name }}" class="w-full h-full object-cover">
-                    @else
-                        <div class="w-full h-full flex items-center justify-center text-gray-400">
-                            <i class="fas fa-store text-2xl"></i>
-                        </div>
-                    @endif
+                <div class="hidden sm:flex flex-col items-end gap-3">
+                    @auth
+                        @if(auth()->id() === $member->user_id)
+                            <a href="{{ route('join') }}" class="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-blue-600 text-white text-sm font-semibold hover:bg-blue-700 transition">
+                                <i class="fas fa-pen-to-square text-xs"></i>
+                                Edit
+                            </a>
+                        @endif
+                    @endauth
+
+                    <div class="w-20 h-20 rounded-2xl overflow-hidden bg-white border border-gray-100 shadow-sm">
+                        @if($member->logo)
+                            <img src="{{ \Illuminate\Support\Facades\Storage::url($member->logo) }}" alt="{{ $member->organizer_name }}" class="w-full h-full object-cover">
+                        @else
+                            <div class="w-full h-full flex items-center justify-center text-gray-400">
+                                <i class="fas fa-store text-2xl"></i>
+                            </div>
+                        @endif
+                    </div>
                 </div>
             </div>
 
             @php
-                $galleryImages = collect();
+                $galleryImages = collect($memberGalleries ?? [])
+                    ->map(fn ($gallery) => $gallery->image_url)
+                    ->filter();
 
                 if ($member->logo) {
                     $galleryImages->push(\Illuminate\Support\Facades\Storage::url($member->logo));
@@ -87,35 +105,59 @@
                     ->filter()
                     ->unique()
                     ->values();
+
+                $canManageGallery = auth()->check() && auth()->id() === $member->user_id;
             @endphp
 
-            @if($galleryImages->isNotEmpty())
+            @if($galleryImages->isNotEmpty() || $canManageGallery)
                 <div class="mt-6 bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-                    <div class="p-4 flex items-center justify-between">
-                        <h2 class="text-base font-semibold text-gray-900">Galeri</h2>
-                        <span class="text-xs text-gray-500">Geser untuk melihat foto lainnya</span>
-                    </div>
-
-                    <div class="relative">
-                        <button id="member-gallery-prev" type="button" class="hidden sm:flex items-center justify-center absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 border border-gray-200 shadow-sm hover:bg-white">
-                            <i class="fas fa-chevron-left text-gray-700 text-sm"></i>
-                        </button>
-                        <button id="member-gallery-next" type="button" class="hidden sm:flex items-center justify-center absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 border border-gray-200 shadow-sm hover:bg-white">
-                            <i class="fas fa-chevron-right text-gray-700 text-sm"></i>
-                        </button>
-
-                        <div id="member-gallery-track" class="pb-4 overflow-x-auto scroll-smooth snap-x snap-mandatory select-none" style="cursor: grab; scrollbar-width: none; -ms-overflow-style: none;">
-                            <div class="flex">
-                                @foreach ($galleryImages as $src)
-                                    <div data-slide class="snap-start shrink-0 w-full box-border px-4">
-                                        <div class="w-full aspect-[4/3] lg:aspect-video rounded-2xl overflow-hidden bg-black">
-                                            <img src="{{ $src }}" alt="Foto anggota" class="w-full h-full object-cover object-center">
-                                        </div>
-                                    </div>
-                                @endforeach
+                    <div class="p-4 flex items-center justify-between gap-4">
+                        <div>
+                            <h2 class="text-base font-semibold text-gray-900">Galeri</h2>
+                            <div class="text-xs text-gray-500">
+                                {{ $galleryImages->isNotEmpty() ? 'Geser untuk melihat foto lainnya' : 'Belum ada foto, tambahkan foto pertama.' }}
                             </div>
                         </div>
+                        @if($canManageGallery)
+                            <form method="POST" action="{{ route('members.gallery.store', $member->slug) }}" enctype="multipart/form-data" class="flex items-center gap-2">
+                                @csrf
+                                <input type="file" name="photos[]" multiple accept="image/jpeg,image/png,image/webp" class="text-sm text-gray-700">
+                                <button type="submit" class="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-blue-600 text-white text-sm font-semibold hover:bg-blue-700 transition">
+                                    <i class="fas fa-plus text-xs"></i>
+                                    Tambah Foto
+                                </button>
+                            </form>
+                        @endif
                     </div>
+
+                    @if($errors->has('photos') || $errors->has('photos.*'))
+                        <div class="px-4 pb-4 text-sm text-red-600">
+                            {{ $errors->first('photos') ?: $errors->first('photos.*') }}
+                        </div>
+                    @endif
+
+                    @if($galleryImages->isNotEmpty())
+                        <div class="relative">
+                            <button id="member-gallery-prev" type="button" class="hidden sm:flex items-center justify-center absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 border border-gray-200 shadow-sm hover:bg-white">
+                                <i class="fas fa-chevron-left text-gray-700 text-sm"></i>
+                            </button>
+                            <button id="member-gallery-next" type="button" class="hidden sm:flex items-center justify-center absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 border border-gray-200 shadow-sm hover:bg-white">
+                                <i class="fas fa-chevron-right text-gray-700 text-sm"></i>
+                            </button>
+
+                            <div id="member-gallery-track" class="pb-4 overflow-x-auto scroll-smooth snap-x snap-mandatory select-none" style="cursor: grab; scrollbar-width: none; -ms-overflow-style: none;">
+                                <div class="flex">
+                                    @foreach ($galleryImages as $src)
+                                        <div data-slide class="snap-start shrink-0 w-full box-border px-4">
+                                            <div class="w-full aspect-[4/3] lg:aspect-video rounded-2xl overflow-hidden bg-black">
+                                                <img src="{{ $src }}" alt="Foto anggota" class="w-full h-full object-cover object-center">
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                        </div>
+                    @endif
                 </div>
             @endif
 

@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Gallery;
 use App\Models\WeddingOrganizer;
 use App\Models\Region;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class MemberController extends Controller
 {
@@ -110,6 +113,12 @@ class MemberController extends Controller
             ->active()
             ->firstOrFail();
 
+        $memberGalleries = Gallery::published()
+            ->where('wedding_organizer_id', $member->id)
+            ->orderByDesc('date')
+            ->limit(12)
+            ->get();
+
         // Get related members from same region
         $relatedMembers = WeddingOrganizer::with(['region'])
             ->where('region_id', $member->region_id)
@@ -120,7 +129,50 @@ class MemberController extends Controller
             ->limit(4)
             ->get();
 
-        return view('front.members.show', compact('member', 'relatedMembers'));
+        return view('front.members.show', compact('member', 'memberGalleries', 'relatedMembers'));
+    }
+
+    public function storeGallery(Request $request, $slug)
+    {
+        $member = WeddingOrganizer::query()
+            ->where('slug', $slug)
+            ->firstOrFail();
+
+        if (! Auth::check() || Auth::id() !== $member->user_id) {
+            abort(403);
+        }
+
+        $validated = $request->validate([
+            'photos' => 'required|array|max:12',
+            'photos.*' => 'required|image|mimes:jpg,jpeg,png,webp|max:5120',
+            'category' => 'nullable|string|max:50',
+        ]);
+
+        $category = $validated['category'] ?? 'Resepsi';
+
+        foreach ($request->file('photos', []) as $index => $file) {
+            $path = $file->store('galleries', 'public');
+
+            Gallery::create([
+                'title' => 'Foto '.$member->organizer_name.' '.now()->format('Ymd').'-'.($index + 1),
+                'description' => null,
+                'image' => $path,
+                'category' => $category,
+                'date' => now()->toDateString(),
+                'location' => $member->city,
+                'photographer' => null,
+                'wedding_organizer_id' => $member->id,
+                'views_count' => 0,
+                'is_featured' => false,
+                'is_published' => true,
+                'slug' => Str::uuid()->toString(),
+                'tags' => null,
+            ]);
+        }
+
+        return redirect()
+            ->route('members.show', $member->slug)
+            ->with('success', 'Foto berhasil ditambahkan.');
     }
 
     /**

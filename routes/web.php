@@ -70,6 +70,9 @@ Route::get('/portfolio/detail/{id?}', function ($id = 1) {
 // Members/Anggota routes
 Route::get('/anggota', [MemberController::class, 'index'])->name('members');
 Route::get('/anggota/{slug}', [MemberController::class, 'show'])->name('members.show');
+Route::post('/anggota/{slug}/gallery', [MemberController::class, 'storeGallery'])
+    ->middleware('auth')
+    ->name('members.gallery.store');
 Route::get('/anggota/{slug}/product/{productId}', [MemberController::class, 'showProduct'])->name('members.product');
 
 Route::get('/profile-region', [RegionProfileController::class, 'index'])->name('regions.index');

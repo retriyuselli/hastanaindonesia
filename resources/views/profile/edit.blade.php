@@ -88,6 +88,10 @@
                             </div>
                         </div>
 
+                        <form id="send-verification" method="post" action="{{ route('verification.send') }}" class="hidden">
+                            @csrf
+                        </form>
+
                         <form method="post" action="{{ route('profile.update') }}" enctype="multipart/form-data" class="space-y-6">
                             @csrf
                             @method('patch')
@@ -183,12 +187,9 @@
                                             <i class="fas fa-exclamation-triangle mr-1"></i>
                                             Email Anda belum diverifikasi.
                                         </p>
-                                        <form id="send-verification" method="post" action="{{ route('verification.send') }}" class="inline">
-                                            @csrf
-                                            <button type="submit" class="text-sm text-blue-600 hover:text-blue-700 underline font-medium">
-                                                Kirim ulang email verifikasi
-                                            </button>
-                                        </form>
+                                        <button type="submit" form="send-verification" class="text-sm text-blue-600 hover:text-blue-700 underline font-medium">
+                                            Kirim ulang email verifikasi
+                                        </button>
 
                                         @if (session('status') === 'verification-link-sent')
                                             <p class="mt-2 text-sm text-green-600">
@@ -273,7 +274,7 @@
                                     name="password" 
                                     type="password"
                                     autocomplete="new-password"
-                                    class="w-full px-4 py-3 border border-gray-300"
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg"
                                     placeholder="Masukkan password baru (minimal 8 karakter)">
                                 @error('password', 'updatePassword')
                                     <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
@@ -448,6 +449,11 @@
     function previewAvatar(event) {
         const file = event.target.files[0];
         if (file) {
+            const removeInput = document.getElementById('remove_avatar');
+            if (removeInput) {
+                removeInput.remove();
+            }
+
             // Validate file size (2MB max)
             if (file.size > 2 * 1024 * 1024) {
                 alert('Ukuran file terlalu besar! Maksimal 2MB.');
@@ -475,7 +481,7 @@
     function removeAvatar() {
         if (confirm('Apakah Anda yakin ingin menghapus foto profil?')) {
             // Create hidden input to mark avatar for deletion
-            const form = document.querySelector('form[action="{{ route('profile.update') }}"]');
+            const form = document.querySelector('form[action="{{ route("profile.update") }}"]');
             let removeInput = document.getElementById('remove_avatar');
             if (!removeInput) {
                 removeInput = document.createElement('input');
