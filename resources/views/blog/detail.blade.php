@@ -335,7 +335,7 @@
             @endif
 
             <!-- Breadcrumb -->
-            <nav class="mb-6 text-xs">
+            <nav class="mb-6 flex items-center justify-between gap-4 text-xs">
                 <ol class="flex items-center space-x-2 text-gray-500">
                     <li><a href="{{ route('home') }}" class="hover:text-amber-600">Home</a></li>
                     <li>/</li>
@@ -343,6 +343,14 @@
                     <li>/</li>
                     <li class="text-gray-700">{{ Str::limit($blog->title, 50) }}</li>
                 </ol>
+                @can('update', $blog)
+                    <a href="{{ route('filament.admin.resources.blogs.edit', ['record' => $blog]) }}"
+                        target="_blank"
+                        class="inline-flex items-center gap-2 rounded-lg bg-amber-500 px-3 py-1.5 font-medium text-white transition-colors hover:bg-amber-600">
+                        <i class="fas fa-pen"></i>
+                        Edit
+                    </a>
+                @endcan
             </nav>
 
             <!-- Main Content Grid -->
@@ -395,13 +403,13 @@
                             <span>{{ $blog->read_time ?? 5 }} menit</span>
                         </div>
                         @auth
-                        <div onclick="toggleLike()" id="like-button" class="flex items-center gap-2 cursor-pointer transition-all hover:scale-105">
+                        <div onclick="toggleLike()" id="like-button" data-blog-slug="{{ $blog->slug }}" class="flex items-center gap-2 cursor-pointer transition-all hover:scale-105">
                             <i class="fas fa-heart mr-1" id="heart-icon"></i>
                             <span id="like-count">{{ number_format($blog->likes_count ?? 0) }}</span>
                             <span id="like-text">likes</span>
                         </div>
                         @else
-                        <a href="{{ route('login', absolute: false) }}" class="flex items-center gap-2 hover:text-pink-500 transition-all">
+                        <a href="{{ route('login') }}" class="flex items-center gap-2 hover:text-pink-500 transition-all">
                             <i class="far fa-heart mr-1"></i>
                             <span>{{ number_format($blog->likes_count ?? 0) }}</span>
                             <span>likes</span>
@@ -558,12 +566,12 @@
                                 <!-- Comment Actions -->
                                 @auth
                                 <div class="flex items-center gap-3 text-xs">
-                                    <button onclick="likeComment({{ $comment->id }})" class="text-gray-500 hover:text-blue-600 flex items-center gap-1">
+                                    <button type="button" data-action="like-comment" data-comment-id="{{ $comment->id }}" class="text-gray-500 hover:text-blue-600 flex items-center gap-1">
                                         <i class="far fa-thumbs-up"></i>
                                         <span>Suka</span>
                                     </button>
                                     @if(auth()->user()->email === $comment->email)
-                                    <button onclick="deleteComment({{ $comment->id }})" class="text-gray-500 hover:text-red-600 flex items-center gap-1">
+                                    <button type="button" data-action="delete-comment" data-comment-id="{{ $comment->id }}" class="text-gray-500 hover:text-red-600 flex items-center gap-1">
                                         <i class="far fa-trash-alt"></i>
                                         <span>Hapus</span>
                                     </button>
@@ -726,6 +734,7 @@
 // Character counter
 const textarea = document.getElementById('comment');
 const charCount = document.getElementById('char-count');
+const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
 
 if (textarea && charCount) {
     textarea.addEventListener('input', function() {
@@ -744,20 +753,23 @@ if (textarea && charCount) {
 
 // Toggle blog like
 function toggleLike() {
-    @guest
-        window.location.href = '{{ route('login', absolute: false) }}';
-        return;
-    @endguest
-    
-    const blogSlug = '{{ $blog->slug }}';
     const likeButton = document.getElementById('like-button');
+    if (!likeButton) {
+        window.location.href = '/login';
+        return;
+    }
+
+    const blogSlug = likeButton.dataset.blogSlug;
     const heartIcon = document.getElementById('heart-icon');
     const likeCount = document.getElementById('like-count');
+    if (!blogSlug || !csrfToken) {
+        return;
+    }
     
     fetch(`/api/blog/${blogSlug}/like`, {
         method: 'POST',
         headers: {
-            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+            'X-CSRF-TOKEN': csrfToken,
             'Content-Type': 'application/json'
         }
     })
@@ -793,9 +805,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const heartIcon = document.getElementById('heart-icon');
     
     // Check if user has liked this blog
-    @auth
-    if (likeButton && heartIcon) {
-        fetch(`/api/blog/{{ $blog->slug }}/check-like`)
+    if (likeButton && heartIcon && likeButton.dataset.blogSlug) {
+        fetch(`/api/blog/${likeButton.dataset.blogSlug}/check-like`)
             .then(response => response.json())
             .then(data => {
                 if (data.liked) {
@@ -808,7 +819,14 @@ document.addEventListener('DOMContentLoaded', function() {
             })
             .catch(error => console.error('Error:', error));
     }
-    @endauth
+
+    document.querySelectorAll('[data-action="like-comment"]').forEach((button) => {
+        button.addEventListener('click', () => likeComment(button.dataset.commentId));
+    });
+
+    document.querySelectorAll('[data-action="delete-comment"]').forEach((button) => {
+        button.addEventListener('click', () => deleteComment(button.dataset.commentId));
+    });
 });
 
 // Like comment
@@ -816,7 +834,7 @@ function likeComment(commentId) {
     fetch(`/api/comments/${commentId}/like`, {
         method: 'POST',
         headers: {
-            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+            'X-CSRF-TOKEN': csrfToken,
             'Content-Type': 'application/json'
         }
     })
@@ -838,7 +856,7 @@ function deleteComment(commentId) {
     fetch(`/api/comments/${commentId}`, {
         method: 'DELETE',
         headers: {
-            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+            'X-CSRF-TOKEN': csrfToken,
             'Content-Type': 'application/json'
         }
     })
