@@ -169,10 +169,10 @@ class WeddingOrganizersTable
                     ->label('🏆 Sertifikasi')
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {
-                        'Platinum' => 'warning',
-                        'Gold' => 'yellow',
-                        'Silver' => 'gray',
-                        'Bronze' => 'orange',
+                        'expert' => 'warning',
+                        'advanced' => 'success',
+                        'intermediate' => 'info',
+                        'basic' => 'gray',
                         default => 'secondary',
                     })
                     ->toggleable(),

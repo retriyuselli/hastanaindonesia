@@ -2,12 +2,12 @@
 
 namespace App\Filament\Resources\WeddingOrganizers\Schemas;
 
-use App\Models\Region;
 use App\Models\User;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TagsInput;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
@@ -36,18 +36,20 @@ class WeddingOrganizerForm
                                     ->schema([
                                         Select::make('user_id')
                                             ->label('Pengguna')
-                                            ->options(User::pluck('name', 'id'))
+                                            ->relationship('user', 'name')
                                             ->required()
                                             ->searchable()
+                                            ->preload()
                                             ->placeholder('Pilih pengguna')
                                             ->helperText('User yang terkait dengan wedding organizer ini')
                                             ->prefixIcon('heroicon-o-user'),
 
                                         Select::make('region_id')
                                             ->label('Wilayah')
-                                            ->options(Region::pluck('region_name', 'id'))
+                                            ->relationship('region', 'region_name')
                                             ->required()
                                             ->searchable()
+                                            ->preload()
                                             ->placeholder('Pilih wilayah')
                                             ->helperText('Wilayah operasional wedding organizer (diisi oleh admin)')
                                             ->prefixIcon('heroicon-o-map-pin'),
@@ -250,19 +252,19 @@ class WeddingOrganizerForm
                                             ->prefixIcon('heroicon-o-document-text')
                                             ->helperText('SIUP/NIB/TDP'),
 
-                                        Textarea::make('specializations')
+                                        TagsInput::make('specializations')
                                             ->label('Spesialisasi')
-                                            ->placeholder('Contoh: Traditional Javanese Wedding, Modern Minimalist, Beach Wedding, Garden Party')
-                                            ->rows(3)
+                                            ->placeholder('Pisahkan dengan koma atau tekan Enter')
+                                            ->separator(',')
                                             ->columnSpan(2)
-                                            ->helperText('Pisahkan dengan koma untuk setiap spesialisasi'),
+                                            ->helperText('Tekan Enter setelah setiap item'),
 
-                                        Textarea::make('services')
+                                        TagsInput::make('services')
                                             ->label('Layanan yang Ditawarkan')
-                                            ->placeholder('Contoh: Full Wedding Planning, Decoration, Catering Coordination, Photography & Videography, Entertainment')
-                                            ->rows(3)
+                                            ->placeholder('Pisahkan dengan koma atau tekan Enter')
+                                            ->separator(',')
                                             ->columnSpan(2)
-                                            ->helperText('Pisahkan dengan koma untuk setiap layanan'),
+                                            ->helperText('Tekan Enter setelah setiap item'),
                                     ]),
                             ]), // End Tab Profesional & Bisnis
 
@@ -277,38 +279,20 @@ class WeddingOrganizerForm
                                             ->prefix('Rp. ')
                                             ->mask(RawJs::make('$money($input)'))
                                             ->stripCharacters(',')
-                                            ->dehydrateStateUsing(fn ($state) => (int) preg_replace('/[^\d]/', '', (string) $state))
+                                            ->dehydrateStateUsing(fn ($state) => $state === null ? null : (int) preg_replace('/[^\d]/', '', (string) $state))
                                             ->placeholder('0')
-                                            ->step(0.01)
                                             ->minValue(0)
-                                            ->helperText('Contoh: 50000000 (50 juta)')
-                                            ->live(onBlur: true)
-                                            ->afterStateUpdated(function ($state, callable $set) {
-                                                if ($state) {
-                                                    // Format tampilan saat blur
-                                                    $formatted = number_format((float) $state, 2, '.', '');
-                                                    $set('price_range_min', $formatted);
-                                                }
-                                            }),
+                                            ->helperText('Contoh: 50000000 (50 juta)'),
 
                                         TextInput::make('price_range_max')
                                             ->label('Harga Maksimum Paket')
                                             ->prefix('Rp. ')
                                             ->mask(RawJs::make('$money($input)'))
                                             ->stripCharacters(',')
-                                            ->dehydrateStateUsing(fn ($state) => (int) preg_replace('/[^\d]/', '', (string) $state))
+                                            ->dehydrateStateUsing(fn ($state) => $state === null ? null : (int) preg_replace('/[^\d]/', '', (string) $state))
                                             ->placeholder('0')
-                                            ->step(0.01)
                                             ->minValue(0)
-                                            ->helperText('Contoh: 500000000 (500 juta)')
-                                            ->live(onBlur: true)
-                                            ->afterStateUpdated(function ($state, callable $set) {
-                                                if ($state) {
-                                                    // Format tampilan saat blur
-                                                    $formatted = number_format((float) $state, 2, '.', '');
-                                                    $set('price_range_max', $formatted);
-                                                }
-                                            }),
+                                            ->helperText('Contoh: 500000000 (500 juta)'),
 
                                         TextInput::make('completed_events')
                                             ->label('Jumlah Event Selesai')
@@ -342,7 +326,11 @@ class WeddingOrganizerForm
                         // Tab 6: Status & Verifikasi (Admin Only)
                         Tab::make('Status & Verifikasi')
                             ->icon('heroicon-o-shield-check')
-                            ->visible(fn () => Auth::check() && in_array(Auth::user()->role, ['admin', 'super_admin']))
+                            ->visible(function () {
+                                $user = Auth::user();
+
+                                return $user instanceof User && $user->hasAnyRole(['admin', config('filament-shield.super_admin.name', 'super_admin')]);
+                            })
                             ->schema([
                                 Grid::make(2)
                                     ->schema([
@@ -471,7 +459,11 @@ class WeddingOrganizerForm
                         // Tab 8: Verifikasi Legal (Admin Only)
                         Tab::make('Verifikasi Legal')
                             ->icon('heroicon-o-clipboard-document-check')
-                            ->visible(fn () => Auth::check() && in_array(Auth::user()->role, ['admin', 'super_admin']))
+                            ->visible(function () {
+                                $user = Auth::user();
+
+                                return $user instanceof User && $user->hasAnyRole(['admin', config('filament-shield.super_admin.name', 'super_admin')]);
+                            })
                             ->schema([
                                 Grid::make(2)
                                     ->schema([

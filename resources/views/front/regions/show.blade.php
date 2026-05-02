@@ -45,17 +45,7 @@
             @php
                 $galleryImages = collect($region->gallery_images ?? [])
                     ->filter()
-                    ->map(fn ($path) => str_starts_with($path, 'http') ? $path : \Illuminate\Support\Facades\Storage::url($path));
-
-                $memberLogos = $members
-                    ->getCollection()
-                    ->pluck('logo')
-                    ->filter()
-                    ->map(fn ($path) => str_starts_with($path, 'http') ? $path : \Illuminate\Support\Facades\Storage::url($path));
-
-                $galleryImages = $galleryImages
-                    ->merge($memberLogos)
-                    ->filter()
+                    ->map(fn ($path) => str_starts_with($path, 'http') ? $path : \Illuminate\Support\Facades\Storage::url($path))
                     ->unique()
                     ->values();
             @endphp
@@ -150,8 +140,12 @@
                             @forelse ($members as $member)
                                 <a href="{{ route('members.show', $member->slug) }}" class="block rounded-xl border border-gray-100 hover:border-gray-200 hover:shadow-sm transition-all p-4 bg-white">
                                     <div class="flex items-center gap-3">
-                                        <div class="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center text-gray-400 shrink-0">
-                                            <i class="fas fa-store"></i>
+                                        <div class="w-10 h-10 rounded-lg overflow-hidden bg-gray-100 flex items-center justify-center text-gray-400 shrink-0">
+                                            @if($member->logo)
+                                                <img src="{{ str_starts_with($member->logo, 'http') ? $member->logo : \Illuminate\Support\Facades\Storage::url($member->logo) }}" alt="{{ $member->organizer_name }}" class="w-full h-full object-cover">
+                                            @else
+                                                <i class="fas fa-store"></i>
+                                            @endif
                                         </div>
                                         <div class="min-w-0">
                                             <div class="text-sm font-semibold text-gray-900 truncate">{{ $member->organizer_name }}</div>
@@ -190,11 +184,11 @@
                             </div>
                             <div class="flex items-center justify-between gap-3">
                                 <span class="text-gray-500">Sekretaris</span>
-                                <span class="text-gray-900 font-medium text-right">{{ $region->sekretari?->name ?? '-' }}</span>
+                                <span class="text-gray-900 font-medium text-right">{{ $region->sekretarisDpw?->name ?? '-' }}</span>
                             </div>
                             <div class="flex items-center justify-between gap-3">
                                 <span class="text-gray-500">Bendahara</span>
-                                <span class="text-gray-900 font-medium text-right">{{ $region->bendahar?->name ?? '-' }}</span>
+                                <span class="text-gray-900 font-medium text-right">{{ $region->bendaharaDpw?->name ?? '-' }}</span>
                             </div>
                         </div>
 
