@@ -131,16 +131,16 @@
                     <!-- Price -->
                     <div class="mb-4">
                         <p class="text-xs text-gray-500 line-through mb-1">Rp {{ number_format($product['original_price']) }}</p>
-                        <p class="text-2xl font-bold text-pink-600 mb-1">Rp {{ number_format($product['price']) }}</p>
-                        <p class="text-xs text-green-600 font-semibold">Hemat Rp {{ number_format($product['discount']) }}</p>
+                        <p class="text-2xl font-bold text-hastana-red mb-1">Rp {{ number_format($product['price']) }}</p>
+                        <p class="text-xs text-gray-900 font-semibold">Hemat Rp {{ number_format($product['discount']) }}</p>
                     </div>
                     
                     <!-- Description -->
                     @if(!empty($product['description']))
                     <div class="mb-4 bg-gradient-to-br from-gray-50 to-white rounded-xl p-4 border border-gray-100">
                         <div class="flex items-center mb-3">
-                            <div class="w-8 h-8 bg-pink-100 rounded-lg flex items-center justify-center mr-3">
-                                <i class="fas fa-file-alt text-pink-600 text-sm"></i>
+                            <div class="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center mr-3">
+                                <i class="fas fa-file-alt text-hastana-red text-sm"></i>
                             </div>
                             <h3 class="text-sm font-bold text-gray-900">Detail Paket</h3>
                         </div>
@@ -150,7 +150,7 @@
                             [&_p]:mb-3 [&_p]:leading-relaxed
                             [&_li]:text-xs [&_li]:leading-relaxed [&_li]:text-gray-700
                             [&_strong]:text-gray-900 [&_strong]:font-bold [&_strong]:text-sm [&_strong]:block [&_strong]:mt-4 [&_strong]:mb-2
-                            [&_a]:text-pink-600 [&_a]:underline [&_a]:hover:text-pink-700
+                            [&_a]:text-hastana-red [&_a]:underline [&_a]:hover:text-red-700
                             [&_h1]:text-base [&_h1]:font-bold [&_h1]:mb-2 [&_h1]:text-gray-900
                             [&_h2]:text-sm [&_h2]:font-bold [&_h2]:mb-2 [&_h2]:text-gray-900
                             [&_h3]:text-xs [&_h3]:font-bold [&_h3]:mb-1 [&_h3]:text-gray-900">
@@ -165,7 +165,7 @@
                         <div class="space-y-2">
                             @foreach($product['features'] as $feature)
                             <div class="flex items-start">
-                                <i class="fas fa-check-circle text-green-500 mt-0.5 mr-2 text-xs"></i>
+                                <i class="fas fa-check-circle text-hastana-red mt-0.5 mr-2 text-xs"></i>
                                 <span class="text-xs text-gray-700">{{ $feature }}</span>
                             </div>
                             @endforeach
@@ -174,12 +174,12 @@
                     
                     <!-- CTA Buttons -->
                     <div class="flex flex-wrap justify-center gap-2">
-                        <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $member->phone ?? '') }}?text=Halo, saya tertarik dengan {{ $product['name'] }}" target="_blank" class="inline-block px-6 py-2.5 bg-green-500 text-white text-sm font-bold rounded-lg hover:bg-green-600 transition-colors">
+                        <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $member->phone ?? '') }}?text=Halo, saya tertarik dengan {{ $product['name'] }}" target="_blank" class="inline-block px-6 py-2.5 bg-hastana-red text-white text-sm font-bold rounded-lg hover:bg-red-700 transition-colors">
                             <i class="fab fa-whatsapp mr-2"></i>Hubungi via WhatsApp
                         </a>
                         
                         @if($member->phone)
-                        <a href="tel:{{ $member->phone }}" class="inline-block px-6 py-2.5 bg-pink-500 text-white text-sm font-bold rounded-lg hover:bg-pink-600 transition-colors">
+                        <a href="tel:{{ $member->phone }}" class="inline-block px-6 py-2.5 bg-gray-900 text-white text-sm font-bold rounded-lg hover:bg-black transition-colors">
                             <i class="fas fa-phone mr-2"></i>Telepon Sekarang
                         </a>
                         @endif
@@ -191,12 +191,12 @@
                 </div>
                 
                 <!-- Additional Info -->
-                <div class="bg-blue-50 border border-blue-200 rounded-xl p-3 mt-4">
+                <div class="bg-gray-50 border border-gray-200 rounded-xl p-3 mt-4">
                     <div class="flex items-start">
-                        <i class="fas fa-info-circle text-blue-500 mt-0.5 mr-2 text-sm"></i>
+                        <i class="fas fa-info-circle text-hastana-red mt-0.5 mr-2 text-sm"></i>
                         <div>
-                            <h4 class="font-bold text-xs text-blue-900 mb-1">Informasi Penting</h4>
-                            <p class="text-xs text-blue-800">Harga dan paket dapat disesuaikan dengan kebutuhan dan budget Anda. Hubungi kami untuk konsultasi gratis dan penawaran khusus!</p>
+                            <h4 class="font-bold text-xs text-gray-900 mb-1">Informasi Penting</h4>
+                            <p class="text-xs text-gray-700">Harga dan paket dapat disesuaikan dengan kebutuhan dan budget Anda. Hubungi kami untuk konsultasi gratis dan penawaran khusus!</p>
                         </div>
                     </div>
                 </div>
@@ -229,7 +229,7 @@
                         @endif
                         @if($related->verification_status == 'verified')
                         <div class="absolute bottom-0 right-0 bg-white rounded-full p-1 shadow-md">
-                            <div class="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center">
+                            <div class="w-6 h-6 bg-hastana-red rounded-full flex items-center justify-center">
                                 <i class="fas fa-check text-white text-xs"></i>
                             </div>
                         </div>
@@ -243,14 +243,14 @@
                     <p class="text-xs text-gray-600 mb-2">{{ $related->city }}</p>
                     
                     {{-- <div class="text-xs text-gray-700 mb-3">
-                        <i class="fas fa-star text-yellow-400 mr-1"></i>
+                        <i class="fas fa-star text-hastana-red mr-1"></i>
                         {{ number_format($related->rating ?? 0, 1) }}/5
                         @if($related->completed_events)
                         <span class="text-gray-500">({{ $related->completed_events }} ulasan)</span>
                         @endif
                     </div> --}}
                     
-                    <a href="{{ route('members.show', $related->slug) }}" class="block w-full px-4 py-2 bg-pink-500 text-white text-sm font-semibold rounded-lg hover:bg-pink-600 transition-colors text-center">
+                    <a href="{{ route('members.show', $related->slug) }}" class="block w-full px-4 py-2 bg-hastana-red text-white text-sm font-semibold rounded-lg hover:bg-red-700 transition-colors text-center">
                         <i class="fas fa-eye mr-2"></i>Lihat Detail
                     </a>
                 </div>

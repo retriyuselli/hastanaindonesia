@@ -4,11 +4,11 @@
 
 @section('content')
 <!-- Hero Section -->
-<section class="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-12 mt-20">
+<section class="bg-gradient-to-r from-gray-900 to-black text-white py-12 mt-20">
     <div class="container mx-auto px-4">
         <div class="max-w-3xl mx-auto text-center">
             <h1 class="text-3xl md:text-4xl font-bold mb-2">Daftar Event</h1>
-            <p class="text-xl text-blue-100">{{ $event->title }}</p>
+            <p class="text-xl text-gray-300">{{ $event->title }}</p>
         </div>
     </div>
 </section>
@@ -52,7 +52,7 @@
                             @endphp
 
                             @if($isAlreadyRegistered)
-                                <div class="bg-blue-50 border border-blue-200 text-blue-800 px-4 py-3 rounded-lg mb-6">
+                                <div class="bg-gray-50 border border-gray-200 text-gray-800 px-4 py-3 rounded-lg mb-6">
                                     <div class="flex items-center gap-2">
                                         <i class="fas fa-info-circle"></i>
                                         <span class="font-semibold">Anda sudah terdaftar di event ini. Data pendaftaran tidak dapat diubah.</span>
@@ -63,7 +63,7 @@
                             <!-- Personal Information -->
                             <div class="mb-6">
                                 <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
-                                    <i class="fas fa-user text-blue-600"></i>
+                                    <i class="fas fa-user text-hastana-red"></i>
                                     Data Pribadi
                                 </h3>
 
@@ -77,7 +77,7 @@
                                            id="name"
                                            value="{{ $isAlreadyRegistered ? $registeredData->name : old('name', auth()->user()->name ?? '') }}"
                                            {{ $isAlreadyRegistered ? 'readonly' : 'required' }}
-                                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent {{ $isAlreadyRegistered ? 'bg-gray-100 cursor-not-allowed' : '' }} @error('name') border-red-500 @enderror"
+                                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-hastana-red focus:border-transparent {{ $isAlreadyRegistered ? 'bg-gray-100 cursor-not-allowed' : '' }} @error('name') border-red-500 @enderror"
                                            placeholder="Masukkan nama lengkap Anda">
                                     @error('name')
                                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -94,7 +94,7 @@
                                            id="email"
                                            value="{{ $isAlreadyRegistered ? $registeredData->email : old('email', auth()->user()->email ?? '') }}"
                                            {{ $isAlreadyRegistered ? 'readonly' : 'required' }}
-                                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent {{ $isAlreadyRegistered ? 'bg-gray-100 cursor-not-allowed' : '' }} @error('email') border-red-500 @enderror"
+                                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-hastana-red focus:border-transparent {{ $isAlreadyRegistered ? 'bg-gray-100 cursor-not-allowed' : '' }} @error('email') border-red-500 @enderror"
                                            placeholder="nama@email.com">
                                     @error('email')
                                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -111,7 +111,7 @@
                                            id="phone"
                                            value="{{ $isAlreadyRegistered ? $registeredData->phone : old('phone', auth()->user()->phone ?? '') }}"
                                            {{ $isAlreadyRegistered ? 'readonly' : 'required' }}
-                                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent {{ $isAlreadyRegistered ? 'bg-gray-100 cursor-not-allowed' : '' }} @error('phone') border-red-500 @enderror"
+                                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-hastana-red focus:border-transparent {{ $isAlreadyRegistered ? 'bg-gray-100 cursor-not-allowed' : '' }} @error('phone') border-red-500 @enderror"
                                            placeholder="08xxxxxxxxxx">
                                     @error('phone')
                                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -122,7 +122,7 @@
                             <!-- Professional Information (Optional) -->
                             <div class="mb-6">
                                 <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
-                                    <i class="fas fa-briefcase text-blue-600"></i>
+                                    <i class="fas fa-briefcase text-hastana-red"></i>
                                     Data Pekerjaan (Opsional)
                                 </h3>
 
@@ -168,7 +168,7 @@
                                            id="company"
                                            value="{{ old('company', $defaultCompany) }}"
                                            {{ $isAlreadyRegistered ? 'readonly' : '' }}
-                                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent {{ $isAlreadyRegistered ? 'bg-gray-100 cursor-not-allowed' : '' }} @error('company') border-red-500 @enderror"
+                                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-hastana-red focus:border-transparent {{ $isAlreadyRegistered ? 'bg-gray-100 cursor-not-allowed' : '' }} @error('company') border-red-500 @enderror"
                                            placeholder="PT. Nama Perusahaan">
                                     @error('company')
                                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -185,7 +185,7 @@
                                            id="position"
                                            value="{{ old('position', $defaultPosition) }}"
                                            {{ $isAlreadyRegistered ? 'readonly' : '' }}
-                                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent {{ $isAlreadyRegistered ? 'bg-gray-100 cursor-not-allowed' : '' }} @error('position') border-red-500 @enderror"
+                                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-hastana-red focus:border-transparent {{ $isAlreadyRegistered ? 'bg-gray-100 cursor-not-allowed' : '' }} @error('position') border-red-500 @enderror"
                                            placeholder="Manajer, Staff, dll">
                                     @error('position')
                                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -196,7 +196,7 @@
                             <!-- Additional Notes -->
                             <div class="mb-6">
                                 <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
-                                    <i class="fas fa-comment text-blue-600"></i>
+                                    <i class="fas fa-comment text-hastana-red"></i>
                                     Catatan Tambahan
                                 </h3>
 
@@ -222,7 +222,7 @@
                                               id="notes" 
                                               rows="4"
                                               {{ $isAlreadyRegistered ? 'readonly' : '' }}
-                                              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent {{ $isAlreadyRegistered ? 'bg-gray-100 cursor-not-allowed' : '' }} @error('notes') border-red-500 @enderror"
+                                              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-hastana-red focus:border-transparent {{ $isAlreadyRegistered ? 'bg-gray-100 cursor-not-allowed' : '' }} @error('notes') border-red-500 @enderror"
                                               placeholder="Sampaikan pertanyaan atau informasi tambahan...">{{ old('notes', $defaultNotes) }}</textarea>
                                     @error('notes')
                                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -234,19 +234,19 @@
                             @if(!$event->is_free && !$isAlreadyRegistered)
                                 <div class="mb-6">
                                     <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
-                                        <i class="fas fa-credit-card text-blue-600"></i>
+                                        <i class="fas fa-credit-card text-hastana-red"></i>
                                         Informasi Pembayaran
                                     </h3>
 
                                     <!-- Price Info -->
-                                    <div class="bg-gradient-to-r from-blue-50 to-blue-100 border border-blue-200 rounded-lg p-4 mb-4">
+                                    <div class="bg-gray-50 border border-gray-200 rounded-lg p-4 mb-4">
                                         <div class="flex items-center justify-between">
                                             <div>
                                                 <p class="text-sm text-gray-600 mb-1">Total Pembayaran:</p>
-                                                <p class="text-2xl font-bold text-blue-600">Rp {{ number_format($event->price, 0, ',', '.') }}</p>
+                                                <p class="text-2xl font-bold text-hastana-red">Rp {{ number_format($event->price, 0, ',', '.') }}</p>
                                             </div>
                                             <div class="text-right">
-                                                <i class="fas fa-money-bill-wave text-blue-600 text-4xl"></i>
+                                                <i class="fas fa-money-bill-wave text-hastana-red text-4xl"></i>
                                             </div>
                                         </div>
                                     </div>
@@ -254,7 +254,7 @@
                                     <!-- Bank Transfer Information -->
                                     <div class="bg-white border border-gray-300 rounded-lg p-4 mb-4">
                                         <h4 class="font-semibold text-gray-900 mb-3 flex items-center gap-2">
-                                            <i class="fas fa-university text-blue-600"></i>
+                                            <i class="fas fa-university text-hastana-red"></i>
                                             Informasi Rekening Bank
                                         </h4>
                                         <div class="space-y-3 text-sm">
@@ -264,7 +264,7 @@
                                                     <p class="font-semibold text-gray-900">1234567890</p>
                                                     <p class="text-xs text-gray-600">a.n. PT Hastana Indonesia</p>
                                                 </div>
-                                                <button type="button" onclick="copyToClipboard('1234567890')" class="text-blue-600 hover:text-blue-700">
+                                                <button type="button" onclick="copyToClipboard('1234567890')" class="text-hastana-red hover:text-red-700">
                                                     <i class="fas fa-copy"></i>
                                                 </button>
                                             </div>
@@ -274,13 +274,13 @@
                                                     <p class="font-semibold text-gray-900">0987654321</p>
                                                     <p class="text-xs text-gray-600">a.n. PT Hastana Indonesia</p>
                                                 </div>
-                                                <button type="button" onclick="copyToClipboard('0987654321')" class="text-blue-600 hover:text-blue-700">
+                                                <button type="button" onclick="copyToClipboard('0987654321')" class="text-hastana-red hover:text-red-700">
                                                     <i class="fas fa-copy"></i>
                                                 </button>
                                             </div>
                                         </div>
-                                        <div class="mt-3 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
-                                            <p class="text-xs text-yellow-800">
+                                        <div class="mt-3 p-3 bg-gray-50 border border-gray-200 rounded-lg">
+                                            <p class="text-xs text-gray-800">
                                                 <i class="fas fa-info-circle mr-1"></i>
                                                 Silakan transfer sesuai jumlah yang tertera dan upload bukti pembayaran di bawah ini.
                                             </p>
@@ -295,7 +295,7 @@
                                         <select name="payment_method" 
                                                 id="payment_method"
                                                 required
-                                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('payment_method') border-red-500 @enderror">
+                                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-hastana-red focus:border-transparent @error('payment_method') border-red-500 @enderror">
                                             <option value="">Pilih Metode Pembayaran</option>
                                             <option value="bca" {{ old('payment_method') == 'bca' ? 'selected' : '' }}>Transfer Bank BCA</option>
                                             <option value="mandiri" {{ old('payment_method') == 'mandiri' ? 'selected' : '' }}>Transfer Bank Mandiri</option>
@@ -318,7 +318,7 @@
                                                     <i class="fas fa-cloud-upload-alt text-gray-400 text-4xl mb-3"></i>
                                                     <p class="mb-2 text-sm text-gray-500"><span class="font-semibold">Klik untuk upload</span> atau drag & drop</p>
                                                     <p class="text-xs text-gray-500">PNG, JPG, JPEG (MAX. 2MB)</p>
-                                                    <p id="file-name" class="mt-2 text-sm text-blue-600 font-semibold"></p>
+                                                    <p id="file-name" class="mt-2 text-sm text-hastana-red font-semibold"></p>
                                                 </div>
                                                 <input id="payment_proof" 
                                                        name="payment_proof" 
@@ -355,7 +355,7 @@
                                 <!-- Display Payment Proof for Already Registered Users -->
                                 <div class="mb-6">
                                     <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
-                                        <i class="fas fa-receipt text-blue-600"></i>
+                                        <i class="fas fa-receipt text-hastana-red"></i>
                                         Bukti Pembayaran Anda
                                     </h3>
                                     <div class="bg-gray-50 border border-gray-300 rounded-lg p-4">
@@ -377,10 +377,10 @@
                                            name="agree_terms" 
                                            id="agree_terms"
                                            {{ $isAlreadyRegistered ? 'checked disabled' : 'required' }}
-                                           class="mt-1 w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-2 focus:ring-blue-500">
+                                           class="mt-1 w-5 h-5 text-hastana-red border-gray-300 rounded focus:ring-2 focus:ring-hastana-red">
                                     <span class="text-sm text-gray-700">
-                                        Saya menyetujui <a href="{{ route('terms') }}" target="_blank" class="text-blue-600 hover:underline">syarat dan ketentuan</a> 
-                                        serta <a href="{{ route('privacy') }}" target="_blank" class="text-blue-600 hover:underline">kebijakan privasi</a> 
+                                        Saya menyetujui <a href="{{ route('terms') }}" target="_blank" class="text-hastana-red hover:underline">syarat dan ketentuan</a> 
+                                        serta <a href="{{ route('privacy') }}" target="_blank" class="text-hastana-red hover:underline">kebijakan privasi</a> 
                                         yang berlaku. <span class="text-red-500">*</span>
                                     </span>
                                 </label>
@@ -396,7 +396,7 @@
                                     </button>
                                 @else
                                     <button type="submit" 
-                                            class="flex-1 bg-gradient-to-r from-blue-600 to-blue-700 text-white py-4 px-6 rounded-lg font-bold hover:from-blue-700 hover:to-blue-800 transition duration-200 shadow-lg hover:shadow-xl">
+                                            class="flex-1 bg-hastana-red text-white py-4 px-6 rounded-lg font-bold hover:bg-red-700 transition duration-200 shadow-lg hover:shadow-xl">
                                         <i class="fas fa-check-circle mr-2"></i> Daftar Sekarang
                                     </button>
                                 @endif
@@ -420,7 +420,7 @@
                                  alt="{{ $event->title }}" 
                                  class="w-full h-48 object-cover rounded-lg mb-4">
                         @else
-                            <div class="w-full h-48 bg-gradient-to-br from-blue-500 to-blue-700 rounded-lg flex items-center justify-center mb-4">
+                            <div class="w-full h-48 bg-gradient-to-br from-gray-700 to-gray-900 rounded-lg flex items-center justify-center mb-4">
                                 <i class="fas fa-calendar-alt text-white text-6xl"></i>
                             </div>
                         @endif
@@ -432,31 +432,31 @@
                         <div class="space-y-3 text-sm">
                             <!-- Category -->
                             <div class="flex items-center gap-2">
-                                <i class="fas fa-tag text-blue-600 w-5"></i>
+                                <i class="fas fa-tag text-hastana-red w-5"></i>
                                 <span>{{ $event->eventCategory->name ?? 'Umum' }}</span>
                             </div>
 
                             <!-- Date -->
                             <div class="flex items-center gap-2">
-                                <i class="fas fa-calendar-alt text-blue-600 w-5"></i>
+                                <i class="fas fa-calendar-alt text-hastana-red w-5"></i>
                                 <span>{{ $event->start_date->format('d M Y') }}</span>
                             </div>
 
                             <!-- Time -->
                             <div class="flex items-center gap-2">
-                                <i class="fas fa-clock text-blue-600 w-5"></i>
+                                <i class="fas fa-clock text-hastana-red w-5"></i>
                                 <span>{{ substr($event->start_time, 0, 5) }} WIB</span>
                             </div>
 
                             <!-- Location -->
                             <div class="flex items-start gap-2">
-                                <i class="fas fa-map-marker-alt text-blue-600 w-5 mt-1"></i>
+                                <i class="fas fa-map-marker-alt text-hastana-red w-5 mt-1"></i>
                                 <span>{{ $event->venue }}, {{ $event->city }}</span>
                             </div>
 
                             <!-- Type -->
                             <div class="flex items-center gap-2">
-                                <i class="fas fa-info-circle text-blue-600 w-5"></i>
+                                <i class="fas fa-info-circle text-hastana-red w-5"></i>
                                 <span>{{ ucfirst($event->type) }}</span>
                             </div>
                         </div>
@@ -466,33 +466,33 @@
                             <div class="flex justify-between items-center mb-2">
                                 <span class="text-gray-600">Harga:</span>
                                 @if($event->is_free)
-                                    <span class="text-2xl font-bold text-green-600">GRATIS</span>
+                                    <span class="text-2xl font-bold text-hastana-red">GRATIS</span>
                                 @else
-                                    <span class="text-2xl font-bold text-blue-600">Rp {{ number_format($event->price, 0, ',', '.') }}</span>
+                                    <span class="text-2xl font-bold text-hastana-red">Rp {{ number_format($event->price, 0, ',', '.') }}</span>
                                 @endif
                             </div>
                         </div>
 
                         <!-- Remaining Quota -->
                         @if($event->capacity)
-                            <div class="mt-4 bg-blue-50 border border-blue-200 rounded-lg p-4">
+                            <div class="mt-4 bg-gray-50 border border-gray-200 rounded-lg p-4">
                                 <div class="flex items-center justify-between mb-2">
-                                    <span class="text-sm font-semibold text-blue-800">Sisa Kuota</span>
-                                    <span class="text-lg font-bold text-blue-600">{{ $event->remaining_quota }} slot</span>
+                                    <span class="text-sm font-semibold text-gray-800">Sisa Kuota</span>
+                                    <span class="text-lg font-bold text-hastana-red">{{ $event->remaining_quota }} slot</span>
                                 </div>
-                                <div class="w-full bg-blue-200 rounded-full h-2">
-                                    <div class="bg-blue-600 h-2 rounded-full transition-all duration-300" 
+                                <div class="w-full bg-gray-200 rounded-full h-2">
+                                    <div class="bg-hastana-red h-2 rounded-full transition-all duration-300" 
                                          style="width: {{ min($event->capacity_percentage, 100) }}%"></div>
                                 </div>
-                                <p class="text-xs text-blue-700 mt-2">
+                                <p class="text-xs text-gray-700 mt-2">
                                     {{ $event->current_participants }} dari {{ $event->capacity }} peserta terdaftar
                                 </p>
                             </div>
                         @endif
 
                         <!-- Security Note -->
-                        <div class="mt-6 bg-green-50 border border-green-200 rounded-lg p-4">
-                            <div class="flex items-start gap-2 text-sm text-green-800">
+                        <div class="mt-6 bg-gray-50 border border-gray-200 rounded-lg p-4">
+                            <div class="flex items-start gap-2 text-sm text-gray-800">
                                 <i class="fas fa-shield-alt mt-0.5"></i>
                                 <div>
                                     <div class="font-semibold mb-1">Data Anda Aman</div>
@@ -548,7 +548,7 @@
         navigator.clipboard.writeText(text).then(function() {
             // Show success message
             const toast = document.createElement('div');
-            toast.className = 'fixed bottom-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 animate-fade-in';
+            toast.className = 'fixed bottom-4 right-4 bg-hastana-red text-white px-6 py-3 rounded-lg shadow-lg z-50 animate-fade-in';
             toast.innerHTML = '<i class="fas fa-check-circle mr-2"></i>Nomor rekening berhasil disalin!';
             document.body.appendChild(toast);
             

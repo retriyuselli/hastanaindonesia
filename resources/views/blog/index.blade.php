@@ -13,7 +13,7 @@
     .blog-card:hover {
         transform: translateY(-8px);
         box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-        border-color: #3b82f6;
+        border-color: #dc2626;
     }
     
     .category-badge {
@@ -24,8 +24,8 @@
     }
     
     .featured-post {
-        background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(220, 38, 38, 0.1));
-        border: 2px solid #3b82f6;
+        background: linear-gradient(135deg, rgba(220, 38, 38, 0.1), rgba(17, 24, 39, 0.1));
+        border: 2px solid #dc2626;
     }
     
     .read-time {
@@ -51,7 +51,7 @@
     }
     
     .trending-badge {
-        background: linear-gradient(45deg, #ff6b6b, #feca57);
+        background: linear-gradient(45deg, #dc2626, #111827);
         color: white;
         padding: 0.25rem 0.625rem;
         border-radius: 9999px;
@@ -74,7 +74,7 @@
 @section('content')
 
 <!-- Hero Section -->
-<section class="bg-gradient-to-r from-red-900 via-red-800 to-blue-800 py-16 text-white mt-20">
+<section class="bg-gradient-to-r from-gray-900 to-black py-16 text-white mt-20">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <h1 class="font-poppins text-3xl md:text-5xl font-bold mb-5">
             Blog HASTANA
@@ -91,7 +91,7 @@
                        id="searchInput"
                        value="{{ request('search') }}"
                        placeholder="Cari artikel..." 
-                       class="w-full px-3 py-2.5 pl-10 pr-10 text-sm text-gray-900 bg-white rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500">
+                       class="w-full px-3 py-2.5 pl-10 pr-10 text-sm text-gray-900 bg-white rounded-full focus:outline-none focus:ring-2 focus:ring-hastana-red">
                 <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-sm"></i>
                 @if(request('search'))
                 <button type="button" onclick="clearSearch()" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600">
@@ -105,7 +105,7 @@
 
 @if(request('search'))
 <!-- Search Result Info -->
-<section class="py-6 bg-blue-50">
+<section class="py-6 bg-gray-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between">
             <div>
@@ -117,7 +117,7 @@
                     Ditemukan {{ $blogs->total() }} artikel
                 </p>
             </div>
-            <a href="{{ route('blog') }}" class="text-sm text-blue-600 hover:text-blue-800 font-semibold">
+            <a href="{{ route('blog') }}" class="text-sm text-hastana-red hover:text-red-700 font-semibold">
                 <i class="fas fa-times mr-1"></i>Hapus Filter
             </a>
         </div>
@@ -148,7 +148,7 @@
                 <div class="lg:w-1/2 p-6 lg:p-10">
                     <div class="flex items-center gap-2.5 mb-5">
                         <span class="trending-badge">FEATURED</span>
-                        <span class="bg-blue-100 text-blue-800 px-2.5 py-1 rounded-full text-xs font-semibold">
+                        <span class="bg-gray-100 text-hastana-red px-2.5 py-1 rounded-full text-xs font-semibold">
                             {{ $featuredPost->category->name ?? 'Artikel' }}
                         </span>
                     </div>
@@ -194,7 +194,7 @@
                             <span><i class="fas fa-comment mr-1"></i>{{ number_format($featuredPost->comments_count ?? 0) }} comments</span>
                         </div>
                         <a href="{{ route('blog.detail', $featuredPost->slug) }}" 
-                           class="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-5 py-2.5 rounded-full hover:from-blue-700 hover:to-blue-800 transition-all font-semibold text-sm">
+                           class="bg-hastana-red text-white px-5 py-2.5 rounded-full hover:bg-red-700 transition-all font-semibold text-sm">
                             Baca Selengkapnya
                         </a>
                     </div>
@@ -216,7 +216,7 @@
             @foreach($blogs->skip(1) as $blog)
             <div class="blog-card bg-white rounded-2xl shadow-lg overflow-hidden relative">
                 <div class="category-badge">
-                    <span class="bg-{{ $blog->category->color ?? 'blue' }}-500 text-white px-2.5 py-1 rounded-full text-xs font-bold">
+                    <span class="bg-gray-900 text-white px-2.5 py-1 rounded-full text-xs font-bold">
                         {{ strtoupper($blog->category->name ?? 'ARTIKEL') }}
                     </span>
                 </div>
@@ -228,7 +228,7 @@
                 </div>
                 <div class="p-5">
                     <div class="flex items-center gap-1.5 mb-2.5">
-                        <span class="bg-{{ $blog->category->color ?? 'blue' }}-100 text-{{ $blog->category->color ?? 'blue' }}-800 px-2.5 py-1 rounded-full text-xs">
+                        <span class="bg-gray-100 text-hastana-red px-2.5 py-1 rounded-full text-xs">
                             {{ $blog->category->name ?? 'Artikel' }}
                         </span>
                         <span class="text-xs text-gray-500">{{ $blog->published_at->format('d M Y') }}</span>
@@ -265,7 +265,7 @@
                             <span><i class="fas fa-heart mr-1 text-red-400"></i>{{ number_format($blog->likes_count ?? 0) }}</span>
                         </div>
                         <a href="{{ route('blog.detail', $blog->slug) }}" 
-                           class="text-blue-600 hover:text-blue-800 font-semibold text-xs">
+                           class="text-hastana-red hover:text-red-700 font-semibold text-xs">
                             Baca →
                         </a>
                     </div>
@@ -297,7 +297,7 @@
                 </p>
                 <div class="flex gap-3 justify-center">
                     <a href="{{ route('blog') }}" 
-                       class="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-6 py-2.5 rounded-full hover:from-blue-700 hover:to-blue-800 transition-all font-semibold text-sm">
+                       class="bg-hastana-red text-white px-6 py-2.5 rounded-full hover:bg-red-700 transition-all font-semibold text-sm">
                         <i class="fas fa-times mr-2"></i>Hapus Filter
                     </a>
                     <a href="{{ route('home') }}" 
@@ -310,7 +310,7 @@
                 <h2 class="text-xl font-bold text-gray-900 mb-3">Belum Ada Artikel</h2>
                 <p class="text-gray-600 mb-6 text-sm">Artikel-artikel menarik akan segera hadir. Stay tuned!</p>
                 <a href="{{ route('home') }}" 
-                   class="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-6 py-2.5 rounded-full hover:from-blue-700 hover:to-blue-800 transition-all font-semibold text-sm">
+                   class="bg-hastana-red text-white px-6 py-2.5 rounded-full hover:bg-red-700 transition-all font-semibold text-sm">
                     Kembali ke Home
                 </a>
             @endif

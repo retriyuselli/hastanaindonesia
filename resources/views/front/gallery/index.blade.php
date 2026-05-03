@@ -48,14 +48,14 @@
     }
 
     .filter-btn.active {
-        background: linear-gradient(135deg, #1e40af, #dc2626);
+        background: linear-gradient(135deg, #111827, #dc2626);
         color: white;
         transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(30, 64, 175, 0.3);
+        box-shadow: 0 4px 12px rgba(220, 38, 38, 0.22);
     }
 
     .gradient-text {
-        background: linear-gradient(135deg, #1e40af, #dc2626);
+        background: linear-gradient(135deg, #111827, #dc2626);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
@@ -131,7 +131,7 @@
     }
 
     .lightbox-nav:hover {
-        background: #1e40af;
+        background: #dc2626;
         color: white;
         transform: translateY(-50%) scale(1.1);
     }
@@ -164,7 +164,7 @@
     }
 
     .filter-dropdown-button {
-        background: linear-gradient(135deg, #1e40af, #dc2626);
+        background: linear-gradient(135deg, #111827, #dc2626);
         color: white;
         padding: 12px 24px;
         border-radius: 12px;
@@ -174,13 +174,13 @@
         gap: 12px;
         cursor: pointer;
         transition: all 0.3s ease;
-        box-shadow: 0 4px 12px rgba(30, 64, 175, 0.3);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.22);
         min-width: 280px;
         justify-content: space-between;
     }
 
     .filter-dropdown-button:hover {
-        box-shadow: 0 6px 20px rgba(30, 64, 175, 0.4);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.28);
         transform: translateY(-2px);
     }
 
@@ -223,13 +223,13 @@
     }
 
     .filter-dropdown-item:hover {
-        background: linear-gradient(135deg, rgba(30, 64, 175, 0.1), rgba(220, 38, 38, 0.05));
+        background: linear-gradient(135deg, rgba(17, 24, 39, 0.08), rgba(220, 38, 38, 0.05));
         padding-left: 24px;
     }
 
     .filter-dropdown-item.active {
-        background: linear-gradient(135deg, rgba(30, 64, 175, 0.15), rgba(220, 38, 38, 0.1));
-        color: #1e40af;
+        background: linear-gradient(135deg, rgba(17, 24, 39, 0.1), rgba(220, 38, 38, 0.08));
+        color: #dc2626;
         font-weight: 600;
     }
 
@@ -242,7 +242,7 @@
     }
 
     .filter-dropdown-item.active .count {
-        background: linear-gradient(135deg, #1e40af, #dc2626);
+        background: linear-gradient(135deg, #111827, #dc2626);
         color: white;
     }
 
@@ -289,20 +289,20 @@
 
 @section('content')
 <!-- Hero Section -->
-<section class="relative bg-gradient-to-br from-gray-900 via-blue-900 to-red-900 text-white py-20 overflow-hidden mt-20">
+<section class="relative bg-gradient-to-br from-gray-900 via-gray-800 to-red-900 text-white py-20 overflow-hidden mt-20">
     <div class="absolute inset-0 opacity-10">
         <div class="absolute inset-0" style="background-image: url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 1200 600%22><defs><pattern id=%22wedding-pattern%22 x=%220%22 y=%220%22 width=%22100%22 height=%22100%22 patternUnits=%22userSpaceOnUse%22><circle cx=%2250%22 cy=%2250%22 r=%2220%22 fill=%22none%22 stroke=%22rgba(255,255,255,0.1)%22 stroke-width=%221%22/><circle cx=%2250%22 cy=%2250%22 r=%2210%22 fill=%22none%22 stroke=%22rgba(255,255,255,0.05)%22 stroke-width=%221%22/></pattern></defs><rect width=%22100%25%22 height=%22100%25%22 fill=%22url(%23wedding-pattern)%22/></svg>'); background-size: 100px 100px;"></div>
     </div>
     
     <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <div class="inline-block mb-6">
-            <div class="w-20 h-20 bg-gradient-to-br from-blue-500 to-red-500 rounded-full flex items-center justify-center shadow-2xl">
+            <div class="w-20 h-20 bg-gradient-to-br from-gray-900 to-red-600 rounded-full flex items-center justify-center shadow-2xl">
                 <i class="fas fa-images text-3xl"></i>
             </div>
         </div>
         
         <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
-            Gallery <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-red-400">HASTANA INDONESIA</span>
+            Gallery <span class="text-transparent bg-clip-text bg-gradient-to-r from-gray-200 to-red-200">HASTANA INDONESIA</span>
         </h1>
         
         <p class="text-xl md:text-2xl text-gray-200 max-w-3xl mx-auto leading-relaxed">
@@ -411,7 +411,7 @@
     </button>
     
     <div class="gallery-info">
-        <span id="lightbox-category" class="inline-block px-3 py-1 bg-gradient-to-r from-blue-600 to-red-600 text-white rounded-full text-xs font-semibold mb-2"></span>
+        <span id="lightbox-category" class="inline-block px-3 py-1 bg-gradient-to-r from-gray-900 to-hastana-red text-white rounded-full text-xs font-semibold mb-2"></span>
         <h3 id="lightbox-title" class="text-xl font-bold text-gray-900 mb-2"></h3>
         <p id="lightbox-description" class="text-sm text-gray-600 mb-3"></p>
         <div class="flex items-center justify-between text-xs text-gray-500">
@@ -423,7 +423,7 @@
 </div>
 
 <!-- CTA Section -->
-<section class="py-20 bg-gradient-to-r from-gray-900 via-blue-900 to-red-900">
+<section class="py-20 bg-gradient-to-r from-gray-900 via-gray-800 to-red-900">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">
             Ingin Karya Anda Ditampilkan di Gallery?
@@ -432,7 +432,7 @@
             Bergabunglah dengan HASTANA Indonesia dan tampilkan karya terbaik Anda
         </p>
         <div class="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href="{{ route('join') }}" class="inline-flex items-center px-8 py-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white font-bold rounded-full hover:from-blue-700 hover:to-blue-800 transition-all duration-300 shadow-xl hover:shadow-2xl">
+            <a href="{{ route('join') }}" class="inline-flex items-center px-8 py-4 bg-gradient-to-r from-gray-900 to-hastana-red text-white font-bold rounded-full hover:from-black hover:to-red-700 transition-all duration-300 shadow-xl hover:shadow-2xl">
                 <i class="fas fa-user-plus mr-3"></i>
                 Daftar Sekarang
             </a>

@@ -39,7 +39,7 @@
         /* Subtle background pattern */
         .pattern-bg {
             background-image: 
-                radial-gradient(circle at 25% 25%, rgba(30, 64, 175, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 25% 25%, rgba(17, 24, 39, 0.03) 0%, transparent 50%),
                 radial-gradient(circle at 75% 75%, rgba(220, 38, 38, 0.03) 0%, transparent 50%),
                 linear-gradient(135deg, rgba(26, 26, 26, 0.02) 0%, transparent 100%);
         }
@@ -67,7 +67,7 @@
             left: 50%;
             width: 0;
             height: 2px;
-            background: linear-gradient(90deg, var(--hastana-blue), var(--hastana-red));
+            background: linear-gradient(90deg, var(--hastana-red), var(--hastana-black));
             transition: all 0.3s ease;
             transform: translateX(-50%);
         }
@@ -77,7 +77,7 @@
         }
         
         .nav-link:hover {
-            color: var(--hastana-blue);
+            color: var(--hastana-red);
             transform: translateY(-1px);
         }
         
@@ -133,7 +133,7 @@
         
         /* Gradient text */
         .gradient-text {
-            background: linear-gradient(135deg, var(--hastana-blue), var(--hastana-red));
+            background: linear-gradient(135deg, var(--hastana-red), var(--hastana-black));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -152,11 +152,11 @@
         }
         
         .nav-link:hover {
-            color: var(--hastana-blue);
+            color: var(--hastana-red);
         }
         
         .nav-link.active {
-            color: var(--hastana-blue);
+            color: var(--hastana-red);
             font-weight: 600;
         }
         
@@ -168,7 +168,7 @@
             transform: translateX(-50%);
             width: 6px;
             height: 6px;
-            background: linear-gradient(135deg, var(--hastana-blue), var(--hastana-red));
+            background: linear-gradient(135deg, var(--hastana-red), var(--hastana-black));
             border-radius: 50%;
             animation: pulse-dot 2s infinite;
         }
@@ -180,7 +180,7 @@
             left: 0;
             right: 0;
             height: 2px;
-            background: linear-gradient(90deg, var(--hastana-blue), var(--hastana-red));
+            background: linear-gradient(90deg, var(--hastana-red), var(--hastana-black));
             border-radius: 1px;
             opacity: 0.7;
         }
@@ -238,8 +238,8 @@
         }
         
         .dropdown-item:hover {
-            background: linear-gradient(135deg, rgba(30, 64, 175, 0.1), rgba(220, 38, 38, 0.05));
-            color: var(--hastana-blue);
+            background: linear-gradient(135deg, rgba(220, 38, 38, 0.08), rgba(17, 24, 39, 0.05));
+            color: var(--hastana-red);
             transform: translateX(4px);
         }
         
@@ -279,20 +279,20 @@
         }
         
         .mobile-dropdown-item:hover {
-            background: rgba(30, 64, 175, 0.1);
-            color: var(--hastana-blue);
-            border-left-color: var(--hastana-blue);
+            background: rgba(220, 38, 38, 0.08);
+            color: var(--hastana-red);
+            border-left-color: var(--hastana-red);
         }
 
         /* Mobile Navigation Active State */
         .mobile-menu-item.active {
-            background: linear-gradient(135deg, rgba(30, 64, 175, 0.1), rgba(220, 38, 38, 0.05));
-            color: var(--hastana-blue);
-            border-left: 4px solid var(--hastana-blue);
+            background: linear-gradient(135deg, rgba(220, 38, 38, 0.08), rgba(17, 24, 39, 0.05));
+            color: var(--hastana-red);
+            border-left: 4px solid var(--hastana-red);
         }
         
         .mobile-menu-item.active i {
-            color: var(--hastana-blue);
+            color: var(--hastana-red);
         }
     </style>
 </head>
@@ -314,7 +314,7 @@
                              alt="HASTANA Indonesia" 
                              class="h-12 w-auto object-contain transition-transform duration-300 group-hover:scale-110">
                         <!-- Subtle glow effect on hover -->
-                        <div class="absolute -inset-1 bg-gradient-to-r from-blue-600 to-red-600 rounded-full opacity-0 group-hover:opacity-20 blur transition-opacity duration-300"></div>
+                        <div class="absolute -inset-1 bg-gradient-to-r from-gray-900 to-red-600 rounded-full opacity-0 group-hover:opacity-20 blur transition-opacity duration-300"></div>
                     </div>
                 </a>
 
@@ -363,7 +363,7 @@
 
                     <!-- Login Link for Guest (Desktop) -->
                     @guest
-                        <a href="{{ route('login', absolute: false) }}" class="nav-link {{ Request::routeIs('login') ? 'active' : '' }} text-gray-700 text-sm font-medium px-4 py-2 hover:text-hastana-blue transition-smooth">
+                        <a href="{{ route('login', absolute: false) }}" class="nav-link {{ Request::routeIs('login') ? 'active' : '' }} text-gray-700 text-sm font-medium px-4 py-2 hover:text-hastana-red transition-smooth">
                             <i class="fas fa-sign-in-alt mr-1 text-xs"></i>
                             Login
                         </a>
@@ -374,7 +374,7 @@
                 <div class="flex items-center space-x-4">
                     <!-- CTA Button (Desktop) -->
                     @guest
-                        <a href="{{ route('register') }}" class="hidden sm:inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-700 to-red-600 text-white text-sm font-semibold rounded-full hover:from-blue-800 hover:to-red-700 transition-smooth shadow-md hover:shadow-lg">
+                        <a href="{{ route('register') }}" class="hidden sm:inline-flex items-center px-4 py-2 bg-gradient-to-r from-gray-900 to-red-600 text-white text-sm font-semibold rounded-full hover:from-black hover:to-red-700 transition-smooth shadow-md hover:shadow-lg">
                             <i class="fas fa-user-plus mr-1.5 text-xs"></i>
                             Gabung Sekarang
                         </a>
@@ -382,7 +382,7 @@
                         <!-- User Avatar with Dropdown (Desktop Only) -->
                         <div class="hidden sm:block dropdown">
                             <a href="#" class="flex items-center hover:opacity-90 transition-smooth">
-                                <div class="w-10 h-10 rounded-full overflow-hidden {{ auth()->user()->avatar ? '' : 'bg-gradient-to-r from-blue-600 to-red-600 flex items-center justify-center text-white font-bold' }} ring-2 ring-blue-500 shadow-lg hover:ring-blue-600 transition-all">
+                                <div class="w-10 h-10 rounded-full overflow-hidden {{ auth()->user()->avatar ? '' : 'bg-gradient-to-r from-gray-900 to-red-600 flex items-center justify-center text-white font-bold' }} ring-2 ring-red-500 shadow-lg hover:ring-red-600 transition-all">
                                     @if(auth()->user()->avatar)
                                         <img src="{{ Storage::url(auth()->user()->avatar) }}" alt="{{ auth()->user()->name }}" class="w-full h-full object-cover">
                                     @else
@@ -424,7 +424,7 @@
                     <!-- Mobile Menu Button -->
                     <button 
                         id="mobile-menu-button"
-                        class="lg:hidden p-2 rounded-lg text-gray-700 hover:text-hastana-blue hover:bg-gray-50 transition-smooth" 
+                        class="lg:hidden p-2 rounded-lg text-gray-700 hover:text-hastana-red hover:bg-gray-50 transition-smooth" 
                         onclick="toggleMobileMenu()"
                         aria-label="Toggle mobile menu"
                         aria-expanded="false"
@@ -438,30 +438,30 @@
         <!-- Mobile Navigation Menu -->
         <div id="mobile-menu" class="lg:hidden mobile-menu bg-white border-t border-gray-200 shadow-xl">
             <div class="max-w-7xl mx-auto px-4 py-6 space-y-1">
-                <a href="{{ route('home') }}" class="mobile-menu-item {{ Request::routeIs('home') ? 'active' : '' }} flex items-center py-4 px-4 text-gray-700 hover:text-hastana-blue hover:bg-blue-50 rounded-lg transition-smooth border-b border-gray-100">
+                <a href="{{ route('home') }}" class="mobile-menu-item {{ Request::routeIs('home') ? 'active' : '' }} flex items-center py-4 px-4 text-gray-700 hover:text-hastana-red hover:bg-gray-50 rounded-lg transition-smooth border-b border-gray-100">
                     <i class="fas fa-home mr-3 text-sm w-5"></i>
                     <span class="font-medium">Home</span>
                 </a>
-                <a href="{{ route('events') }}" class="mobile-menu-item {{ Request::routeIs('events') ? 'active' : '' }} flex items-center py-4 px-4 text-gray-700 hover:text-hastana-blue hover:bg-blue-50 rounded-lg transition-smooth border-b border-gray-100">
+                <a href="{{ route('events') }}" class="mobile-menu-item {{ Request::routeIs('events') ? 'active' : '' }} flex items-center py-4 px-4 text-gray-700 hover:text-hastana-red hover:bg-gray-50 rounded-lg transition-smooth border-b border-gray-100">
                     <i class="fas fa-calendar-alt mr-3 text-sm w-5"></i>
                     <span class="font-medium">Event</span>
                 </a>
-                <a href="{{ route('blog') }}" class="mobile-menu-item {{ Request::routeIs('blog') ? 'active' : '' }} flex items-center py-4 px-4 text-gray-700 hover:text-hastana-blue hover:bg-blue-50 rounded-lg transition-smooth border-b border-gray-100">
+                <a href="{{ route('blog') }}" class="mobile-menu-item {{ Request::routeIs('blog') ? 'active' : '' }} flex items-center py-4 px-4 text-gray-700 hover:text-hastana-red hover:bg-gray-50 rounded-lg transition-smooth border-b border-gray-100">
                     <i class="fas fa-blog mr-3 text-sm w-5"></i>
                     <span class="font-medium">Blog</span>
                 </a>
-                <a href="{{ route('regions.index') }}" class="mobile-menu-item {{ Request::routeIs('regions.*') ? 'active' : '' }} flex items-center py-4 px-4 text-gray-700 hover:text-hastana-blue hover:bg-blue-50 rounded-lg transition-smooth border-b border-gray-100">
+                <a href="{{ route('regions.index') }}" class="mobile-menu-item {{ Request::routeIs('regions.*') ? 'active' : '' }} flex items-center py-4 px-4 text-gray-700 hover:text-hastana-red hover:bg-gray-50 rounded-lg transition-smooth border-b border-gray-100">
                     <i class="fas fa-map-marked-alt mr-3 text-sm w-5"></i>
                     <span class="font-medium">Region</span>
                 </a>
-                <a href="{{ route('members') }}" class="mobile-menu-item {{ Request::routeIs('members*') ? 'active' : '' }} flex items-center py-4 px-4 text-gray-700 hover:text-hastana-blue hover:bg-blue-50 rounded-lg transition-smooth border-b border-gray-100">
+                <a href="{{ route('members') }}" class="mobile-menu-item {{ Request::routeIs('members*') ? 'active' : '' }} flex items-center py-4 px-4 text-gray-700 hover:text-hastana-red hover:bg-gray-50 rounded-lg transition-smooth border-b border-gray-100">
                     <i class="fas fa-users mr-3 text-sm w-5"></i>
                     <span class="font-medium">Anggota</span>
                 </a>
                 
                 <!-- Mobile Kontak Dropdown -->
                 <div class="border-b border-gray-100">
-                    <button class="mobile-menu-item {{ Request::routeIs('contact') || Request::routeIs('portfolio*') || Request::routeIs('about') ? 'active' : '' }} w-full flex items-center justify-between py-4 px-4 text-gray-700 hover:text-hastana-blue hover:bg-blue-50 rounded-lg transition-smooth" onclick="toggleMobileDropdown('kontak')">
+                    <button class="mobile-menu-item {{ Request::routeIs('contact') || Request::routeIs('portfolio*') || Request::routeIs('about') ? 'active' : '' }} w-full flex items-center justify-between py-4 px-4 text-gray-700 hover:text-hastana-red hover:bg-gray-50 rounded-lg transition-smooth" onclick="toggleMobileDropdown('kontak')">
                         <div class="flex items-center">
                             <i class="fas fa-envelope mr-3 text-sm w-5"></i>
                             <span class="font-medium">Kontak</span>
@@ -469,19 +469,19 @@
                         <i class="fas fa-chevron-down text-sm transition-transform duration-300" id="kontak-arrow"></i>
                     </button>
                     <div class="mobile-dropdown-menu" id="kontak-dropdown">
-                        <a href="{{ route('about') }}" class="mobile-dropdown-item flex items-center text-sm hover:bg-blue-50 transition-smooth rounded">
+                        <a href="{{ route('about') }}" class="mobile-dropdown-item flex items-center text-sm hover:bg-gray-50 transition-smooth rounded">
                             <i class="fas fa-info-circle mr-2 text-xs w-4"></i>
                             About
                         </a>
-                        <a href="{{ route('contact') }}" class="mobile-dropdown-item flex items-center text-sm hover:bg-blue-50 transition-smooth rounded">
+                        <a href="{{ route('contact') }}" class="mobile-dropdown-item flex items-center text-sm hover:bg-gray-50 transition-smooth rounded">
                             <i class="fas fa-envelope mr-2 text-xs w-4"></i>
                             Hubungi Kami
                         </a>
-                        <a href="{{ route('gallery') }}" class="mobile-dropdown-item flex items-center text-sm hover:bg-blue-50 transition-smooth rounded">
+                        <a href="{{ route('gallery') }}" class="mobile-dropdown-item flex items-center text-sm hover:bg-gray-50 transition-smooth rounded">
                             <i class="fas fa-images mr-2 text-xs w-4"></i>
                             Gallery
                         </a>
-                        {{-- <a href="{{ route('portfolio') }}" class="mobile-dropdown-item flex items-center text-sm hover:bg-blue-50 transition-smooth rounded">
+                        {{-- <a href="{{ route('portfolio') }}" class="mobile-dropdown-item flex items-center text-sm hover:bg-gray-50 transition-smooth rounded">
                             <i class="fas fa-briefcase mr-2 text-xs w-4"></i>
                             Portfolio WO
                         </a> --}}
@@ -492,9 +492,9 @@
                 <div class="border-b border-gray-100">
                     @auth
                         <!-- User Logged In (Mobile) -->
-                        <button class="mobile-menu-item w-full flex items-center justify-between py-4 px-4 text-gray-700 hover:text-hastana-blue hover:bg-blue-50 rounded-lg transition-smooth" onclick="toggleMobileDropdown('akun')">
+                        <button class="mobile-menu-item w-full flex items-center justify-between py-4 px-4 text-gray-700 hover:text-hastana-red hover:bg-gray-50 rounded-lg transition-smooth" onclick="toggleMobileDropdown('akun')">
                             <div class="flex items-center">
-                                <div class="w-8 h-8 rounded-full overflow-hidden {{ auth()->user()->avatar ? '' : 'bg-gradient-to-r from-blue-600 to-red-600 flex items-center justify-center text-white font-semibold text-sm' }} mr-3 ring-2 ring-gray-200">
+                                <div class="w-8 h-8 rounded-full overflow-hidden {{ auth()->user()->avatar ? '' : 'bg-gradient-to-r from-gray-900 to-red-600 flex items-center justify-center text-white font-semibold text-sm' }} mr-3 ring-2 ring-gray-200">
                                     @if(auth()->user()->avatar)
                                         <img src="{{ Storage::url(auth()->user()->avatar) }}" alt="{{ auth()->user()->name }}" class="w-full h-full object-cover">
                                     @else
@@ -509,21 +509,21 @@
                             <i class="fas fa-chevron-down text-sm transition-transform duration-300" id="akun-arrow"></i>
                         </button>
                         <div class="mobile-dropdown-menu" id="akun-dropdown">
-                            <a href="{{ route('dashboard') }}" class="mobile-dropdown-item flex items-center text-sm hover:bg-blue-50 transition-smooth rounded">
+                            <a href="{{ route('dashboard') }}" class="mobile-dropdown-item flex items-center text-sm hover:bg-gray-50 transition-smooth rounded">
                                 <i class="fas fa-tachometer-alt mr-2 text-xs w-4"></i>
                                 Dashboard
                             </a>
-                            <a href="{{ route('profile.edit') }}" class="mobile-dropdown-item flex items-center text-sm hover:bg-blue-50 transition-smooth rounded">
+                            <a href="{{ route('profile.edit') }}" class="mobile-dropdown-item flex items-center text-sm hover:bg-gray-50 transition-smooth rounded">
                                 <i class="fas fa-user-circle mr-2 text-xs w-4"></i>
                                 Profil Saya
                             </a>
                             @if(auth()->user()->role === 'admin')
-                            <a href="{{ url('/admin') }}" class="mobile-dropdown-item flex items-center text-sm hover:bg-blue-50 transition-smooth rounded">
+                            <a href="{{ url('/admin') }}" class="mobile-dropdown-item flex items-center text-sm hover:bg-gray-50 transition-smooth rounded">
                                 <i class="fas fa-cog mr-2 text-xs w-4"></i>
                                 Admin Panel
                             </a>
                             @endif
-                            <a href="#" class="mobile-dropdown-item flex items-center text-sm hover:bg-blue-50 transition-smooth rounded">
+                            <a href="#" class="mobile-dropdown-item flex items-center text-sm hover:bg-gray-50 transition-smooth rounded">
                                 <i class="fas fa-ticket-alt mr-2 text-xs w-4"></i>
                                 Event Saya
                             </a>
@@ -538,7 +538,7 @@
                         </div>
                     @else
                         <!-- Guest User (Mobile) -->
-                        <button class="mobile-menu-item {{ Request::routeIs('login') || Request::routeIs('register') ? 'active' : '' }} w-full flex items-center justify-between py-4 px-4 text-gray-700 hover:text-hastana-blue hover:bg-blue-50 rounded-lg transition-smooth" onclick="toggleMobileDropdown('akun')">
+                        <button class="mobile-menu-item {{ Request::routeIs('login') || Request::routeIs('register') ? 'active' : '' }} w-full flex items-center justify-between py-4 px-4 text-gray-700 hover:text-hastana-red hover:bg-gray-50 rounded-lg transition-smooth" onclick="toggleMobileDropdown('akun')">
                             <div class="flex items-center">
                                 <i class="fas fa-user mr-3 text-sm w-5"></i>
                                 <span class="font-medium">Akun</span>
@@ -546,11 +546,11 @@
                             <i class="fas fa-chevron-down text-sm transition-transform duration-300" id="akun-arrow"></i>
                         </button>
                         <div class="mobile-dropdown-menu" id="akun-dropdown">
-                            <a href="{{ route('login', absolute: false) }}" class="mobile-dropdown-item flex items-center text-sm hover:bg-blue-50 transition-smooth rounded">
+                            <a href="{{ route('login', absolute: false) }}" class="mobile-dropdown-item flex items-center text-sm hover:bg-gray-50 transition-smooth rounded">
                                 <i class="fas fa-sign-in-alt mr-2 text-xs w-4"></i>
                                 Login
                             </a>
-                            <a href="{{ route('register') }}" class="mobile-dropdown-item flex items-center text-sm hover:bg-blue-50 transition-smooth rounded">
+                            <a href="{{ route('register') }}" class="mobile-dropdown-item flex items-center text-sm hover:bg-gray-50 transition-smooth rounded">
                                 <i class="fas fa-user-plus mr-2 text-xs w-4"></i>
                                 Register
                             </a>
@@ -560,7 +560,7 @@
                 
                 <!-- Mobile CTA -->
                 <div class="mobile-menu-item pt-6 border-t border-gray-200 mt-4">
-                    <a href="{{ route('join') }}" class="flex items-center justify-center w-full py-4 bg-gradient-to-r from-blue-700 to-red-600 text-white font-semibold rounded-xl transition-smooth hover:from-blue-800 hover:to-red-700 shadow-lg hover:shadow-xl">
+                    <a href="{{ route('join') }}" class="flex items-center justify-center w-full py-4 bg-gradient-to-r from-gray-900 to-red-600 text-white font-semibold rounded-xl transition-smooth hover:from-black hover:to-red-700 shadow-lg hover:shadow-xl">
                         <i class="fas fa-user-plus mr-2 text-sm"></i>
                         <span>Bergabung dengan HASTANA</span>
                     </a>

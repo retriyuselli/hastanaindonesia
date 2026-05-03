@@ -7,13 +7,13 @@
     <div class="pt-28 pb-16 bg-gray-50 min-h-screen">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             @if(session('success'))
-                <div class="mb-6 rounded-2xl border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-800">
+                <div class="mb-6 rounded-2xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-800">
                     {{ session('success') }}
                 </div>
             @endif
             <div class="flex items-center justify-between gap-4">
                 <div>
-                    <a href="{{ route('members') }}" class="inline-flex items-center text-sm text-gray-600 hover:text-hastana-blue">
+                    <a href="{{ route('members') }}" class="inline-flex items-center text-sm text-gray-600 hover:text-hastana-red">
                         <i class="fas fa-arrow-left mr-2 text-xs"></i>
                         Kembali ke daftar anggota
                     </a>
@@ -34,11 +34,11 @@
                                 <i class="fas fa-sitemap mr-2 text-xs text-gray-400"></i>{{ $member->region->region_name }}
                             </span>
                         @endif
-                        <span class="text-xs px-2 py-1 rounded-full {{ $member->verification_status === 'verified' ? 'bg-blue-50 text-blue-700' : 'bg-gray-100 text-gray-600' }}">
+                        <span class="text-xs px-2 py-1 rounded-full {{ $member->verification_status === 'verified' ? 'bg-gray-100 text-hastana-red' : 'bg-gray-100 text-gray-600' }}">
                             {{ $member->verification_status === 'verified' ? 'Terverifikasi' : 'Belum Terverifikasi' }}
                         </span>
                         @if($member->certification_level)
-                            <span class="text-xs px-2 py-1 rounded-full bg-yellow-50 text-yellow-700">
+                            <span class="text-xs px-2 py-1 rounded-full bg-gray-900 text-white">
                                 {{ $member->certification_level }}
                             </span>
                         @endif
@@ -52,7 +52,7 @@
                 <div class="hidden sm:flex flex-col items-end gap-3">
                     @auth
                         @if(auth()->id() === $member->user_id)
-                            <a href="{{ route('join') }}" class="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-blue-600 text-white text-sm font-semibold hover:bg-blue-700 transition">
+                            <a href="{{ route('join') }}" class="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-hastana-red text-white text-sm font-semibold hover:bg-red-700 transition">
                                 <i class="fas fa-pen-to-square text-xs"></i>
                                 Edit
                             </a>
@@ -122,7 +122,7 @@
                             <form method="POST" action="{{ route('members.gallery.store', $member->slug) }}" enctype="multipart/form-data" class="flex items-center gap-2">
                                 @csrf
                                 <input type="file" name="photos[]" multiple accept="image/jpeg,image/png,image/webp" class="text-sm text-gray-700">
-                                <button type="submit" class="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-blue-600 text-white text-sm font-semibold hover:bg-blue-700 transition">
+                                <button type="submit" class="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-hastana-red text-white text-sm font-semibold hover:bg-red-700 transition">
                                     <i class="fas fa-plus text-xs"></i>
                                     Tambah Foto
                                 </button>
@@ -178,7 +178,7 @@
                                 <div>
                                     <dt class="text-gray-500">Telepon</dt>
                                     <dd class="text-gray-900 mt-1">
-                                        <a href="tel:{{ $member->phone }}" class="text-hastana-blue hover:underline">{{ $member->phone }}</a>
+                                        <a href="tel:{{ $member->phone }}" class="text-hastana-red hover:underline">{{ $member->phone }}</a>
                                     </dd>
                                 </div>
                             @endif
@@ -187,7 +187,7 @@
                                 <div>
                                     <dt class="text-gray-500">Email</dt>
                                     <dd class="text-gray-900 mt-1">
-                                        <a href="mailto:{{ $member->email }}" class="text-hastana-blue hover:underline">{{ $member->email }}</a>
+                                        <a href="mailto:{{ $member->email }}" class="text-hastana-red hover:underline">{{ $member->email }}</a>
                                     </dd>
                                 </div>
                             @endif
@@ -196,7 +196,7 @@
                                 <div class="sm:col-span-2">
                                     <dt class="text-gray-500">Website</dt>
                                     <dd class="text-gray-900 mt-1">
-                                        <a href="{{ $member->website }}" target="_blank" rel="noopener" class="text-hastana-blue hover:underline">{{ $member->website }}</a>
+                                        <a href="{{ $member->website }}" target="_blank" rel="noopener" class="text-hastana-red hover:underline">{{ $member->website }}</a>
                                     </dd>
                                 </div>
                             @endif
@@ -212,7 +212,7 @@
                                 <div class="sm:col-span-2">
                                     <dt class="text-gray-500">Instagram</dt>
                                     <dd class="text-gray-900 mt-1">
-                                        <a href="{{ $instagramHref }}" target="_blank" rel="noopener" class="text-hastana-blue hover:underline">{{ '@' . $instagramLabel }}</a>
+                                        <a href="{{ $instagramHref }}" target="_blank" rel="noopener" class="text-hastana-red hover:underline">{{ '@' . $instagramLabel }}</a>
                                     </dd>
                                 </div>
                             @endif
@@ -262,7 +262,7 @@
                                 <h3 class="text-sm font-semibold text-gray-900">Layanan</h3>
                                 <div class="mt-3 flex flex-wrap gap-2">
                                     @foreach($member->services as $item)
-                                        <span class="text-xs px-3 py-1 rounded-full bg-blue-50 text-blue-700">{{ $item }}</span>
+                                        <span class="text-xs px-3 py-1 rounded-full bg-gray-100 text-hastana-red">{{ $item }}</span>
                                     @endforeach
                                 </div>
                             </div>
@@ -274,7 +274,7 @@
                                 <ul class="mt-2 space-y-2 text-sm text-gray-700">
                                     @foreach($member->awards as $item)
                                         <li class="flex items-start gap-2">
-                                            <i class="fas fa-award text-yellow-500 mt-0.5"></i>
+                                            <i class="fas fa-award text-hastana-red mt-0.5"></i>
                                             <span>{{ $item }}</span>
                                         </li>
                                     @endforeach
@@ -325,7 +325,7 @@
                         <div class="mt-4 space-y-3 text-sm">
                             @if($member->email)
                                 <a href="mailto:{{ $member->email }}" class="flex items-center gap-3 rounded-xl border border-gray-100 hover:border-gray-200 hover:shadow-sm transition-all p-4">
-                                    <div class="w-10 h-10 rounded-lg bg-blue-50 text-hastana-blue flex items-center justify-center">
+                                    <div class="w-10 h-10 rounded-lg bg-gray-100 text-hastana-red flex items-center justify-center">
                                         <i class="fas fa-envelope"></i>
                                     </div>
                                     <div class="min-w-0">
@@ -347,7 +347,7 @@
                             @endif
                             @if($member->phone)
                                 <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $member->phone) }}" target="_blank" rel="noopener" class="flex items-center gap-3 rounded-xl border border-gray-100 hover:border-gray-200 hover:shadow-sm transition-all p-4">
-                                    <div class="w-10 h-10 rounded-lg bg-green-50 text-green-700 flex items-center justify-center">
+                                    <div class="w-10 h-10 rounded-lg bg-gray-100 text-hastana-red flex items-center justify-center">
                                         <i class="fab fa-whatsapp"></i>
                                     </div>
                                     <div class="min-w-0">
@@ -369,7 +369,7 @@
                             @endif
                             @if($member->instagram)
                                 <a href="{{ $instagramHref ?? ('https://instagram.com/' . ltrim($member->instagram, '@')) }}" target="_blank" rel="noopener" class="flex items-center gap-3 rounded-xl border border-gray-100 hover:border-gray-200 hover:shadow-sm transition-all p-4">
-                                    <div class="w-10 h-10 rounded-lg bg-pink-50 text-pink-600 flex items-center justify-center">
+                                    <div class="w-10 h-10 rounded-lg bg-gray-100 text-hastana-red flex items-center justify-center">
                                         <i class="fab fa-instagram"></i>
                                     </div>
                                     <div class="min-w-0">

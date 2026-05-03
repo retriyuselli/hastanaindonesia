@@ -4,13 +4,13 @@
 
 @section('content')
 <!-- Hero Section -->
-<section class="bg-gradient-to-r from-green-600 to-green-800 text-white py-16 mt-20">
+<section class="bg-gradient-to-r from-gray-900 to-black text-white py-16 mt-20">
     <div class="container mx-auto px-4">
         <div class="max-w-3xl mx-auto text-center">
             <h1 class="text-3xl md:text-4xl font-bold mb-4">
                 <i class="fas fa-gift mr-3"></i>Event Gratis
             </h1>
-            <p class="text-lg text-green-100">Ikuti berbagai event menarik tanpa biaya sepeserpun!</p>
+            <p class="text-lg text-gray-300">Ikuti berbagai event menarik tanpa biaya sepeserpun!</p>
         </div>
     </div>
 </section>
@@ -25,12 +25,12 @@
                        name="search" 
                        value="{{ request('search') }}"
                        placeholder="Cari event gratis..." 
-                       class="w-full px-4 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
+                       class="w-full px-4 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-hastana-red focus:border-transparent">
             </div>
 
             <!-- Category Filter -->
             <div>
-                <select name="category" class="w-full px-4 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
+                <select name="category" class="w-full px-4 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-hastana-red focus:border-transparent">
                     <option value="">Semua Kategori</option>
                     @foreach($categories as $cat)
                         <option value="{{ $cat->id }}" {{ request('category') == $cat->id ? 'selected' : '' }}>
@@ -42,7 +42,7 @@
 
             <!-- City Filter -->
             <div>
-                <select name="city" class="w-full px-4 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
+                <select name="city" class="w-full px-4 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-hastana-red focus:border-transparent">
                     <option value="">Semua Kota</option>
                     @php
                         $cities = \App\Models\EventHastana::where('is_free', true)
@@ -63,7 +63,7 @@
 
             <!-- Sort -->
             <div>
-                <select name="sort" class="w-full px-4 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
+                <select name="sort" class="w-full px-4 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-hastana-red focus:border-transparent">
                     <option value="latest" {{ request('sort') == 'latest' ? 'selected' : '' }}>Terbaru</option>
                     <option value="popular" {{ request('sort') == 'popular' ? 'selected' : '' }}>Terpopuler</option>
                     <option value="date_asc" {{ request('sort') == 'date_asc' ? 'selected' : '' }}>Tanggal Terdekat</option>
@@ -72,7 +72,7 @@
 
             <!-- Submit Button -->
             <div>
-                <button type="submit" class="w-full bg-green-600 text-white text-sm px-6 py-2.5 rounded-lg hover:bg-green-700 transition duration-200">
+                <button type="submit" class="w-full bg-hastana-red text-white text-sm px-6 py-2.5 rounded-lg hover:bg-red-700 transition duration-200">
                     <i class="fas fa-search mr-2"></i> Cari
                 </button>
             </div>
@@ -85,7 +85,7 @@
                 Semua Event
             </a>
             <a href="{{ route('events', ['filter' => 'free']) }}" 
-               class="px-4 py-2 text-sm rounded-full bg-green-600 text-white transition">
+               class="px-4 py-2 text-sm rounded-full bg-hastana-red text-white transition">
                 <i class="fas fa-gift mr-1"></i> Gratis
             </a>
             <a href="{{ route('events', ['filter' => 'featured']) }}" 
@@ -109,7 +109,7 @@
                 <!-- Event Count -->
                 <div class="mb-6">
                     <h2 class="text-2xl font-bold text-gray-800">
-                        <i class="fas fa-gift text-green-600 mr-2"></i>
+                        <i class="fas fa-gift text-hastana-red mr-2"></i>
                         {{ $events->total() }} Event Gratis Tersedia
                     </h2>
                 </div>
@@ -126,7 +126,7 @@
                                          alt="{{ $event->title }}" 
                                          class="w-full h-full object-cover">
                                 @else
-                                    <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-green-500 to-green-700">
+                                    <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-700 to-gray-900">
                                         <i class="fas fa-calendar-alt text-white text-6xl"></i>
                                     </div>
                                 @endif
@@ -134,12 +134,12 @@
                                 <!-- Badges -->
                                 <div class="absolute top-3 left-3 flex gap-2">
                                     @if($event->is_featured)
-                                        <span class="bg-yellow-500 text-white px-2.5 py-1 rounded-full text-xs font-semibold">
+                                        <span class="bg-gray-900 text-white px-2.5 py-1 rounded-full text-xs font-semibold">
                                             <i class="fas fa-star"></i> Featured
                                         </span>
                                     @endif
                                     @if($event->is_trending)
-                                        <span class="bg-red-500 text-white px-2.5 py-1 rounded-full text-xs font-semibold">
+                                        <span class="bg-hastana-red text-white px-2.5 py-1 rounded-full text-xs font-semibold">
                                             <i class="fas fa-fire"></i> Trending
                                         </span>
                                     @endif
@@ -147,7 +147,7 @@
 
                                 <!-- Price Badge (Always FREE) -->
                                 <div class="absolute top-3 right-3">
-                                    <span class="bg-green-600 text-white px-3 py-1.5 rounded-full text-xs font-bold">
+                                    <span class="bg-hastana-red text-white px-3 py-1.5 rounded-full text-xs font-bold">
                                         <i class="fas fa-gift mr-1"></i> GRATIS
                                     </span>
                                 </div>
@@ -157,10 +157,10 @@
                             <div class="p-5">
                                 <!-- Category & Type -->
                                 <div class="flex gap-2 mb-3">
-                                    <span class="bg-blue-100 text-blue-800 text-xs px-2.5 py-1 rounded-full">
+                                    <span class="bg-gray-100 text-hastana-red text-xs px-2.5 py-1 rounded-full">
                                         {{ $event->eventCategory->name ?? 'Umum' }}
                                     </span>
-                                    <span class="bg-purple-100 text-purple-800 text-xs px-2.5 py-1 rounded-full">
+                                    <span class="bg-gray-900 text-white text-xs px-2.5 py-1 rounded-full">
                                         {{ ucfirst($event->type) }}
                                     </span>
                                 </div>
@@ -179,22 +179,22 @@
                                 <div class="space-y-2 text-xs text-gray-600 mb-4">
                                     <!-- Date -->
                                     <div class="flex items-center">
-                                        <i class="fas fa-calendar-alt w-5 text-green-600"></i>
+                                        <i class="fas fa-calendar-alt w-5 text-hastana-red"></i>
                                         <span>{{ \Carbon\Carbon::parse($event->start_date)->format('d M Y') }}</span>
                                     </div>
 
                                     <!-- Location -->
                                     <div class="flex items-center">
-                                        <i class="fas fa-map-marker-alt w-5 text-green-600"></i>
+                                        <i class="fas fa-map-marker-alt w-5 text-hastana-red"></i>
                                         <span>{{ $event->city }}</span>
                                     </div>
 
                                     <!-- Participants -->
                                     <div class="flex items-center">
-                                        <i class="fas fa-users w-5 text-green-600"></i>
+                                        <i class="fas fa-users w-5 text-hastana-red"></i>
                                         <span>{{ $event->current_participants }} / {{ $event->capacity }} peserta</span>
                                         @if($event->capacity_percentage >= 80)
-                                            <span class="ml-2 text-xs bg-orange-100 text-orange-800 px-2 py-1 rounded-full">
+                                            <span class="ml-2 text-xs bg-gray-200 text-gray-800 px-2 py-1 rounded-full">
                                                 {{ number_format($event->capacity_percentage, 0) }}%
                                             </span>
                                         @endif
@@ -203,7 +203,7 @@
                                     <!-- Rating -->
                                     @if($event->rating > 0)
                                         <div class="flex items-center">
-                                            <i class="fas fa-star w-5 text-yellow-500"></i>
+                                            <i class="fas fa-star w-5 text-hastana-red"></i>
                                             <span>{{ number_format($event->rating, 1) }} ({{ $event->total_reviews }} review)</span>
                                         </div>
                                     @endif
@@ -212,13 +212,13 @@
                                 <!-- Action Buttons -->
                                 <div class="flex gap-2">
                                     <a href="{{ route('events.show', $event->slug) }}" 
-                                       class="flex-1 text-center bg-green-600 text-white py-2 text-sm rounded-lg hover:bg-green-700 transition duration-200">
+                                       class="flex-1 text-center bg-hastana-red text-white py-2 text-sm rounded-lg hover:bg-red-700 transition duration-200">
                                         Lihat Detail <i class="fas fa-arrow-right ml-1 text-xs"></i>
                                     </a>
                                     @auth
                                         @if(auth()->user()->isAdmin())
                                             <a href="/admin/event-hastanas/{{ $event->id }}/edit" 
-                                               class="px-4 bg-yellow-500 text-white py-2 text-sm rounded-lg hover:bg-yellow-600 transition duration-200"
+                                               class="px-4 bg-gray-900 text-white py-2 text-sm rounded-lg hover:bg-black transition duration-200"
                                                title="Edit Event">
                                                 <i class="fas fa-edit"></i>
                                             </a>
@@ -240,7 +240,7 @@
                         <i class="fas fa-calendar-times text-gray-300 text-5xl mb-3"></i>
                         <h3 class="text-xl font-bold text-gray-700 mb-2">Belum Ada Event Gratis</h3>
                         <p class="text-sm text-gray-500 mb-5">Saat ini belum ada event gratis yang tersedia. Coba lagi nanti!</p>
-                        <a href="{{ route('events') }}" class="inline-block bg-green-600 text-white px-5 py-2.5 text-sm rounded-lg hover:bg-green-700 transition">
+                        <a href="{{ route('events') }}" class="inline-block bg-hastana-red text-white px-5 py-2.5 text-sm rounded-lg hover:bg-red-700 transition">
                             <i class="fas fa-arrow-left mr-2"></i> Lihat Semua Event
                         </a>
                     </div>
@@ -263,7 +263,7 @@
                 @if($featuredFreeEvents->count() > 0)
                     <div class="bg-white rounded-lg shadow-md p-5 mb-5">
                         <h3 class="text-lg font-bold text-gray-800 mb-3 flex items-center">
-                            <i class="fas fa-star text-yellow-500 mr-2"></i> Event Gratis Featured
+                            <i class="fas fa-star text-hastana-red mr-2"></i> Event Gratis Featured
                         </h3>
                         <div class="space-y-3">
                             @foreach($featuredFreeEvents as $featured)
@@ -275,20 +275,20 @@
                                                      alt="{{ $featured->title }}" 
                                                      class="w-full h-full object-cover">
                                             @else
-                                                <div class="w-full h-full bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center">
+                                                <div class="w-full h-full bg-gradient-to-br from-gray-700 to-gray-900 flex items-center justify-center">
                                                     <i class="fas fa-calendar text-white text-xl"></i>
                                                 </div>
                                             @endif
                                         </div>
                                         <div class="flex-1">
-                                            <h4 class="font-semibold text-xs text-gray-800 group-hover:text-green-600 line-clamp-2">
+                                            <h4 class="font-semibold text-xs text-gray-800 group-hover:text-hastana-red line-clamp-2">
                                                 {{ $featured->title }}
                                             </h4>
                                             <p class="text-xs text-gray-500 mt-1">
-                                                <i class="fas fa-calendar text-green-500"></i>
+                                                <i class="fas fa-calendar text-gray-700"></i>
                                                 {{ $featured->start_date->format('d M Y') }}
                                             </p>
-                                            <p class="text-xs font-semibold text-green-600 mt-0.5">
+                                            <p class="text-xs font-semibold text-hastana-red mt-0.5">
                                                 GRATIS
                                             </p>
                                         </div>
@@ -316,7 +316,7 @@
                 @if($trendingFreeEvents->count() > 0)
                     <div class="bg-white rounded-lg shadow-md p-5">
                         <h3 class="text-lg font-bold text-gray-800 mb-3 flex items-center">
-                            <i class="fas fa-fire text-red-500 mr-2"></i> Event Gratis Trending
+                            <i class="fas fa-fire text-hastana-red mr-2"></i> Event Gratis Trending
                         </h3>
                         <div class="space-y-3">
                             @foreach($trendingFreeEvents as $trending)
@@ -334,14 +334,14 @@
                                             @endif
                                         </div>
                                         <div class="flex-1">
-                                            <h4 class="font-semibold text-xs text-gray-800 group-hover:text-green-600 line-clamp-2">
+                                            <h4 class="font-semibold text-xs text-gray-800 group-hover:text-hastana-red line-clamp-2">
                                                 {{ $trending->title }}
                                             </h4>
                                             <p class="text-xs text-gray-500 mt-1">
-                                                <i class="fas fa-users text-green-500"></i>
+                                                <i class="fas fa-users text-gray-700"></i>
                                                 {{ $trending->current_participants }} peserta terdaftar
                                             </p>
-                                            <p class="text-xs font-semibold text-green-600 mt-0.5">
+                                            <p class="text-xs font-semibold text-hastana-red mt-0.5">
                                                 GRATIS
                                             </p>
                                         </div>
@@ -358,33 +358,33 @@
         </div>
     </div>
 </section><!-- Info Section -->
-<section class="bg-green-50 py-12">
+<section class="bg-gray-50 py-12">
     <div class="container mx-auto px-4">
         <div class="max-w-4xl mx-auto">
             <div class="text-center mb-8">
                 <h2 class="text-3xl font-bold text-gray-800 mb-4">
-                    <i class="fas fa-info-circle text-green-600 mr-2"></i>
+                    <i class="fas fa-info-circle text-hastana-red mr-2"></i>
                     Tentang Event Gratis
                 </h2>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div class="bg-white rounded-lg shadow-md p-6 text-center">
-                    <div class="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <i class="fas fa-gift text-green-600 text-2xl"></i>
+                    <div class="bg-gray-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-gift text-hastana-red text-2xl"></i>
                     </div>
                     <h3 class="text-xl font-bold text-gray-800 mb-2">100% Gratis</h3>
                     <p class="text-gray-600">Tidak ada biaya pendaftaran atau biaya tersembunyi</p>
                 </div>
                 <div class="bg-white rounded-lg shadow-md p-6 text-center">
-                    <div class="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <i class="fas fa-certificate text-green-600 text-2xl"></i>
+                    <div class="bg-gray-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-certificate text-hastana-red text-2xl"></i>
                     </div>
                     <h3 class="text-xl font-bold text-gray-800 mb-2">Sertifikat</h3>
                     <p class="text-gray-600">Dapatkan sertifikat kehadiran resmi</p>
                 </div>
                 <div class="bg-white rounded-lg shadow-md p-6 text-center">
-                    <div class="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <i class="fas fa-users text-green-600 text-2xl"></i>
+                    <div class="bg-gray-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-users text-hastana-red text-2xl"></i>
                     </div>
                     <h3 class="text-xl font-bold text-gray-800 mb-2">Networking</h3>
                     <p class="text-gray-600">Kesempatan bertemu dengan profesional lainnya</p>

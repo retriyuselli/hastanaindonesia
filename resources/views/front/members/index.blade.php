@@ -40,7 +40,7 @@
     
     .search-box:focus {
         transform: scale(1.02);
-        box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+        box-shadow: 0 0 20px rgba(220, 38, 38, 0.22);
     }
     
     /* Logo circle */
@@ -69,7 +69,7 @@
     .logo-badge-icon {
         width: 24px;
         height: 24px;
-        background: #fbbf24;
+        background: #dc2626;
         border-radius: 50%;
         display: flex;
         align-items: center;
@@ -95,7 +95,7 @@
 @section('content')
 
 <!-- Hero Section -->
-<section class="bg-gradient-to-r from-red-900 via-red-800 to-blue-800 py-20 text-white mt-20">
+<section class="bg-gradient-to-r from-gray-900 via-gray-800 to-black py-20 text-white mt-20">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <div class="max-w-4xl mx-auto">
             <div class="mb-8">
@@ -105,7 +105,7 @@
             </div>
             
             <h1 class="font-poppins text-4xl md:text-6xl font-bold mb-6 leading-tight">
-                Daftar <span class="text-yellow-300">Anggota</span>
+                Daftar <span class="text-red-200">Anggota</span>
             </h1>
             
             <p class="text-xl md:text-2xl mb-8 leading-relaxed opacity-90">
@@ -133,7 +133,7 @@
                                name="search" 
                                value="{{ request('search') }}"
                                placeholder="Nama wedding organizer atau kota..." 
-                               class="search-box w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500">
+                               class="search-box w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500">
                     </div>
                     
                     <!-- Filter by Region -->
@@ -141,7 +141,7 @@
                         <label class="block text-sm font-semibold text-gray-700 mb-2">Filter Wilayah</label>
                         <div class="relative">
                             <select name="region" 
-                                    class="search-box w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none bg-white">
+                                    class="search-box w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500 appearance-none bg-white">
                                 <option value="">Semua Wilayah</option>
                                 @foreach($regions as $region)
                                     <option value="{{ $region->id }}" {{ request('region') == $region->id ? 'selected' : '' }}>
@@ -159,7 +159,7 @@
                     <div class="md:col-span-1">
                         <label class="block text-sm font-semibold text-gray-700 mb-2">&nbsp;</label>
                         <button type="submit" 
-                                class="w-full px-6 py-3 bg-blue-600 text-white font-semibold rounded-xl hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors">
+                                class="w-full px-6 py-3 bg-hastana-red text-white font-semibold rounded-xl hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 transition-colors">
                             <i class="fas fa-search mr-2"></i>Cari
                         </button>
                     </div>
@@ -176,19 +176,19 @@
         
         <!-- Stats -->
         <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
-            <div class="bg-gradient-to-r from-blue-500 to-blue-600 text-white p-6 rounded-xl text-center">
+            <div class="bg-gradient-to-r from-gray-900 to-gray-700 text-white p-6 rounded-xl text-center">
                 <div class="text-3xl font-bold">{{ number_format($totalWeddingOrganizers ?? 0) }}</div>
                 <div class="text-sm opacity-90">Total Anggota</div>
             </div>
-            <div class="bg-gradient-to-r from-green-500 to-green-600 text-white p-6 rounded-xl text-center">
+            <div class="bg-gradient-to-r from-gray-900 to-gray-700 text-white p-6 rounded-xl text-center">
                 <div class="text-3xl font-bold">{{ $regions->count() }}</div>
                 <div class="text-sm opacity-90">Wilayah</div>
             </div>
-            <div class="bg-gradient-to-r from-yellow-500 to-yellow-600 text-white p-6 rounded-xl text-center">
+            <div class="bg-gradient-to-r from-gray-900 to-gray-700 text-white p-6 rounded-xl text-center">
                 <div class="text-3xl font-bold">{{ $members->avg('rating') ? number_format($members->avg('rating'), 1) : '4.8' }}</div>
                 <div class="text-sm opacity-90">Rating Rata-rata</div>
             </div>
-            <div class="bg-gradient-to-r from-red-500 to-red-600 text-white p-6 rounded-xl text-center">
+            <div class="bg-gradient-to-r from-gray-900 to-red-600 text-white p-6 rounded-xl text-center">
                 <div class="text-3xl font-bold">{{ number_format($members->sum('completed_events')) }}</div>
                 <div class="text-sm opacity-90">Event Sukses</div>
             </div>
@@ -260,7 +260,7 @@
                             <span class="mx-1">|</span> -->
                             <!-- Rating -->
                             <!-- <span class="inline-flex items-center">
-                                <i class="fas fa-star text-yellow-400 mr-1 text-xs"></i>
+                                <i class="fas fa-star text-hastana-red mr-1 text-xs"></i>
                                 <span class="font-semibold">{{ number_format($member->rating ?? 4.5, 1) }}/5</span>
                                 <span class="text-gray-500 ml-1">({{ $member->completed_events ?? 0 }} ulasan)</span>
                             </span> -->
@@ -291,7 +291,7 @@
 </section>
 
 <!-- CTA Section -->
-<section class="py-20 bg-gradient-to-r from-blue-600 to-red-600 text-white">
+<section class="py-20 bg-gradient-to-r from-gray-900 to-red-600 text-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <h2 class="text-3xl md:text-4xl font-bold mb-6">
             Bergabunglah dengan Komunitas Professional
@@ -299,7 +299,7 @@
         <p class="text-xl mb-8 opacity-90">
             Jadilah bagian dari HASTANA Indonesia dan kembangkan bisnis wedding organizer Anda
         </p>
-        <a href="{{ route('join') }}" class="inline-flex items-center px-8 py-4 bg-white text-blue-600 font-bold rounded-full hover:bg-gray-100 transition-all duration-300 shadow-lg hover:shadow-xl">
+        <a href="{{ route('join') }}" class="inline-flex items-center px-8 py-4 bg-white text-hastana-red font-bold rounded-full hover:bg-gray-100 transition-all duration-300 shadow-lg hover:shadow-xl">
             <i class="fas fa-user-plus mr-3"></i>
             Daftar Jadi Anggota
         </a>

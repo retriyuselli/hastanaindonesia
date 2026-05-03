@@ -6,7 +6,11 @@
 @push('styles')
     <style>
         .home-hero {
-            background: linear-gradient(180deg, #020617, #0b1220);
+            background:
+                radial-gradient(60rem 60rem at 15% 20%, rgba(37, 99, 235, 0.35), transparent 60%),
+                radial-gradient(55rem 55rem at 85% 30%, rgba(239, 68, 68, 0.30), transparent 55%),
+                radial-gradient(45rem 45rem at 60% 90%, rgba(168, 85, 247, 0.18), transparent 55%),
+                linear-gradient(180deg, #020617, #0b1220);
         }
 
         .home-grid {
@@ -18,69 +22,142 @@
         .home-card {
             backdrop-filter: blur(10px);
         }
-
-        .home-hero-carousel {
-            touch-action: pan-y;
-        }
-
-        .home-hero-track {
-            display: flex;
-            width: 100%;
-            will-change: transform;
-            transition: transform 400ms ease;
-        }
-
-        .home-hero-slide {
-            width: 100%;
-            flex-shrink: 0;
-        }
     </style>
 @endpush
 
 @section('content')
-    @php
-        $heroSlides = collect($homeHeroImages ?? [])
-            ->filter(fn ($item) => filled($item?->image_url))
-            ->values();
+    <section class="home-hero relative overflow-hidden">
+        <div class="absolute inset-0 home-grid opacity-60"></div>
+        <div class="absolute -top-24 -left-24 w-80 h-80 rounded-full bg-blue-500/25 blur-3xl"></div>
+        <div class="absolute -top-24 -right-24 w-80 h-80 rounded-full bg-red-500/20 blur-3xl"></div>
+        <div class="absolute -bottom-28 left-1/2 -translate-x-1/2 w-[42rem] h-[42rem] rounded-full bg-purple-500/10 blur-3xl"></div>
 
-        if ($heroSlides->isEmpty()) {
-            $heroSlides = collect([
-                (object) [
-                    'image_url' => asset('images/' . rawurlencode('Untitled design_20251103_181604_0000.png')),
-                    'alt' => 'HASTANA Indonesia',
-                    'link' => null,
-                ],
-            ]);
-        }
-    @endphp
+        <div class="relative pt-28 pb-14">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="max-w-3xl">
+                    <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-white/10 bg-white/5 text-white/80 text-xs home-card">
+                        <span class="inline-flex items-center justify-center w-5 h-5 rounded-full bg-white/10">
+                            <i class="fas fa-sparkles text-[10px] text-white/90"></i>
+                        </span>
+                        <span>Organisasi resmi wedding organizer profesional di Indonesia</span>
+                    </div>
 
-    <section class="home-hero home-hero-carousel relative overflow-hidden" data-hero-carousel>
-        <div class="home-hero-track" data-hero-track>
-            @foreach ($heroSlides as $slide)
-                <div class="home-hero-slide">
-                    @php
-                        $slideAlt = filled($slide?->alt) ? $slide->alt : 'HASTANA Indonesia';
-                    @endphp
+                    <h1 class="mt-5 text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-white">
+                        HASTANA Indonesia
+                    </h1>
+                    <p class="mt-4 text-base sm:text-lg text-white/75 leading-relaxed">
+                        Direktori anggota terverifikasi, event pelatihan, dan ekosistem kolaborasi untuk meningkatkan profesionalisme wedding organizer di seluruh Indonesia.
+                    </p>
 
-                    @if (filled($slide?->link))
-                        <a href="{{ $slide->link }}" class="block" aria-label="{{ $slideAlt }}">
-                            <img src="{{ $slide->image_url }}" alt="{{ $slideAlt }}" class="block w-full h-auto select-none" loading="{{ $loop->first ? 'eager' : 'lazy' }}" decoding="async" draggable="false">
+                    <div class="mt-7 flex flex-col sm:flex-row gap-3">
+                        <a href="{{ route('members') }}" class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-white text-slate-900 font-semibold hover:bg-white/90 transition">
+                            <i class="fas fa-users text-sm"></i>
+                            Jelajahi Anggota
                         </a>
-                    @else
-                        <img src="{{ $slide->image_url }}" alt="{{ $slideAlt }}" class="block w-full h-auto select-none" loading="{{ $loop->first ? 'eager' : 'lazy' }}" decoding="async" draggable="false">
-                    @endif
-                </div>
-            @endforeach
-        </div>
+                        <a href="{{ route('join') }}" class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-blue-600 text-white font-semibold hover:bg-blue-700 transition">
+                            <i class="fas fa-handshake text-sm"></i>
+                            Daftar Menjadi Anggota
+                        </a>
+                        <a href="{{ route('regions.index') }}" class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl border border-white/15 bg-white/5 text-white font-semibold hover:bg-white/10 transition home-card">
+                            <i class="fas fa-map-marked-alt text-sm"></i>
+                            Profile Region
+                        </a>
+                    </div>
 
-        @if ($heroSlides->count() > 1)
-            <button type="button" class="absolute left-4 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full border border-white/20 bg-white/10 text-white backdrop-blur transition hover:bg-white/15 disabled:opacity-40 disabled:cursor-not-allowed" aria-label="Sebelumnya" data-hero-prev>
-                <i class="fas fa-chevron-left text-sm"></i>
-            </button>
-            <button type="button" class="absolute right-4 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full border border-white/20 bg-white/10 text-white backdrop-blur transition hover:bg-white/15 disabled:opacity-40 disabled:cursor-not-allowed" aria-label="Berikutnya" data-hero-next>
-                <i class="fas fa-chevron-right text-sm"></i>
-            </button>
-        @endif
+                    <form action="{{ route('members') }}" method="GET" class="mt-8">
+                        <div class="grid grid-cols-1 sm:grid-cols-12 gap-3">
+                            <div class="sm:col-span-7">
+                                <div class="relative">
+                                    <span class="absolute left-3 top-1/2 -translate-y-1/2 text-white/50">
+                                        <i class="fas fa-magnifying-glass"></i>
+                                    </span>
+                                    <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari WO, brand, atau kota"
+                                        class="w-full pl-10 pr-4 py-3 rounded-xl bg-white/10 border border-white/10 text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-blue-500/60 focus:border-transparent home-card">
+                                </div>
+                            </div>
+                            <div class="sm:col-span-3">
+                                <select name="province"
+                                    class="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/10 text-white focus:outline-none focus:ring-2 focus:ring-blue-500/60 focus:border-transparent home-card">
+                                    <option value="" class="text-slate-900">Semua Provinsi</option>
+                                    @foreach (config('indonesia.provinces', []) as $province)
+                                        <option value="{{ $province }}" class="text-slate-900" {{ request('province') === $province ? 'selected' : '' }}>
+                                            {{ $province }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="sm:col-span-2">
+                                <button type="submit" class="w-full inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-red-600 text-white font-semibold hover:bg-red-700 transition">
+                                    <i class="fas fa-arrow-right"></i>
+                                    Cari
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+
+                    <div class="mt-10 grid grid-cols-2 sm:grid-cols-4 gap-3">
+                        <div class="rounded-2xl border border-white/10 bg-white/5 p-4 home-card">
+                            <div class="text-xs text-white/60">Anggota</div>
+                            <div class="mt-1 text-2xl font-bold text-white">{{ number_format($totalWeddingOrganizers ?? 0) }}</div>
+                        </div>
+                        <div class="rounded-2xl border border-white/10 bg-white/5 p-4 home-card">
+                            <div class="text-xs text-white/60">Region</div>
+                            <div class="mt-1 text-2xl font-bold text-white">{{ number_format($totalRegions ?? 0) }}</div>
+                        </div>
+                        <div class="rounded-2xl border border-white/10 bg-white/5 p-4 home-card">
+                            <div class="text-xs text-white/60">Event</div>
+                            <div class="mt-1 text-2xl font-bold text-white">Rutin</div>
+                        </div>
+                        <div class="rounded-2xl border border-white/10 bg-white/5 p-4 home-card">
+                            <div class="text-xs text-white/60">Verifikasi</div>
+                            <div class="mt-1 text-2xl font-bold text-white">Aktif</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-12 lg:mt-0 lg:absolute lg:right-10 lg:top-24 lg:w-[34rem] hidden lg:block">
+                    <div class="rounded-3xl border border-white/10 bg-white/5 p-6 home-card shadow-[0_30px_80px_rgba(0,0,0,0.35)]">
+                        <div class="flex items-center justify-between">
+                            <div class="text-sm font-semibold text-white/90">Anggota Terverifikasi</div>
+                            <a href="{{ route('members') }}" class="text-xs text-white/70 hover:text-white transition">Lihat semua</a>
+                        </div>
+                        <div class="mt-4 grid grid-cols-2 gap-3">
+                            @forelse($featuredWeddingOrganizers->take(4) as $wo)
+                                <a href="{{ route('members.show', $wo->slug) }}" class="rounded-2xl border border-white/10 bg-white/5 p-4 hover:bg-white/10 transition home-card">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-10 h-10 shrink-0 rounded-xl overflow-hidden bg-white/10 flex items-center justify-center text-white/80">
+                                            @if($wo->logo)
+                                                <img src="{{ asset('storage/' . $wo->logo) }}" alt="{{ $wo->brand_name ?? $wo->organizer_name }}" class="w-full h-full object-cover">
+                                            @else
+                                                <span class="text-sm font-bold">{{ strtoupper(substr($wo->brand_name ?: $wo->organizer_name, 0, 1)) }}</span>
+                                            @endif
+                                        </div>
+                                        <div class="min-w-0">
+                                            <div class="text-sm font-semibold text-white truncate">{{ $wo->brand_name ?: $wo->organizer_name }}</div>
+                                            <div class="text-xs text-white/60 truncate">{{ $wo->city ?? '-' }}</div>
+                                        </div>
+                                    </div>
+                                </a>
+                            @empty
+                                @foreach($data['featured_members'] as $member)
+                                    <div class="rounded-2xl border border-white/10 bg-white/5 p-4 home-card">
+                                        <div class="text-sm font-semibold text-white">{{ $member['name'] }}</div>
+                                        <div class="text-xs text-white/60 mt-1">{{ $member['location'] }}</div>
+                                    </div>
+                                @endforeach
+                            @endforelse
+                        </div>
+                        <div class="mt-5 rounded-2xl border border-white/10 bg-gradient-to-r from-blue-500/15 to-red-500/15 p-4 home-card">
+                            <div class="flex items-center justify-between">
+                                <div class="text-sm font-semibold text-white">Mau jadi anggota?</div>
+                                <a href="{{ route('join') }}" class="text-xs text-white hover:text-white/90 transition">Daftar</a>
+                            </div>
+                            <div class="text-xs text-white/65 mt-1">Lengkapi profil dan dapatkan akses event serta kolaborasi.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
 
     <section class="py-16 bg-white">
@@ -375,115 +452,4 @@
             </div>
         </div>
     </section>
-
-@push('scripts')
-    <script>
-        (function () {
-            function initHeroCarousel(root) {
-                const track = root.querySelector('[data-hero-track]');
-                if (!track) return;
-
-                const slides = Array.from(track.children);
-                const prevBtn = root.querySelector('[data-hero-prev]');
-                const nextBtn = root.querySelector('[data-hero-next]');
-
-                if (slides.length <= 1) {
-                    if (prevBtn) prevBtn.classList.add('hidden');
-                    if (nextBtn) nextBtn.classList.add('hidden');
-                    return;
-                }
-
-                let index = 0;
-                let isDragging = false;
-                let startX = 0;
-                let startTranslatePx = 0;
-                let didDrag = false;
-
-                function setDisabledStates() {
-                    if (prevBtn) prevBtn.disabled = index <= 0;
-                    if (nextBtn) nextBtn.disabled = index >= slides.length - 1;
-                }
-
-                function setIndex(nextIndex) {
-                    index = Math.max(0, Math.min(slides.length - 1, nextIndex));
-                    track.style.transition = 'transform 400ms ease';
-                    track.style.transform = 'translateX(-' + (index * 100) + '%)';
-                    setDisabledStates();
-                }
-
-                function goPrev() {
-                    setIndex(index - 1);
-                }
-
-                function goNext() {
-                    setIndex(index + 1);
-                }
-
-                if (prevBtn) prevBtn.addEventListener('click', goPrev);
-                if (nextBtn) nextBtn.addEventListener('click', goNext);
-
-                root.querySelectorAll('a').forEach(function (a) {
-                    a.addEventListener('click', function (e) {
-                        if (didDrag) e.preventDefault();
-                    });
-                });
-
-                function onPointerDown(e) {
-                    if (e.button != null && e.button !== 0) return;
-                    isDragging = true;
-                    didDrag = false;
-                    startX = e.clientX;
-                    startTranslatePx = -index * root.clientWidth;
-                    track.style.transition = 'none';
-                    if (track.setPointerCapture) track.setPointerCapture(e.pointerId);
-                }
-
-                function onPointerMove(e) {
-                    if (!isDragging) return;
-                    const dx = e.clientX - startX;
-                    if (Math.abs(dx) > 6) didDrag = true;
-                    track.style.transform = 'translateX(' + (startTranslatePx + dx) + 'px)';
-                }
-
-                function onPointerEnd(e) {
-                    if (!isDragging) return;
-                    isDragging = false;
-                    const dx = e.clientX - startX;
-                    const threshold = root.clientWidth * 0.2;
-                    if (dx > threshold) {
-                        setIndex(index - 1);
-                    } else if (dx < -threshold) {
-                        setIndex(index + 1);
-                    } else {
-                        setIndex(index);
-                    }
-                }
-
-                track.addEventListener('pointerdown', onPointerDown);
-                track.addEventListener('pointermove', onPointerMove);
-                track.addEventListener('pointerup', onPointerEnd);
-                track.addEventListener('pointercancel', onPointerEnd);
-
-                window.addEventListener('resize', function () {
-                    track.style.transition = 'none';
-                    track.style.transform = 'translateX(-' + (index * 100) + '%)';
-                    setDisabledStates();
-                });
-
-                setIndex(0);
-            }
-
-            function boot() {
-                document.querySelectorAll('[data-hero-carousel]').forEach(initHeroCarousel);
-            }
-
-            if (document.readyState === 'loading') {
-                document.addEventListener('DOMContentLoaded', boot);
-            } else {
-                boot();
-            }
-        })();
-    </script>
-@endpush
-
 @endsection

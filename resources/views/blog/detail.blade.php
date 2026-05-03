@@ -25,7 +25,7 @@
         float: left;
         line-height: 0.85;
         margin: 0.1em 0.1em 0 0;
-        color: #3b82f6;
+        color: #dc2626;
     }
     
     .blog-content h1 {
@@ -35,11 +35,11 @@
         margin-top: 36px;
         margin-bottom: 18px;
         line-height: 1.3;
-        border-left: 5px solid #3b82f6;
+        border-left: 5px solid #dc2626;
         padding-left: 16px;
         padding-bottom: 0;
         border-bottom: none;
-        background: linear-gradient(90deg, #eff6ff 0%, transparent 100%);
+        background: linear-gradient(90deg, #f9fafb 0%, transparent 100%);
         padding-top: 8px;
         padding-bottom: 8px;
     }
@@ -51,9 +51,9 @@
         margin-top: 32px;
         margin-bottom: 16px;
         line-height: 1.4;
-        border-left: 4px solid #6366f1;
+        border-left: 4px solid #dc2626;
         padding-left: 14px;
-        background: linear-gradient(90deg, #f5f3ff 0%, transparent 100%);
+        background: linear-gradient(90deg, #f9fafb 0%, transparent 100%);
         padding-top: 6px;
         padding-bottom: 6px;
     }
@@ -65,7 +65,7 @@
         margin-top: 28px;
         margin-bottom: 14px;
         line-height: 1.4;
-        border-left: 3px solid #8b5cf6;
+        border-left: 3px solid #dc2626;
         padding-left: 12px;
     }
     
@@ -107,7 +107,7 @@
     
     .blog-content ul li::before {
         content: "▸";
-        color: #3b82f6;
+        color: #dc2626;
         font-weight: bold;
         position: absolute;
         left: -24px;
@@ -127,7 +127,7 @@
     .blog-content ol li::before {
         content: counter(list-counter);
         color: white;
-        background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+        background: linear-gradient(135deg, #dc2626 0%, #111827 100%);
         font-weight: 600;
         position: absolute;
         left: -32px;
@@ -145,17 +145,17 @@
     .blog-content blockquote {
         font-size: 14px;
         font-style: italic;
-        border-left: 5px solid #3b82f6;
+        border-left: 5px solid #dc2626;
         padding-left: 24px;
         padding-right: 20px;
         padding-top: 16px;
         padding-bottom: 16px;
         margin: 28px 0;
-        background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+        background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
         border-radius: 0 12px 12px 0;
-        color: #1e40af;
+        color: #111827;
         position: relative;
-        box-shadow: 0 2px 8px rgba(59, 130, 246, 0.1);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
     }
     
     .blog-content blockquote::before {
@@ -164,13 +164,13 @@
         position: absolute;
         top: -8px;
         left: 12px;
-        color: #3b82f6;
+        color: #dc2626;
         opacity: 0.3;
         font-family: Georgia, serif;
     }
     
     .blog-content a {
-        color: #3b82f6;
+        color: #dc2626;
         text-decoration: none;
         font-weight: 500;
         border-bottom: 2px solid transparent;
@@ -179,31 +179,31 @@
     }
     
     .blog-content a:hover {
-        color: #2563eb;
-        border-bottom-color: #3b82f6;
+        color: #b91c1c;
+        border-bottom-color: #dc2626;
     }
     
     .blog-content strong {
         font-weight: 600;
         color: #111827;
-        background: linear-gradient(180deg, transparent 60%, #fef3c7 60%);
+        background: linear-gradient(180deg, transparent 60%, #e5e7eb 60%);
         padding: 0 2px;
     }
     
     .blog-content em {
         font-style: italic;
-        color: #6366f1;
+        color: #374151;
     }
     
     .blog-content code {
-        background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+        background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
         padding: 3px 8px;
         border-radius: 5px;
         font-size: 13px;
         font-family: 'Monaco', 'Courier New', monospace;
         color: #dc2626;
         font-weight: 500;
-        border: 1px solid #fbbf24;
+        border: 1px solid #d1d5db;
     }
     
     .blog-content pre {
@@ -242,7 +242,7 @@
     .blog-content hr {
         border: none;
         height: 3px;
-        background: linear-gradient(90deg, transparent 0%, #3b82f6 50%, transparent 100%);
+        background: linear-gradient(90deg, transparent 0%, #dc2626 50%, transparent 100%);
         margin: 40px 0;
         border-radius: 2px;
     }
@@ -259,7 +259,7 @@
     }
     
     .blog-content table th {
-        background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+        background: linear-gradient(135deg, #dc2626 0%, #111827 100%);
         color: white;
         padding: 14px;
         text-align: left;
@@ -282,7 +282,7 @@
     }
     
     .blog-content table tr:hover td {
-        background: #eff6ff;
+        background: #f3f4f6;
     }
     
     /* Reading Progress Indicator */
@@ -290,7 +290,7 @@
         content: '';
         display: block;
         height: 4px;
-        background: linear-gradient(90deg, #3b82f6 0%, #8b5cf6 100%);
+        background: linear-gradient(90deg, #dc2626 0%, #111827 100%);
         border-radius: 2px;
         margin-bottom: 24px;
     }
@@ -301,10 +301,10 @@
             
             <!-- Flash Messages -->
             @if(session('success'))
-                <div class="bg-green-50 border-l-4 border-green-500 p-4 mb-5 rounded-lg">
+                <div class="bg-gray-50 border-l-4 border-hastana-red p-4 mb-5 rounded-lg">
                     <div class="flex items-center">
-                        <i class="fas fa-check-circle text-green-500 mr-3"></i>
-                        <p class="text-green-800 text-sm font-medium">{{ session('success') }}</p>
+                        <i class="fas fa-check-circle text-hastana-red mr-3"></i>
+                        <p class="text-gray-800 text-sm font-medium">{{ session('success') }}</p>
                     </div>
                 </div>
             @endif
@@ -337,16 +337,16 @@
             <!-- Breadcrumb -->
             <nav class="mb-6 flex items-center justify-between gap-4 text-xs">
                 <ol class="flex items-center space-x-2 text-gray-500">
-                    <li><a href="{{ route('home') }}" class="hover:text-amber-600">Home</a></li>
+                    <li><a href="{{ route('home') }}" class="hover:text-hastana-red">Home</a></li>
                     <li>/</li>
-                    <li><a href="{{ route('blog') }}" class="hover:text-amber-600">Blog</a></li>
+                    <li><a href="{{ route('blog') }}" class="hover:text-hastana-red">Blog</a></li>
                     <li>/</li>
                     <li class="text-gray-700">{{ Str::limit($blog->title, 50) }}</li>
                 </ol>
                 @can('update', $blog)
                     <a href="{{ route('filament.admin.resources.blogs.edit', ['record' => $blog]) }}"
                         target="_blank"
-                        class="inline-flex items-center gap-2 rounded-lg bg-amber-500 px-3 py-1.5 font-medium text-white transition-colors hover:bg-amber-600">
+                        class="inline-flex items-center gap-2 rounded-lg bg-hastana-red px-3 py-1.5 font-medium text-white transition-colors hover:bg-red-700">
                         <i class="fas fa-pen"></i>
                         Edit
                     </a>
@@ -370,7 +370,7 @@
                     
                     @if($blog->category)
                     <div class="absolute top-4 left-4">
-                        <span class="bg-amber-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
+                        <span class="bg-gray-900 text-white px-3 py-1 rounded-full text-sm font-semibold">
                             {{ $blog->category->name }}
                         </span>
                     </div>
@@ -409,7 +409,7 @@
                             <span id="like-text">likes</span>
                         </div>
                         @else
-                        <a href="{{ route('login') }}" class="flex items-center gap-2 hover:text-pink-500 transition-all">
+                        <a href="{{ route('login') }}" class="flex items-center gap-2 hover:text-hastana-red transition-all">
                             <i class="far fa-heart mr-1"></i>
                             <span>{{ number_format($blog->likes_count ?? 0) }}</span>
                             <span>likes</span>
@@ -468,7 +468,7 @@
             <section class="bg-white rounded-lg shadow-lg p-8 mb-8">
                 <div class="flex items-center justify-between mb-6">
                     <h2 class="text-xl font-bold text-gray-900 flex items-center gap-2">
-                        <i class="fas fa-comments text-blue-600"></i>
+                        <i class="fas fa-comments text-hastana-red"></i>
                         Komentar
                         <span class="text-sm font-normal text-gray-500">({{ $blog->comments()->where('is_approved', true)->count() }})</span>
                     </h2>
@@ -476,7 +476,7 @@
 
                 @auth
                     <!-- Comment Form -->
-                    <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-5 mb-6 border border-blue-100">
+                    <div class="bg-gray-50 rounded-lg p-5 mb-6 border border-gray-200">
                         <form action="{{ route('blog.comment.store', $blog->slug) }}" method="POST">
                             @csrf
                             <div class="mb-3">
@@ -489,13 +489,13 @@
                                     name="comment" 
                                     rows="4" 
                                     maxlength="1000"
-                                    class="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none text-sm"
+                                    class="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-hastana-red focus:border-transparent resize-none text-sm"
                                     placeholder="Bagikan pendapat atau pertanyaan Anda tentang artikel ini... (Min. 3 karakter, Maks. 1000 karakter)"
                                     required
                                 ></textarea>
                                 <div class="flex justify-between items-center mt-1">
                                     <span class="text-xs text-gray-500">
-                                        <i class="fas fa-check-circle text-green-500"></i>
+                                        <i class="fas fa-check-circle text-hastana-red"></i>
                                         Min. 3 karakter
                                     </span>
                                     <span id="char-count" class="text-xs text-gray-500">0 / 1000 karakter</span>
@@ -508,7 +508,7 @@
                                 </p>
                                 <button 
                                     type="submit" 
-                                    class="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-5 py-2 rounded-lg hover:from-blue-700 hover:to-blue-800 font-semibold text-sm flex items-center gap-2">
+                                    class="bg-hastana-red text-white px-5 py-2 rounded-lg hover:bg-red-700 font-semibold text-sm flex items-center gap-2">
                                     <i class="fas fa-paper-plane"></i>
                                     Kirim Komentar
                                 </button>
@@ -517,17 +517,17 @@
                     </div>
                 @else
                     <!-- Login Prompt -->
-                    <div class="bg-gradient-to-r from-amber-50 to-orange-50 rounded-lg p-5 mb-6 border border-amber-200">
+                    <div class="bg-gray-50 rounded-lg p-5 mb-6 border border-gray-200">
                         <div class="flex items-start gap-3">
-                            <div class="bg-amber-100 p-2.5 rounded-full">
-                                <i class="fas fa-lock text-amber-600 text-base"></i>
+                            <div class="bg-gray-100 p-2.5 rounded-full">
+                                <i class="fas fa-lock text-hastana-red text-base"></i>
                             </div>
                             <div class="flex-1">
                                 <h3 class="font-semibold text-gray-900 mb-1 text-base">Login untuk Berkomentar</h3>
                                 <p class="text-xs text-gray-600 mb-3">
                                     Silakan login terlebih dahulu untuk memberikan komentar pada artikel ini.
                                 </p>
-                                <a href="{{ route('login', absolute: false) }}" class="inline-flex items-center gap-2 bg-amber-500 text-white px-4 py-2 rounded-lg hover:bg-amber-600 font-semibold text-xs">
+                                <a href="{{ route('login', absolute: false) }}" class="inline-flex items-center gap-2 bg-hastana-red text-white px-4 py-2 rounded-lg hover:bg-red-700 font-semibold text-xs">
                                     <i class="fas fa-sign-in-alt"></i>
                                     Login Sekarang
                                 </a>
@@ -546,7 +546,7 @@
                                 @if($comment->avatar)
                                     <img src="{{ $comment->avatar }}" alt="{{ $comment->name }}" class="w-10 h-10 rounded-full">
                                 @else
-                                    <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full flex items-center justify-center text-white font-bold">
+                                    <div class="w-10 h-10 bg-gradient-to-br from-gray-700 to-gray-900 rounded-full flex items-center justify-center text-white font-bold">
                                         {{ strtoupper(substr($comment->name, 0, 1)) }}
                                     </div>
                                 @endif
@@ -557,7 +557,7 @@
                                 <div class="flex items-center gap-2 mb-1">
                                     <span class="font-semibold text-gray-900 text-sm">{{ $comment->name }}</span>
                                     @if($comment->is_approved)
-                                        <span class="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full">Terverifikasi</span>
+                                        <span class="text-xs bg-gray-900 text-white px-2 py-0.5 rounded-full">Terverifikasi</span>
                                     @endif
                                     <span class="text-xs text-gray-500">• {{ $comment->created_at->diffForHumans() }}</span>
                                 </div>
@@ -566,7 +566,7 @@
                                 <!-- Comment Actions -->
                                 @auth
                                 <div class="flex items-center gap-3 text-xs">
-                                    <button type="button" data-action="like-comment" data-comment-id="{{ $comment->id }}" class="text-gray-500 hover:text-blue-600 flex items-center gap-1">
+                                    <button type="button" data-action="like-comment" data-comment-id="{{ $comment->id }}" class="text-gray-500 hover:text-hastana-red flex items-center gap-1">
                                         <i class="far fa-thumbs-up"></i>
                                         <span>Suka</span>
                                     </button>
@@ -597,7 +597,7 @@
                 <!-- Author Widget -->
                 <div class="bg-white rounded-lg shadow-lg p-6 mb-6 top-24">
                     <h3 class="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
-                        <i class="fas fa-user-circle text-blue-600"></i>
+                        <i class="fas fa-user-circle text-hastana-red"></i>
                         Tentang Penulis
                     </h3>
                     <div class="text-center mb-4">
@@ -608,7 +608,7 @@
                                      class="w-full h-full object-cover">
                             </div>
                         @else
-                            <div class="w-20 h-20 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full mx-auto mb-3 flex items-center justify-center text-white text-2xl font-bold border-4 border-white shadow-lg">
+                            <div class="w-20 h-20 bg-gradient-to-br from-gray-700 to-gray-900 rounded-full mx-auto mb-3 flex items-center justify-center text-white text-2xl font-bold border-4 border-white shadow-lg">
                                 {{ strtoupper(substr($blog->author ? $blog->author->name : 'A', 0, 1)) }}
                             </div>
                         @endif
@@ -617,13 +617,13 @@
                     </div>
                     <p class="text-xs text-gray-600 text-center mb-4">Penulis artikel informatif seputar pernikahan dan event organizing</p>
                     <div class="flex justify-center gap-3">
-                        <a href="#" class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 hover:bg-blue-200 transition">
+                        <a href="#" class="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center text-hastana-red hover:bg-gray-200 transition">
                             <i class="fab fa-facebook-f text-sm"></i>
                         </a>
-                        <a href="#" class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 hover:bg-blue-200 transition">
+                        <a href="#" class="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center text-hastana-red hover:bg-gray-200 transition">
                             <i class="fab fa-twitter text-sm"></i>
                         </a>
-                        <a href="#" class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 hover:bg-blue-200 transition">
+                        <a href="#" class="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center text-hastana-red hover:bg-gray-200 transition">
                             <i class="fab fa-linkedin-in text-sm"></i>
                         </a>
                     </div>
@@ -632,7 +632,7 @@
                 <!-- Popular Posts Widget -->
                 <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
                     <h3 class="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
-                        <i class="fas fa-fire text-orange-500"></i>
+                        <i class="fas fa-fire text-hastana-red"></i>
                         Artikel Populer
                     </h3>
                     @php
@@ -646,12 +646,12 @@
                         @foreach($popularBlogs as $index => $popularBlog)
                         <a href="{{ route('blog.detail', $popularBlog->slug) }}" class="flex gap-3 group hover:bg-gray-50 p-2 rounded-lg transition">
                             <div class="flex-shrink-0">
-                                <span class="w-8 h-8 bg-gradient-to-br from-orange-500 to-red-500 rounded-full flex items-center justify-center text-white text-xs font-bold">
+                                <span class="w-8 h-8 bg-gray-900 rounded-full flex items-center justify-center text-white text-xs font-bold">
                                     {{ $index + 1 }}
                                 </span>
                             </div>
                             <div class="flex-1 min-w-0">
-                                <h4 class="text-xs font-semibold text-gray-900 group-hover:text-blue-600 transition line-clamp-2 mb-1">
+                                <h4 class="text-xs font-semibold text-gray-900 group-hover:text-hastana-red transition line-clamp-2 mb-1">
                                     {{ $popularBlog->title }}
                                 </h4>
                                 <div class="flex items-center gap-2 text-xs text-gray-500">
@@ -667,7 +667,7 @@
                 <!-- Categories Widget -->
                 <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
                     <h3 class="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
-                        <i class="fas fa-folder text-purple-600"></i>
+                        <i class="fas fa-folder text-hastana-red"></i>
                         Kategori
                     </h3>
                     @php
@@ -683,9 +683,9 @@
                     @endphp
                     <div class="space-y-2">
                         @foreach($categories as $category)
-                        <a href="{{ route('blog') }}?category={{ $category->slug }}" class="flex items-center justify-between p-2 rounded-lg hover:bg-purple-50 transition group">
-                            <span class="text-xs text-gray-700 group-hover:text-purple-600 font-medium">{{ $category->name }}</span>
-                            <span class="text-xs bg-purple-100 text-purple-600 px-2 py-1 rounded-full">{{ $category->blogs_count }}</span>
+                        <a href="{{ route('blog') }}?category={{ $category->slug }}" class="flex items-center justify-between p-2 rounded-lg hover:bg-gray-50 transition group">
+                            <span class="text-xs text-gray-700 group-hover:text-hastana-red font-medium">{{ $category->name }}</span>
+                            <span class="text-xs bg-gray-100 text-gray-800 px-2 py-1 rounded-full">{{ $category->blogs_count }}</span>
                         </a>
                         @endforeach
                     </div>
@@ -782,11 +782,11 @@ function toggleLike() {
             // Update button style
             if (data.liked) {
                 likeButton.classList.remove('text-gray-600');
-                likeButton.classList.add('text-pink-500');
+                likeButton.classList.add('text-hastana-red');
                 heartIcon.classList.remove('far');
                 heartIcon.classList.add('fas');
             } else {
-                likeButton.classList.remove('text-pink-500');
+                likeButton.classList.remove('text-hastana-red');
                 likeButton.classList.add('text-gray-600');
                 heartIcon.classList.remove('fas');
                 heartIcon.classList.add('far');
@@ -810,7 +810,7 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(response => response.json())
             .then(data => {
                 if (data.liked) {
-                    likeButton.classList.add('text-pink-500');
+                    likeButton.classList.add('text-hastana-red');
                     heartIcon.classList.add('fas');
                 } else {
                     likeButton.classList.add('text-gray-600');

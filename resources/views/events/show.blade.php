@@ -11,7 +11,7 @@
             <span>/</span>
             <a href="{{ route('events') }}" class="hover:underline">Event</a>
             <span>/</span>
-            <span class="text-blue-800">{{ $event->title }}</span>
+            <span class="text-hastana-red">{{ $event->title }}</span>
         </div>
     </div>
 </section>
@@ -31,7 +31,7 @@
                                  alt="{{ $event->title }}" 
                                  class="w-full h-full object-cover">
                         @else
-                            <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-500 to-blue-700">
+                            <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-700 to-gray-900">
                                 <i class="fas fa-calendar-alt text-white text-7xl"></i>
                             </div>
                         @endif
@@ -39,12 +39,12 @@
                         <!-- Badges -->
                         <div class="absolute top-3 left-3 flex gap-1.5">
                             @if($event->is_featured)
-                                <span class="bg-yellow-500 text-white px-2.5 py-1 rounded-full text-xs font-semibold">
+                                <span class="bg-gray-900 text-white px-2.5 py-1 rounded-full text-xs font-semibold">
                                     <i class="fas fa-star"></i> Featured
                                 </span>
                             @endif
                             @if($event->is_trending)
-                                <span class="bg-red-500 text-white px-2.5 py-1 rounded-full text-xs font-semibold">
+                                <span class="bg-hastana-red text-white px-2.5 py-1 rounded-full text-xs font-semibold">
                                     <i class="fas fa-fire"></i> Trending
                                 </span>
                             @endif
@@ -55,13 +55,13 @@
                     <div class="p-5">
                         <!-- Category & Type -->
                         <div class="flex items-center gap-2 mb-3">
-                            <span class="bg-blue-100 text-blue-800 px-2.5 py-1 rounded-full text-xs font-semibold">
+                            <span class="bg-gray-100 text-hastana-red px-2.5 py-1 rounded-full text-xs font-semibold">
                                 <i class="fas fa-tag"></i> {{ $event->eventCategory->name ?? 'Uncategorized' }}
                             </span>
                             <span class="bg-gray-100 text-gray-800 px-2.5 py-1 rounded-full text-xs">
                                 {{ $event->event_type == 'internal' ? 'Internal' : 'Eksternal' }}
                             </span>
-                            <span class="bg-{{ $event->status == 'published' ? 'green' : 'gray' }}-100 text-{{ $event->status == 'published' ? 'green' : 'gray' }}-800 px-2.5 py-1 rounded-full text-xs">
+                            <span class="{{ $event->status == 'published' ? 'bg-hastana-red text-white' : 'bg-gray-100 text-gray-800' }} px-2.5 py-1 rounded-full text-xs">
                                 {{ ucfirst($event->status) }}
                             </span>
                         </div>
@@ -81,12 +81,12 @@
                         <!-- Event Stats -->
                         <div class="flex flex-wrap justify-center gap-5 md:gap-6 p-5 bg-gray-50 rounded-lg">
                             <div class="text-center min-w-[100px]">
-                                <i class="fas fa-users text-blue-600 text-xl mb-1.5"></i>
+                                <i class="fas fa-users text-hastana-red text-xl mb-1.5"></i>
                                 <div class="text-xl font-bold text-gray-900">{{ $event->current_participants }}</div>
                                 <div class="text-xs text-gray-600">Peserta Terdaftar</div>
                             </div>
                             <div class="text-center min-w-[100px]">
-                                <i class="fas fa-ticket-alt text-green-600 text-xl mb-1.5"></i>
+                                <i class="fas fa-ticket-alt text-hastana-red text-xl mb-1.5"></i>
                                 <div class="text-xl font-bold text-gray-900">
                                     {{ $event->capacity ? $event->remaining_quota : 'Unlimited' }}
                                 </div>
@@ -94,13 +94,13 @@
                             </div>
                             @if($event->rating > 0)
                                 <div class="text-center min-w-[100px]">
-                                    <i class="fas fa-star text-yellow-500 text-xl mb-1.5"></i>
+                                    <i class="fas fa-star text-hastana-red text-xl mb-1.5"></i>
                                     <div class="text-xl font-bold text-gray-900">{{ number_format($event->rating, 1) }}</div>
                                     <div class="text-xs text-gray-600">Rating</div>
                                 </div>
                             @endif
                             <div class="text-center min-w-[100px]">
-                                <i class="fas fa-eye text-purple-600 text-xl mb-1.5"></i>
+                                <i class="fas fa-eye text-hastana-red text-xl mb-1.5"></i>
                                 <div class="text-xl font-bold text-gray-900">{{ $event->total_reviews }}</div>
                                 <div class="text-xs text-gray-600">Reviews</div>
                             </div>
@@ -111,7 +111,7 @@
                 <!-- Description -->
                 <div class="bg-white rounded-lg shadow-lg p-5 mb-5">
                     <h2 class="text-xl font-bold text-gray-900 mb-3 flex items-center">
-                        <i class="fas fa-info-circle text-blue-600 mr-2"></i> Deskripsi Event
+                        <i class="fas fa-info-circle text-hastana-red mr-2"></i> Deskripsi Event
                     </h2>
                     <div class="event-description prose max-w-none text-gray-700">
                         {!! $event->description !!}
@@ -152,7 +152,7 @@
                     color: #1f2937;
                     padding-left: 1rem;
                     border-left: 5px solid transparent;
-                    background: linear-gradient(90deg, #3b82f6 0%, #8b5cf6 100%);
+                    background: linear-gradient(90deg, #dc2626 0%, #111827 100%);
                     -webkit-background-clip: text;
                     -webkit-text-fill-color: transparent;
                     background-clip: text;
@@ -166,7 +166,7 @@
                     top: 0;
                     bottom: 0;
                     width: 5px;
-                    background: linear-gradient(180deg, #3b82f6 0%, #8b5cf6 100%);
+                    background: linear-gradient(180deg, #dc2626 0%, #111827 100%);
                     border-radius: 2px;
                 }
 
@@ -177,7 +177,7 @@
                     color: #1f2937;
                     padding-left: 1rem;
                     border-left: 4px solid transparent;
-                    background: linear-gradient(90deg, #3b82f6 0%, #06b6d4 100%);
+                    background: linear-gradient(90deg, #dc2626 0%, #6b7280 100%);
                     -webkit-background-clip: text;
                     -webkit-text-fill-color: transparent;
                     background-clip: text;
@@ -191,7 +191,7 @@
                     top: 0;
                     bottom: 0;
                     width: 4px;
-                    background: linear-gradient(180deg, #3b82f6 0%, #06b6d4 100%);
+                    background: linear-gradient(180deg, #dc2626 0%, #6b7280 100%);
                     border-radius: 2px;
                 }
 
@@ -201,7 +201,7 @@
                     margin: 1.25rem 0 0.75rem 0;
                     color: #1f2937;
                     padding-left: 0.75rem;
-                    border-left: 3px solid #3b82f6;
+                    border-left: 3px solid #dc2626;
                 }
 
                 .event-description h4 {
@@ -210,7 +210,7 @@
                     margin: 1rem 0 0.5rem 0;
                     color: #374151;
                     padding-left: 0.5rem;
-                    border-left: 2px solid #60a5fa;
+                    border-left: 2px solid #9ca3af;
                 }
 
                 /* Lists */
@@ -979,18 +979,18 @@
                 }
 
                 .requirements-description table tbody tr:nth-child(even) {
-                    background-color: #fffbeb;
+                    background-color: #f9fafb;
                 }
 
                 .requirements-description table tbody tr:hover {
-                    background-color: #fef3c7;
+                    background-color: #f3f4f6;
                 }
 
                 /* Horizontal Rule */
                 .requirements-description hr {
                     border: none;
                     height: 2px;
-                    background: linear-gradient(90deg, transparent 0%, #f59e0b 50%, transparent 100%);
+                    background: linear-gradient(90deg, transparent 0%, #dc2626 50%, transparent 100%);
                     margin: 2rem 0;
                 }
                 </style>
@@ -999,7 +999,7 @@
                 @if($event->benefits)
                     <div class="bg-white rounded-lg shadow-lg p-5 mb-5">
                         <h2 class="text-xl font-bold text-gray-900 mb-3 flex items-center">
-                            <i class="fas fa-gift text-green-600 mr-2"></i> Yang Akan Anda Dapatkan
+                            <i class="fas fa-gift text-hastana-red mr-2"></i> Yang Akan Anda Dapatkan
                         </h2>
                         <div class="benefits-description prose max-w-none text-gray-700">
                             {!! $event->benefits !!}
@@ -1010,7 +1010,7 @@
                 <!-- Requirements -->
                 <div class="bg-white rounded-lg shadow-lg p-5 mb-5">
                     <h2 class="text-xl font-bold text-gray-900 mb-3 flex items-center">
-                        <i class="fas fa-clipboard-list text-orange-600 mr-2"></i> Persyaratan
+                        <i class="fas fa-clipboard-list text-hastana-red mr-2"></i> Persyaratan
                     </h2>
                     <div class="requirements-description prose max-w-none text-gray-700">
                         {!! $event->requirements !!}
@@ -1021,7 +1021,7 @@
                 @if($relatedEvents->count() > 0)
                     <div class="bg-white rounded-lg shadow-lg p-5 mb-5">
                         <h2 class="text-xl font-bold text-gray-900 mb-5 flex items-center">
-                            <i class="fas fa-calendar-alt text-blue-600 mr-2"></i> Event Terkait
+                            <i class="fas fa-calendar-alt text-hastana-red mr-2"></i> Event Terkait
                         </h2>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                             @foreach($relatedEvents as $related)
@@ -1033,27 +1033,27 @@
                                                      alt="{{ $related->title }}" 
                                                      class="w-full h-full object-cover">
                                             @else
-                                                <div class="w-full h-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center">
+                                                <div class="w-full h-full bg-gradient-to-br from-gray-700 to-gray-900 flex items-center justify-center">
                                                     <i class="fas fa-calendar text-white text-2xl"></i>
                                                 </div>
                                             @endif
                                             @if($related->is_free)
-                                                <span class="absolute top-1.5 right-1.5 bg-green-500 text-white text-xs px-1.5 py-0.5 rounded-full font-semibold">
+                                                <span class="absolute top-1.5 right-1.5 bg-hastana-red text-white text-xs px-1.5 py-0.5 rounded-full font-semibold">
                                                     GRATIS
                                                 </span>
                                             @endif
                                         </div>
                                         <div class="p-2.5">
-                                            <h3 class="font-semibold text-sm text-gray-900 group-hover:text-blue-600 line-clamp-2 mb-1.5">
+                                            <h3 class="font-semibold text-sm text-gray-900 group-hover:text-hastana-red line-clamp-2 mb-1.5">
                                                 {{ $related->title }}
                                             </h3>
                                             <div class="flex items-center text-xs text-gray-600 gap-2">
                                                 <span>
-                                                    <i class="fas fa-calendar text-blue-500"></i>
+                                                    <i class="fas fa-calendar text-gray-700"></i>
                                                     {{ $related->start_date->format('d M Y') }}
                                                 </span>
                                                 <span>
-                                                    <i class="fas fa-map-marker-alt text-red-500"></i>
+                                                    <i class="fas fa-map-marker-alt text-hastana-red"></i>
                                                     {{ $related->city }}
                                                 </span>
                                             </div>
@@ -1068,15 +1068,15 @@
                 <!-- Reviews & Rating Section -->
                 <div class="bg-white rounded-lg shadow-lg p-5 mb-5">
                     <h2 class="text-xl font-bold text-gray-900 mb-5 flex items-center">
-                        <i class="fas fa-star text-yellow-500 mr-2"></i> Rating & Reviews
+                        <i class="fas fa-star text-hastana-red mr-2"></i> Rating & Reviews
                     </h2>
 
                     <!-- Success/Error Messages -->
                     @if(session('success'))
-                        <div class="bg-green-50 border border-green-200 rounded-lg p-4 mb-5">
+                        <div class="bg-gray-50 border border-gray-200 rounded-lg p-4 mb-5">
                             <div class="flex items-center gap-3">
-                                <i class="fas fa-check-circle text-green-600 text-xl"></i>
-                                <p class="text-green-800 text-sm font-medium">{{ session('success') }}</p>
+                                <i class="fas fa-check-circle text-hastana-red text-xl"></i>
+                                <p class="text-gray-800 text-sm font-medium">{{ session('success') }}</p>
                             </div>
                         </div>
                     @endif
@@ -1117,9 +1117,9 @@
                                 @if($event->rating > 0)
                                     @for($i = 1; $i <= 5; $i++)
                                         @if($i <= floor($event->rating))
-                                            <i class="fas fa-star text-yellow-400 text-xl"></i>
+                                            <i class="fas fa-star text-hastana-red text-xl"></i>
                                         @elseif($i - 0.5 <= $event->rating)
-                                            <i class="fas fa-star-half-alt text-yellow-400 text-xl"></i>
+                                            <i class="fas fa-star-half-alt text-hastana-red text-xl"></i>
                                         @else
                                             <i class="far fa-star text-gray-300 text-xl"></i>
                                         @endif
@@ -1146,10 +1146,10 @@
                                 <div class="flex items-center gap-3 mb-2">
                                     <div class="flex items-center gap-1 min-w-[80px]">
                                         <span class="text-sm font-medium text-gray-700">{{ $star }}</span>
-                                        <i class="fas fa-star text-yellow-400 text-xs"></i>
+                                        <i class="fas fa-star text-hastana-red text-xs"></i>
                                     </div>
                                     <div class="flex-1 bg-gray-200 rounded-full h-2 overflow-hidden">
-                                        <div class="bg-yellow-400 h-full transition-all duration-300" 
+                                        <div class="bg-hastana-red h-full transition-all duration-300" 
                                              data-progress-width="{{ $percentage }}" style="width: 0%"></div>
                                     </div>
                                     <span class="text-sm text-gray-600 min-w-[60px] text-right">
@@ -1181,9 +1181,9 @@
                         @endphp
 
                         @if($hasAttended && !$hasReviewed)
-                            <div class="bg-gradient-to-r from-blue-50 to-purple-50 border-2 border-blue-200 rounded-lg p-5 mb-6">
+                            <div class="bg-gray-50 border-2 border-gray-200 rounded-lg p-5 mb-6">
                                 <h3 class="text-lg font-bold text-gray-900 mb-3 flex items-center">
-                                    <i class="fas fa-pen text-blue-600 mr-2"></i> Tulis Review Anda
+                                    <i class="fas fa-pen text-hastana-red mr-2"></i> Tulis Review Anda
                                 </h3>
                                 <p class="text-sm text-gray-600 mb-4">
                                     Anda telah mengikuti event ini. Bagikan pengalaman Anda untuk membantu peserta lainnya!
@@ -1201,7 +1201,7 @@
                                             <div class="flex gap-1" id="starRating">
                                                 @for($i = 1; $i <= 5; $i++)
                                                     <button type="button" 
-                                                            class="star-btn text-3xl text-gray-300 hover:text-yellow-400 transition focus:outline-none" 
+                                                            class="star-btn text-3xl text-gray-300 hover:text-hastana-red transition focus:outline-none" 
                                                             data-rating="{{ $i }}">
                                                         <i class="far fa-star"></i>
                                                     </button>
@@ -1219,7 +1219,7 @@
                                         </label>
                                         <input type="text" 
                                                name="title" 
-                                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm" 
+                                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-hastana-red focus:border-transparent text-sm" 
                                                placeholder="Ringkasan pengalaman Anda..." 
                                                maxlength="100"
                                                required>
@@ -1232,7 +1232,7 @@
                                         </label>
                                         <textarea name="review" 
                                                   rows="4" 
-                                                  class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm" 
+                                                  class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-hastana-red focus:border-transparent text-sm" 
                                                   placeholder="Ceritakan pengalaman Anda mengikuti event ini..."
                                                   required></textarea>
                                     </div>
@@ -1241,11 +1241,11 @@
                                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                                         <div>
                                             <label class="block text-sm font-semibold text-gray-700 mb-2">
-                                                <i class="fas fa-plus-circle text-green-600"></i> Kelebihan (Opsional)
+                                                <i class="fas fa-plus-circle text-hastana-red"></i> Kelebihan (Opsional)
                                             </label>
                                             <textarea name="pros" 
                                                       rows="3" 
-                                                      class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 text-sm" 
+                                                      class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-hastana-red focus:border-transparent text-sm" 
                                                       placeholder="Apa yang Anda suka dari event ini?"></textarea>
                                         </div>
                                         <div>
@@ -1265,9 +1265,9 @@
                                             <input type="checkbox" 
                                                    name="would_recommend" 
                                                    value="1" 
-                                                   class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-2 focus:ring-blue-500">
+                                                   class="w-4 h-4 text-hastana-red border-gray-300 rounded focus:ring-2 focus:ring-hastana-red">
                                             <span class="text-sm font-medium text-gray-700">
-                                                <i class="fas fa-thumbs-up text-blue-600"></i> Saya merekomendasikan event ini
+                                                <i class="fas fa-thumbs-up text-hastana-red"></i> Saya merekomendasikan event ini
                                             </span>
                                         </label>
                                     </div>
@@ -1275,7 +1275,7 @@
                                     <!-- Submit Button -->
                                     <div class="flex items-center gap-3">
                                         <button type="submit" 
-                                                class="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-2.5 rounded-lg font-semibold hover:from-blue-700 hover:to-purple-700 transition duration-200 shadow-lg hover:shadow-xl text-sm">
+                                                class="bg-hastana-red text-white px-6 py-2.5 rounded-lg font-semibold hover:bg-red-700 transition duration-200 shadow-lg hover:shadow-xl text-sm">
                                             <i class="fas fa-paper-plane mr-2"></i> Submit Review
                                         </button>
                                         <button type="reset" 
@@ -1327,9 +1327,9 @@
                                             const starIcon = star.querySelector('i');
                                             if (index < rating) {
                                                 starIcon.classList.remove('far', 'text-gray-300');
-                                                starIcon.classList.add('fas', 'text-yellow-400');
+                                                starIcon.classList.add('fas', 'text-hastana-red');
                                             } else {
-                                                starIcon.classList.remove('fas', 'text-yellow-400');
+                                                starIcon.classList.remove('fas', 'text-hastana-red');
                                                 starIcon.classList.add('far', 'text-gray-300');
                                             }
                                         });
@@ -1338,12 +1338,12 @@
                                 </script>
                             </div>
                         @elseif($hasReviewed)
-                            <div class="bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
+                            <div class="bg-gray-50 border border-gray-200 rounded-lg p-4 mb-6">
                                 <div class="flex items-center gap-3">
-                                    <i class="fas fa-check-circle text-green-600 text-2xl"></i>
+                                    <i class="fas fa-check-circle text-hastana-red text-2xl"></i>
                                     <div>
-                                        <p class="font-semibold text-green-900 text-sm">Terima kasih atas review Anda!</p>
-                                        <p class="text-green-700 text-xs">Review Anda telah dikirim dan sedang menunggu persetujuan admin.</p>
+                                        <p class="font-semibold text-gray-900 text-sm">Terima kasih atas review Anda!</p>
+                                        <p class="text-gray-700 text-xs">Review Anda telah dikirim dan sedang menunggu persetujuan admin.</p>
                                     </div>
                                 </div>
                             </div>
@@ -1359,7 +1359,7 @@
                                     <div class="flex items-start justify-between mb-3">
                                         <div class="flex items-start gap-3">
                                             <!-- User Avatar -->
-                                            <div class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
+                                            <div class="w-10 h-10 rounded-full bg-gradient-to-br from-gray-700 to-gray-900 flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
                                                 {{ strtoupper(substr($review->user->name ?? 'U', 0, 1)) }}
                                             </div>
                                             <div>
@@ -1368,12 +1368,12 @@
                                                         {{ $review->user->name ?? 'Anonymous' }}
                                                     </h4>
                                                     @if($review->is_verified_participant)
-                                                        <span class="bg-green-100 text-green-800 text-xs px-2 py-0.5 rounded-full font-semibold flex items-center gap-1">
+                                                        <span class="bg-gray-900 text-white text-xs px-2 py-0.5 rounded-full font-semibold flex items-center gap-1">
                                                             <i class="fas fa-check-circle"></i> Verified
                                                         </span>
                                                     @endif
                                                     @if($review->is_featured)
-                                                        <span class="bg-yellow-100 text-yellow-800 text-xs px-2 py-0.5 rounded-full font-semibold flex items-center gap-1">
+                                                        <span class="bg-hastana-red text-white text-xs px-2 py-0.5 rounded-full font-semibold flex items-center gap-1">
                                                             <i class="fas fa-star"></i> Featured
                                                         </span>
                                                     @endif
@@ -1383,7 +1383,7 @@
                                                     <div class="flex">
                                                         @for($i = 1; $i <= 5; $i++)
                                                             @if($i <= $review->rating)
-                                                                <i class="fas fa-star text-yellow-400 text-sm"></i>
+                                                                <i class="fas fa-star text-hastana-red text-sm"></i>
                                                             @else
                                                                 <i class="far fa-star text-gray-300 text-sm"></i>
                                                             @endif
@@ -1398,7 +1398,7 @@
                                         
                                         <!-- Would Recommend Badge -->
                                         @if($review->would_recommend)
-                                            <span class="bg-blue-50 text-blue-700 text-xs px-2 py-1 rounded-full font-medium flex items-center gap-1">
+                                            <span class="bg-hastana-red text-white text-xs px-2 py-1 rounded-full font-medium flex items-center gap-1">
                                                 <i class="fas fa-thumbs-up"></i> Recommended
                                             </span>
                                         @endif
@@ -1418,12 +1418,12 @@
                                     @if($review->pros || $review->cons)
                                         <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
                                             @if($review->pros)
-                                                <div class="bg-green-50 border border-green-200 rounded-lg p-3">
+                                                <div class="bg-gray-50 border border-gray-200 rounded-lg p-3">
                                                     <div class="flex items-center gap-2 mb-2">
-                                                        <i class="fas fa-plus-circle text-green-600"></i>
-                                                        <span class="font-semibold text-green-900 text-xs">Pros</span>
+                                                        <i class="fas fa-plus-circle text-hastana-red"></i>
+                                                        <span class="font-semibold text-gray-900 text-xs">Pros</span>
                                                     </div>
-                                                    <p class="text-green-800 text-xs">{{ $review->pros }}</p>
+                                                    <p class="text-gray-800 text-xs">{{ $review->pros }}</p>
                                                 </div>
                                             @endif
                                             @if($review->cons)
@@ -1441,7 +1441,7 @@
                                     <!-- Review Actions -->
                                     <div class="flex items-center gap-4">
                                         <button type="button" data-action="review-helpful" data-review-id="{{ $review->id }}"
-                                                class="text-gray-600 hover:text-blue-600 text-xs font-medium flex items-center gap-1 transition">
+                                                class="text-gray-600 hover:text-hastana-red text-xs font-medium flex items-center gap-1 transition">
                                             <i class="far fa-thumbs-up"></i>
                                             <span>Helpful ({{ $review->helpful_count }})</span>
                                         </button>
@@ -1510,12 +1510,12 @@
                     <!-- Price -->
                     <div class="text-center mb-5">
                         @if($event->is_free)
-                            <div class="text-3xl font-bold text-green-600 mb-1.5">
+                            <div class="text-3xl font-bold text-hastana-red mb-1.5">
                                 <i class="fas fa-gift"></i> GRATIS
                             </div>
                             <p class="text-gray-600 text-sm">Event ini gratis untuk semua peserta</p>
                         @else
-                            <div class="text-3xl font-bold text-blue-600 mb-1.5">
+                            <div class="text-3xl font-bold text-hastana-red mb-1.5">
                                 Rp {{ number_format($event->price, 0, ',', '.') }}
                             </div>
                             <p class="text-gray-600 text-sm">Per peserta</p>
@@ -1530,7 +1530,7 @@
                                 <span class="font-semibold">{{ number_format($event->capacity_percentage, 1) }}%</span>
                             </div>
                             <div class="w-full bg-gray-200 rounded-full h-2.5 overflow-hidden">
-                                <div class="bg-{{ $event->capacity_percentage >= 90 ? 'red' : ($event->capacity_percentage >= 70 ? 'yellow' : 'green') }}-500 h-full rounded-full transition-all duration-300" 
+                                <div class="bg-hastana-red h-full rounded-full transition-all duration-300" 
                                      data-progress-width="{{ min($event->capacity_percentage, 100) }}" style="width: 0%"></div>
                             </div>
                             <p class="text-xs text-gray-500 mt-1">
@@ -1556,15 +1556,15 @@
 
                     @if($isRegistered)
                         <!-- Already Registered -->
-                        <div class="bg-green-50 border border-green-200 rounded-lg p-3 mb-3">
-                            <div class="flex items-center gap-2.5 text-green-800 mb-2.5">
+                        <div class="bg-gray-50 border border-gray-200 rounded-lg p-3 mb-3">
+                            <div class="flex items-center gap-2.5 text-gray-800 mb-2.5">
                                 <i class="fas fa-check-circle text-xl"></i>
                                 <div>
                                     <p class="font-bold text-base">Anda Sudah Terdaftar!</p>
                                     <p class="text-xs">Lihat detail registrasi Anda di Event Saya</p>
                                 </div>
                             </div>
-                            <a href="{{ route('dashboard') }}" class="block w-full text-center bg-green-600 text-white py-2.5 rounded-lg font-semibold hover:bg-green-700 transition duration-200 text-sm">
+                            <a href="{{ route('dashboard') }}" class="block w-full text-center bg-hastana-red text-white py-2.5 rounded-lg font-semibold hover:bg-red-700 transition duration-200 text-sm">
                                 <i class="fas fa-tachometer-alt mr-2"></i>
                                 Lihat Dashboard Saya
                             </a>
@@ -1583,7 +1583,7 @@
                         @auth
                             <!-- User logged in - can register -->
                             <a href="{{ route('events.register', $event->slug) }}" 
-                               class="block w-full text-center bg-gradient-to-r from-blue-600 to-blue-700 text-white py-3 rounded-lg font-bold hover:from-blue-700 hover:to-blue-800 transition duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 mb-3 text-sm">
+                               class="block w-full text-center bg-hastana-red text-white py-3 rounded-lg font-bold hover:bg-red-700 transition duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 mb-3 text-sm">
                                 <i class="fas fa-user-plus mr-2"></i> 
                                 @if($event->is_free)
                                     Daftar Gratis Sekarang
@@ -1595,18 +1595,18 @@
                             <!-- User not logged in - show login prompt -->
                             <div class="mb-3">
                                 <a href="{{ route('login', absolute: false) }}?redirect={{ urlencode(route('events.register', $event->slug, absolute: false)) }}" 
-                                   class="block w-full text-center bg-gradient-to-r from-blue-600 to-blue-700 text-white py-3 rounded-lg font-bold hover:from-blue-700 hover:to-blue-800 transition duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 text-sm">
+                                   class="block w-full text-center bg-hastana-red text-white py-3 rounded-lg font-bold hover:bg-red-700 transition duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 text-sm">
                                     <i class="fas fa-sign-in-alt mr-2"></i> Login untuk Mendaftar
                                 </a>
                                 <p class="text-center text-xs text-gray-600 mt-1.5">
                                     Belum punya akun? 
-                                    <a href="{{ route('register') }}" class="text-blue-600 hover:underline font-semibold">Daftar di sini</a>
+                                    <a href="{{ route('register') }}" class="text-hastana-red hover:underline font-semibold">Daftar di sini</a>
                                 </p>
                             </div>
                             
                             <!-- Info Alert -->
-                            <div class="bg-blue-50 border border-blue-200 rounded-lg p-2.5 mb-3">
-                                <div class="flex items-start gap-2 text-blue-800 text-xs">
+                            <div class="bg-gray-50 border border-gray-200 rounded-lg p-2.5 mb-3">
+                                <div class="flex items-start gap-2 text-gray-800 text-xs">
                                     <i class="fas fa-info-circle mt-0.5"></i>
                                     <div>
                                         <span class="font-semibold">Login diperlukan</span>
@@ -1686,7 +1686,7 @@
                     <div class="space-y-3">
                         <!-- Date & Time -->
                         <div class="flex items-start gap-2.5">
-                            <i class="fas fa-calendar-alt text-blue-600 text-lg mt-1"></i>
+                            <i class="fas fa-calendar-alt text-hastana-red text-lg mt-1"></i>
                             <div>
                                 <div class="font-semibold text-gray-900 text-sm">Tanggal & Waktu</div>
                                 <div class="text-xs text-gray-600">
@@ -1721,7 +1721,7 @@
                         <!-- Organizer -->
                         @if($event->organizer_name)
                             <div class="flex items-start gap-2.5">
-                                <i class="fas fa-building text-purple-600 text-lg mt-1"></i>
+                                <i class="fas fa-building text-hastana-red text-lg mt-1"></i>
                                 <div>
                                     <div class="font-semibold text-gray-900 text-sm">Penyelenggara</div>
                                     <div class="text-xs text-gray-600">{{ $event->organizer_name }}</div>
@@ -1732,7 +1732,7 @@
                         <!-- Contact -->
                         @if($event->contact_email || $event->contact_phone)
                             <div class="flex items-start gap-2.5">
-                                <i class="fas fa-phone text-green-600 text-lg mt-1"></i>
+                                <i class="fas fa-phone text-hastana-red text-lg mt-1"></i>
                                 <div>
                                     <div class="font-semibold text-gray-900 text-sm">Kontak</div>
                                     @if($event->contact_email)
@@ -1761,7 +1761,7 @@
                             @endphp
                             @if(is_array($tags))
                                 @foreach($tags as $tag)
-                                    <span class="bg-blue-100 text-blue-800 px-2.5 py-1 rounded-full text-xs">
+                                    <span class="bg-gray-100 text-hastana-red px-2.5 py-1 rounded-full text-xs">
                                         #{{ $tag }}
                                     </span>
                                 @endforeach

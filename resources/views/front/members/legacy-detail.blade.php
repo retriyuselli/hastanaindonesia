@@ -317,7 +317,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             @endif
                             @if($member->verification_status == 'verified')
                             <div class="absolute bottom-0 right-0 bg-white rounded-full p-1 shadow-md">
-                                <div class="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center">
+                                <div class="w-6 h-6 bg-hastana-red rounded-full flex items-center justify-center">
                                     <i class="fas fa-check text-white text-xs"></i>
                                 </div>
                             </div>
@@ -352,7 +352,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         
                         <div class="flex items-center justify-between py-3 border-t border-b border-gray-200">
                             <div class="text-center flex-1">
-                                <div class="flex items-center justify-center text-yellow-400 mb-1">
+                                <div class="flex items-center justify-center text-hastana-red mb-1">
                                     @for($i = 1; $i <= 5; $i++)
                                         @if($i <= floor($member->rating ?? 0))
                                             <i class="fas fa-star text-xs"></i>
@@ -387,7 +387,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     <!-- Contact Buttons -->
                     <div class="space-y-3 mb-6">
                         @if($member->phone)
-                        <a href="tel:{{ $member->phone }}" class="block w-full px-4 py-2.5 bg-pink-500 text-white text-sm font-semibold rounded-lg hover:bg-pink-600 transition-colors text-center">
+                        <a href="tel:{{ $member->phone }}" class="block w-full px-4 py-2.5 bg-hastana-red text-white text-sm font-semibold rounded-lg hover:bg-red-700 transition-colors text-center">
                             <i class="fas fa-comments mr-2"></i>Chat Vendor
                         </a>
                         @endif
@@ -406,14 +406,14 @@ document.addEventListener('DOMContentLoaded', function() {
                         @if($member->website)
                         <div class="flex items-center text-xs">
                             <i class="fas fa-globe text-gray-400 mr-3 w-3"></i>
-                            <a href="{{ $member->website }}" target="_blank" class="text-blue-600 hover:underline truncate">{{ str_replace(['http://', 'https://'], '', $member->website) }}</a>
+                            <a href="{{ $member->website }}" target="_blank" class="text-hastana-red hover:underline truncate">{{ str_replace(['http://', 'https://'], '', $member->website) }}</a>
                         </div>
                         @endif
                         
                         @if($member->email)
                         <div class="flex items-center text-xs">
                             <i class="fas fa-envelope text-gray-400 mr-3 w-3"></i>
-                            <a href="mailto:{{ $member->email }}" class="text-blue-600 hover:underline truncate">{{ $member->email }}</a>
+                            <a href="mailto:{{ $member->email }}" class="text-hastana-red hover:underline truncate">{{ $member->email }}</a>
                         </div>
                         @endif
                         
@@ -434,7 +434,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                     ? $member->instagram
                                     : ('https://instagram.com/' . $instagramLabel);
                             @endphp
-                            <a href="{{ $instagramHref }}" target="_blank" class="text-blue-600 hover:underline truncate flex-1 min-w-0" title="{{ $instagramLabel }}">{{ $instagramLabel }}</a>
+                            <a href="{{ $instagramHref }}" target="_blank" class="text-hastana-red hover:underline truncate flex-1 min-w-0" title="{{ $instagramLabel }}">{{ $instagramLabel }}</a>
                         </div>
                         @endif
                     </div>
@@ -445,16 +445,16 @@ document.addEventListener('DOMContentLoaded', function() {
                         <p class="text-xs font-semibold mb-3 text-gray-700">Media Sosial</p>
                         <div class="flex w-full justify-start self-start space-x-3">
                             @if($member->instagram)
-                            <a href="https://instagram.com/{{ $member->instagram }}" target="_blank" class="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center hover:bg-pink-100 transition-colors">
+                            <a href="https://instagram.com/{{ $member->instagram }}" target="_blank" class="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center hover:bg-gray-200 transition-colors">
                                 <i class="fab fa-instagram text-gray-700 text-sm"></i>
                             </a>
                             @endif
                             @if($member->website)
-                            <a href="{{ $member->website }}" target="_blank" class="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center hover:bg-blue-100 transition-colors">
+                            <a href="{{ $member->website }}" target="_blank" class="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center hover:bg-gray-200 transition-colors">
                                 <i class="fas fa-globe text-gray-700 text-sm"></i>
                             </a>
                             @endif
-                            <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $member->phone ?? '') }}" target="_blank" class="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center hover:bg-green-100 transition-colors">
+                            <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $member->phone ?? '') }}" target="_blank" class="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center hover:bg-gray-200 transition-colors">
                                 <i class="fab fa-whatsapp text-gray-700 text-sm"></i>
                             </a>
                         </div>
@@ -463,7 +463,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     
                     <!-- Kontak Lain -->
                     <div class="pt-6 border-t border-gray-200 mt-6">
-                        <button class="text-xs text-pink-500 hover:text-pink-600 font-semibold flex items-center">
+                        <button class="text-xs text-hastana-red hover:text-red-700 font-semibold flex items-center">
                             <i class="fas fa-flag mr-2"></i>Laporkan Vendor Ini
                         </button>
                     </div>
@@ -630,7 +630,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             <div class="flex items-center gap-8">
                                 <div class="text-center">
                                     <div class="text-4xl font-bold text-gray-900 mb-2">{{ number_format($member->rating ?? 0, 1) }}</div>
-                                    <div class="flex items-center justify-center text-yellow-400 mb-2">
+                                    <div class="flex items-center justify-center text-hastana-red mb-2">
                                         @for($i = 1; $i <= 5; $i++)
                                             @if($i <= floor($member->rating ?? 0))
                                                 <i class="fas fa-star"></i>
@@ -647,7 +647,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                         <div class="flex items-center gap-3 mb-2">
                                             <span class="text-xs text-gray-600 w-12">{{ $i }} star</span>
                                             <div class="flex-1 bg-gray-200 rounded-full h-2">
-                                                <div class="bg-yellow-400 h-2 rounded-full" style="width: {{ $i == 5 ? '80' : ($i == 4 ? '15' : '5') }}%"></div>
+                                                <div class="bg-hastana-red h-2 rounded-full" style="width: {{ $i == 5 ? '80' : ($i == 4 ? '15' : '5') }}%"></div>
                                             </div>
                                             <span class="text-xs text-gray-600 w-12">{{ $i == 5 ? '80' : ($i == 4 ? '15' : '5') }}%</span>
                                         </div>
@@ -669,7 +669,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                             <h4 class="text-sm font-semibold text-gray-900">Andi & Siti</h4>
                                             <span class="text-xs text-gray-500">2 minggu lalu</span>
                                         </div>
-                                        <div class="flex items-center text-yellow-400 mb-2">
+                                        <div class="flex items-center text-hastana-red mb-2">
                                             @for($i = 1; $i <= 5; $i++)
                                                 <i class="fas fa-star text-xs"></i>
                                             @endfor
@@ -707,35 +707,35 @@ document.addEventListener('DOMContentLoaded', function() {
                                     </div>
                                     <div class="text-right">
                                         <p class="text-xs text-gray-500 mb-1">Mulai dari</p>
-                                        <p class="text-2xl font-bold text-pink-600">Rp {{ number_format($member->price_range_min ?? 5000000) }}</p>
+                                        <p class="text-2xl font-bold text-hastana-red">Rp {{ number_format($member->price_range_min ?? 5000000) }}</p>
                                     </div>
                                 </div>
                                 <ul class="space-y-2">
                                     <li class="flex items-start text-sm text-gray-700">
-                                        <i class="fas fa-check text-green-500 mt-1 mr-2"></i>
+                                        <i class="fas fa-check text-hastana-red mt-1 mr-2"></i>
                                         Wedding Organizer & Coordinator
                                     </li>
                                     <li class="flex items-start text-sm text-gray-700">
-                                        <i class="fas fa-check text-green-500 mt-1 mr-2"></i>
+                                        <i class="fas fa-check text-hastana-red mt-1 mr-2"></i>
                                         Dekorasi Pelaminan Sederhana
                                     </li>
                                     <li class="flex items-start text-sm text-gray-700">
-                                        <i class="fas fa-check text-green-500 mt-1 mr-2"></i>
+                                        <i class="fas fa-check text-hastana-red mt-1 mr-2"></i>
                                         Dokumentasi Foto (300 foto)
                                     </li>
                                     <li class="flex items-start text-sm text-gray-700">
-                                        <i class="fas fa-check text-green-500 mt-1 mr-2"></i>
+                                        <i class="fas fa-check text-hastana-red mt-1 mr-2"></i>
                                         Make Up Pengantin
                                     </li>
                                 </ul>
-                                <button class="mt-4 w-full py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600 transition-colors text-sm font-semibold">
+                                <button class="mt-4 w-full py-2 bg-hastana-red text-white rounded-lg hover:bg-red-700 transition-colors text-sm font-semibold">
                                     Hubungi Kami
                                 </button>
                             </div>
                             
                             <!-- Price Package 2 -->
-                            <div class="border-2 border-pink-500 rounded-xl p-6 hover:shadow-lg transition-shadow relative">
-                                <span class="absolute -top-3 left-6 bg-pink-500 text-white px-3 py-1 rounded-full text-xs font-bold">TERPOPULER</span>
+                            <div class="border-2 border-red-600 rounded-xl p-6 hover:shadow-lg transition-shadow relative">
+                                <span class="absolute -top-3 left-6 bg-hastana-red text-white px-3 py-1 rounded-full text-xs font-bold">TERPOPULER</span>
                                 <div class="flex items-start justify-between mb-4">
                                     <div>
                                         <h3 class="text-lg font-bold text-gray-900 mb-2">Paket Silver</h3>
@@ -743,32 +743,32 @@ document.addEventListener('DOMContentLoaded', function() {
                                     </div>
                                     <div class="text-right">
                                         <p class="text-xs text-gray-500 mb-1">Mulai dari</p>
-                                        <p class="text-2xl font-bold text-pink-600">Rp {{ number_format(($member->price_range_min ?? 5000000) + 10000000) }}</p>
+                                        <p class="text-2xl font-bold text-hastana-red">Rp {{ number_format(($member->price_range_min ?? 5000000) + 10000000) }}</p>
                                     </div>
                                 </div>
                                 <ul class="space-y-2">
                                     <li class="flex items-start text-sm text-gray-700">
-                                        <i class="fas fa-check text-green-500 mt-1 mr-2"></i>
+                                        <i class="fas fa-check text-hastana-red mt-1 mr-2"></i>
                                         Semua benefit Paket Bronze
                                     </li>
                                     <li class="flex items-start text-sm text-gray-700">
-                                        <i class="fas fa-check text-green-500 mt-1 mr-2"></i>
+                                        <i class="fas fa-check text-hastana-red mt-1 mr-2"></i>
                                         Dekorasi Premium
                                     </li>
                                     <li class="flex items-start text-sm text-gray-700">
-                                        <i class="fas fa-check text-green-500 mt-1 mr-2"></i>
+                                        <i class="fas fa-check text-hastana-red mt-1 mr-2"></i>
                                         Video Cinematic
                                     </li>
                                     <li class="flex items-start text-sm text-gray-700">
-                                        <i class="fas fa-check text-green-500 mt-1 mr-2"></i>
+                                        <i class="fas fa-check text-hastana-red mt-1 mr-2"></i>
                                         Prewedding Indoor/Outdoor
                                     </li>
                                     <li class="flex items-start text-sm text-gray-700">
-                                        <i class="fas fa-check text-green-500 mt-1 mr-2"></i>
+                                        <i class="fas fa-check text-hastana-red mt-1 mr-2"></i>
                                         Live Music
                                     </li>
                                 </ul>
-                                <button class="mt-4 w-full py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600 transition-colors text-sm font-semibold">
+                                <button class="mt-4 w-full py-2 bg-hastana-red text-white rounded-lg hover:bg-red-700 transition-colors text-sm font-semibold">
                                     Hubungi Kami
                                 </button>
                             </div>
@@ -782,39 +782,39 @@ document.addEventListener('DOMContentLoaded', function() {
                                     </div>
                                     <div class="text-right">
                                         <p class="text-xs text-gray-500 mb-1">Mulai dari</p>
-                                        <p class="text-2xl font-bold text-pink-600">Rp {{ number_format($member->price_range_max ?? 50000000) }}</p>
+                                        <p class="text-2xl font-bold text-hastana-red">Rp {{ number_format($member->price_range_max ?? 50000000) }}</p>
                                     </div>
                                 </div>
                                 <ul class="space-y-2">
                                     <li class="flex items-start text-sm text-gray-700">
-                                        <i class="fas fa-check text-green-500 mt-1 mr-2"></i>
+                                        <i class="fas fa-check text-hastana-red mt-1 mr-2"></i>
                                         Semua benefit Paket Silver
                                     </li>
                                     <li class="flex items-start text-sm text-gray-700">
-                                        <i class="fas fa-check text-green-500 mt-1 mr-2"></i>
+                                        <i class="fas fa-check text-hastana-red mt-1 mr-2"></i>
                                         Dekorasi Mewah Custom Design
                                     </li>
                                     <li class="flex items-start text-sm text-gray-700">
-                                        <i class="fas fa-check text-green-500 mt-1 mr-2"></i>
+                                        <i class="fas fa-check text-hastana-red mt-1 mr-2"></i>
                                         Full Team Photography & Videography
                                     </li>
                                     <li class="flex items-start text-sm text-gray-700">
-                                        <i class="fas fa-check text-green-500 mt-1 mr-2"></i>
+                                        <i class="fas fa-check text-hastana-red mt-1 mr-2"></i>
                                         Wedding Cake 5 Tier
                                     </li>
                                     <li class="flex items-start text-sm text-gray-700">
-                                        <i class="fas fa-check text-green-500 mt-1 mr-2"></i>
+                                        <i class="fas fa-check text-hastana-red mt-1 mr-2"></i>
                                         Souvenir & Hampers Premium
                                     </li>
                                 </ul>
-                                <button class="mt-4 w-full py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600 transition-colors text-sm font-semibold">
+                                <button class="mt-4 w-full py-2 bg-hastana-red text-white rounded-lg hover:bg-red-700 transition-colors text-sm font-semibold">
                                     Hubungi Kami
                                 </button>
                             </div>
                         </div>
                         
-                        <div class="mt-6 bg-blue-50 border border-blue-200 rounded-lg p-4">
-                            <p class="text-sm text-blue-800">
+                        <div class="mt-6 bg-gray-50 border border-gray-200 rounded-lg p-4">
+                            <p class="text-sm text-gray-700">
                                 <i class="fas fa-info-circle mr-2"></i>
                                 <strong>Catatan:</strong> Harga dapat disesuaikan dengan kebutuhan dan budget Anda. Hubungi kami untuk konsultasi gratis dan penawaran khusus.
                             </p>
@@ -856,7 +856,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                     <p class="text-sm font-semibold text-gray-700 mb-1">Status Verifikasi</p>
                                     <p class="text-sm">
                                         @if($member->verification_status == 'verified')
-                                            <span class="inline-flex items-center px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-semibold">
+                                            <span class="inline-flex items-center px-3 py-1 bg-gray-100 text-hastana-red rounded-full text-xs font-semibold">
                                                 <i class="fas fa-check-circle mr-1"></i>
                                                 Terverifikasi
                                             </span>
@@ -881,7 +881,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                 <div>
                                     <p class="text-sm font-semibold text-gray-700 mb-1">Rating</p>
                                     <div class="flex items-center">
-                                        <div class="flex text-yellow-400 mr-2">
+                                        <div class="flex text-hastana-red mr-2">
                                             @for($i = 1; $i <= 5; $i++)
                                                 @if($i <= floor($member->rating ?? 0))
                                                     <i class="fas fa-star text-sm"></i>
@@ -897,21 +897,21 @@ document.addEventListener('DOMContentLoaded', function() {
                                 @if($member->website)
                                 <div>
                                     <p class="text-sm font-semibold text-gray-700 mb-1">Website</p>
-                                    <a href="{{ $member->website }}" target="_blank" class="text-sm text-blue-600 hover:underline">{{ $member->website }}</a>
+                                    <a href="{{ $member->website }}" target="_blank" class="text-sm text-hastana-red hover:underline">{{ $member->website }}</a>
                                 </div>
                                 @endif
                                 
                                 @if($member->email)
                                 <div>
                                     <p class="text-sm font-semibold text-gray-700 mb-1">Email</p>
-                                    <a href="mailto:{{ $member->email }}" class="text-sm text-blue-600 hover:underline">{{ $member->email }}</a>
+                                    <a href="mailto:{{ $member->email }}" class="text-sm text-hastana-red hover:underline">{{ $member->email }}</a>
                                 </div>
                                 @endif
                                 
                                 @if($member->phone)
                                 <div>
                                     <p class="text-sm font-semibold text-gray-700 mb-1">Telepon</p>
-                                    <a href="tel:{{ $member->phone }}" class="text-sm text-blue-600 hover:underline">{{ $member->phone }}</a>
+                                    <a href="tel:{{ $member->phone }}" class="text-sm text-hastana-red hover:underline">{{ $member->phone }}</a>
                                 </div>
                                 @endif
                             </div>
@@ -923,7 +923,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             <h3 class="text-lg font-bold mb-4 text-gray-900">Spesialisasi</h3>
                             <div class="flex flex-wrap gap-3">
                                 @foreach($member->specializations as $specialization)
-                                    <span class="bg-blue-100 text-blue-800 px-3 py-2 rounded-full text-xs font-semibold">{{ $specialization }}</span>
+                                    <span class="bg-gray-100 text-hastana-red px-3 py-2 rounded-full text-xs font-semibold">{{ $specialization }}</span>
                                 @endforeach
                             </div>
                         </div>
@@ -936,7 +936,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                                 @foreach($member->services as $service)
                                     <div class="flex items-start">
-                                        <i class="fas fa-check-circle text-green-500 mt-1 mr-3"></i>
+                                        <i class="fas fa-check-circle text-hastana-red mt-1 mr-3"></i>
                                         <span class="text-sm text-gray-700">{{ $service }}</span>
                                     </div>
                                 @endforeach
@@ -957,15 +957,15 @@ document.addEventListener('DOMContentLoaded', function() {
                         
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
                             <div class="text-center p-6 bg-gray-50 rounded-lg">
-                                <div class="text-3xl font-bold text-pink-600 mb-2">{{ $member->completed_events ?? 0 }}+</div>
+                                <div class="text-3xl font-bold text-hastana-red mb-2">{{ $member->completed_events ?? 0 }}+</div>
                                 <p class="text-sm text-gray-600">Event Sukses</p>
                             </div>
                             <div class="text-center p-6 bg-gray-50 rounded-lg">
-                                <div class="text-3xl font-bold text-pink-600 mb-2">{{ date('Y') - ($member->established_year ?? date('Y')) }}+</div>
+                                <div class="text-3xl font-bold text-hastana-red mb-2">{{ date('Y') - ($member->established_year ?? date('Y')) }}+</div>
                                 <p class="text-sm text-gray-600">Tahun Pengalaman</p>
                             </div>
                             <div class="text-center p-6 bg-gray-50 rounded-lg">
-                                <div class="text-3xl font-bold text-pink-600 mb-2">{{ number_format($member->rating ?? 0, 1) }}</div>
+                                <div class="text-3xl font-bold text-hastana-red mb-2">{{ number_format($member->rating ?? 0, 1) }}</div>
                                 <p class="text-sm text-gray-600">Rating Pelanggan</p>
                             </div>
                         </div>
@@ -974,8 +974,8 @@ document.addEventListener('DOMContentLoaded', function() {
                             <h3 class="text-lg font-bold mb-4 text-gray-900">Mengapa Memilih Kami?</h3>
                             <div class="space-y-4">
                                 <div class="flex items-start">
-                                    <div class="w-10 h-10 bg-pink-100 rounded-full flex items-center justify-center mr-4 flex-shrink-0">
-                                        <i class="fas fa-award text-pink-600"></i>
+                                    <div class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center mr-4 flex-shrink-0">
+                                        <i class="fas fa-award text-hastana-red"></i>
                                     </div>
                                     <div>
                                         <h4 class="text-sm font-semibold text-gray-900 mb-1">Profesional & Berpengalaman</h4>
@@ -984,8 +984,8 @@ document.addEventListener('DOMContentLoaded', function() {
                                 </div>
                                 
                                 <div class="flex items-start">
-                                    <div class="w-10 h-10 bg-pink-100 rounded-full flex items-center justify-center mr-4 flex-shrink-0">
-                                        <i class="fas fa-heart text-pink-600"></i>
+                                    <div class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center mr-4 flex-shrink-0">
+                                        <i class="fas fa-heart text-hastana-red"></i>
                                     </div>
                                     <div>
                                         <h4 class="text-sm font-semibold text-gray-900 mb-1">Pelayanan Terbaik</h4>
@@ -994,8 +994,8 @@ document.addEventListener('DOMContentLoaded', function() {
                                 </div>
                                 
                                 <div class="flex items-start">
-                                    <div class="w-10 h-10 bg-pink-100 rounded-full flex items-center justify-center mr-4 flex-shrink-0">
-                                        <i class="fas fa-gem text-pink-600"></i>
+                                    <div class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center mr-4 flex-shrink-0">
+                                        <i class="fas fa-gem text-hastana-red"></i>
                                     </div>
                                     <div>
                                         <h4 class="text-sm font-semibold text-gray-900 mb-1">Kualitas Premium</h4>
@@ -1004,8 +1004,8 @@ document.addEventListener('DOMContentLoaded', function() {
                                 </div>
                                 
                                 <div class="flex items-start">
-                                    <div class="w-10 h-10 bg-pink-100 rounded-full flex items-center justify-center mr-4 flex-shrink-0">
-                                        <i class="fas fa-handshake text-pink-600"></i>
+                                    <div class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center mr-4 flex-shrink-0">
+                                        <i class="fas fa-handshake text-hastana-red"></i>
                                     </div>
                                     <div>
                                         <h4 class="text-sm font-semibold text-gray-900 mb-1">Harga Kompetitif</h4>
@@ -1021,12 +1021,12 @@ document.addEventListener('DOMContentLoaded', function() {
                             <p class="text-sm text-gray-600 mb-4">Tertarik dengan layanan kami? Hubungi kami sekarang untuk konsultasi gratis!</p>
                             <div class="flex gap-3">
                                 @if($member->phone)
-                                <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $member->phone) }}" target="_blank" class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors text-sm font-semibold flex items-center">
+                                <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $member->phone) }}" target="_blank" class="px-4 py-2 bg-hastana-red text-white rounded-lg hover:bg-red-700 transition-colors text-sm font-semibold flex items-center">
                                     <i class="fab fa-whatsapp mr-2"></i>WhatsApp
                                 </a>
                                 @endif
                                 @if($member->instagram)
-                                <a href="https://instagram.com/{{ $member->instagram }}" target="_blank" class="px-4 py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600 transition-colors text-sm font-semibold flex items-center">
+                                <a href="https://instagram.com/{{ $member->instagram }}" target="_blank" class="px-4 py-2 bg-gray-900 text-white rounded-lg hover:bg-black transition-colors text-sm font-semibold flex items-center">
                                     <i class="fab fa-instagram mr-2"></i>Instagram
                                 </a>
                                 @endif
@@ -1084,7 +1084,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     <p class="text-xs text-gray-600 mb-2">{{ $related->city }}</p>
                     
                     <div class="text-xs text-gray-700">
-                        <i class="fas fa-star text-yellow-400 mr-1"></i>
+                        <i class="fas fa-star text-hastana-red mr-1"></i>
                         {{ number_format($related->rating ?? 0, 1) }}/5
                     </div>
                 </div>

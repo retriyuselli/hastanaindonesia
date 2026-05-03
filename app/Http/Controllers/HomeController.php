@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Blog;
 use App\Models\EventHastana;
+use App\Models\HomeHeroImage;
 use App\Models\Portfolio;
 use App\Models\Product;
 use App\Models\Region;
@@ -17,6 +18,14 @@ class HomeController extends Controller
      */
     public function index()
     {
+        $homeHeroImages = Cache::remember('home:hero_images', now()->addMinutes(30), function () {
+            return HomeHeroImage::query()
+                ->where('is_active', true)
+                ->orderBy('sort_order')
+                ->latest('updated_at')
+                ->get();
+        });
+
         // Get featured portfolios
         $featuredPortfolios = Cache::remember('home:featured_portfolios', now()->addMinutes(10), function () {
             return Portfolio::featured()
@@ -156,6 +165,6 @@ class HomeController extends Controller
             ],
         ];
 
-        return view('front.home.modern', compact('data', 'featuredPortfolios', 'featuredWeddingOrganizers', 'featuredProducts', 'totalWeddingOrganizers', 'totalRegions', 'upcomingEvents', 'latestBlogs'));
+        return view('front.home.modern', compact('data', 'homeHeroImages', 'featuredPortfolios', 'featuredWeddingOrganizers', 'featuredProducts', 'totalWeddingOrganizers', 'totalRegions', 'upcomingEvents', 'latestBlogs'));
     }
 }
