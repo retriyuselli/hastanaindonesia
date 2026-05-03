@@ -120,7 +120,7 @@
                     @foreach($events as $event)
                         <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition duration-300">
                             <!-- Event Image -->
-                            <div class="relative h-44 bg-gray-200">
+                            <div class="relative aspect-[4/5] bg-gray-200">
                                 @if($event->image)
                                     <img src="{{ Storage::url($event->image) }}" 
                                          alt="{{ $event->title }}" 

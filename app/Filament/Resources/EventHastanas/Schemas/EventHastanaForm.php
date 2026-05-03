@@ -305,18 +305,8 @@ class EventHastanaForm
                                             ->image()
                                             ->disk('public')
                                             ->directory('events')
-                                            ->imageEditor()
-                                            ->imageEditorAspectRatios([
-                                                '16:9',
-                                                '4:3',
-                                                '1:1',
-                                            ])
-                                            ->imageCropAspectRatio('16:9')
-                                            ->imageResizeTargetWidth('1200')
-                                            ->imageResizeTargetHeight('675')
                                             ->maxSize(2048)
                                             ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
-                                            ->helperText('Upload event banner (1200x675px recommended, max 2MB)')
                                             ->columnSpanFull(),
                                     ]),
 

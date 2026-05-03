@@ -111,11 +111,11 @@
 
                 @if($events->count() > 0)
                     <!-- Events Grid -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
                         @foreach($events as $event)
                             <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition duration-300 flex flex-col h-full">
                                 <!-- Event Image -->
-                                <div class="relative h-44 bg-gray-200">
+                                <div class="relative aspect-[4/5] bg-gray-200">
                                     @if($event->image_url)
                                         <img src="{{ $event->image_url }}" 
                                              alt="{{ $event->title }} - {{ $event->eventCategory->name ?? 'Event' }} di {{ $event->city }}" 

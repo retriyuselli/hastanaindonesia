@@ -25,7 +25,7 @@
                 <!-- Event Header Card -->
                 <div class="bg-white rounded-lg shadow-lg overflow-hidden mb-5">
                     <!-- Event Image -->
-                    <div class="relative h-80 bg-gray-200">
+                    <div class="relative aspect-[4/5] bg-gray-200">
                         @if($event->image)
                             <img src="{{ $event->image_url }}"
                                  alt="{{ $event->title }}" 
@@ -1150,7 +1150,7 @@
                                     </div>
                                     <div class="flex-1 bg-gray-200 rounded-full h-2 overflow-hidden">
                                         <div class="bg-yellow-400 h-full transition-all duration-300" 
-                                             style="width: {{ $percentage }}%"></div>
+                                             data-progress-width="{{ $percentage }}" style="width: 0%"></div>
                                     </div>
                                     <span class="text-sm text-gray-600 min-w-[60px] text-right">
                                         {{ $count }} ({{ number_format($percentage, 0) }}%)
@@ -1440,12 +1440,12 @@
 
                                     <!-- Review Actions -->
                                     <div class="flex items-center gap-4">
-                                        <button onclick="markHelpful({{ $review->id }})" 
+                                        <button type="button" data-action="review-helpful" data-review-id="{{ $review->id }}"
                                                 class="text-gray-600 hover:text-blue-600 text-xs font-medium flex items-center gap-1 transition">
                                             <i class="far fa-thumbs-up"></i>
                                             <span>Helpful ({{ $review->helpful_count }})</span>
                                         </button>
-                                        <button onclick="reportReview({{ $review->id }})" 
+                                        <button type="button" data-action="review-report" data-review-id="{{ $review->id }}"
                                                 class="text-gray-600 hover:text-red-600 text-xs font-medium flex items-center gap-1 transition">
                                             <i class="far fa-flag"></i>
                                             <span>Report</span>
@@ -1483,6 +1483,23 @@
                         alert('Review berhasil dilaporkan. Tim kami akan meninjau laporan Anda.');
                     }
                 }
+
+                document.addEventListener('DOMContentLoaded', function () {
+                    document.querySelectorAll('[data-progress-width]').forEach((el) => {
+                        const value = Number(el.dataset.progressWidth)
+                        if (!Number.isFinite(value)) return
+                        const clamped = Math.max(0, Math.min(100, value))
+                        el.style.width = `${clamped}%`
+                    })
+
+                    document.querySelectorAll('[data-action="review-helpful"]').forEach((button) => {
+                        button.addEventListener('click', () => markHelpful(button.dataset.reviewId))
+                    })
+
+                    document.querySelectorAll('[data-action="review-report"]').forEach((button) => {
+                        button.addEventListener('click', () => reportReview(button.dataset.reviewId))
+                    })
+                })
                 </script>
             </div>
 
@@ -1514,7 +1531,7 @@
                             </div>
                             <div class="w-full bg-gray-200 rounded-full h-2.5 overflow-hidden">
                                 <div class="bg-{{ $event->capacity_percentage >= 90 ? 'red' : ($event->capacity_percentage >= 70 ? 'yellow' : 'green') }}-500 h-full rounded-full transition-all duration-300" 
-                                     style="width: {{ min($event->capacity_percentage, 100) }}%"></div>
+                                     data-progress-width="{{ min($event->capacity_percentage, 100) }}" style="width: 0%"></div>
                             </div>
                             <p class="text-xs text-gray-500 mt-1">
                                 {{ $event->current_participants }} dari {{ $event->capacity }} peserta terdaftar

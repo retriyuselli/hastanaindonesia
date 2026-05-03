@@ -39,7 +39,7 @@
                         <span class="inline-flex items-center justify-center w-5 h-5 rounded-full bg-white/10">
                             <i class="fas fa-sparkles text-[10px] text-white/90"></i>
                         </span>
-                        <span>Organisasi resmi wedding organizer di Indonesia</span>
+                        <span>Organisasi resmi wedding organizer profesional di Indonesia</span>
                     </div>
 
                     <h1 class="mt-5 text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-white">
@@ -251,10 +251,10 @@
                                 <div class="text-xs text-slate-600 truncate">{{ $wo->city ?? '-' }}{{ $wo->province ? ', ' . $wo->province : '' }}</div>
                                 <div class="mt-2 inline-flex items-center gap-2">
                                     <span class="inline-flex items-center gap-1 text-xs font-semibold text-amber-600">
-                                        <i class="fas fa-star text-[11px]"></i>
-                                        {{ number_format((float) ($wo->rating ?? 0), 1) }}/5
+                                        <i class="fas fa-map-marker-alt text-[11px]"></i>
+                                        {{ $wo->region?->region_name ?? '-' }}
                                     </span>
-                                    <span class="text-xs text-slate-500">{{ (int) ($wo->completed_events ?? 0) }} ulasan</span>
+                                    <!-- <span class="text-xs text-slate-500">{{ (int) ($wo->completed_events ?? 0) }} ulasan</span> -->
                                 </div>
                             </div>
                         </div>
@@ -295,7 +295,7 @@
                     @forelse($featuredProducts->take(6) as $product)
                         <a href="{{ $product->weddingOrganizer?->slug ? route('members.product', ['slug' => $product->weddingOrganizer->slug, 'productId' => $product->id]) : '#' }}"
                             class="group rounded-2xl border border-slate-200 bg-white overflow-hidden shadow-sm hover:shadow-md transition">
-                            <div class="aspect-[16/10] bg-slate-100 overflow-hidden">
+                            <div class="aspect-[4/5] bg-slate-100 overflow-hidden">
                                 <img src="{{ $product->main_image }}" alt="{{ $product->name }}" class="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-300">
                             </div>
                             <div class="p-5">
@@ -345,7 +345,7 @@
             <div class="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                 @forelse($upcomingEvents as $event)
                     <a href="{{ route('events.show', $event->slug) }}" class="group rounded-2xl border border-slate-200 bg-white overflow-hidden shadow-sm hover:shadow-md transition">
-                        <div class="aspect-[16/10] bg-slate-100 overflow-hidden">
+                        <div class="aspect-[4/5] bg-slate-100 overflow-hidden">
                             <img src="{{ $event->image_url }}" alt="{{ $event->title }}" class="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-300">
                         </div>
                         <div class="p-5">
@@ -391,10 +391,10 @@
                 </a>
             </div>
 
-            <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="mt-8 grid grid-cols-1 md:grid-cols-4 gap-4">
                 @forelse($latestBlogs as $blog)
                     <a href="{{ route('blog.detail', $blog->slug) }}" class="group rounded-2xl border border-slate-200 bg-white overflow-hidden shadow-sm hover:shadow-md transition">
-                        <div class="aspect-[16/10] bg-slate-100 overflow-hidden">
+                        <div class="aspect-[4/5] bg-slate-100 overflow-hidden">
                             <img src="{{ $blog->featured_image_url }}" alt="{{ $blog->title }}" class="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-300">
                         </div>
                         <div class="p-5">

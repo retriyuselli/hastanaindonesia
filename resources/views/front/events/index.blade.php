@@ -169,10 +169,10 @@
                     </div>
                     @endif
                     
-                    <div class="relative">
+                    <div class="relative aspect-[4/5] bg-gray-200">
                         <img src="{{ $event->featured_image_url }}" 
                              alt="{{ $event->title }}" 
-                             class="w-full h-44 object-cover">
+                             class="w-full h-full object-cover">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
                         <div class="absolute bottom-3 left-3 text-white">
                             <span class="bg-white/20 backdrop-blur-sm px-2.5 py-1 rounded-full text-xs capitalize">
