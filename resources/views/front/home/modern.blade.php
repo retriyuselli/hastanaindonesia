@@ -34,6 +34,27 @@
             width: 100%;
             flex-shrink: 0;
         }
+
+        .home-hero-dots {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .home-hero-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 9999px;
+            background: rgba(255, 255, 255, 0.35);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            transition: background 200ms ease, transform 200ms ease;
+        }
+
+        .home-hero-dot[aria-current="true"] {
+            background: rgba(255, 255, 255, 0.95);
+            transform: scale(1.05);
+        }
     </style>
 @endpush
 
@@ -54,7 +75,7 @@
         }
     @endphp
 
-    <section class="home-hero home-hero-carousel relative overflow-hidden" data-hero-carousel>
+    <section class="home-hero home-hero-carousel relative overflow-hidden mt-20" data-hero-carousel>
         <div class="home-hero-track" data-hero-track>
             @foreach ($heroSlides as $slide)
                 <div class="home-hero-slide">
@@ -74,12 +95,20 @@
         </div>
 
         @if ($heroSlides->count() > 1)
-            <button type="button" class="absolute left-4 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full border border-white/20 bg-white/10 text-white backdrop-blur transition hover:bg-white/15 disabled:opacity-40 disabled:cursor-not-allowed" aria-label="Sebelumnya" data-hero-prev>
+            <button type="button" class="hidden sm:flex absolute left-4 top-1/2 -translate-y-1/2 z-10 w-10 h-10 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white backdrop-blur transition hover:bg-white/15 disabled:opacity-40 disabled:cursor-not-allowed" aria-label="Sebelumnya" data-hero-prev>
                 <i class="fas fa-chevron-left text-sm"></i>
             </button>
-            <button type="button" class="absolute right-4 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full border border-white/20 bg-white/10 text-white backdrop-blur transition hover:bg-white/15 disabled:opacity-40 disabled:cursor-not-allowed" aria-label="Berikutnya" data-hero-next>
+            <button type="button" class="hidden sm:flex absolute right-4 top-1/2 -translate-y-1/2 z-10 w-10 h-10 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white backdrop-blur transition hover:bg-white/15 disabled:opacity-40 disabled:cursor-not-allowed" aria-label="Berikutnya" data-hero-next>
                 <i class="fas fa-chevron-right text-sm"></i>
             </button>
+
+            <div class="absolute bottom-4 left-0 right-0 z-10 px-4">
+                <div class="home-hero-dots">
+                    @foreach ($heroSlides as $dotSlide)
+                        <button type="button" class="home-hero-dot" aria-label="Slide {{ $loop->iteration }}" aria-current="{{ $loop->first ? 'true' : 'false' }}" data-hero-dot="{{ $loop->index }}"></button>
+                    @endforeach
+                </div>
+            </div>
         @endif
     </section>
 
@@ -386,6 +415,7 @@
                 const slides = Array.from(track.children);
                 const prevBtn = root.querySelector('[data-hero-prev]');
                 const nextBtn = root.querySelector('[data-hero-next]');
+                const dotButtons = Array.from(root.querySelectorAll('[data-hero-dot]'));
 
                 if (slides.length <= 1) {
                     if (prevBtn) prevBtn.classList.add('hidden');
@@ -408,6 +438,11 @@
                     index = Math.max(0, Math.min(slides.length - 1, nextIndex));
                     track.style.transition = 'transform 400ms ease';
                     track.style.transform = 'translateX(-' + (index * 100) + '%)';
+                    if (dotButtons.length) {
+                        dotButtons.forEach(function (btn, i) {
+                            btn.setAttribute('aria-current', i === index ? 'true' : 'false');
+                        });
+                    }
                     setDisabledStates();
                 }
 
@@ -421,6 +456,15 @@
 
                 if (prevBtn) prevBtn.addEventListener('click', goPrev);
                 if (nextBtn) nextBtn.addEventListener('click', goNext);
+
+                if (dotButtons.length) {
+                    dotButtons.forEach(function (btn) {
+                        btn.addEventListener('click', function () {
+                            const targetIndex = Number(btn.getAttribute('data-hero-dot'));
+                            if (Number.isFinite(targetIndex)) setIndex(targetIndex);
+                        });
+                    });
+                }
 
                 root.querySelectorAll('a').forEach(function (a) {
                     a.addEventListener('click', function (e) {
