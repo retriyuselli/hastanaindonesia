@@ -39,7 +39,7 @@
                         'poppins': ['Poppins', 'sans-serif'],
                     },
                     colors: {
-                        'hastana-blue': '#1e40af',
+                        'hastana-blue': '#111827',
                         'hastana-red': '#dc2626',
                         'hastana-black': '#1a1a1a',
                     }
@@ -85,12 +85,12 @@
         }
         
         ::-webkit-scrollbar-thumb {
-            background: #1e40af;
+            background: #111827;
             border-radius: 4px;
         }
         
         ::-webkit-scrollbar-thumb:hover {
-            background: #1e3a8a;
+            background: #000000;
         }
     </style>
     
@@ -109,7 +109,7 @@
     @include('layouts.footer')
     
     <!-- Back to Top Button -->
-    <button id="back-to-top" class="fixed bottom-8 right-8 bg-hastana-blue text-white p-3 rounded-full shadow-lg hover:bg-blue-800 transition-all duration-300 transform hover:scale-110 hidden z-50">
+    <button id="back-to-top" class="fixed bottom-8 right-8 bg-gradient-to-r from-gray-900 to-hastana-red text-white p-3 rounded-full shadow-lg hover:from-black hover:to-red-700 transition-all duration-300 transform hover:scale-110 hidden z-50">
         <i class="fas fa-chevron-up"></i>
     </button>
     

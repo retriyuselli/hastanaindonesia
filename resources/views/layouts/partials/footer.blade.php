@@ -97,7 +97,7 @@
                 <div class="mt-6">
                     <h5 class="text-sm font-semibold text-white mb-2">Newsletter</h5>
                     <form class="flex">
-                        <input type="email" placeholder="Email Anda" class="flex-1 px-3 py-2 text-sm bg-gray-800 text-white border border-gray-700 rounded-l-md focus:outline-none focus:border-hastana-blue">
+                        <input type="email" placeholder="Email Anda" class="flex-1 px-3 py-2 text-sm bg-gray-800 text-white border border-gray-700 rounded-l-md focus:outline-none focus:border-hastana-red">
                         <button type="submit" class="px-4 py-2 bg-hastana-red hover:bg-red-700 text-white text-sm rounded-r-md transition-colors">
                             <i class="fas fa-paper-plane"></i>
                         </button>
@@ -136,7 +136,7 @@
                 </div>
 
                 <!-- Back to Top -->
-                <button onclick="scrollToTop()" class="bg-hastana-blue hover:bg-blue-800 text-white p-2 rounded-full transition-colors" title="Kembali ke atas">
+                <button onclick="scrollToTop()" class="bg-gray-800 hover:bg-hastana-red text-white p-2 rounded-full transition-colors" title="Kembali ke atas">
                     <i class="fas fa-arrow-up text-sm"></i>
                 </button>
             </div>

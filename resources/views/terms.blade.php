@@ -10,11 +10,11 @@
         padding: 1.5rem;
         background: #f8fafc;
         border-radius: 1rem;
-        border-left: 4px solid #1e40af;
+        border-left: 4px solid #dc2626;
     }
     
     .terms-section h3 {
-        color: #1e40af;
+        color: #111827;
         font-weight: 700;
         margin-bottom: 1rem;
         font-size: 1.125rem;
@@ -36,8 +36,8 @@
     }
     
     .highlight-box {
-        background: linear-gradient(135deg, #dbeafe 0%, #fef3c7 100%);
-        border: 2px solid #3b82f6;
+        background: linear-gradient(135deg, #f3f4f6 0%, #fef2f2 100%);
+        border: 2px solid #e5e7eb;
         border-radius: 1rem;
         padding: 1.5rem;
         margin: 2rem 0;
@@ -62,7 +62,7 @@
     .table-of-contents a {
         display: block;
         padding: 0.5rem 0;
-        color: #1e40af;
+        color: #111827;
         text-decoration: none;
         border-bottom: 1px solid #e5e7eb;
         transition: all 0.3s ease;
@@ -83,7 +83,7 @@
 @section('content')
 
 <!-- Hero Section -->
-<section class="bg-gradient-to-r from-blue-900 via-blue-800 to-red-800 py-20 text-white mt-20">
+<section class="bg-gradient-to-r from-gray-900 via-gray-800 to-red-900 py-20 text-white mt-20">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <div class="max-w-4xl mx-auto">
             <div class="mb-8">
@@ -93,7 +93,7 @@
             </div>
             
             <h1 class="font-poppins text-3xl md:text-4xl font-bold mb-6 leading-tight">
-                Syarat dan <span class="text-yellow-300">Ketentuan</span>
+                Syarat dan <span class="text-hastana-red">Ketentuan</span>
             </h1>
             
             <p class="text-lg md:text-xl mb-8 leading-relaxed opacity-90">
@@ -114,7 +114,7 @@
         <!-- Table of Contents -->
         <div class="table-of-contents">
             <h2 class="text-xl font-bold text-gray-900 mb-4">
-                <i class="fas fa-list-ul text-blue-600 mr-2"></i>
+                <i class="fas fa-list-ul text-hastana-red mr-2"></i>
                 Daftar Isi
             </h2>
             <a href="#ketentuan-umum">1. Ketentuan Umum</a>
@@ -227,11 +227,11 @@
         </div>
 
         <div class="highlight-box">
-            <h4 class="font-bold text-blue-800 mb-3">
+            <h4 class="font-bold text-gray-900 mb-3">
                 <i class="fas fa-lightbulb mr-2"></i>
                 Penting untuk Diperhatikan
             </h4>
-            <p class="text-blue-700">
+            <p class="text-gray-700">
                 Keanggotaan HASTANA memberikan kredibilitas dan akses ke jaringan profesional, namun tidak menjamin 
                 kesuksesan bisnis. Setiap anggota tetap bertanggung jawab penuh atas operasional dan kualitas layanan 
                 perusahaannya masing-masing.
@@ -413,11 +413,11 @@
 
         <!-- Navigation Links -->
         <div class="flex flex-col sm:flex-row gap-4 justify-center mt-12">
-            <a href="{{ route('privacy') }}" class="inline-flex items-center px-6 py-3 border-2 border-green-600 text-green-600 font-semibold rounded-full hover:bg-green-600 hover:text-white transition-all duration-300">
+            <a href="{{ route('privacy') }}" class="inline-flex items-center px-6 py-3 border-2 border-gray-900 text-gray-900 font-semibold rounded-full hover:bg-gray-900 hover:text-white transition-all duration-300">
                 <i class="fas fa-user-shield mr-2"></i>
                 Kebijakan Privasi
             </a>
-            <a href="{{ route('join') }}" class="inline-flex items-center px-8 py-4 bg-gradient-to-r from-blue-600 to-red-600 text-white font-bold rounded-full hover:from-blue-700 hover:to-red-700 transition-all duration-300 shadow-lg hover:shadow-xl">
+            <a href="{{ route('join') }}" class="inline-flex items-center px-8 py-4 bg-gradient-to-r from-gray-900 to-hastana-red text-white font-bold rounded-full hover:from-black hover:to-red-700 transition-all duration-300 shadow-lg hover:shadow-xl">
                 <i class="fas fa-arrow-left mr-3"></i>
                 Kembali ke Halaman Pendaftaran
             </a>
@@ -447,7 +447,7 @@
                     });
                     
                     // Highlight the target section temporarily
-                    targetElement.style.backgroundColor = '#dbeafe';
+                    targetElement.style.backgroundColor = '#fef2f2';
                     setTimeout(() => {
                         targetElement.style.backgroundColor = '';
                     }, 2000);

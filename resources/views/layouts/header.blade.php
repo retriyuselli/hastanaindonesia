@@ -18,9 +18,9 @@
         /* Custom Tailwind Configuration */
         :root {
             --hastana-black: #1a1a1a;
-            --hastana-blue: #1e40af;
+            --hastana-blue: #111827;
             --hastana-red: #dc2626;
-            --hastana-blue-light: #3b82f6;
+            --hastana-blue-light: #374151;
             --hastana-red-light: #ef4444;
         }
         

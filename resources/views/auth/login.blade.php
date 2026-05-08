@@ -5,7 +5,7 @@
 @push('styles')
 <style>
     .login-bg {
-        background: linear-gradient(135deg, rgba(30, 64, 175, 0.95), rgba(220, 38, 38, 0.9)),
+        background: linear-gradient(135deg, rgba(17, 24, 39, 0.95), rgba(220, 38, 38, 0.9)),
                    url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600"><defs><pattern id="diamond-pattern" x="0" y="0" width="100" height="100" patternUnits="userSpaceOnUse"><polygon points="50,0 100,50 50,100 0,50" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"/></pattern></defs><rect width="100%" height="100%" fill="url(%23diamond-pattern)"/></svg>');
         background-size: cover, 100px 100px;
         min-height: 100vh;
@@ -52,7 +52,7 @@
 
     .login-input:focus {
         outline: none;
-        border-color: #1e40af;
+        border-color: #dc2626;
         box-shadow: none;
     }
 
@@ -66,13 +66,13 @@
     }
 
     .login-input:focus + .input-icon {
-        color: #1e40af;
+        color: #dc2626;
     }
 
     .login-btn {
         width: 100%;
         padding: 1rem;
-        background: linear-gradient(135deg, #1e40af, #dc2626);
+        background: linear-gradient(135deg, #111827, #dc2626);
         color: white;
         font-weight: 700;
         font-size: 1rem;
@@ -80,12 +80,12 @@
         border-radius: 0.75rem;
         cursor: pointer;
         transition: all 0.3s ease;
-        box-shadow: 0 4px 14px rgba(30, 64, 175, 0.4);
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.22);
     }
 
     .login-btn:hover {
         transform: translateY(-2px);
-        box-shadow: 0 8px 20px rgba(30, 64, 175, 0.5);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.28);
     }
 
     .login-btn:active {
@@ -132,8 +132,8 @@
     }
 
     .checkbox-custom:checked {
-        background-color: #1e40af;
-        border-color: #1e40af;
+        background-color: #dc2626;
+        border-color: #dc2626;
     }
 
     .password-toggle {
@@ -147,7 +147,7 @@
     }
 
     .password-toggle:hover {
-        color: #1e40af;
+        color: #dc2626;
     }
 </style>
 @endpush
@@ -220,7 +220,7 @@
 
                 <!-- Mobile Logo -->
                 <div class="lg:hidden text-center mb-4 mt-20">
-                    <div class="w-20 h-20 bg-linear-to-br from-blue-600 to-red-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <div class="w-20 h-20 bg-gradient-to-br from-gray-900 to-red-600 rounded-full flex items-center justify-center mx-auto mb-4">
                         <i class="fas fa-rings-wedding text-white text-3xl"></i>
                     </div>
                     <h2 class="text-xl font-bold text-white">HASTANA Indonesia</h2>
@@ -237,10 +237,10 @@
 
                         <!-- Session Status -->
                         @if (session('status'))
-                        <div class="mb-6 bg-green-50 border-l-4 border-green-500 p-4 rounded-lg">
+                        <div class="mb-6 bg-gray-50 border-l-4 border-hastana-red p-4 rounded-lg">
                             <div class="flex items-center">
-                                <i class="fas fa-check-circle text-green-500 mr-3"></i>
-                                <p class="text-sm text-green-700">{{ session('status') }}</p>
+                                <i class="fas fa-check-circle text-hastana-red mr-3"></i>
+                                <p class="text-sm text-gray-700">{{ session('status') }}</p>
                             </div>
                         </div>
                         @endif
@@ -325,7 +325,7 @@
                                 </label>
 
                                 @if (Route::has('password.request'))
-                                <a href="{{ route('password.request') }}" class="text-sm font-semibold text-blue-600 hover:text-blue-800 transition-colors">
+                                <a href="{{ route('password.request') }}" class="text-sm font-semibold text-hastana-red hover:text-red-800 transition-colors">
                                     Lupa password?
                                 </a>
                                 @endif
@@ -343,7 +343,7 @@
                             </div>
 
                             <div class="text-center">
-                                <a href="{{ route('register') }}" class="inline-flex items-center text-blue-600 hover:text-blue-800 font-semibold transition-colors">
+                                <a href="{{ route('register') }}" class="inline-flex items-center text-hastana-red hover:text-red-800 font-semibold transition-colors">
                                     <i class="fas fa-user-plus mr-2"></i>
                                     Daftar Sekarang
                                 </a>
@@ -385,7 +385,7 @@
 
     // Auto-hide alerts after 5 seconds
     setTimeout(() => {
-        const alerts = document.querySelectorAll('.bg-green-50, .bg-red-50');
+        const alerts = document.querySelectorAll('.bg-gray-50, .bg-red-50');
         alerts.forEach(alert => {
             alert.style.transition = 'opacity 0.5s ease';
             alert.style.opacity = '0';

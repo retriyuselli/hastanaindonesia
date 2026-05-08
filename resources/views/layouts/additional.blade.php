@@ -12,7 +12,7 @@
                 </p>
                 <div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8">
                     <div class="p-6 bg-white rounded-2xl shadow-lg hover:shadow-xl transition-smooth">
-                        <div class="w-16 h-16 bg-gradient-to-br from-blue-700 to-blue-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <div class="w-16 h-16 bg-gradient-to-br from-gray-900 to-black rounded-full flex items-center justify-center mx-auto mb-4">
                             <i class="fas fa-certificate text-white text-2xl"></i>
                         </div>
                         <h3 class="text-xl font-semibold text-hastana-black mb-2">Sertifikasi Resmi</h3>

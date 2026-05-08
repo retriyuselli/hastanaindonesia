@@ -23,7 +23,7 @@
 @section('content')
 
 <!-- Hero Section -->
-<section class="bg-gradient-to-r from-red-900 via-red-800 to-blue-800 py-20 text-white mt-20">
+<section class="bg-gradient-to-r from-gray-900 via-gray-800 to-red-900 py-20 text-white mt-20">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <div class="max-w-4xl mx-auto">
             <div class="mb-8">
@@ -33,7 +33,7 @@
             </div>
             
             <h1 class="font-poppins text-3xl md:text-4xl font-bold mb-6 leading-tight">
-                Hubungi <span class="text-yellow-300">Kami</span>
+                Hubungi <span class="text-hastana-red">Kami</span>
             </h1>
             
             <p class="text-lg md:text-xl mb-8 leading-relaxed opacity-90">
@@ -55,12 +55,12 @@
             
             <!-- Phone -->
             <div class="contact-card bg-white p-8 rounded-2xl shadow-lg text-center">
-                <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                    <i class="fas fa-phone text-blue-600 text-2xl"></i>
+                <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <i class="fas fa-phone text-hastana-red text-2xl"></i>
                 </div>
                 <h3 class="font-bold text-lg mb-3">Telepon</h3>
                 {{-- <p class="text-gray-600 mb-4">Hubungi kami langsung</p> --}}
-                <a href="tel:+622112345678" class="text-blue-600 text-sm font-semibold hover:underline">
+                <a href="tel:+622112345678" class="text-hastana-red text-sm font-semibold hover:underline">
                     +62 811 3130 612
                 </a>
                 <p class="text-xs text-gray-500 mt-2">Senin-Jumat, 09:00-17:00 WIB</p>
@@ -68,12 +68,12 @@
             
             <!-- Email -->
             <div class="contact-card bg-white p-8 rounded-2xl shadow-lg text-center">
-                <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                    <i class="fas fa-envelope text-green-600 text-2xl"></i>
+                <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <i class="fas fa-envelope text-hastana-red text-2xl"></i>
                 </div>
                 <h3 class="font-bold text-lg mb-3">Email</h3>
                 {{-- <p class="text-gray-600 mb-4">Kirim email ke kami</p> --}}
-                <a href="mailto:info@hastana.id" class="text-green-600 text-sm font-semibold hover:underline">
+                <a href="mailto:info@hastana.id" class="text-hastana-red text-sm font-semibold hover:underline">
                     info@hastanaindonesia.id
                 </a>
                 <p class="text-xs text-gray-500 mt-2">Respon dalam 24 jam</p>
@@ -81,12 +81,12 @@
             
             <!-- WhatsApp -->
             <div class="contact-card bg-white p-8 rounded-2xl shadow-lg text-center">
-                <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                    <i class="fab fa-whatsapp text-green-600 text-2xl"></i>
+                <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <i class="fab fa-whatsapp text-hastana-red text-2xl"></i>
                 </div>
                 <h3 class="font-bold text-lg mb-3">WhatsApp</h3>
                 {{-- <p class="text-gray-600 mb-4">Chat langsung dengan kami</p> --}}
-                <a href="https://wa.me/628113130612" class="text-green-600 font-semibold text-sm hover:underline">
+                <a href="https://wa.me/628113130612" class="text-hastana-red font-semibold text-sm hover:underline">
                     +62 811 3130 612
                 </a>
                 <p class="text-xs text-gray-500 mt-2">Online 24/7</p>
@@ -120,9 +120,9 @@
         
         <div class="contact-form rounded-2xl p-8">
             <!-- Notification -->
-            <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6">
-                <p class="text-sm text-yellow-800 text-center">
-                    <i class="fas fa-info-circle mr-2"></i>
+            <div class="bg-gray-50 border border-gray-200 rounded-lg p-4 mb-6">
+                <p class="text-sm text-gray-700 text-center">
+                    <i class="fas fa-info-circle mr-2 text-hastana-red"></i>
                     Form kontak sedang dalam perbaikan. Silakan hubungi kami melalui WhatsApp, Email, atau Telepon.
                 </p>
             </div>
@@ -136,14 +136,14 @@
                             Nama Lengkap <span class="text-red-500">*</span>
                         </label>
                         <input type="text" required disabled
-                               class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-gray-100 cursor-not-allowed">
+                               class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-hastana-red focus:border-transparent bg-gray-100 cursor-not-allowed">
                     </div>
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-2">
                             Email <span class="text-red-500">*</span>
                         </label>
                         <input type="email" required disabled
-                               class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-gray-100 cursor-not-allowed">
+                               class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-hastana-red focus:border-transparent bg-gray-100 cursor-not-allowed">
                     </div>
                 </div>
                 
@@ -154,14 +154,14 @@
                             Nomor Telepon <span class="text-red-500">*</span>
                         </label>
                         <input type="tel" required disabled
-                               class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-gray-100 cursor-not-allowed">
+                               class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-hastana-red focus:border-transparent bg-gray-100 cursor-not-allowed">
                     </div>
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-2">
                             Nama Perusahaan
                         </label>
                         <input type="text" disabled
-                               class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-gray-100 cursor-not-allowed">
+                               class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-hastana-red focus:border-transparent bg-gray-100 cursor-not-allowed">
                     </div>
                 </div>
                 
@@ -171,7 +171,7 @@
                         Subjek <span class="text-red-500">*</span>
                     </label>
                     <div class="relative">
-                        <select required disabled class="search-box w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none bg-gray-100 cursor-not-allowed">
+                        <select required disabled class="search-box w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-hastana-red appearance-none bg-gray-100 cursor-not-allowed">
                             <option value="">Pilih subjek...</option>
                             <option value="membership">Informasi Keanggotaan</option>
                             <option value="partnership">Kerjasama & Partnership</option>
@@ -189,7 +189,7 @@
                         Pesan <span class="text-red-500">*</span>
                     </label>
                     <textarea rows="6" required disabled placeholder="Tuliskan pesan atau pertanyaan Anda..."
-                              class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none bg-gray-100 cursor-not-allowed"></textarea>
+                              class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-hastana-red focus:border-transparent resize-none bg-gray-100 cursor-not-allowed"></textarea>
                 </div>
                 
                 <!-- Submit Button -->
@@ -227,7 +227,7 @@
         </div>
         
         <div class="text-center mt-6">
-            <a href="https://maps.app.goo.gl/ZzAiVcjTcY5gWYjK8" target="_blank" class="inline-flex items-center px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors">
+            <a href="https://maps.app.goo.gl/ZzAiVcjTcY5gWYjK8" target="_blank" class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-gray-900 to-hastana-red text-white font-semibold rounded-lg hover:from-black hover:to-red-700 transition-colors">
                 <i class="fas fa-map-marker-alt mr-2"></i>
                 Buka di Google Maps
             </a>
@@ -281,7 +281,7 @@
         
         <div class="text-center mt-12">
             <p class="text-gray-600 mb-4">Masih ada pertanyaan lain?</p>
-            <a href="#contact-form" class="text-blue-600 font-semibold hover:underline">
+            <a href="#contact-form" class="text-hastana-red font-semibold hover:underline">
                 Hubungi kami langsung
             </a>
         </div>

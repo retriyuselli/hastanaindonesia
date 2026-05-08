@@ -5,7 +5,7 @@
 @push('styles')
 <style>
     .register-bg {
-        background: linear-gradient(135deg, rgba(30, 64, 175, 0.95), rgba(220, 38, 38, 0.9)),
+        background: linear-gradient(135deg, rgba(17, 24, 39, 0.95), rgba(220, 38, 38, 0.9)),
                    url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600"><defs><pattern id="diamond-pattern" x="0" y="0" width="100" height="100" patternUnits="userSpaceOnUse"><polygon points="50,0 100,50 50,100 0,50" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"/></pattern></defs><rect width="100%" height="100%" fill="url(%23diamond-pattern)"/></svg>');
         background-size: cover, 100px 100px;
         min-height: 100vh;
@@ -64,7 +64,7 @@
     .register-btn {
         width: 100%;
         padding: 1rem;
-        background: linear-gradient(135deg, #dc2626, #1e40af);
+        background: linear-gradient(135deg, #111827, #dc2626);
         color: white;
         font-weight: 700;
         font-size: 1rem;
@@ -143,8 +143,8 @@
     }
 
     .strength-weak { width: 33%; background: #ef4444; }
-    .strength-medium { width: 66%; background: #f59e0b; }
-    .strength-strong { width: 100%; background: #10b981; }
+    .strength-medium { width: 66%; background: #dc2626; }
+    .strength-strong { width: 100%; background: #111827; }
 </style>
 @endpush
 
@@ -228,7 +228,7 @@
 
                 <!-- Mobile Logo -->
                 <div class="lg:hidden text-center mb-4 mt-20">
-                    <div class="w-20 h-20 bg-gradient-to-br from-red-600 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <div class="w-20 h-20 bg-gradient-to-br from-gray-900 to-red-600 rounded-full flex items-center justify-center mx-auto mb-4">
                         <i class="fas fa-rings-wedding text-white text-3xl"></i>
                     </div>
                     <h2 class="text-xl font-bold text-white">HASTANA Indonesia</h2>
@@ -493,11 +493,11 @@
         } else if (strength <= 2) {
             strengthBar.classList.add('strength-medium');
             strengthText.textContent = 'Password sedang';
-            strengthText.className = 'mt-2 text-xs text-yellow-600';
+            strengthText.className = 'mt-2 text-xs text-gray-700';
         } else {
             strengthBar.classList.add('strength-strong');
             strengthText.textContent = 'Password kuat';
-            strengthText.className = 'mt-2 text-xs text-green-600';
+            strengthText.className = 'mt-2 text-xs text-gray-900';
         }
     });
 

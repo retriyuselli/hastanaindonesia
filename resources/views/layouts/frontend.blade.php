@@ -43,7 +43,7 @@
         
         /* HASTANA Brand Colors */
         :root {
-            --hastana-blue: #1e40af;
+            --hastana-blue: #111827;
             --hastana-red: #dc2626;
             --hastana-black: #1a1a1a;
             --hastana-gray: #6b7280;
@@ -75,7 +75,7 @@
         
         /* Focus States */
         a:focus, button:focus {
-            outline: 2px solid var(--hastana-blue);
+            outline: 2px solid var(--hastana-red);
             outline-offset: 2px;
             border-radius: 4px;
         }
@@ -85,7 +85,7 @@
 </head>
 <body class="bg-gray-50 text-gray-900 antialiased page-loading">
     <!-- Skip to Content (Accessibility) -->
-    <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-hastana-blue text-white px-4 py-2 rounded-md z-50">
+    <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-gray-900 text-white px-4 py-2 rounded-md z-50">
         Skip to main content
     </a>
 

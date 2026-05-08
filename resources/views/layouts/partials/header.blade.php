@@ -1,7 +1,7 @@
 <!-- Header -->
 <header class="bg-white shadow-lg sticky top-0 z-40">
     <!-- Top Bar (Optional - for contact info) -->
-    <div class="bg-hastana-blue text-white py-2 hidden md:block">
+    <div class="bg-gray-900 text-white py-2 hidden md:block">
         <div class="container mx-auto px-4">
             <div class="flex justify-between items-center text-sm">
                 <div class="flex items-center space-x-6">
@@ -41,7 +41,7 @@
                     <a href="{{ route('home') }}" class="flex items-center space-x-3">
                         <img src="{{ asset('images/hastana-logo.png') }}" alt="HASTANA Indonesia" class="h-12 w-auto">
                         <div class="hidden sm:block">
-                            <h1 class="text-xl font-bold text-hastana-blue">HASTANA</h1>
+                            <h1 class="text-xl font-bold text-gray-900">HASTANA</h1>
                             <p class="text-xs text-gray-600">Wedding Organizer Indonesia</p>
                         </div>
                     </a>
@@ -89,7 +89,7 @@
                 <!-- CTA Button & Auth Links -->
                 <div class="hidden lg:flex items-center space-x-4">
                     @guest
-                        <a href="{{ route('login', absolute: false) }}" class="text-hastana-blue hover:text-hastana-red transition-colors">
+                        <a href="{{ route('login', absolute: false) }}" class="text-gray-700 hover:text-hastana-red transition-colors">
                             <i class="fas fa-sign-in-alt mr-1"></i>Masuk
                         </a>
                         <a href="{{ route('register') }}" class="bg-hastana-red text-white px-6 py-2 rounded-full hover:bg-red-700 transition-colors">
@@ -97,7 +97,7 @@
                         </a>
                     @else
                         <div class="relative group">
-                            <button class="flex items-center space-x-2 text-gray-700 hover:text-hastana-blue">
+                            <button class="flex items-center space-x-2 text-gray-700 hover:text-hastana-red">
                                 <img src="{{ auth()->user()->avatar ?? asset('images/default-avatar.png') }}" alt="Avatar" class="w-8 h-8 rounded-full">
                                 <span>{{ auth()->user()->name }}</span>
                                 <i class="fas fa-chevron-down text-xs"></i>
@@ -122,13 +122,13 @@
                         </div>
                     @endguest
                     
-                    <a href="{{ route('join') }}" class="bg-hastana-blue text-white px-6 py-2 rounded-full hover:bg-blue-800 transition-colors">
+                    <a href="{{ route('join') }}" class="bg-gradient-to-r from-gray-900 to-hastana-red text-white px-6 py-2 rounded-full hover:from-black hover:to-red-700 transition-colors">
                         <i class="fas fa-handshake mr-1"></i>Bergabung
                     </a>
                 </div>
 
                 <!-- Mobile Menu Button -->
-                <button class="lg:hidden text-gray-600 hover:text-hastana-blue transition-colors" data-mobile-menu-toggle>
+                <button class="lg:hidden text-gray-600 hover:text-hastana-red transition-colors" data-mobile-menu-toggle>
                     <i class="fas fa-bars text-xl"></i>
                 </button>
             </div>
@@ -148,10 +148,10 @@
                         <i class="fas fa-chevron-down float-right mt-1"></i>
                     </button>
                     <div id="tentang-dropdown" class="hidden pl-6 space-y-2">
-                        <a href="#" class="block py-2 text-sm text-gray-600 hover:text-hastana-blue">Profil HASTANA</a>
-                        <a href="#" class="block py-2 text-sm text-gray-600 hover:text-hastana-blue">Visi & Misi</a>
-                        <a href="#" class="block py-2 text-sm text-gray-600 hover:text-hastana-blue">Struktur Organisasi</a>
-                        <a href="#" class="block py-2 text-sm text-gray-600 hover:text-hastana-blue">Sejarah</a>
+                        <a href="#" class="block py-2 text-sm text-gray-600 hover:text-hastana-red">Profil HASTANA</a>
+                        <a href="#" class="block py-2 text-sm text-gray-600 hover:text-hastana-red">Visi & Misi</a>
+                        <a href="#" class="block py-2 text-sm text-gray-600 hover:text-hastana-red">Struktur Organisasi</a>
+                        <a href="#" class="block py-2 text-sm text-gray-600 hover:text-hastana-red">Sejarah</a>
                     </div>
                 </div>
                 
@@ -198,7 +198,7 @@
                     </form>
                 @endguest
                 
-                <a href="{{ route('join') }}" class="block w-full bg-hastana-blue text-white text-center py-3 rounded-full hover:bg-blue-800 transition-colors mt-4">
+                <a href="{{ route('join') }}" class="block w-full bg-gradient-to-r from-gray-900 to-hastana-red text-white text-center py-3 rounded-full hover:from-black hover:to-red-700 transition-colors mt-4">
                     <i class="fas fa-handshake mr-2"></i>Bergabung
                 </a>
             </div>
@@ -209,19 +209,19 @@
 <style>
 /* Navigation Styles */
 .nav-link {
-    @apply text-gray-700 hover:text-hastana-blue font-medium transition-colors duration-200 flex items-center py-2;
+    @apply text-gray-700 hover:text-hastana-red font-medium transition-colors duration-200 flex items-center py-2;
 }
 
 .nav-link.active {
-    @apply text-hastana-blue font-semibold;
+    @apply text-hastana-red font-semibold;
 }
 
 .mobile-nav-link {
-    @apply block py-3 text-gray-700 hover:text-hastana-blue font-medium transition-colors duration-200;
+    @apply block py-3 text-gray-700 hover:text-hastana-red font-medium transition-colors duration-200;
 }
 
 .mobile-nav-link.active {
-    @apply text-hastana-blue font-semibold bg-blue-50 px-3 py-3 rounded-md;
+    @apply text-hastana-red font-semibold bg-gray-50 px-3 py-3 rounded-md;
 }
 
 /* Dropdown Animation */

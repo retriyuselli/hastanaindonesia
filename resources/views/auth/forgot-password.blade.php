@@ -1,25 +1,22 @@
 <x-guest-layout>
-    <div class="mb-4 text-sm text-gray-600 dark:text-gray-400">
-        {{ __('Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.') }}
+    <div style="text-align: center;">
+        <h1 class="guest-title">Lupa Password</h1>
+        <p class="guest-subtitle" style="margin-top: 12px; font-size: 14px;">
+            Silakan menghubungi Pengurus DPP Hastana Indonesia bidang Organisasi dan Keanggotaan untuk bantuan reset password.
+        </p>
     </div>
 
-    <!-- Session Status -->
-    <x-auth-session-status class="mb-4" :status="session('status')" />
+    <div style="margin-top: 20px; padding: 16px; background: #fef2f2; border: 1px solid #fecaca; border-radius: 12px;">
+        <p style="margin: 0; color: #7f1d1d; font-size: 13px; text-align: center;">
+            <i class="fas fa-info-circle"></i>
+            &nbsp;Hubungi admin via WhatsApp atau email yang tercantum di halaman Kontak.
+        </p>
+    </div>
 
-    <form method="POST" action="{{ route('password.email') }}">
-        @csrf
+    <div class="guest-divider"></div>
 
-        <!-- Email Address -->
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
-        </div>
-
-        <div class="flex items-center justify-end mt-4">
-            <x-primary-button>
-                {{ __('Email Password Reset Link') }}
-            </x-primary-button>
-        </div>
-    </form>
+    <p class="guest-footer">
+        Ingat password Anda?
+        <a class="guest-link" href="{{ route('login') }}">Masuk</a>
+    </p>
 </x-guest-layout>

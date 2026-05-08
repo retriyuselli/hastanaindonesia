@@ -26,7 +26,7 @@ class RegionForm
                     ->maxLength(255)
                     ->placeholder('Contoh: DPW Jakarta Selatan')
                     ->columnSpan(2)
-                    ->helperText('Nama resmi Dewan Pimpinan Wilayah'),
+                    ->helperText('Nama resmi Dewan Pengurus Wilayah'),
 
                 Select::make('province')
                     ->label('Provinsi')

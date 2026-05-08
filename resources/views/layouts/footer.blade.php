@@ -17,7 +17,7 @@
                                 class="h-12 w-auto object-contain transition-transform duration-300 group-hover:scale-110">
                             <!-- Subtle glow effect on hover -->
                             <div
-                                class="absolute -inset-1 bg-gradient-to-r from-blue-600 to-red-600 rounded-full opacity-0 group-hover:opacity-20 blur transition-opacity duration-300">
+                                class="absolute -inset-1 bg-gradient-to-r from-gray-900 to-red-600 rounded-full opacity-0 group-hover:opacity-20 blur transition-opacity duration-300">
                             </div>
                         </div>
 
@@ -33,7 +33,7 @@
                     </a>
                 </div>
                 <p class="text-sm text-gray-300 leading-relaxed mb-6">
-                    Himpunan Perusahaan Penata Acara Seluruh Indonesia - Organisasi resmi yang menaungi wedding
+                    Himpunan Perusahaan Penata Acara Pernikahan Seluruh Indonesia - Organisasi resmi yang menaungi wedding
                     organizer profesional di Indonesia.
                 </p>
                 <div class="flex space-x-3">
@@ -42,7 +42,7 @@
                         <i class="fab fa-facebook-f text-white text-xs"></i>
                     </a> --}}
                     <a href="https://www.instagram.com/hastana_indonesia" target="_blank"
-                        class="w-8 h-8 bg-pink-600 rounded-full flex items-center justify-center hover:bg-pink-700 transition-colors">
+                        class="w-8 h-8 bg-gray-800 rounded-full flex items-center justify-center hover:bg-hastana-red transition-colors">
                         <i class="fab fa-instagram text-white text-xs"></i>
                     </a>
                     {{-- <a href="https://twitter.com/hastanaindonesia" target="_blank"
@@ -100,15 +100,15 @@
                         </div>
                     </div>
                     <div class="flex items-center space-x-2">
-                        <i class="fas fa-phone text-blue-500 text-xs"></i>
+                        <i class="fas fa-phone text-hastana-red text-xs"></i>
                         <p class="text-sm text-gray-300">+62 811-3130-612</p>
                     </div>
                     <div class="flex items-center space-x-2">
-                        <i class="fas fa-envelope text-green-500 text-xs"></i>
+                        <i class="fas fa-envelope text-hastana-red text-xs"></i>
                         <p class="text-sm text-gray-300">info@hastanaindonesia.id</p>
                     </div>
                     <div class="flex items-center space-x-2">
-                        <i class="fas fa-globe text-purple-500 text-xs"></i>
+                        <i class="fas fa-globe text-hastana-red text-xs"></i>
                         <p class="text-sm text-gray-300">www.hastanaindonesia.id</p>
                     </div>
                 </div>
@@ -134,7 +134,7 @@
             <div class="flex justify-center items-center">
                 <div class="text-center">
                     <p class="text-gray-400 text-xs">
-                        <i class="fas fa-code text-blue-500 mr-1 text-xs"></i>
+                        <i class="fas fa-code text-hastana-red mr-1 text-xs"></i>
                         Developed by <span class="text-white font-semibold">PT. Makna Kreatif Indonesia</span>
                     </p>        
                     <p class="text-gray-500 text-xs mt-1">Makna Wedding & Event Planner</p>
@@ -148,7 +148,7 @@
 <div class="fixed bottom-6 left-6 z-50">
     <a href="https://wa.me/628113130612?text=Halo%20Kak,%20saya%20ingin%20berkonsultasi%20tentang%20HASTANA%20INDONESIA"
         target="_blank"
-        class="group bg-green-500 hover:bg-green-600 text-white p-4 rounded-full shadow-2xl transition-all duration-300 hover:scale-110 flex items-center justify-center">
+        class="group bg-hastana-red hover:bg-red-700 text-white p-4 rounded-full shadow-2xl transition-all duration-300 hover:scale-110 flex items-center justify-center">
         <i class="fab fa-whatsapp text-2xl"></i>
 
         <!-- Tooltip -->
@@ -161,7 +161,7 @@
         </div>
 
         <!-- Pulse Animation -->
-        <div class="absolute inset-0 bg-green-500 rounded-full animate-ping opacity-20"></div>
+        <div class="absolute inset-0 bg-hastana-red rounded-full animate-ping opacity-20"></div>
     </a>
 </div>
 
