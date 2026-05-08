@@ -4,10 +4,10 @@
 
 @section('content')
 <!-- Profile Hero -->
-<section class="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-16 mt-20">
+<section class="bg-gradient-to-r from-gray-900 to-red-700 text-white py-16 mt-20">
     <div class="container mx-auto px-4">
         <div class="max-w-4xl mx-auto text-center">
-            <div class="w-24 h-24 rounded-full mx-auto mb-4 shadow-xl overflow-hidden {{ auth()->user()->avatar ? '' : 'bg-gradient-to-r from-white to-gray-200 flex items-center justify-center text-blue-600 text-4xl font-bold' }}">
+            <div class="w-24 h-24 rounded-full mx-auto mb-4 shadow-xl overflow-hidden {{ auth()->user()->avatar ? '' : 'bg-gradient-to-r from-white to-gray-200 flex items-center justify-center text-red-600 text-4xl font-bold' }}">
                 @if(auth()->user()->avatar)
                     <img src="{{ Storage::url(auth()->user()->avatar) }}" alt="{{ auth()->user()->name }}" class="w-full h-full object-cover">
                 @else
@@ -15,7 +15,7 @@
                 @endif
             </div>
             <h1 class="text-4xl font-bold mb-2">{{ auth()->user()->name }}</h1>
-            <p class="text-blue-100">{{ auth()->user()->email }}</p>
+            <p class="text-red-100">{{ auth()->user()->email }}</p>
         </div>
     </div>
 </section>
@@ -31,7 +31,7 @@
                 <div class="lg:col-span-1">
                     <div class="bg-white rounded-lg shadow-md p-6 sticky top-24">
                         <h3 class="font-bold text-gray-900 mb-4 flex items-center">
-                            <i class="fas fa-user-cog text-blue-600 mr-2"></i>
+                            <i class="fas fa-user-cog text-red-600 mr-2"></i>
                             Pengaturan Akun
                         </h3>
                         <nav class="space-y-2">
@@ -50,7 +50,7 @@
                         </nav>
 
                         <div class="mt-6 pt-6 border-t border-gray-200">
-                            <a href="{{ route('dashboard') }}" class="flex items-center text-gray-600 hover:text-blue-600 transition">
+                            <a href="{{ route('dashboard') }}" class="flex items-center text-gray-600 hover:text-red-600 transition">
                                 <i class="fas fa-arrow-left mr-2"></i>
                                 Kembali ke Dashboard
                             </a>
@@ -64,8 +64,8 @@
                     <!-- Profile Information -->
                     <div id="profile-info" class="bg-white rounded-lg shadow-md p-6 scroll-mt-24">
                         <div class="flex items-center mb-6">
-                            <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mr-4">
-                                <i class="fas fa-user text-blue-600 text-xl"></i>
+                            <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center mr-4">
+                                <i class="fas fa-user text-red-600 text-xl"></i>
                             </div>
                             <div>
                                 <h2 class="text-2xl font-bold text-gray-900">Informasi Profil</h2>
@@ -84,13 +84,13 @@
                             <!-- Avatar Upload -->
                             <div>
                                 <label class="block text-sm font-semibold text-gray-700 mb-3">
-                                    <i class="fas fa-camera text-blue-600 mr-1"></i>
+                                    <i class="fas fa-camera text-red-600 mr-1"></i>
                                     Foto Profil
                                 </label>
                                 <div class="flex items-center gap-6">
                                     <!-- Current Avatar Preview -->
                                     <div class="relative">
-                                        <div id="avatar-preview" class="w-24 h-24 rounded-full overflow-hidden bg-gradient-to-r from-blue-500 to-blue-700 flex items-center justify-center text-white text-3xl font-bold shadow-lg">
+                                        <div id="avatar-preview" class="w-24 h-24 rounded-full overflow-hidden bg-gradient-to-r from-gray-900 to-red-600 flex items-center justify-center text-white text-3xl font-bold shadow-lg">
                                             @if($user->avatar)
                                                 <img src="{{ Storage::url($user->avatar) }}" alt="Avatar" class="w-full h-full object-cover">
                                             @else
@@ -132,7 +132,7 @@
 
                             <div>
                                 <label for="name" class="block text-sm font-semibold text-gray-700 mb-2">
-                                    <i class="fas fa-user text-blue-600 mr-1"></i>
+                                    <i class="fas fa-user text-red-600 mr-1"></i>
                                     Nama Lengkap
                                 </label>
                                 <input 
@@ -151,7 +151,7 @@
 
                             <div>
                                 <label for="email" class="block text-sm font-semibold text-gray-700 mb-2">
-                                    <i class="fas fa-envelope text-blue-600 mr-1"></i>
+                                    <i class="fas fa-envelope text-red-600 mr-1"></i>
                                     Alamat Email
                                 </label>
                                 <input 
@@ -172,7 +172,7 @@
                                             <i class="fas fa-exclamation-triangle mr-1"></i>
                                             Email Anda belum diverifikasi.
                                         </p>
-                                        <button type="submit" form="send-verification" class="text-sm text-blue-600 hover:text-blue-700 underline font-medium">
+                                        <button type="submit" form="send-verification" class="text-sm text-red-600 hover:text-red-700 underline font-medium">
                                             Kirim ulang email verifikasi
                                         </button>
 
@@ -188,7 +188,7 @@
 
                             <div>
                                 <label for="phone" class="block text-sm font-semibold text-gray-700 mb-2">
-                                    <i class="fas fa-phone text-blue-600 mr-1"></i>
+                                    <i class="fas fa-phone text-red-600 mr-1"></i>
                                     Nomor Telepon
                                 </label>
                                 <input
@@ -210,7 +210,7 @@
                             <!-- Informasi Pribadi -->
                             <div class="border-t border-gray-100 pt-6">
                                 <h3 class="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-4">
-                                    <i class="fas fa-id-card text-blue-600 mr-1"></i>
+                                    <i class="fas fa-id-card text-red-600 mr-1"></i>
                                     Informasi Pribadi
                                 </h3>
                                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -295,7 +295,7 @@
                             </div>
 
                             <div class="flex items-center gap-4 pt-4">
-                                <button type="submit" class="px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white font-semibold rounded-lg hover:from-blue-700 hover:to-blue-800 transition duration-200 shadow-md hover:shadow-lg">
+                                <button type="submit" class="px-6 py-3 bg-gradient-to-r from-gray-900 to-red-600 text-white font-semibold rounded-lg hover:from-black hover:to-red-700 transition duration-200 shadow-md hover:shadow-lg">
                                     <i class="fas fa-save mr-2"></i>
                                     Simpan Perubahan
                                 </button>
@@ -370,12 +370,12 @@
                                 @enderror
                             </div>
 
-                            <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                                <h4 class="font-semibold text-blue-900 mb-2 flex items-center">
+                            <div class="bg-red-50 border border-red-200 rounded-lg p-4">
+                                <h4 class="font-semibold text-red-900 mb-2 flex items-center">
                                     <i class="fas fa-info-circle mr-2"></i>
                                     Tips Password Aman:
                                 </h4>
-                                <ul class="text-sm text-blue-800 space-y-1">
+                                <ul class="text-sm text-red-800 space-y-1">
                                     <li><i class="fas fa-check text-green-600 mr-1"></i> Minimal 8 karakter</li>
                                     <li><i class="fas fa-check text-green-600 mr-1"></i> Kombinasi huruf besar dan kecil</li>
                                     <li><i class="fas fa-check text-green-600 mr-1"></i> Gunakan angka dan simbol</li>
@@ -481,13 +481,13 @@
     }
     
     .profile-nav-link:hover {
-        background: linear-gradient(135deg, rgba(30, 64, 175, 0.1), rgba(220, 38, 38, 0.05));
-        color: #1e40af;
+        background: rgba(220, 38, 38, 0.08);
+        color: #dc2626;
     }
-    
+
     .profile-nav-link.active {
-        background: linear-gradient(135deg, rgba(30, 64, 175, 0.1), rgba(220, 38, 38, 0.05));
-        color: #1e40af;
+        background: rgba(220, 38, 38, 0.1);
+        color: #dc2626;
         font-weight: 600;
     }
     
@@ -567,7 +567,7 @@
             // Reset preview to initial
             const preview = document.getElementById('avatar-preview');
             preview.innerHTML = '{{ strtoupper(substr($user->name ?? "U", 0, 1)) }}';
-            preview.className = 'w-24 h-24 rounded-full overflow-hidden bg-gradient-to-r from-blue-500 to-blue-700 flex items-center justify-center text-white text-3xl font-bold shadow-lg';
+            preview.className = 'w-24 h-24 rounded-full overflow-hidden bg-gradient-to-r from-gray-900 to-red-600 flex items-center justify-center text-white text-3xl font-bold shadow-lg';
             
             // Clear file input
             document.getElementById('avatar').value = '';

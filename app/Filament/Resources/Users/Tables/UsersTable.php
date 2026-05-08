@@ -51,6 +51,14 @@ class UsersTable
                     ->toggleable()
                     ->placeholder('Tidak ada'),
 
+                TextColumn::make('weddingOrganizer.organizer_name')
+                    ->label('Wedding Organizer')
+                    ->searchable()
+                    ->sortable()
+                    ->placeholder('—')
+                    ->icon('heroicon-m-building-storefront')
+                    ->color('gray'),
+
                 TextColumn::make('roles')
                     ->label('Role')
                     ->getStateUsing(fn (User $record): array => $record->getRoleNames()->all())

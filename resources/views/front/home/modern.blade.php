@@ -198,34 +198,31 @@
                 </a>
             </div>
 
-            <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div class="mt-8 grid grid-cols-2 lg:grid-cols-4 gap-4">
                 @forelse($featuredWeddingOrganizers->take(8) as $wo)
-                    <a href="{{ route('members.show', $wo->slug) }}" class="group rounded-2xl border border-slate-200 bg-white p-5 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition">
-                        <div class="flex items-center gap-4">
-                            <div class="w-14 h-14 shrink-0 rounded-2xl overflow-hidden bg-slate-100 flex items-center justify-center text-slate-500">
+                    <a href="{{ route('members.show', $wo->slug) }}" class="group rounded-2xl border border-slate-200 bg-white p-3 sm:p-5 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition flex flex-col">
+                        <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
+                            <div class="w-12 h-12 sm:w-14 sm:h-14 shrink-0 rounded-2xl overflow-hidden bg-slate-100 flex items-center justify-center text-slate-500 mx-auto sm:mx-0">
                                 @if($wo->logo)
                                     <img src="{{ asset('storage/' . $wo->logo) }}" alt="{{ $wo->brand_name ?? $wo->organizer_name }}" class="w-full h-full object-cover">
                                 @else
                                     <span class="text-lg font-bold">{{ strtoupper(substr($wo->brand_name ?: $wo->organizer_name, 0, 1)) }}</span>
                                 @endif
                             </div>
-                            <div class="min-w-0">
-                                <div class="text-sm font-bold text-slate-900 truncate">{{ \Illuminate\Support\Str::ucfirst($wo->brand_name ?: $wo->organizer_name) }}</div>
-                                <div class="text-xs text-slate-600 truncate">{{ $wo->city ?? '-' }}{{ $wo->province ? ', ' . $wo->province : '' }}</div>
-                                <div class="mt-2 inline-flex items-center gap-2">
-                                    <span class="inline-flex items-center gap-1 text-xs font-semibold text-amber-600">
-                                        <i class="fas fa-map-marker-alt text-[11px]"></i>
-                                        {{ $wo->region?->region_name ?? '-' }}
-                                    </span>
-                                    <!-- <span class="text-xs text-slate-500">{{ (int) ($wo->completed_events ?? 0) }} ulasan</span> -->
+                            <div class="min-w-0 text-center sm:text-left">
+                                <div class="text-xs sm:text-sm font-bold text-slate-900 truncate">{{ \Illuminate\Support\Str::ucfirst($wo->brand_name ?: $wo->organizer_name) }}</div>
+                                <div class="text-xs text-slate-600 truncate">{{ $wo->city ?? '-' }}</div>
+                                <div class="mt-1 inline-flex items-center gap-1 text-xs font-semibold text-amber-600">
+                                    <i class="fas fa-map-marker-alt text-[11px]"></i>
+                                    <span class="truncate">{{ $wo->region?->region_name ?? '-' }}</span>
                                 </div>
                             </div>
                         </div>
-                        <div class="mt-4 flex items-center justify-between">
-                            <span class="text-xs px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 font-semibold">
+                        <div class="mt-3 flex items-center justify-between">
+                            <span class="text-xs px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 font-semibold">
                                 {{ $wo->verification_status === 'verified' ? 'Terverifikasi' : 'Belum' }}
                             </span>
-                            <span class="text-xs font-semibold text-blue-700 group-hover:text-blue-800">Detail</span>
+                            <span class="text-xs font-semibold text-red-600 group-hover:text-red-700">Detail</span>
                         </div>
                     </a>
                 @empty
@@ -305,30 +302,30 @@
                 </a>
             </div>
 
-            <div class="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div class="mt-8 grid grid-cols-2 lg:grid-cols-4 gap-4">
                 @forelse($upcomingEvents as $event)
                     <a href="{{ route('events.show', $event->slug) }}" class="group rounded-2xl border border-slate-200 bg-white overflow-hidden shadow-sm hover:shadow-md transition">
                         <div class="aspect-[4/5] bg-slate-100 overflow-hidden">
                             <img src="{{ $event->image_url }}" alt="{{ $event->title }}" class="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-300">
                         </div>
-                        <div class="p-5">
-                            <div class="text-xs text-slate-600 flex items-center gap-2">
+                        <div class="p-3 sm:p-5">
+                            <div class="text-xs text-slate-600 flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
                                 <span class="inline-flex items-center gap-1">
                                     <i class="fas fa-calendar text-slate-400"></i>
                                     {{ $event->formatted_date }}
                                 </span>
-                                <span class="text-slate-300">•</span>
+                                <span class="hidden sm:inline text-slate-300">•</span>
                                 <span class="inline-flex items-center gap-1">
                                     <i class="fas fa-location-dot text-slate-400"></i>
                                     {{ $event->city ?? $event->location }}
                                 </span>
                             </div>
-                            <div class="mt-2 text-sm font-bold text-slate-900 line-clamp-2">{{ $event->title }}</div>
+                            <div class="mt-2 text-xs sm:text-sm font-bold text-slate-900 line-clamp-2">{{ $event->title }}</div>
                             <div class="mt-3 flex items-center justify-between">
-                                <span class="text-xs font-semibold text-blue-700">
+                                <span class="text-xs font-semibold text-red-600">
                                     {{ $event->is_free ? 'GRATIS' : $event->formatted_price }}
                                 </span>
-                                <span class="text-xs font-semibold text-slate-700 group-hover:text-blue-800">Detail</span>
+                                <span class="text-xs font-semibold text-slate-700 group-hover:text-red-600">Detail</span>
                             </div>
                         </div>
                     </a>
@@ -354,22 +351,22 @@
                 </a>
             </div>
 
-            <div class="mt-8 grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div class="mt-8 grid grid-cols-2 lg:grid-cols-4 gap-4">
                 @forelse($latestBlogs as $blog)
                     <a href="{{ route('blog.detail', $blog->slug) }}" class="group rounded-2xl border border-slate-200 bg-white overflow-hidden shadow-sm hover:shadow-md transition">
                         <div class="aspect-[4/5] bg-slate-100 overflow-hidden">
                             <img src="{{ $blog->featured_image_url }}" alt="{{ $blog->title }}" class="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-300">
                         </div>
-                        <div class="p-5">
-                            <div class="flex items-center justify-between gap-3">
-                                <span class="text-xs px-2.5 py-1 rounded-full bg-slate-100 text-slate-700 font-semibold">
+                        <div class="p-3 sm:p-5">
+                            <div class="flex items-center justify-between gap-2">
+                                <span class="text-xs px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full bg-slate-100 text-slate-700 font-semibold truncate">
                                     {{ $blog->category?->name ?? 'Artikel' }}
                                 </span>
-                                <span class="text-xs text-slate-500">{{ $blog->formatted_date }}</span>
+                                <span class="text-xs text-slate-500 shrink-0 hidden sm:inline">{{ $blog->formatted_date }}</span>
                             </div>
-                            <div class="mt-3 text-sm font-bold text-slate-900 line-clamp-2">{{ $blog->title }}</div>
-                            <div class="mt-2 text-sm text-slate-600 line-clamp-2">{{ $blog->excerpt ?: Str::limit(strip_tags($blog->content ?? ''), 120) }}</div>
-                            <div class="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-blue-700 group-hover:text-blue-800">
+                            <div class="mt-2 sm:mt-3 text-xs sm:text-sm font-bold text-slate-900 line-clamp-2">{{ $blog->title }}</div>
+                            <div class="mt-1 sm:mt-2 text-xs sm:text-sm text-slate-600 line-clamp-2 hidden sm:block">{{ $blog->excerpt ?: Str::limit(strip_tags($blog->content ?? ''), 120) }}</div>
+                            <div class="mt-3 sm:mt-4 inline-flex items-center gap-2 text-xs sm:text-sm font-semibold text-red-600 group-hover:text-red-700">
                                 Baca
                                 <i class="fas fa-arrow-right text-xs"></i>
                             </div>
