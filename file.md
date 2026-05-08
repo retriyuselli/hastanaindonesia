@@ -20,3 +20,12 @@ php artisan optimize
 
 # 6. Pastikan storage link (jika perlu)
 php artisan storage:link
+
+# 7. Optimize semua cache untuk production
+php artisan config:clear
+php artisan view:clear
+php artisan route:clear
+php artisan cache:clear
+php artisan config:cache
+php artisan view:cache
+php artisan route:cache 
