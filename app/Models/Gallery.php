@@ -165,12 +165,6 @@ class Gallery extends Model
             return $this->image;
         }
 
-        // If starts with 'galleries/', it's uploaded file
-        if (Str::startsWith($this->image, 'galleries/')) {
-            return asset('storage/'.$this->image);
-        }
-
-        // Otherwise, assume it's in storage
         return asset('storage/'.$this->image);
     }
 

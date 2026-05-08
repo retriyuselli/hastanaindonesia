@@ -15,12 +15,12 @@
                                     <img src="{{ asset('storage/' . auth()->user()->avatar) }}"
                                         alt="{{ auth()->user()->name }}"
                                         onerror="this.onerror=null; this.style.display='none'; this.nextElementSibling.style.display='flex';"
-                                        class="w-14 h-14 rounded-full object-cover border-2 border-blue-100">
-                                    <div class="w-14 h-14 bg-gradient-to-r from-blue-600 to-red-600 rounded-full flex items-center justify-center text-white text-xl font-bold" style="display: none;">
+                                        class="w-14 h-14 rounded-full object-cover border-2 border-red-100">
+                                    <div class="w-14 h-14 bg-gradient-to-r from-gray-900 to-red-600 rounded-full flex items-center justify-center text-white text-xl font-bold" style="display: none;">
                                         {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
                                     </div>
                                 @else
-                                    <div class="w-14 h-14 bg-gradient-to-r from-blue-600 to-red-600 rounded-full flex items-center justify-center text-white text-xl font-bold">
+                                    <div class="w-14 h-14 bg-gradient-to-r from-gray-900 to-red-600 rounded-full flex items-center justify-center text-white text-xl font-bold">
                                         {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
                                     </div>
                                 @endif
@@ -35,25 +35,25 @@
 
                         <div class="bg-white rounded-lg shadow-md p-4">
                             <nav class="grid grid-cols-2 lg:grid-cols-1 gap-2 text-sm">
-                                <a href="#ringkasan" class="flex items-center gap-2 px-3 py-2 rounded-lg text-gray-700 hover:bg-blue-50 transition">
-                                    <i class="fas fa-chart-pie text-blue-600 w-4"></i>
+                                <a href="#ringkasan" class="flex items-center gap-2 px-3 py-2 rounded-lg text-gray-700 hover:bg-red-50 transition">
+                                    <i class="fas fa-chart-pie text-red-600 w-4"></i>
                                     Ringkasan
                                 </a>
-                                <a href="#event-terdaftar" class="flex items-center gap-2 px-3 py-2 rounded-lg text-gray-700 hover:bg-blue-50 transition">
-                                    <i class="fas fa-ticket-alt text-blue-600 w-4"></i>
+                                <a href="#event-terdaftar" class="flex items-center gap-2 px-3 py-2 rounded-lg text-gray-700 hover:bg-red-50 transition">
+                                    <i class="fas fa-ticket-alt text-red-600 w-4"></i>
                                     Event Terdaftar
                                 </a>
-                                <a href="#event-rekomendasi" class="flex items-center gap-2 px-3 py-2 rounded-lg text-gray-700 hover:bg-blue-50 transition">
+                                <a href="#event-rekomendasi" class="flex items-center gap-2 px-3 py-2 rounded-lg text-gray-700 hover:bg-red-50 transition">
                                     <i class="fas fa-star text-yellow-500 w-4"></i>
                                     Event Rekomendasi
                                 </a>
-                                <a href="{{ route('profile.edit') }}" class="flex items-center gap-2 px-3 py-2 rounded-lg text-gray-700 hover:bg-blue-50 transition">
-                                    <i class="fas fa-user-circle text-blue-600 w-4"></i>
+                                <a href="{{ route('profile.edit') }}" class="flex items-center gap-2 px-3 py-2 rounded-lg text-gray-700 hover:bg-red-50 transition">
+                                    <i class="fas fa-user-circle text-red-600 w-4"></i>
                                     Edit Profil
                                 </a>
                                 @if($myWeddingOrganizer && $myWeddingOrganizer->slug)
-                                    <a href="{{ route('members.show', $myWeddingOrganizer->slug) }}" class="flex items-center gap-2 px-3 py-2 rounded-lg text-gray-700 hover:bg-blue-50 transition">
-                                        <i class="fas fa-building text-blue-600 w-4"></i>
+                                    <a href="{{ route('members.show', $myWeddingOrganizer->slug) }}" class="flex items-center gap-2 px-3 py-2 rounded-lg text-gray-700 hover:bg-red-50 transition">
+                                        <i class="fas fa-building text-red-600 w-4"></i>
                                         Wedding Organizer
                                     </a>
                                 @else
@@ -70,9 +70,15 @@
                                 <div class="flex items-center justify-between mb-4">
                                     <h3 class="font-bold text-gray-900">Wedding Organizer Saya</h3>
                                     @if($myWeddingOrganizer->slug)
-                                        <a href="{{ route('members.show', $myWeddingOrganizer->slug) }}" class="text-sm text-blue-600 hover:text-blue-700 font-medium">
-                                            Detail
-                                        </a>
+                                        @if($myWeddingOrganizer->verification_status === 'verified')
+                                            <a href="{{ route('members.show', $myWeddingOrganizer->slug) }}" class="text-sm text-red-600 hover:text-red-700 font-medium">
+                                                Detail
+                                            </a>
+                                        @else
+                                            <button onclick="document.getElementById('wo-pending-modal').style.display='flex'" class="text-sm text-red-600 hover:text-red-700 font-medium">
+                                                Detail
+                                            </button>
+                                        @endif
                                     @endif
                                 </div>
 
@@ -80,9 +86,9 @@
                                     @if($myWeddingOrganizer->logo)
                                         <img src="{{ Storage::url($myWeddingOrganizer->logo) }}"
                                             alt="{{ $myWeddingOrganizer->organizer_name }}"
-                                            class="w-12 h-12 rounded-full object-cover border-2 border-blue-100">
+                                            class="w-12 h-12 rounded-full object-cover border-2 border-red-100">
                                     @else
-                                        <div class="w-12 h-12 bg-gradient-to-r from-blue-600 to-red-600 rounded-full flex items-center justify-center text-white text-lg font-bold">
+                                        <div class="w-12 h-12 bg-gradient-to-r from-gray-900 to-red-600 rounded-full flex items-center justify-center text-white text-lg font-bold">
                                             {{ strtoupper(substr($myWeddingOrganizer->organizer_name, 0, 1)) }}
                                         </div>
                                     @endif
@@ -96,7 +102,7 @@
                                 <div class="mt-4 flex items-center justify-between text-sm border-t border-gray-100 pt-3">
                                     <span class="text-gray-600">Status</span>
                                     @if($myWeddingOrganizer->verification_status == 'verified')
-                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
                                             <i class="fas fa-check-circle mr-1"></i>
                                             Terverifikasi
                                         </span>
@@ -108,24 +114,17 @@
                                     @endif
                                 </div>
 
-                                <div class="mt-2 flex items-center justify-between text-sm">
-                                    <span class="text-gray-600">Rating</span>
-                                    <span class="font-semibold text-gray-900">
-                                        <i class="fas fa-star text-yellow-400"></i>
-                                        {{ number_format($myWeddingOrganizer->rating ?? 0, 1) }}/5
-                                    </span>
-                                </div>
                             </div>
                         @else
-                            <div class="bg-gradient-to-r from-blue-50 to-blue-100 rounded-lg shadow-md p-6 border border-blue-200">
+                            <div class="bg-gradient-to-r from-red-50 to-red-100 rounded-lg shadow-md p-6 border border-red-200">
                                 <div class="flex items-start gap-4">
-                                    <div class="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center flex-shrink-0">
+                                    <div class="w-12 h-12 bg-red-600 rounded-xl flex items-center justify-center shrink-0">
                                         <i class="fas fa-building text-white text-xl"></i>
                                     </div>
                                     <div>
                                         <h3 class="font-bold text-gray-900">Daftarkan Wedding Organizer</h3>
                                         <p class="text-sm text-gray-600 mt-1">Lengkapi data WO untuk mempermudah pemantauan dan akses fitur.</p>
-                                        <a href="{{ route('join') }}" class="inline-flex items-center mt-4 px-4 py-2 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition">
+                                        <a href="{{ route('join') }}" class="inline-flex items-center mt-4 px-4 py-2 bg-red-600 text-white font-semibold rounded-lg hover:bg-red-700 transition">
                                             <i class="fas fa-plus-circle mr-2"></i>
                                             Daftar
                                         </a>
@@ -137,19 +136,19 @@
                         <div class="bg-white rounded-lg shadow-md p-6">
                             <h3 class="font-bold text-gray-900 mb-4">Quick Links</h3>
                             <div class="space-y-2 text-sm">
-                                <a href="{{ route('events') }}" class="flex items-center py-2 px-3 text-gray-700 hover:bg-blue-50 rounded-lg transition">
-                                    <i class="fas fa-calendar mr-3 text-blue-600"></i>
+                                <a href="{{ route('events') }}" class="flex items-center py-2 px-3 text-gray-700 hover:bg-red-50 rounded-lg transition">
+                                    <i class="fas fa-calendar mr-3 text-red-600"></i>
                                     Semua Event
                                 </a>
-                                <a href="{{ route('events.free') }}" class="flex items-center py-2 px-3 text-gray-700 hover:bg-blue-50 rounded-lg transition">
+                                <a href="{{ route('events.free') }}" class="flex items-center py-2 px-3 text-gray-700 hover:bg-red-50 rounded-lg transition">
                                     <i class="fas fa-gift mr-3 text-green-600"></i>
                                     Event Gratis
                                 </a>
-                                <a href="{{ route('events.trending') }}" class="flex items-center py-2 px-3 text-gray-700 hover:bg-blue-50 rounded-lg transition">
+                                <a href="{{ route('events.trending') }}" class="flex items-center py-2 px-3 text-gray-700 hover:bg-red-50 rounded-lg transition">
                                     <i class="fas fa-fire mr-3 text-red-600"></i>
                                     Event Trending
                                 </a>
-                                <a href="{{ route('blog') }}" class="flex items-center py-2 px-3 text-gray-700 hover:bg-blue-50 rounded-lg transition">
+                                <a href="{{ route('blog') }}" class="flex items-center py-2 px-3 text-gray-700 hover:bg-red-50 rounded-lg transition">
                                     <i class="fas fa-newspaper mr-3 text-purple-600"></i>
                                     Blog
                                 </a>
@@ -165,7 +164,7 @@
                                 <h2 class="text-2xl font-bold text-gray-900">Ringkasan</h2>
                                 <p class="text-sm text-gray-600 mt-1">Pantau aktivitas dan event Anda dari satu tempat.</p>
                             </div>
-                            <a href="{{ route('events') }}" class="text-blue-600 hover:text-blue-700 text-sm font-medium">
+                            <a href="{{ route('events') }}" class="text-red-600 hover:text-red-700 text-sm font-medium">
                                 Lihat Semua Event <i class="fas fa-arrow-right ml-1"></i>
                             </a>
                         </div>
@@ -173,10 +172,10 @@
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                             <div class="rounded-lg border border-gray-200 p-4">
                                 <div class="flex items-center justify-between">
-                                    <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-                                        <i class="fas fa-ticket-alt text-blue-600"></i>
+                                    <div class="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center">
+                                        <i class="fas fa-ticket-alt text-red-600"></i>
                                     </div>
-                                    <span class="text-2xl font-bold text-blue-600">{{ $totalRegistered }}</span>
+                                    <span class="text-2xl font-bold text-red-600">{{ $totalRegistered }}</span>
                                 </div>
                                 <div class="mt-3 text-sm text-gray-600 font-medium">Event Terdaftar</div>
                                 <div class="text-xs text-gray-500">Total event yang Anda ikuti</div>
@@ -195,10 +194,10 @@
 
                             <div class="rounded-lg border border-gray-200 p-4">
                                 <div class="flex items-center justify-between">
-                                    <div class="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
-                                        <i class="fas fa-check-circle text-purple-600"></i>
+                                    <div class="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center">
+                                        <i class="fas fa-check-circle text-gray-600"></i>
                                     </div>
-                                    <span class="text-2xl font-bold text-purple-600">{{ $completedEvents }}</span>
+                                    <span class="text-2xl font-bold text-gray-700">{{ $completedEvents }}</span>
                                 </div>
                                 <div class="mt-3 text-sm text-gray-600 font-medium">Event Selesai</div>
                                 <div class="text-xs text-gray-500">Event yang sudah Anda ikuti</div>
@@ -209,7 +208,7 @@
                     <div id="event-terdaftar" class="scroll-mt-24 bg-white rounded-lg shadow-md p-6">
                         <div class="flex items-center justify-between mb-6">
                             <h2 class="text-2xl font-bold text-gray-900">Event Terdaftar</h2>
-                            <a href="{{ route('events') }}" class="text-blue-600 hover:text-blue-700 text-sm font-medium">
+                            <a href="{{ route('events') }}" class="text-red-600 hover:text-red-700 text-sm font-medium">
                                 Lihat Semua <i class="fas fa-arrow-right ml-1"></i>
                             </a>
                         </div>
@@ -220,7 +219,7 @@
                                 $statusColors = [
                                     'pending' => 'bg-yellow-100 text-yellow-800',
                                     'confirmed' => 'bg-green-100 text-green-800',
-                                    'attended' => 'bg-blue-100 text-blue-800',
+                                    'attended' => 'bg-gray-100 text-gray-700',
                                     'cancelled' => 'bg-red-100 text-red-800',
                                 ];
                                 $statusLabels = [
@@ -231,7 +230,7 @@
                                 ];
                             @endphp
 
-                            <div class="border border-gray-200 rounded-lg p-4 hover:border-blue-300 transition duration-200 mb-4">
+                            <div class="border border-gray-200 rounded-lg p-4 hover:border-red-300 transition duration-200 mb-4">
                                 <div class="flex flex-col md:flex-row md:items-center gap-4">
                                     <div class="flex-shrink-0">
                                         <img src="{{ $event->image_url ?? asset('images/default-event.png') }}"
@@ -243,7 +242,7 @@
                                     <div class="flex-grow">
                                         <div class="flex items-start justify-between mb-2">
                                             <div>
-                                                <h3 class="font-bold text-lg text-gray-900 hover:text-blue-600 mb-1">
+                                                <h3 class="font-bold text-lg text-gray-900 hover:text-red-600 mb-1">
                                                     <a href="{{ route('events.show', $event->slug) }}">{{ $event->title }}</a>
                                                 </h3>
                                                 <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ $statusColors[$participant->status] ?? 'bg-gray-100 text-gray-800' }}">
@@ -269,7 +268,7 @@
 
                                         <div class="mt-3 flex flex-wrap gap-2">
                                             <a href="{{ route('events.show', $event->slug) }}"
-                                                class="inline-flex items-center px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition duration-200">
+                                                class="inline-flex items-center px-4 py-2 bg-red-600 text-white text-sm font-medium rounded-lg hover:bg-red-700 transition duration-200">
                                                 <i class="fas fa-eye mr-2"></i>
                                                 Detail Event
                                             </a>
@@ -302,7 +301,7 @@
                                             @endif
 
                                             @if($participant->status === 'attended')
-                                                <span class="inline-flex items-center px-4 py-2 bg-blue-100 text-blue-800 text-sm font-medium rounded-lg">
+                                                <span class="inline-flex items-center px-4 py-2 bg-gray-100 text-gray-700 text-sm font-medium rounded-lg">
                                                     <i class="fas fa-check-circle mr-2"></i>
                                                     Sudah Hadir
                                                 </span>
@@ -316,7 +315,7 @@
                                             @endif
 
                                             @if($participant->payment_proof)
-                                                <button class="inline-flex items-center px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 transition duration-200"
+                                                <button class="inline-flex items-center px-4 py-2 bg-gray-700 text-white text-sm font-medium rounded-lg hover:bg-gray-800 transition duration-200"
                                                     onclick="openPaymentProofModal('{{ route('files.event-participants.payment-proof', $participant) }}')">
                                                     <i class="fas fa-receipt mr-2"></i>
                                                     Lihat Bukti Pembayaran
@@ -333,7 +332,7 @@
                                 </div>
                                 <h3 class="text-xl font-semibold text-gray-900 mb-2">Belum Ada Event</h3>
                                 <p class="text-gray-600 mb-6">Anda belum mendaftar event apapun. Yuk, cari event menarik!</p>
-                                <a href="{{ route('events') }}" class="inline-flex items-center px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition duration-200">
+                                <a href="{{ route('events') }}" class="inline-flex items-center px-6 py-3 bg-red-600 text-white font-semibold rounded-lg hover:bg-red-700 transition duration-200">
                                     <i class="fas fa-search mr-2"></i>
                                     Cari Event
                                 </a>
@@ -346,14 +345,14 @@
 
                         <div class="space-y-4">
                             @forelse($recommendedEvents as $event)
-                                <div class="flex gap-4 p-4 border border-gray-200 rounded-lg hover:border-blue-300 hover:shadow-md transition">
+                                <div class="flex gap-4 p-4 border border-gray-200 rounded-lg hover:border-red-300 hover:shadow-md transition">
                                     @if($event->image_url)
                                         <img src="{{ $event->image_url }}"
                                             alt="{{ $event->title }}"
-                                            onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\\'w-24 h-24 bg-gradient-to-br from-blue-500 to-blue-700 rounded-lg flex items-center justify-center\\'><i class=\\'fas fa-calendar-alt text-white text-2xl\\'></i></div>'"
+                                            onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\'w-24 h-24 bg-gradient-to-br from-gray-800 to-red-700 rounded-lg flex items-center justify-center\'><i class=\'fas fa-calendar-alt text-white text-2xl\'></i></div>'"
                                             class="w-24 h-24 object-cover rounded-lg">
                                     @else
-                                        <div class="w-24 h-24 bg-gradient-to-br from-blue-500 to-blue-700 rounded-lg flex items-center justify-center">
+                                        <div class="w-24 h-24 bg-gradient-to-br from-gray-800 to-red-700 rounded-lg flex items-center justify-center">
                                             <i class="fas fa-calendar-alt text-white text-2xl"></i>
                                         </div>
                                     @endif
@@ -361,18 +360,18 @@
                                     <div class="flex-1">
                                         <h3 class="font-bold text-gray-900 mb-1 line-clamp-1">{{ $event->title }}</h3>
                                         <p class="text-sm text-gray-600 mb-2">
-                                            <i class="fas fa-calendar text-blue-600 mr-1"></i>
+                                            <i class="fas fa-calendar text-red-600 mr-1"></i>
                                             {{ $event->formatted_date }}
                                         </p>
                                         <div class="flex items-center justify-between">
-                                            <span class="text-sm font-semibold text-blue-600">
+                                            <span class="text-sm font-semibold text-red-600">
                                                 @if($event->is_free)
                                                     GRATIS
                                                 @else
                                                     {{ $event->formatted_price }}
                                                 @endif
                                             </span>
-                                            <a href="{{ route('events.show', $event->slug) }}" class="text-sm text-blue-600 hover:text-blue-700 font-medium">
+                                            <a href="{{ route('events.show', $event->slug) }}" class="text-sm text-red-600 hover:text-red-700 font-medium">
                                                 Lihat Detail <i class="fas fa-arrow-right ml-1"></i>
                                             </a>
                                         </div>
@@ -384,7 +383,7 @@
                         </div>
 
                         <div class="mt-6 text-center">
-                            <a href="{{ route('events.featured') }}" class="text-blue-600 hover:text-blue-700 font-medium">
+                            <a href="{{ route('events.featured') }}" class="text-red-600 hover:text-red-700 font-medium">
                                 Lihat Semua Event Featured <i class="fas fa-arrow-right ml-1"></i>
                             </a>
                         </div>
@@ -397,6 +396,59 @@
 
 <!-- Include Modals -->
 @include('partials.payment-proof-modal')
+
+@if($myWeddingOrganizer && $myWeddingOrganizer->verification_status !== 'verified')
+<!-- WO Pending Modal -->
+<div id="wo-pending-modal" class="fixed inset-0 z-9999 items-center justify-center p-4" style="display:none;background:rgba(0,0,0,0.45);">
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-sm p-8 text-center" style="animation:woPendingIn .3s cubic-bezier(.34,1.56,.64,1) both">
+
+        <!-- Icon -->
+        <div class="flex items-center justify-center mx-auto mb-5 w-20 h-20 rounded-full bg-yellow-100">
+            <svg class="w-10 h-10 text-yellow-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="10"/>
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6l4 2"/>
+            </svg>
+        </div>
+
+        <!-- Title & Message -->
+        <h3 class="text-xl font-bold text-gray-900 mb-2">Sedang Diproses</h3>
+        <p class="text-gray-600 text-sm leading-relaxed mb-2">
+            Pendaftaran <strong>{{ $myWeddingOrganizer->organizer_name }}</strong> sedang dalam proses verifikasi oleh tim HASTANA Indonesia.
+        </p>
+        <p class="text-gray-500 text-sm leading-relaxed mb-6">
+            Proses verifikasi membutuhkan waktu <strong>3–5 hari kerja</strong>. Kami akan menghubungi Anda melalui email setelah verifikasi selesai.
+        </p>
+
+        <!-- Info box -->
+        <div class="bg-yellow-50 border border-yellow-200 rounded-xl px-4 py-3 mb-6 text-left">
+            <p class="text-xs text-yellow-800 flex items-start gap-2">
+                <svg class="w-4 h-4 shrink-0 mt-0.5 text-yellow-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M12 2a10 10 0 100 20A10 10 0 0012 2z"/>
+                </svg>
+                Jika sudah lebih dari 5 hari kerja dan belum ada kabar, silakan hubungi admin HASTANA melalui kontak resmi.
+            </p>
+        </div>
+
+        <!-- Close button -->
+        <button onclick="document.getElementById('wo-pending-modal').style.display='none'" class="w-full py-2.5 bg-yellow-500 hover:bg-yellow-600 text-white font-semibold rounded-xl transition">
+            Mengerti
+        </button>
+    </div>
+</div>
+
+<style>
+@keyframes woPendingIn {
+    from { opacity:0; transform:scale(.85) translateY(20px); }
+    to   { opacity:1; transform:scale(1) translateY(0); }
+}
+</style>
+
+<script>
+document.getElementById('wo-pending-modal')?.addEventListener('click', function(e) {
+    if (e.target === this) this.style.display = 'none';
+});
+</script>
+@endif
 @include('partials.ticket-modal')
 
 <!-- Coming Soon Modal -->
@@ -406,7 +458,7 @@
         <button onclick="closeComingSoonModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition">
             <i class="fas fa-times text-2xl"></i>
         </button>
-        
+
         <!-- Icon -->
         <div class="text-center mb-6">
             <div class="w-20 h-20 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
@@ -415,16 +467,16 @@
             <h3 class="text-2xl font-bold text-gray-900 mb-2">Coming Soon</h3>
             <div class="w-16 h-1 bg-gradient-to-r from-yellow-400 to-orange-500 mx-auto rounded-full"></div>
         </div>
-        
+
         <!-- Content -->
         <div class="text-center mb-6">
             <p class="text-gray-600 leading-relaxed mb-4">
                 Link meeting online untuk event ini belum tersedia saat ini.
             </p>
-            <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
+            <div class="bg-red-50 border border-red-200 rounded-lg p-4 mb-4">
                 <div class="flex items-start">
-                    <i class="fas fa-info-circle text-blue-600 mt-1 mr-3"></i>
-                    <div class="text-left text-sm text-blue-800">
+                    <i class="fas fa-info-circle text-red-600 mt-1 mr-3"></i>
+                    <div class="text-left text-sm text-red-800">
                         <p class="font-semibold mb-1">Informasi:</p>
                         <p>Link akan diupdate oleh panitia pada <strong>hari pelaksanaan event</strong> untuk keamanan.</p>
                     </div>
@@ -435,10 +487,10 @@
                 Selalu pantau Dashboard untuk melihat status event.
             </p>
         </div>
-        
+
         <!-- Action Button -->
-        <button onclick="closeComingSoonModal()" 
-                class="w-full px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white font-semibold rounded-lg hover:from-blue-700 hover:to-blue-800 transition duration-200 shadow-md">
+        <button onclick="closeComingSoonModal()"
+                class="w-full px-6 py-3 bg-gradient-to-r from-gray-900 to-red-600 text-white font-semibold rounded-lg hover:from-black hover:to-red-700 transition duration-200 shadow-md">
             <i class="fas fa-check mr-2"></i>
             Mengerti
         </button>
@@ -459,14 +511,12 @@ function closeComingSoonModal() {
     document.body.style.overflow = 'auto';
 }
 
-// Close modal when clicking outside
 document.getElementById('comingSoonModal').addEventListener('click', function(e) {
     if (e.target === this) {
         closeComingSoonModal();
     }
 });
 
-// Close modal with ESC key
 document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') {
         closeComingSoonModal();

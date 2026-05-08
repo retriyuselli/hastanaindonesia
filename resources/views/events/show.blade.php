@@ -92,13 +92,6 @@
                                 </div>
                                 <div class="text-xs text-gray-600">Sisa Kuota</div>
                             </div>
-                            @if($event->rating > 0)
-                                <div class="text-center min-w-[100px]">
-                                    <i class="fas fa-star text-hastana-red text-xl mb-1.5"></i>
-                                    <div class="text-xl font-bold text-gray-900">{{ number_format($event->rating, 1) }}</div>
-                                    <div class="text-xs text-gray-600">Rating</div>
-                                </div>
-                            @endif
                             <div class="text-center min-w-[100px]">
                                 <i class="fas fa-eye text-hastana-red text-xl mb-1.5"></i>
                                 <div class="text-xl font-bold text-gray-900">{{ $event->total_reviews }}</div>
@@ -1071,15 +1064,6 @@
                         <i class="fas fa-star text-hastana-red mr-2"></i> Rating & Reviews
                     </h2>
 
-                    <!-- Success/Error Messages -->
-                    @if(session('success'))
-                        <div class="bg-gray-50 border border-gray-200 rounded-lg p-4 mb-5">
-                            <div class="flex items-center gap-3">
-                                <i class="fas fa-check-circle text-hastana-red text-xl"></i>
-                                <p class="text-gray-800 text-sm font-medium">{{ session('success') }}</p>
-                            </div>
-                        </div>
-                    @endif
 
                     @if(session('error'))
                         <div class="bg-red-50 border border-red-200 rounded-lg p-4 mb-5">
@@ -1105,60 +1089,6 @@
                             </div>
                         </div>
                     @endif
-
-                    <!-- Rating Overview -->
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-6 pb-6 border-b border-gray-200">
-                        <!-- Average Rating -->
-                        <div class="text-center">
-                            <div class="text-5xl font-bold text-gray-900 mb-2">
-                                {{ $event->rating > 0 ? number_format($event->rating, 1) : 'N/A' }}
-                            </div>
-                            <div class="flex justify-center mb-2">
-                                @if($event->rating > 0)
-                                    @for($i = 1; $i <= 5; $i++)
-                                        @if($i <= floor($event->rating))
-                                            <i class="fas fa-star text-hastana-red text-xl"></i>
-                                        @elseif($i - 0.5 <= $event->rating)
-                                            <i class="fas fa-star-half-alt text-hastana-red text-xl"></i>
-                                        @else
-                                            <i class="far fa-star text-gray-300 text-xl"></i>
-                                        @endif
-                                    @endfor
-                                @else
-                                    @for($i = 1; $i <= 5; $i++)
-                                        <i class="far fa-star text-gray-300 text-xl"></i>
-                                    @endfor
-                                @endif
-                            </div>
-                            <div class="text-sm text-gray-600">
-                                {{ $event->total_reviews }} {{ $event->total_reviews == 1 ? 'review' : 'reviews' }}
-                            </div>
-                        </div>
-
-                        <!-- Rating Distribution -->
-                        <div class="md:col-span-2">
-                            @foreach([5, 4, 3, 2, 1] as $star)
-                                @php
-                                    $distribution = collect($ratingDistribution)->firstWhere('rating', $star);
-                                    $count = $distribution['count'] ?? 0;
-                                    $percentage = $distribution['percentage'] ?? 0;
-                                @endphp
-                                <div class="flex items-center gap-3 mb-2">
-                                    <div class="flex items-center gap-1 min-w-[80px]">
-                                        <span class="text-sm font-medium text-gray-700">{{ $star }}</span>
-                                        <i class="fas fa-star text-hastana-red text-xs"></i>
-                                    </div>
-                                    <div class="flex-1 bg-gray-200 rounded-full h-2 overflow-hidden">
-                                        <div class="bg-hastana-red h-full transition-all duration-300" 
-                                             data-progress-width="{{ $percentage }}" style="width: 0%"></div>
-                                    </div>
-                                    <span class="text-sm text-gray-600 min-w-[60px] text-right">
-                                        {{ $count }} ({{ number_format($percentage, 0) }}%)
-                                    </span>
-                                </div>
-                            @endforeach
-                        </div>
-                    </div>
 
                     <!-- Write a Review Section (Only for verified participants) -->
                     @auth

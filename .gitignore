@@ -20,6 +20,7 @@
 /vendor
 /.info.md
 /PRODUCT_MANAGEMENT.md
+/file.md
 Homestead.json
 Homestead.yaml
 Thumbs.db

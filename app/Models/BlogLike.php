@@ -51,7 +51,7 @@ class BlogLike extends Model
     /**
      * Check if IP has already liked this blog
      */
-    public static function hasLiked($blogId, $ipAddress)
+    public static function hasLiked(int $blogId, string $ipAddress): bool
     {
         return static::where('blog_id', $blogId)
             ->where('ip_address', $ipAddress)
@@ -61,7 +61,7 @@ class BlogLike extends Model
     /**
      * Toggle like for a blog
      */
-    public static function toggle($blogId, $ipAddress, $userAgent = null)
+    public static function toggle(int $blogId, string $ipAddress, ?string $userAgent = null): array
     {
         $existing = static::where('blog_id', $blogId)
             ->where('ip_address', $ipAddress)
@@ -69,16 +69,17 @@ class BlogLike extends Model
 
         if ($existing) {
             $existing->delete();
-
-            return ['liked' => false, 'action' => 'unliked', 'count' => Blog::find($blogId)->likes_count];
         } else {
             static::create([
                 'blog_id' => $blogId,
                 'ip_address' => $ipAddress,
                 'user_agent' => $userAgent,
             ]);
-
-            return ['liked' => true, 'action' => 'liked', 'count' => Blog::find($blogId)->likes_count];
         }
+
+        $liked = ! $existing;
+        $count = Blog::find($blogId)->likes_count;
+
+        return ['liked' => $liked, 'action' => $liked ? 'liked' : 'unliked', 'count' => $count];
     }
 }

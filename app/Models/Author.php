@@ -87,6 +87,6 @@ class Author extends Model
      */
     public function getTotalLikesAttribute(): int
     {
-        return $this->blogs()->withCount('likes')->get()->sum('likes_count');
+        return BlogLike::whereIn('blog_id', $this->blogs()->pluck('id'))->count();
     }
 }

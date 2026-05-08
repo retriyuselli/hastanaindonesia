@@ -350,32 +350,6 @@ document.addEventListener('DOMContentLoaded', function() {
                             </p>
                         </div>
                         
-                        <div class="flex items-center justify-between py-3 border-t border-b border-gray-200">
-                            <div class="text-center flex-1">
-                                <div class="flex items-center justify-center text-hastana-red mb-1">
-                                    @for($i = 1; $i <= 5; $i++)
-                                        @if($i <= floor($member->rating ?? 0))
-                                            <i class="fas fa-star text-xs"></i>
-                                        @else
-                                            <i class="far fa-star text-xs"></i>
-                                        @endif
-                                    @endfor
-                                </div>
-                                <p class="text-xs text-gray-600">
-                                    <span class="font-bold text-gray-900">{{ number_format($member->rating ?? 0, 1) }}/5</span> 
-                                    ({{ $member->completed_events ?? 0 }} ulasan)
-                                </p>
-                            </div>
-                        </div>
-                        
-                        @if($member->price_range_min && $member->price_range_max)
-                        <div>
-                            <p class="text-xs text-gray-600 mb-1">Kisaran Harga</p>
-                            <p class="text-xs font-semibold text-gray-900">
-                                Rp {{ number_format($member->price_range_min) }} - {{ number_format($member->price_range_max) }}
-                            </p>
-                        </div>
-                        @endif
                         
                         @if($member->established_year)
                         <div>
@@ -629,16 +603,6 @@ document.addEventListener('DOMContentLoaded', function() {
                         <div class="bg-gray-50 rounded-lg p-6 mb-6">
                             <div class="flex items-center gap-8">
                                 <div class="text-center">
-                                    <div class="text-4xl font-bold text-gray-900 mb-2">{{ number_format($member->rating ?? 0, 1) }}</div>
-                                    <div class="flex items-center justify-center text-hastana-red mb-2">
-                                        @for($i = 1; $i <= 5; $i++)
-                                            @if($i <= floor($member->rating ?? 0))
-                                                <i class="fas fa-star"></i>
-                                            @else
-                                                <i class="far fa-star"></i>
-                                            @endif
-                                        @endfor
-                                    </div>
                                     <p class="text-sm text-gray-600">{{ $member->completed_events ?? 0 }} ulasan</p>
                                 </div>
                                 
@@ -707,7 +671,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                     </div>
                                     <div class="text-right">
                                         <p class="text-xs text-gray-500 mb-1">Mulai dari</p>
-                                        <p class="text-2xl font-bold text-hastana-red">Rp {{ number_format($member->price_range_min ?? 5000000) }}</p>
+                                        <p class="text-2xl font-bold text-hastana-red">Rp {{ number_format(5000000) }}</p>
                                     </div>
                                 </div>
                                 <ul class="space-y-2">
@@ -743,7 +707,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                     </div>
                                     <div class="text-right">
                                         <p class="text-xs text-gray-500 mb-1">Mulai dari</p>
-                                        <p class="text-2xl font-bold text-hastana-red">Rp {{ number_format(($member->price_range_min ?? 5000000) + 10000000) }}</p>
+                                        <p class="text-2xl font-bold text-hastana-red">Rp {{ number_format(15000000) }}</p>
                                     </div>
                                 </div>
                                 <ul class="space-y-2">
@@ -782,7 +746,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                     </div>
                                     <div class="text-right">
                                         <p class="text-xs text-gray-500 mb-1">Mulai dari</p>
-                                        <p class="text-2xl font-bold text-hastana-red">Rp {{ number_format($member->price_range_max ?? 50000000) }}</p>
+                                        <p class="text-2xl font-bold text-hastana-red">Rp {{ number_format(50000000) }}</p>
                                     </div>
                                 </div>
                                 <ul class="space-y-2">
@@ -871,29 +835,6 @@ document.addEventListener('DOMContentLoaded', function() {
                             
                             <!-- Additional Info -->
                             <div class="space-y-4">
-                                @if($member->price_range_min && $member->price_range_max)
-                                <div>
-                                    <p class="text-sm font-semibold text-gray-700 mb-1">Kisaran Harga</p>
-                                    <p class="text-sm text-gray-900">Rp {{ number_format($member->price_range_min) }} - Rp {{ number_format($member->price_range_max) }}</p>
-                                </div>
-                                @endif
-                                
-                                <div>
-                                    <p class="text-sm font-semibold text-gray-700 mb-1">Rating</p>
-                                    <div class="flex items-center">
-                                        <div class="flex text-hastana-red mr-2">
-                                            @for($i = 1; $i <= 5; $i++)
-                                                @if($i <= floor($member->rating ?? 0))
-                                                    <i class="fas fa-star text-sm"></i>
-                                                @else
-                                                    <i class="far fa-star text-sm"></i>
-                                                @endif
-                                            @endfor
-                                        </div>
-                                        <span class="text-sm text-gray-900">{{ number_format($member->rating ?? 0, 1) }}/5 ({{ $member->completed_events ?? 0 }} ulasan)</span>
-                                    </div>
-                                </div>
-                                
                                 @if($member->website)
                                 <div>
                                     <p class="text-sm font-semibold text-gray-700 mb-1">Website</p>
@@ -963,10 +904,6 @@ document.addEventListener('DOMContentLoaded', function() {
                             <div class="text-center p-6 bg-gray-50 rounded-lg">
                                 <div class="text-3xl font-bold text-hastana-red mb-2">{{ date('Y') - ($member->established_year ?? date('Y')) }}+</div>
                                 <p class="text-sm text-gray-600">Tahun Pengalaman</p>
-                            </div>
-                            <div class="text-center p-6 bg-gray-50 rounded-lg">
-                                <div class="text-3xl font-bold text-hastana-red mb-2">{{ number_format($member->rating ?? 0, 1) }}</div>
-                                <p class="text-sm text-gray-600">Rating Pelanggan</p>
                             </div>
                         </div>
                         
@@ -1083,10 +1020,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     <h3 class="font-bold text-base mb-1">{{ $related->organizer_name }}</h3>
                     <p class="text-xs text-gray-600 mb-2">{{ $related->city }}</p>
                     
-                    <div class="text-xs text-gray-700">
-                        <i class="fas fa-star text-hastana-red mr-1"></i>
-                        {{ number_format($related->rating ?? 0, 1) }}/5
-                    </div>
                 </div>
             </a>
             @endforeach

@@ -31,7 +31,6 @@ class EventHastana extends Model
         'is_free',
         'max_participants',
         'current_participants',
-        'rating',
         'total_reviews',
         'is_featured',
         'is_trending',
@@ -59,7 +58,6 @@ class EventHastana extends Model
         'is_free' => 'boolean',
         'max_participants' => 'integer',
         'current_participants' => 'integer',
-        'rating' => 'decimal:1',
         'total_reviews' => 'integer',
         'is_featured' => 'boolean',
         'is_trending' => 'boolean',
@@ -464,61 +462,9 @@ class EventHastana extends Model
         return $this->hasMany(EventReview::class)->where('is_approved', true);
     }
 
-    /**
-     * Update event rating and total reviews based on approved reviews
-     */
-    public function updateRating(): void
+    public function updateTotalReviews(): void
     {
-        $approvedReviews = $this->approvedReviews()->get();
-
-        $this->total_reviews = $approvedReviews->count();
-
-        if ($this->total_reviews > 0) {
-            $this->rating = round($approvedReviews->avg('rating'), 2);
-        } else {
-            $this->rating = 0;
-        }
-
+        $this->total_reviews = $this->approvedReviews()->count();
         $this->save();
-    }
-
-    /**
-     * Get average rating with total reviews
-     */
-    public function getAverageRatingAttribute(): array
-    {
-        return [
-            'average' => $this->rating ?? 0,
-            'total' => $this->total_reviews ?? 0,
-            'formatted' => number_format($this->rating ?? 0, 1),
-        ];
-    }
-
-    /**
-     * Get rating distribution (1-5 stars)
-     */
-    public function getRatingDistribution(): array
-    {
-        $distribution = [];
-
-        $counts = $this->approvedReviews()
-            ->selectRaw('rating, count(*) as aggregate')
-            ->groupBy('rating')
-            ->pluck('aggregate', 'rating')
-            ->all();
-
-        $total = max((int) ($this->total_reviews ?? 0), array_sum($counts));
-
-        for ($i = 5; $i >= 1; $i--) {
-            $count = (int) ($counts[$i] ?? 0);
-            $percentage = $total > 0 ? ($count / $total) * 100 : 0;
-
-            $distribution[$i] = [
-                'count' => $count,
-                'percentage' => round($percentage, 1),
-            ];
-        }
-
-        return $distribution;
     }
 }

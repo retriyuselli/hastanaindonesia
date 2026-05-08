@@ -56,9 +56,6 @@ class MemberController extends Controller
         // Sort options
         $sort = $request->get('sort', 'name');
         switch ($sort) {
-            case 'rating':
-                $query->orderBy('rating', 'desc');
-                break;
             case 'events':
                 $query->orderBy('completed_events', 'desc');
                 break;
@@ -150,16 +147,17 @@ class MemberController extends Controller
         ]);
 
         $category = $validated['category'] ?? 'Resepsi';
+        $now = now();
+        $galleryData = [];
 
         foreach ($request->file('photos', []) as $index => $file) {
             $path = $file->store('galleries', 'public');
-
-            Gallery::create([
-                'title' => 'Foto '.$member->organizer_name.' '.now()->format('Ymd').'-'.($index + 1),
+            $galleryData[] = [
+                'title' => 'Foto '.$member->organizer_name.' '.$now->format('Ymd').'-'.($index + 1),
                 'description' => null,
                 'image' => $path,
                 'category' => $category,
-                'date' => now()->toDateString(),
+                'date' => $now->toDateString(),
                 'location' => $member->city,
                 'photographer' => null,
                 'wedding_organizer_id' => $member->id,
@@ -168,7 +166,13 @@ class MemberController extends Controller
                 'is_published' => true,
                 'slug' => Str::uuid()->toString(),
                 'tags' => null,
-            ]);
+                'created_at' => $now,
+                'updated_at' => $now,
+            ];
+        }
+
+        if (! empty($galleryData)) {
+            Gallery::insert($galleryData);
         }
 
         return redirect()

@@ -226,24 +226,17 @@
                                         @endif
                                     </div>
 
-                                    <!-- Rating -->
-                                    @if($event->rating > 0)
-                                        <div class="flex items-center">
-                                            <i class="fas fa-star w-5 text-hastana-red"></i>
-                                            <span>{{ number_format($event->rating, 1) }} ({{ $event->total_reviews }} review)</span>
-                                        </div>
-                                    @endif
                                 </div>
 
                                 <!-- Action Buttons -->
                                 <div class="flex gap-2">
-                                    <a href="{{ route('events.show', $event->slug) }}" 
+                                    <a href="{{ route('events.show', $event->slug) }}"
                                        class="flex-1 text-center bg-hastana-red text-white py-2 text-sm rounded-lg hover:bg-red-700 transition duration-200">
                                         Lihat Detail <i class="fas fa-arrow-right ml-1 text-xs"></i>
                                     </a>
                                     @auth
                                         @if(auth()->user()->isAdmin())
-                                            <a href="/admin/event-hastanas/{{ $event->id }}/edit" 
+                                            <a href="/admin/event-hastanas/{{ $event->id }}/edit"
                                                class="px-4 bg-gray-900 text-white py-2 text-sm rounded-lg hover:bg-black transition duration-200"
                                                title="Edit Event">
                                                 <i class="fas fa-edit"></i>

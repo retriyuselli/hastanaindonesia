@@ -44,25 +44,14 @@ class BlogView extends Model
         });
 
         static::created(function ($view) {
-            // Only increment if this is a unique view
-            // Check if this IP has viewed in the last 24 hours
-            $existingView = static::where('blog_id', $view->blog_id)
-                ->where('ip_address', $view->ip_address)
-                ->where('viewed_at', '>=', now()->subHours(24))
-                ->where('id', '!=', $view->id)
-                ->exists();
-
-            // Only increment if no recent view from same IP
-            if (! $existingView) {
-                $view->blog->increment('views_count');
-            }
+            $view->blog->increment('views_count');
         });
     }
 
     /**
      * Record a view (with uniqueness check)
      */
-    public static function record($blogId, $ipAddress, $userAgent = null, $referrer = null)
+    public static function record(int $blogId, string $ipAddress, ?string $userAgent = null, ?string $referrer = null)
     {
         // Check if this IP already viewed in last 24 hours
         $recentView = static::where('blog_id', $blogId)
@@ -89,7 +78,7 @@ class BlogView extends Model
     /**
      * Update duration when user leaves
      */
-    public function updateDuration($seconds)
+    public function updateDuration(int $seconds): void
     {
         $this->update(['duration_seconds' => $seconds]);
     }
@@ -97,7 +86,7 @@ class BlogView extends Model
     /**
      * Get unique views count for a blog
      */
-    public static function getUniqueViews($blogId, $days = null)
+    public static function getUniqueViews(int $blogId, ?int $days = null): int
     {
         $query = static::where('blog_id', $blogId)
             ->distinct('ip_address');
@@ -112,7 +101,7 @@ class BlogView extends Model
     /**
      * Get views analytics for a blog
      */
-    public static function getAnalytics($blogId, $days = 30)
+    public static function getAnalytics(int $blogId, int $days = 30): array
     {
         $query = static::where('blog_id', $blogId)
             ->where('viewed_at', '>=', Carbon::now()->subDays($days));

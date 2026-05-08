@@ -383,16 +383,6 @@
             </div>
             @endauth
 
-            <!-- Success/Error Messages -->
-            @if(session('success'))
-            <div class="mb-6 bg-green-50 border border-green-200 text-green-800 rounded-lg p-4 flex items-start">
-                <i class="fas fa-check-circle text-green-600 text-xl mr-3 mt-1"></i>
-                <div>
-                    <h4 class="font-semibold mb-1">Pendaftaran Berhasil!</h4>
-                    <p class="text-sm">{{ session('success') }}</p>
-                </div>
-            </div>
-            @endif
 
             @if(session('error'))
             <div class="mb-6 bg-red-50 border border-red-200 text-red-800 rounded-lg p-4 flex items-start">
@@ -404,19 +394,6 @@
             </div>
             @endif
 
-            @if($errors->any())
-            <div class="mb-6 bg-red-50 border border-red-200 text-red-800 rounded-lg p-4">
-                <div class="flex items-start mb-2">
-                    <i class="fas fa-exclamation-triangle text-red-600 text-xl mr-3 mt-1"></i>
-                    <h4 class="font-semibold">Terdapat kesalahan pada form:</h4>
-                </div>
-                <ul class="list-disc list-inside text-sm ml-9 space-y-1">
-                    @foreach($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-            @endif
 
             <form action="{{ route('join.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
@@ -591,8 +568,6 @@
                         <textarea name="description" class="form-input form-textarea @error('description') border-red-500 @enderror" rows="3" placeholder="Ceritakan tentang wedding organizer Anda, spesialisasi, dan pengalaman..." required>{{ old('description') }}</textarea>
                         @error('description')
                         <p class="text-xs text-red-600 mt-1">{{ $message }}</p>
-                        @else
-                        <p class="text-xs text-gray-500 mt-1">Minimal 50 karakter</p>
                         @enderror
                     </div>
 
@@ -614,36 +589,6 @@
                         @else
                         <p class="text-xs text-gray-500 mt-1">Pisahkan dengan koma (opsional)</p>
                         @enderror
-                    </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div class="form-group">
-                            <label class="form-label">Harga Minimum Paket</label>
-                            <div class="relative">
-                                <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500">Rp</span>
-                                <input type="hidden" name="price_range_min" id="price_range_min" value="{{ old('price_range_min') }}">
-                                <input type="text" id="price_range_min_display" inputmode="numeric" autocomplete="off" class="form-input pl-12 @error('price_range_min') border-red-500 @enderror" placeholder="50,000,000" value="{{ old('price_range_min') ? number_format((int) old('price_range_min')) : '' }}">
-                            </div>
-                            @error('price_range_min')
-                            <p class="text-xs text-red-600 mt-1">{{ $message }}</p>
-                            @else
-                            <p class="text-xs text-gray-500 mt-1">Contoh: 50000000 (50 juta)</p>
-                            @enderror
-                        </div>
-
-                        <div class="form-group">
-                            <label class="form-label">Harga Maksimum Paket</label>
-                            <div class="relative">
-                                <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500">Rp</span>
-                                <input type="hidden" name="price_range_max" id="price_range_max" value="{{ old('price_range_max') }}">
-                                <input type="text" id="price_range_max_display" inputmode="numeric" autocomplete="off" class="form-input pl-12 @error('price_range_max') border-red-500 @enderror" placeholder="500,000,000" value="{{ old('price_range_max') ? number_format((int) old('price_range_max')) : '' }}">
-                            </div>
-                            @error('price_range_max')
-                            <p class="text-xs text-red-600 mt-1">{{ $message }}</p>
-                            @else
-                            <p class="text-xs text-gray-500 mt-1">Contoh: 500000000 (500 juta)</p>
-                            @enderror
-                        </div>
                     </div>
 
                     <div class="form-group">
@@ -802,7 +747,7 @@
                         <p class="text-xs text-gray-500 mt-1">Upload dokumen: NIB, NPWP, Akta, KTP (PDF/JPG, max 5MB per file, opsional saat pendaftaran)</p>
                         @enderror
                     </div>
-                    
+
                     <div class="bg-amber-50 border border-amber-200 rounded-lg p-5 mt-6">
                         <div class="flex items-start space-x-3">
                             <i class="fas fa-info-circle text-amber-600 text-xl mt-1"></i>
@@ -832,7 +777,30 @@
                         </div>
                     </div>
                 </div>
-                
+
+                <!-- Surat Rekomendasi — hanya tampil saat Perorangan -->
+                <div id="file-recom-group" class="mb-12 {{ (old('business_type', $existingOrganizer?->business_type ?? '') === 'Perorangan') ? '' : 'hidden' }}">
+                    <h3 class="text-2xl font-bold text-gray-900 mb-6 border-b border-gray-200 pb-3">
+                        <i class="fas fa-file-alt text-blue-600 mr-3"></i>
+                        Surat Rekomendasi
+                    </h3>
+                    <div class="form-group">
+                        <label class="form-label">Upload Surat Rekomendasi <span class="text-gray-400 font-normal">(opsional)</span></label>
+                        <input type="file" name="file_recom" id="file-recom-input" class="form-input @error('file_recom') border-red-500 @enderror" accept=".pdf,.jpg,.jpeg,.png,.webp" {{ (old('business_type', $existingOrganizer?->business_type ?? '') === 'Perorangan') ? '' : 'disabled' }}>
+                        @error('file_recom')
+                        <p class="text-xs text-red-600 mt-1">{{ $message }}</p>
+                        @else
+                        <p class="text-xs text-gray-500 mt-1">Surat rekomendasi dari DPW/organisasi terkait (PDF/JPG/PNG/WebP, maks 5MB)</p>
+                        @enderror
+                        @if(isset($existingOrganizer) && $existingOrganizer?->file_recom)
+                        <p class="text-xs text-green-600 mt-1 flex items-center gap-1">
+                            <i class="fas fa-check-circle"></i>
+                            Surat rekomendasi sudah diupload. Upload file baru untuk mengganti.
+                        </p>
+                        @endif
+                    </div>
+                </div>
+
                 <!-- Terms and Conditions -->
                 <div class="mb-8">
                     <label class="flex items-start space-x-3">
@@ -1154,7 +1122,7 @@
             'organizer_name', 'brand_name', 'email', 'phone', 
             'established_year', 'business_type', 'address', 
             'postal_code', 'website', 'instagram', 'business_license',
-            'price_range_min', 'price_range_max', 'completed_events',
+            'completed_events',
             'certification_level', 'region_id',
             // Legal fields
             'deed_of_establishment', 'deed_date',
@@ -1330,6 +1298,8 @@
         const brandNameInput = document.querySelector('input[name="brand_name"]');
         const legalInfoSection = document.getElementById('legal-info-section');
         const businessLicenseInput = document.querySelector('input[name="business_license"]');
+        const fileRecomGroup = document.getElementById('file-recom-group');
+        const fileRecomInput = document.getElementById('file-recom-input');
         const isPerorangan = businessTypeSelect?.value === 'Perorangan';
 
         if (brandNameGroup) {
@@ -1361,6 +1331,13 @@
                 }
                 el.disabled = isPerorangan;
             });
+        }
+
+        if (fileRecomGroup) {
+            fileRecomGroup.classList.toggle('hidden', ! isPerorangan);
+        }
+        if (fileRecomInput) {
+            fileRecomInput.disabled = ! isPerorangan;
         }
 
         window.priceMinBinding?.syncFromHidden?.();
@@ -1405,9 +1382,8 @@
         const brandNameInput = document.querySelector('input[name="brand_name"]');
         const legalInfoSection = document.getElementById('legal-info-section');
         const businessLicenseInput = document.querySelector('input[name="business_license"]');
-        window.priceMinBinding = bindThousandInput(document.getElementById('price_range_min_display'), document.getElementById('price_range_min'));
-        window.priceMaxBinding = bindThousandInput(document.getElementById('price_range_max_display'), document.getElementById('price_range_max'));
-
+        const fileRecomGroup = document.getElementById('file-recom-group');
+        const fileRecomInput = document.getElementById('file-recom-input');
         function syncLegalVisibility() {
             const value = businessTypeSelect?.value ?? '';
             const isPerorangan = value === 'Perorangan';
@@ -1441,6 +1417,16 @@
                     }
                     el.disabled = isPerorangan;
                 });
+            }
+
+            if (fileRecomGroup) {
+                fileRecomGroup.classList.toggle('hidden', ! isPerorangan);
+            }
+            if (fileRecomInput) {
+                fileRecomInput.disabled = ! isPerorangan;
+                if (! isPerorangan) {
+                    fileRecomInput.value = '';
+                }
             }
         }
 

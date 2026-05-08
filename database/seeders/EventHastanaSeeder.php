@@ -69,7 +69,6 @@ class EventHastanaSeeder extends Seeder
                     'is_active' => true,
                     'is_featured' => true,
                     'is_trending' => true,
-                    'rating' => 4.8,
                     'total_reviews' => 42,
                 ],
                 [
@@ -104,7 +103,6 @@ class EventHastanaSeeder extends Seeder
                     'is_active' => true,
                     'is_featured' => false,
                     'is_trending' => true,
-                    'rating' => 4.6,
                     'total_reviews' => 28,
                 ],
                 [
@@ -139,7 +137,6 @@ class EventHastanaSeeder extends Seeder
                     'is_active' => true,
                     'is_featured' => false,
                     'is_trending' => false,
-                    'rating' => 4.9,
                     'total_reviews' => 35,
                 ],
                 [
@@ -174,7 +171,6 @@ class EventHastanaSeeder extends Seeder
                     'is_active' => true,
                     'is_featured' => true,
                     'is_trending' => false,
-                    'rating' => 4.7,
                     'total_reviews' => 38,
                 ],
                 [
@@ -209,7 +205,6 @@ class EventHastanaSeeder extends Seeder
                     'is_active' => true,
                     'is_featured' => false,
                     'is_trending' => true,
-                    'rating' => 4.7,
                     'total_reviews' => 31,
                 ],
                 [
@@ -244,7 +239,6 @@ class EventHastanaSeeder extends Seeder
                     'is_active' => true,
                     'is_featured' => true,
                     'is_trending' => true,
-                    'rating' => 4.5,
                     'total_reviews' => 156,
                 ],
             ]);

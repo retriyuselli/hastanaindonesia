@@ -147,22 +147,19 @@ class EventReview extends Model
         });
 
         static::created(function ($review) {
-            // Update event rating and total reviews
             if ($review->is_approved) {
-                $review->event->updateRating();
+                $review->event->updateTotalReviews();
             }
         });
 
         static::updated(function ($review) {
-            // Update event rating when review is approved/updated
-            if ($review->wasChanged('is_approved') || $review->wasChanged('rating')) {
-                $review->event->updateRating();
+            if ($review->wasChanged('is_approved')) {
+                $review->event->updateTotalReviews();
             }
         });
 
         static::deleted(function ($review) {
-            // Update event rating when review is deleted
-            $review->event->updateRating();
+            $review->event->updateTotalReviews();
         });
     }
 }

@@ -47,9 +47,6 @@ class EventStatsOverview extends StatsOverviewWidget
             ? round(($totalParticipants / $totalCapacity) * 100, 1)
             : 0;
 
-        // Average Rating
-        $averageRating = EventHastana::where('rating', '>', 0)->avg('rating');
-
         return [
             Stat::make('Total Events', $totalEvents)
                 ->description("{$publishedEvents} published, {$upcomingEvents} upcoming")
@@ -101,11 +98,6 @@ class EventStatsOverview extends StatsOverviewWidget
                 ->color($capacityUtilization > 80 ? 'danger' : ($capacityUtilization > 60 ? 'warning' : 'success'))
                 ->chart([20, 35, 50, 65, $capacityUtilization]),
 
-            Stat::make('Average Rating', $averageRating ? number_format($averageRating, 1).' / 5.0' : 'No ratings yet')
-                ->description('From '.EventHastana::where('rating', '>', 0)->count().' rated events')
-                ->descriptionIcon('heroicon-m-star')
-                ->color('success')
-                ->chart([3.5, 3.8, 4.0, 4.2, $averageRating ?? 0]),
         ];
     }
 }

@@ -399,22 +399,13 @@ class EventHastanaForm
                                     ->description('Event performance metrics (read-only)')
                                     ->icon('heroicon-o-chart-bar')
                                     ->schema([
-                                        Grid::make(2)
-                                            ->schema([
-                                                TextInput::make('rating')
-                                                    ->label('Average Rating')
-                                                    ->numeric()
-                                                    ->disabled()
-                                                    ->suffixIcon('heroicon-o-star')
-                                                    ->helperText('Auto-calculated from reviews'),
-
-                                                TextInput::make('total_reviews')
-                                                    ->label('Total Reviews')
-                                                    ->numeric()
-                                                    ->disabled()
-                                                    ->suffixIcon('heroicon-o-chat-bubble-left-right')
-                                                    ->helperText('Total number of reviews'),
-                                            ]),
+                                        TextInput::make('total_reviews')
+                                            ->label('Total Reviews')
+                                            ->numeric()
+                                            ->disabled()
+                                            ->suffixIcon('heroicon-o-chat-bubble-left-right')
+                                            ->helperText('Total number of reviews')
+                                            ->columnSpanFull(),
                                     ]),
                             ]),
                     ])

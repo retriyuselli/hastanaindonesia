@@ -25,14 +25,6 @@ class EventCategory extends Model
     ];
 
     /**
-     * Get events in this category
-     */
-    public function events()
-    {
-        return $this->hasMany(EventHastana::class, 'event_category_id');
-    }
-
-    /**
      * Get event hastanas in this category
      */
     public function eventHastanas()
@@ -43,7 +35,7 @@ class EventCategory extends Model
     /**
      * Scope for active categories
      */
-    public function scopeActive($query)
+    public function scopeActive(\Illuminate\Database\Eloquent\Builder $query)
     {
         return $query->where('is_active', true);
     }

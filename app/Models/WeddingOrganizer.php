@@ -30,10 +30,7 @@ class WeddingOrganizer extends Model
         'business_license',
         'specializations',
         'services',
-        'price_range_min',
-        'price_range_max',
         'completed_events',
-        'rating',
         'awards',
         'verification_status',
         'is_featured',
@@ -59,17 +56,15 @@ class WeddingOrganizer extends Model
         'legal_verified_at',
         'legal_verified_by',
         'legal_documents',
+        'file_recom',
     ];
 
     protected $casts = [
         'specializations' => 'array',
         'services' => 'array',
         'legal_documents' => 'array',
-        'price_range_min' => 'decimal:2',
-        'price_range_max' => 'decimal:2',
         'established_year' => 'integer',
         'completed_events' => 'integer',
-        'rating' => 'decimal:1',
         'is_featured' => 'boolean',
         'is_approved' => 'boolean',
         'is_active' => 'boolean',
@@ -123,6 +118,22 @@ class WeddingOrganizer extends Model
     }
 
     /**
+     * Get all galleries for this wedding organizer
+     */
+    public function galleries()
+    {
+        return $this->hasMany(Gallery::class);
+    }
+
+    /**
+     * Get all portfolios for this wedding organizer
+     */
+    public function portfolios()
+    {
+        return $this->hasMany(Portfolio::class);
+    }
+
+    /**
      * Get active products
      */
     public function activeProducts()
@@ -160,18 +171,6 @@ class WeddingOrganizer extends Model
     public function scopeLegalVerified($query)
     {
         return $query->where('legal_document_status', 'verified');
-    }
-
-    /**
-     * Get price range formatted
-     */
-    public function getPriceRangeFormattedAttribute()
-    {
-        if ($this->price_range_min && $this->price_range_max) {
-            return 'Rp '.number_format($this->price_range_min).' - Rp '.number_format($this->price_range_max);
-        }
-
-        return 'Harga belum ditentukan';
     }
 
     /**

@@ -202,10 +202,6 @@
                         <div class="text-gray-600 font-medium text-sm">Wilayah</div>
                     </div>
                     <div class="text-center">
-                        <div class="text-3xl md:text-4xl font-bold text-gray-900 mb-2">{{ number_format($averageRating, 1) }}</div>
-                        <div class="text-gray-600 font-medium text-sm">Rating Rata-rata</div>
-                    </div>
-                    <div class="text-center">
                         <div class="text-3xl md:text-4xl font-bold text-hastana-red mb-2">{{ number_format($totalEvents) }}</div>
                         <div class="text-gray-600 font-medium text-sm">Event Sukses</div>
                     </div>

@@ -208,13 +208,6 @@
                                         @endif
                                     </div>
 
-                                    <!-- Rating -->
-                                    @if($event->rating > 0)
-                                        <div class="flex items-center">
-                                            <i class="fas fa-star w-5 text-hastana-red"></i>
-                                            <span>{{ number_format($event->rating, 1) }} ({{ $event->total_reviews }} review)</span>
-                                        </div>
-                                    @endif
                                 </div>
 
                                 <!-- Action Buttons -->
@@ -263,7 +256,7 @@
                         ->where('status', 'published')
                         ->where('is_active', true)
                         ->where('start_date', '>=', now())
-                        ->orderBy('rating', 'desc')
+                        ->orderBy('start_date', 'asc')
                         ->take(5)
                         ->get();
                 @endphp
@@ -295,15 +288,9 @@
                                                 <i class="fas fa-calendar text-gray-700"></i>
                                                 {{ $featured->start_date->format('d M Y') }}
                                             </p>
-                                            @if($featured->rating > 0)
-                                                <p class="text-xs font-semibold text-hastana-red mt-0.5">
-                                                    <i class="fas fa-star"></i> {{ number_format($featured->rating, 1) }}
-                                                </p>
-                                            @else
                                                 <p class="text-xs font-semibold {{ $featured->is_free ? 'text-hastana-red' : 'text-gray-900' }} mt-0.5">
                                                     {{ $featured->is_free ? 'GRATIS' : 'Rp ' . number_format($featured->price, 0, ',', '.') }}
                                                 </p>
-                                            @endif
                                         </div>
                                     </div>
                                 </a>

@@ -102,7 +102,6 @@
                         <select name="sort_by" onchange="this.form.submit()" class="px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-hastana-red">
                             <option value="start_date" {{ request('sort_by') == 'start_date' ? 'selected' : '' }}>Tanggal</option>
                             <option value="popular" {{ request('sort_by') == 'popular' ? 'selected' : '' }}>Terpopuler</option>
-                            <option value="rating" {{ request('sort_by') == 'rating' ? 'selected' : '' }}>Rating Tertinggi</option>
                             <option value="price_low" {{ request('sort_by') == 'price_low' ? 'selected' : '' }}>Harga Terendah</option>
                             <option value="price_high" {{ request('sort_by') == 'price_high' ? 'selected' : '' }}>Harga Tertinggi</option>
                         </select>
@@ -197,12 +196,6 @@
                                                 @endif
                                             </span>
                                         </div>
-                                        @if($event->rating > 0)
-                                            <div class="flex items-center">
-                                                <i class="fas fa-star text-hastana-red w-4"></i>
-                                                <span class="ml-2">{{ number_format($event->rating, 1) }} ({{ $event->total_reviews }} reviews)</span>
-                                            </div>
-                                        @endif
                                     </div>
 
                                     <!-- Action Buttons - Always at bottom -->

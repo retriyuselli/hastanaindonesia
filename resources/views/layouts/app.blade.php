@@ -140,6 +140,8 @@
         }
     </script>
     
+    <x-success-modal />
+    <x-error-modal />
     @stack('scripts')
 </body>
 </html>

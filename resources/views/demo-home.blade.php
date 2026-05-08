@@ -72,7 +72,6 @@
                     'location' => 'Jakarta Selatan',
                     'specialization' => 'Modern & Traditional Wedding',
                     'image' => 'https://via.placeholder.com/400x300?text=Sarah+WO',
-                    'rating' => 5,
                     'completedEvents' => 150,
                     'certification' => 'Certified Pro',
                     'verified' => true,
@@ -85,7 +84,6 @@
                     'location' => 'Bandung, Jawa Barat',
                     'specialization' => 'Luxury & Garden Wedding',
                     'image' => 'https://via.placeholder.com/400x300?text=Elegant+WP',
-                    'rating' => 5,
                     'completedEvents' => 200,
                     'certification' => 'Master',
                     'verified' => true,
@@ -98,7 +96,6 @@
                     'location' => 'Surabaya, Jawa Timur',
                     'specialization' => 'Cultural & International Wedding',
                     'image' => 'https://via.placeholder.com/400x300?text=Divine+WO',
-                    'rating' => 4,
                     'completedEvents' => 120,
                     'certification' => 'Certified',
                     'verified' => true,
@@ -115,7 +112,6 @@
                     :image="$member['image']"
                     :location="$member['location']"
                     :specialization="$member['specialization']"
-                    :rating="$member['rating']"
                     :completedEvents="$member['completedEvents']"
                     :certification="$member['certification']"
                     :verified="$member['verified']"

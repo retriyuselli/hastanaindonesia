@@ -195,17 +195,7 @@ class EventHastanasTable
                         return null;
                     }),
 
-                // Ratings & Features
-                TextColumn::make('rating')
-                    ->label('Rating')
-                    ->numeric(decimalPlaces: 1)
-                    ->sortable()
-                    ->icon('heroicon-o-star')
-                    ->color('warning')
-                    ->description(fn ($record): string => $record->total_reviews > 0 ? $record->total_reviews.' reviews' : 'Belum ada review'
-                    )
-                    ->toggleable(isToggledHiddenByDefault: true),
-
+                // Features
                 IconColumn::make('is_featured')
                     ->label('Featured')
                     ->boolean()

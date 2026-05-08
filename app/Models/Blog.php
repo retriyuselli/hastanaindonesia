@@ -20,9 +20,7 @@ class Blog extends Model
         'featured_image',
         'blog_category_id',
         'author_id',
-        'author_name',  // Deprecated - will be removed
-        'author_avatar',  // Deprecated - will be removed
-        'meta_title',
+'meta_title',
         'meta_description',
         'seo_keywords',
         'tags',

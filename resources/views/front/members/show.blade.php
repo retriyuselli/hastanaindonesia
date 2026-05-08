@@ -6,11 +6,6 @@
 @section('content')
     <div class="pt-28 pb-16 bg-gray-50 min-h-screen">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            @if(session('success'))
-                <div class="mb-6 rounded-2xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-800">
-                    {{ session('success') }}
-                </div>
-            @endif
             <div class="flex items-center justify-between gap-4">
                 <div>
                     <a href="{{ route('members') }}" class="inline-flex items-center text-sm text-gray-600 hover:text-hastana-red">
@@ -214,13 +209,6 @@
                                     <dd class="text-gray-900 mt-1">
                                         <a href="{{ $instagramHref }}" target="_blank" rel="noopener" class="text-hastana-red hover:underline">{{ '@' . $instagramLabel }}</a>
                                     </dd>
-                                </div>
-                            @endif
-
-                            @if($member->price_range_min && $member->price_range_max)
-                                <div class="sm:col-span-2">
-                                    <dt class="text-gray-500">Kisaran Harga</dt>
-                                    <dd class="text-gray-900 mt-1">Rp {{ number_format($member->price_range_min) }} - Rp {{ number_format($member->price_range_max) }}</dd>
                                 </div>
                             @endif
 

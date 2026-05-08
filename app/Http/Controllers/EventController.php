@@ -107,9 +107,6 @@ class EventController extends Controller
             case 'popular':
                 $query->orderBy('current_participants', 'desc');
                 break;
-            case 'rating':
-                $query->orderBy('rating', 'desc');
-                break;
             case 'price_low':
                 $query->orderBy('price', 'asc');
                 break;
@@ -205,12 +202,6 @@ class EventController extends Controller
             ->latest()
             ->paginate(10);
 
-        $ratingDistribution = Cache::remember(
-            'event:rating_distribution:'.$event->id.':'.$event->updated_at?->timestamp,
-            now()->addMinutes(10),
-            fn () => $event->getRatingDistribution()
-        );
-
         // Parse benefits if available
         ['benefits' => $benefits, 'requirements' => $requirements] = Cache::remember(
             'event:parsed_fields:'.$event->id.':'.$event->updated_at?->timestamp,
@@ -276,7 +267,6 @@ class EventController extends Controller
             'event',
             'relatedEvents',
             'reviews',
-            'ratingDistribution',
             'benefits',
             'requirements'
         ));

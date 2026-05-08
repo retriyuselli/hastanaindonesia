@@ -29,7 +29,7 @@ class RegionResource extends Resource
 
     protected static ?string $pluralModelLabel = 'Profile Region';
 
-    protected static ?string $recordTitleAttribute = 'Region';
+    protected static ?string $recordTitleAttribute = 'region_name';
 
     public static function form(Schema $schema): Schema
     {

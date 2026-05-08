@@ -242,13 +242,6 @@
                     @endif
                     <p class="text-xs text-gray-600 mb-2">{{ $related->city }}</p>
                     
-                    {{-- <div class="text-xs text-gray-700 mb-3">
-                        <i class="fas fa-star text-hastana-red mr-1"></i>
-                        {{ number_format($related->rating ?? 0, 1) }}/5
-                        @if($related->completed_events)
-                        <span class="text-gray-500">({{ $related->completed_events }} ulasan)</span>
-                        @endif
-                    </div> --}}
                     
                     <a href="{{ route('members.show', $related->slug) }}" class="block w-full px-4 py-2 bg-hastana-red text-white text-sm font-semibold rounded-lg hover:bg-red-700 transition-colors text-center">
                         <i class="fas fa-eye mr-2"></i>Lihat Detail

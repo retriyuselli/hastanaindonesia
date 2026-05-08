@@ -4,7 +4,6 @@
     'image' => null,
     'location' => '',
     'specialization' => '',
-    'rating' => 0,
     'completedEvents' => 0,
     'certification' => '',
     'url' => '#',
@@ -86,16 +85,6 @@
         
         <!-- Stats -->
         <div class="grid grid-cols-2 gap-4 mb-4 pt-4 border-t border-gray-100">
-            @if($rating > 0)
-            <div class="text-center">
-                <div class="flex items-center justify-center mb-1">
-                    @for($i = 1; $i <= 5; $i++)
-                        <i class="fas fa-star text-xs {{ $i <= $rating ? 'text-yellow-400' : 'text-gray-300' }}"></i>
-                    @endfor
-                </div>
-                <p class="text-xs text-gray-500">Rating</p>
-            </div>
-            @endif
             
             @if($completedEvents > 0)
             <div class="text-center">

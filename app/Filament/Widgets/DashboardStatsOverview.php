@@ -16,7 +16,7 @@ class DashboardStatsOverview extends StatsOverviewWidget
     protected function getStats(): array
     {
         $totalUsers = User::count();
-        $adminUsers = User::whereIn('role', ['admin', 'super_admin'])->count();
+        $adminUsers = User::whereHas('roles', fn ($q) => $q->whereIn('name', ['admin', 'super_admin']))->count();
         $newUsersThisMonth = User::whereMonth('created_at', now()->month)
             ->whereYear('created_at', now()->year)
             ->count();

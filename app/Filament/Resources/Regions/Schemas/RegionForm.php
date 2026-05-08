@@ -126,46 +126,46 @@ class RegionForm
                 // Leadership Structure - Row 5
                 Select::make('ketua_dpw')
                     ->label('Ketua DPW')
-                    ->options(User::whereIn('role', ['admin', 'member'])->pluck('name', 'id'))
+                    ->options(User::whereHas('roles', fn ($q) => $q->whereIn('name', ['super_admin', 'admin', 'member']))->orderBy('name')->pluck('name', 'id'))
                     ->searchable()
+                    ->getOptionLabelUsing(fn ($value) => User::find($value)?->name)
                     ->placeholder('Pilih Ketua DPW')
-                    ->helperText('Ketua Dewan Pimpinan Wilayah')
-                    ->native(false)
-                    ->preload(),
+                    ->helperText('Ketua Dewan pengurus Wilayah')
+                    ->native(false),
 
                 Select::make('wk_ketua_dpw')
                     ->label('Wakil Ketua 1')
-                    ->options(User::whereIn('role', ['admin', 'member'])->pluck('name', 'id'))
+                    ->options(User::whereHas('roles', fn ($q) => $q->whereIn('name', ['super_admin', 'admin', 'member']))->orderBy('name')->pluck('name', 'id'))
                     ->searchable()
+                    ->getOptionLabelUsing(fn ($value) => User::find($value)?->name)
                     ->placeholder('Pilih Wakil Ketua 1')
-                    ->native(false)
-                    ->preload(),
+                    ->native(false),
 
                 Select::make('wk_ketua2_dpw')
                     ->label('Wakil Ketua 2')
-                    ->options(User::whereIn('role', ['admin', 'member'])->pluck('name', 'id'))
+                    ->options(User::whereHas('roles', fn ($q) => $q->whereIn('name', ['super_admin', 'admin', 'member']))->orderBy('name')->pluck('name', 'id'))
                     ->searchable()
+                    ->getOptionLabelUsing(fn ($value) => User::find($value)?->name)
                     ->placeholder('Pilih Wakil Ketua 2')
-                    ->native(false)
-                    ->preload(),
+                    ->native(false),
 
                 Select::make('sekretaris_dpw')
                     ->label('Sekretaris DPW')
-                    ->options(User::whereIn('role', ['admin', 'member'])->pluck('name', 'id'))
+                    ->options(User::whereHas('roles', fn ($q) => $q->whereIn('name', ['super_admin', 'admin', 'member']))->orderBy('name')->pluck('name', 'id'))
                     ->searchable()
+                    ->getOptionLabelUsing(fn ($value) => User::find($value)?->name)
                     ->placeholder('Pilih Sekretaris DPW')
-                    ->helperText('Sekretaris Dewan Pimpinan Wilayah')
-                    ->native(false)
-                    ->preload(),
+                    ->helperText('Sekretaris Dewan pengurus Wilayah')
+                    ->native(false),
 
                 Select::make('bendahara_dpw')
                     ->label('Bendahara DPW')
-                    ->options(User::whereIn('role', ['admin', 'member'])->pluck('name', 'id'))
+                    ->options(User::whereHas('roles', fn ($q) => $q->whereIn('name', ['super_admin', 'admin', 'member']))->orderBy('name')->pluck('name', 'id'))
                     ->searchable()
+                    ->getOptionLabelUsing(fn ($value) => User::find($value)?->name)
                     ->placeholder('Pilih Bendahara DPW')
-                    ->helperText('Bendahara Dewan Pimpinan Wilayah')
-                    ->native(false)
-                    ->preload(),
+                    ->helperText('Bendahara Dewan pengurus Wilayah')
+                    ->native(false),
 
                 // Logo Upload - Row 6
                 FileUpload::make('logo')

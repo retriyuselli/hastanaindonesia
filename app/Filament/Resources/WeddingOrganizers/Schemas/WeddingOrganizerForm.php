@@ -274,26 +274,6 @@ class WeddingOrganizerForm
                             ->schema([
                                 Grid::make(2)
                                     ->schema([
-                                        TextInput::make('price_range_min')
-                                            ->label('Harga Minimum Paket')
-                                            ->prefix('Rp. ')
-                                            ->mask(RawJs::make('$money($input)'))
-                                            ->stripCharacters(',')
-                                            ->dehydrateStateUsing(fn ($state) => $state === null ? null : (int) preg_replace('/[^\d]/', '', (string) $state))
-                                            ->placeholder('0')
-                                            ->minValue(0)
-                                            ->helperText('Contoh: 50000000 (50 juta)'),
-
-                                        TextInput::make('price_range_max')
-                                            ->label('Harga Maksimum Paket')
-                                            ->prefix('Rp. ')
-                                            ->mask(RawJs::make('$money($input)'))
-                                            ->stripCharacters(',')
-                                            ->dehydrateStateUsing(fn ($state) => $state === null ? null : (int) preg_replace('/[^\d]/', '', (string) $state))
-                                            ->placeholder('0')
-                                            ->minValue(0)
-                                            ->helperText('Contoh: 500000000 (500 juta)'),
-
                                         TextInput::make('completed_events')
                                             ->label('Jumlah Event Selesai')
                                             ->required()
@@ -303,16 +283,6 @@ class WeddingOrganizerForm
                                             ->suffix('events')
                                             ->prefixIcon('heroicon-o-calendar-days')
                                             ->helperText('Total event yang sudah ditangani'),
-
-                                        TextInput::make('rating')
-                                            ->label('Rating')
-                                            ->numeric()
-                                            ->minValue(0)
-                                            ->maxValue(5)
-                                            ->step(0.1)
-                                            ->suffix('/ 5.0')
-                                            ->prefixIcon('heroicon-o-star')
-                                            ->helperText('Rating dari customer (0-5)'),
 
                                         Textarea::make('awards')
                                             ->label('Penghargaan & Prestasi')
@@ -377,7 +347,8 @@ class WeddingOrganizerForm
                                             ->preload()
                                             ->default(fn () => Auth::id())
                                             ->afterStateHydrated(function ($component, $state) {
-                                                if (! $state && Auth::check() && in_array(Auth::user()->role, ['admin', 'super_admin'])) {
+                                                $user = Auth::user();
+                                                if (! $state && $user instanceof User && $user->hasAnyRole(['admin', config('filament-shield.super_admin.name', 'super_admin')])) {
                                                     $component->state(Auth::id());
                                                 }
                                             })
@@ -502,7 +473,8 @@ class WeddingOrganizerForm
                                             ->preload()
                                             ->default(fn () => Auth::id())
                                             ->afterStateHydrated(function ($component, $state) {
-                                                if (! $state && Auth::check() && in_array(Auth::user()->role, ['admin', 'super_admin'])) {
+                                                $user = Auth::user();
+                                                if (! $state && $user instanceof User && $user->hasAnyRole(['admin', config('filament-shield.super_admin.name', 'super_admin')])) {
                                                     $component->state(Auth::id());
                                                 }
                                             })
@@ -519,6 +491,17 @@ class WeddingOrganizerForm
                                             ->maxSize(5120)
                                             ->multiple()
                                             ->helperText('Upload Akta Pendirian, NIB, NPWP, dan dokumen pendukung lainnya (Max: 5MB per file)')
+                                            ->columnSpan(2),
+
+                                        FileUpload::make('file_recom')
+                                            ->label('Surat Rekomendasi (PDF)')
+                                            ->disk('public')
+                                            ->directory('wedding-organizer-recom')
+                                            ->acceptedFileTypes(['application/pdf', 'image/jpeg', 'image/png', 'image/webp'])
+                                            ->maxSize(5120)
+                                            ->openable()
+                                            ->downloadable()
+                                            ->helperText('Upload surat rekomendasi dalam format PDF/JPG/PNG/WebP (Max: 5MB)')
                                             ->columnSpan(2),
                                     ]),
                             ]), // End Tab Verifikasi Legal

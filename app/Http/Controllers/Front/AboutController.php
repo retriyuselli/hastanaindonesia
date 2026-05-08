@@ -31,9 +31,8 @@ class AboutController extends Controller
         // Get statistics
         $totalMembers = WeddingOrganizer::count();
         $totalRegions = Region::count();
-        $averageRating = WeddingOrganizer::avg('rating') ?: 4.8;
         $totalEvents = WeddingOrganizer::sum('completed_events') ?: 0;
 
-        return view('front.about.index', compact('about', 'totalMembers', 'totalRegions', 'averageRating', 'totalEvents'));
+        return view('front.about.index', compact('about', 'totalMembers', 'totalRegions', 'totalEvents'));
     }
 }

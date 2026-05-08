@@ -40,6 +40,14 @@ class Region extends Model
     ];
 
     /**
+     * Get all wedding organizers in this region
+     */
+    public function weddingOrganizers()
+    {
+        return $this->hasMany(WeddingOrganizer::class);
+    }
+
+    /**
      * Get the Ketua DPW (Regional Chairman)
      */
     public function ketuaDpw()

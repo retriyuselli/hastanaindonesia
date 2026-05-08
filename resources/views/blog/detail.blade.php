@@ -300,14 +300,6 @@
         <div class="max-w-7xl mx-auto">
             
             <!-- Flash Messages -->
-            @if(session('success'))
-                <div class="bg-gray-50 border-l-4 border-hastana-red p-4 mb-5 rounded-lg">
-                    <div class="flex items-center">
-                        <i class="fas fa-check-circle text-hastana-red mr-3"></i>
-                        <p class="text-gray-800 text-sm font-medium">{{ session('success') }}</p>
-                    </div>
-                </div>
-            @endif
 
             @if(session('error'))
                 <div class="bg-red-50 border-l-4 border-red-500 p-4 mb-5 rounded-lg">

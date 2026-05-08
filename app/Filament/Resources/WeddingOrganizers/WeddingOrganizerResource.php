@@ -23,7 +23,7 @@ class WeddingOrganizerResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedBookmarkSlash;
 
-    protected static ?string $recordTitleAttribute = 'Wedding Organizer';
+    protected static ?string $recordTitleAttribute = 'organizer_name';
 
     public static function form(Schema $schema): Schema
     {

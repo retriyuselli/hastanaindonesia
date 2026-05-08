@@ -48,8 +48,6 @@ class WeddingOrganizersTable
                             'certification_level',
                             'specializations',
                             'services',
-                            'price_range_min',
-                            'price_range_max',
                             'instagram',
                             'website',
                         ];
@@ -193,27 +191,16 @@ class WeddingOrganizersTable
                     ->color(fn ($state) => $state >= 50 ? Color::Green : ($state >= 20 ? Color::Orange : Color::Gray))
                     ->formatStateUsing(fn ($state) => $state ?? 0),
 
-                TextColumn::make('rating')
-                    ->label('⭐ Rating')
-                    ->numeric()
-                    ->sortable()
+                // Surat Rekomendasi
+                IconColumn::make('file_recom')
+                    ->label('📄 Rekomendasi')
+                    ->boolean()
+                    ->trueIcon('heroicon-o-document-arrow-down')
+                    ->falseIcon('heroicon-o-x-circle')
+                    ->trueColor('success')
+                    ->falseColor('danger')
+                    ->getStateUsing(fn ($record) => filled($record->file_recom))
                     ->alignCenter()
-                    ->formatStateUsing(fn ($state) => $state ? number_format($state, 1).'/5.0' : 'Belum ada')
-                    ->color(fn ($state) => $state >= 4.5 ? Color::Green : ($state >= 4.0 ? Color::Orange : Color::Gray)),
-
-                // Price Range
-                TextColumn::make('price_range_min')
-                    ->label('💰 Harga Min')
-                    ->numeric()
-                    ->sortable()
-                    ->money('IDR')
-                    ->toggleable(),
-
-                TextColumn::make('price_range_max')
-                    ->label('💰 Harga Max')
-                    ->numeric()
-                    ->sortable()
-                    ->money('IDR')
                     ->toggleable(),
 
                 // Status Columns
@@ -393,7 +380,7 @@ class WeddingOrganizersTable
                     ->placeholder('Semua Provinsi')
                     ->searchable(),
             ])
-            ->bulkActions([
+            ->toolbarActions([
                 BulkActionGroup::make([
                     // Delete Bulk Action
                     DeleteBulkAction::make()
@@ -493,10 +480,10 @@ class WeddingOrganizersTable
                         ->icon('heroicon-o-arrow-down-tray')
                         ->color('success')
                         ->action(function (Collection $records) {
-                            $csv = "Nama Organizer,Brand Name,Email,Telepon,Kota,Provinsi,Status,Level Sertifikasi,Rating\n";
+                            $csv = "Nama Organizer,Brand Name,Email,Telepon,Kota,Provinsi,Status,Level Sertifikasi\n";
                             $records->each(function ($record) use (&$csv) {
                                 $csv .= sprintf(
-                                    "%s,%s,%s,%s,%s,%s,%s,%s,%.1f\n",
+                                    "%s,%s,%s,%s,%s,%s,%s,%s\n",
                                     $record->organizer_name,
                                     $record->brand_name ?? '',
                                     $record->email ?? '',
@@ -504,8 +491,7 @@ class WeddingOrganizersTable
                                     $record->city ?? '',
                                     $record->province ?? '',
                                     $record->status ?? '',
-                                    $record->certification_level ?? '',
-                                    $record->rating ?? 0
+                                    $record->certification_level ?? ''
                                 );
                             });
 

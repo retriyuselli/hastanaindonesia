@@ -25,21 +25,6 @@
     <div class="container mx-auto px-4">
         <div class="max-w-5xl mx-auto">
             
-            <!-- Success Messages -->
-            @if (session('status') === 'profile-updated')
-                <div class="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg flex items-center" x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 5000)" x-transition>
-                    <i class="fas fa-check-circle text-green-600 text-xl mr-3"></i>
-                    <p class="text-green-800 font-medium">Profil berhasil diperbarui!</p>
-                </div>
-            @endif
-
-            @if (session('status') === 'password-updated')
-                <div class="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg flex items-center" x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 5000)" x-transition>
-                    <i class="fas fa-check-circle text-green-600 text-xl mr-3"></i>
-                    <p class="text-green-800 font-medium">Password berhasil diperbarui!</p>
-                </div>
-            @endif
-
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 
                 <!-- Sidebar -->
@@ -206,11 +191,11 @@
                                     <i class="fas fa-phone text-blue-600 mr-1"></i>
                                     Nomor Telepon
                                 </label>
-                                <input 
-                                    id="phone" 
-                                    name="phone" 
-                                    type="tel" 
-                                    value="{{ old('phone', $user->phone ?? '') }}" 
+                                <input
+                                    id="phone"
+                                    name="phone"
+                                    type="tel"
+                                    value="{{ old('phone', $user->phone ?? '') }}"
                                     class="w-full px-4 py-3 border border-gray-300 rounded-lg"
                                     placeholder="08xxxxxxxxxx">
                                 @error('phone')
@@ -220,6 +205,93 @@
                                     <i class="fas fa-info-circle mr-1"></i>
                                     Format: 08xx-xxxx-xxxx (tanpa spasi atau tanda hubung)
                                 </p>
+                            </div>
+
+                            <!-- Informasi Pribadi -->
+                            <div class="border-t border-gray-100 pt-6">
+                                <h3 class="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-4">
+                                    <i class="fas fa-id-card text-blue-600 mr-1"></i>
+                                    Informasi Pribadi
+                                </h3>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+
+                                    <div>
+                                        <label for="date_of_birth" class="block text-sm font-semibold text-gray-700 mb-2">
+                                            Tanggal Lahir
+                                        </label>
+                                        <input
+                                            id="date_of_birth"
+                                            name="date_of_birth"
+                                            type="date"
+                                            value="{{ old('date_of_birth', $user->date_of_birth?->format('Y-m-d')) }}"
+                                            max="{{ now()->format('Y-m-d') }}"
+                                            class="w-full px-4 py-3 border border-gray-300 rounded-lg">
+                                        @error('date_of_birth')
+                                            <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+
+                                    <div>
+                                        <label for="gender" class="block text-sm font-semibold text-gray-700 mb-2">
+                                            Jenis Kelamin
+                                        </label>
+                                        <select id="gender" name="gender" class="w-full px-4 py-3 border border-gray-300 rounded-lg bg-white">
+                                            <option value="">Pilih jenis kelamin</option>
+                                            <option value="male" {{ old('gender', $user->gender) === 'male' ? 'selected' : '' }}>Laki-laki</option>
+                                            <option value="female" {{ old('gender', $user->gender) === 'female' ? 'selected' : '' }}>Perempuan</option>
+                                        </select>
+                                        @error('gender')
+                                            <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+
+                                    <div>
+                                        <label for="status_menikah" class="block text-sm font-semibold text-gray-700 mb-2">
+                                            Status Pernikahan
+                                        </label>
+                                        <select id="status_menikah" name="status_menikah" class="w-full px-4 py-3 border border-gray-300 rounded-lg bg-white">
+                                            <option value="">Pilih status</option>
+                                            <option value="single" {{ old('status_menikah', $user->status_menikah) === 'single' ? 'selected' : '' }}>Belum Menikah</option>
+                                            <option value="married" {{ old('status_menikah', $user->status_menikah) === 'married' ? 'selected' : '' }}>Menikah</option>
+                                        </select>
+                                        @error('status_menikah')
+                                            <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+
+                                    <div>
+                                        <label for="agama" class="block text-sm font-semibold text-gray-700 mb-2">
+                                            Agama
+                                        </label>
+                                        <select id="agama" name="agama" class="w-full px-4 py-3 border border-gray-300 rounded-lg bg-white">
+                                            <option value="">Pilih agama</option>
+                                            @foreach(['Islam','Kristen','Katolik','Hindu','Buddha','Konghucu','Lainnya'] as $agama)
+                                                <option value="{{ $agama }}" {{ old('agama', $user->agama) === $agama ? 'selected' : '' }}>{{ $agama }}</option>
+                                            @endforeach
+                                        </select>
+                                        @error('agama')
+                                            <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+
+                                    <div class="sm:col-span-2">
+                                        <label for="no_ktp" class="block text-sm font-semibold text-gray-700 mb-2">
+                                            Nomor KTP
+                                        </label>
+                                        <input
+                                            id="no_ktp"
+                                            name="no_ktp"
+                                            type="text"
+                                            value="{{ old('no_ktp', $user->no_ktp ?? '') }}"
+                                            maxlength="16"
+                                            class="w-full px-4 py-3 border border-gray-300 rounded-lg"
+                                            placeholder="16 digit nomor KTP">
+                                        @error('no_ktp')
+                                            <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+
+                                </div>
                             </div>
 
                             <div class="flex items-center gap-4 pt-4">

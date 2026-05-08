@@ -399,18 +399,6 @@
                             </div>
                         @endif
 
-                        <!-- Rating Stars -->
-                        {{-- <div class="mt-3 flex justify-center space-x-1">
-                    @for ($i = 1; $i <= 5; $i++)
-                        @if ($i <= floor($rating))
-                            <i class="fas fa-star text-yellow-400 text-xs"></i>
-                        @elseif($i == ceil($rating) && $rating - floor($rating) >= 0.5)
-                            <i class="fas fa-star-half-alt text-yellow-400 text-xs"></i>
-                        @else
-                            <i class="far fa-star text-gray-300 text-xs"></i>
-                        @endif
-                    @endfor
-                </div> --}}
                     </a>
                 @empty
                     <!-- Fallback if no WO data -->
@@ -427,15 +415,6 @@
                             <h3 class="text-base font-bold text-gray-900 mb-1">{{ $member['name'] }}</h3>
                             <p class="text-xs text-gray-600 mb-1">{{ $member['location'] }}</p>
                             <p class="text-xs {{ $gradient[2] }} font-medium">{{ $member['membership'] }}</p>
-                            <div class="mt-3 flex justify-center space-x-1">
-                                @for ($i = 1; $i <= 5; $i++)
-                                    @if ($i <= $member['rating'])
-                                        <i class="fas fa-star text-yellow-400 text-xs"></i>
-                                    @else
-                                        <i class="far fa-star text-gray-300 text-xs"></i>
-                                    @endif
-                                @endfor
-                            </div>
                         </div>
                     @endforeach
                 @endforelse

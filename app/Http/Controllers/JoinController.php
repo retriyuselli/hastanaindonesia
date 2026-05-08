@@ -79,11 +79,9 @@ class JoinController extends Controller
             'region_id' => 'required|exists:regions,id',
             'website' => 'nullable|url|max:255',
             'instagram' => 'nullable|string|max:100',
-            'description' => 'required|string|min:50',
+            'description' => 'required|string',
             'specializations' => 'required|string',
             'services' => 'nullable|string',
-            'price_range_min' => 'nullable|numeric|min:0',
-            'price_range_max' => 'nullable|numeric|min:0|gte:price_range_min',
             'completed_events' => 'nullable|integer|min:0',
             'awards' => 'nullable|string',
             'certification_level' => 'nullable|string|in:'.implode(',', array_keys(config('indonesia.certification_levels', []))),
@@ -91,6 +89,7 @@ class JoinController extends Controller
             'logo' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
             'legal_documents' => 'nullable|array',
             'legal_documents.*' => 'nullable|file|mimes:pdf,jpg,jpeg,png,webp|max:5120',
+            'file_recom' => 'nullable|file|mimes:pdf,jpg,jpeg,png,webp|max:5120',
             // Legal detail fields (optional)
             'deed_of_establishment' => 'nullable|string|max:100',
             'deed_date' => 'nullable|date',
@@ -120,12 +119,12 @@ class JoinController extends Controller
             'region_id.required' => 'Wilayah operasional wajib dipilih',
             'region_id.exists' => 'Wilayah operasional tidak valid',
             'description.required' => 'Deskripsi wajib diisi',
-            'description.min' => 'Deskripsi minimal 50 karakter',
             'specializations.required' => 'Spesialisasi/layanan wajib diisi',
-            'price_range_max.gte' => 'Harga maksimum harus lebih besar atau sama dengan harga minimum',
             'business_license.required' => 'Nomor izin usaha wajib diisi',
             'legal_documents.*.mimes' => 'Dokumen legal harus berupa file PDF, JPG, JPEG, PNG, atau WEBP',
             'legal_documents.*.max' => 'Ukuran file dokumen legal maksimal 5MB',
+            'file_recom.mimes' => 'Surat rekomendasi harus berupa file PDF, JPG, JPEG, PNG, atau WEBP',
+            'file_recom.max' => 'Ukuran file surat rekomendasi maksimal 5MB',
             'terms.required' => 'Anda harus menyetujui syarat dan ketentuan',
             'terms.accepted' => 'Anda harus menyetujui syarat dan ketentuan',
         ]);
@@ -181,6 +180,17 @@ class JoinController extends Controller
             if ($isUpdate && $existingOrganizer?->logo && $existingOrganizer->logo !== $newLogoPath) {
                 if (Storage::disk('public')->exists($existingOrganizer->logo)) {
                     Storage::disk('public')->delete($existingOrganizer->logo);
+                }
+            }
+        }
+
+        if ($request->hasFile('file_recom')) {
+            $newRecomPath = $request->file('file_recom')->store('wedding-organizer-recom', 'public');
+            $validated['file_recom'] = $newRecomPath;
+
+            if ($isUpdate && $existingOrganizer?->file_recom && $existingOrganizer->file_recom !== $newRecomPath) {
+                if (Storage::disk('public')->exists($existingOrganizer->file_recom)) {
+                    Storage::disk('public')->delete($existingOrganizer->file_recom);
                 }
             }
         }

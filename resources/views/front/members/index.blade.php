@@ -184,10 +184,6 @@
                 <div class="text-3xl font-bold">{{ $regions->count() }}</div>
                 <div class="text-sm opacity-90">Wilayah</div>
             </div>
-            <div class="bg-gradient-to-r from-gray-900 to-gray-700 text-white p-6 rounded-xl text-center">
-                <div class="text-3xl font-bold">{{ $members->avg('rating') ? number_format($members->avg('rating'), 1) : '4.8' }}</div>
-                <div class="text-sm opacity-90">Rating Rata-rata</div>
-            </div>
             <div class="bg-gradient-to-r from-gray-900 to-red-600 text-white p-6 rounded-xl text-center">
                 <div class="text-3xl font-bold">{{ number_format($members->sum('completed_events')) }}</div>
                 <div class="text-sm opacity-90">Event Sukses</div>
@@ -242,28 +238,6 @@
                             {{ $member->city }}{{ $member->province ? ', ' . substr($member->province, 0, 2) : '' }}
                         </p>
                         
-                        <!-- Price Range -->
-                        <!-- <div class="text-gray-700 text-xs mb-2">
-                            @if($member->price_range_min && $member->price_range_max)
-                                <span class="font-semibold">
-                                    @if($member->price_range_min < 10000000)
-                                        $
-                                    @elseif($member->price_range_min < 50000000)
-                                        $$
-                                    @else
-                                        $$$
-                                    @endif
-                                </span>
-                            @else
-                                <span class="font-semibold">$$</span>
-                            @endif
-                            <span class="mx-1">|</span> -->
-                            <!-- Rating -->
-                            <!-- <span class="inline-flex items-center">
-                                <i class="fas fa-star text-hastana-red mr-1 text-xs"></i>
-                                <span class="font-semibold">{{ number_format($member->rating ?? 4.5, 1) }}/5</span>
-                                <span class="text-gray-500 ml-1">({{ $member->completed_events ?? 0 }} ulasan)</span>
-                            </span> -->
                         <!-- </div> -->
                     </div>
                 </div>

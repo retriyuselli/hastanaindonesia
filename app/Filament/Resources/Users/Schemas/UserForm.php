@@ -143,30 +143,40 @@ class UserForm
                     ->disk('public')
                     ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
                     ->maxSize(2048)
-                    ->imageResizeMode('cover')
-                    ->imageCropAspectRatio('1:1')
-                    ->imageResizeTargetWidth('200')
-                    ->imageResizeTargetHeight('200')
+                    ->imageEditor()
+                    ->imageEditorAspectRatios(['1:1'])
                     ->columnSpanFull(),
 
                 Select::make('wedding_organizer_id')
                     ->label('Wedding Organizer')
-                    ->options(WeddingOrganizer::whereNull('user_id')->orderBy('brand_name')->pluck('brand_name', 'id'))
+                    ->options(
+                        WeddingOrganizer::whereNull('user_id')
+                            ->orderBy('organizer_name')
+                            ->get()
+                            ->mapWithKeys(fn ($wo) => [$wo->id => $wo->brand_name ?: $wo->organizer_name])
+                    )
                     ->searchable()
-                    ->getOptionLabelUsing(fn ($value) => WeddingOrganizer::find($value)?->brand_name)
-                    ->getSearchResultsUsing(function (string $search) {
-                        return WeddingOrganizer::query()
-                            ->whereNull('user_id')
-                            ->where('brand_name', 'like', "%{$search}%")
-                            ->orderBy('brand_name')
-                            ->limit(50)
-                            ->pluck('brand_name', 'id')
-                            ->toArray();
+                    ->getOptionLabelUsing(function ($value) {
+                        $wo = WeddingOrganizer::find($value);
+
+                        return $wo ? ($wo->brand_name ?: $wo->organizer_name) : null;
                     })
+                    ->getSearchResultsUsing(fn (string $search) => WeddingOrganizer::query()
+                        ->whereNull('user_id')
+                        ->where(fn ($q) => $q
+                            ->where('brand_name', 'like', "%{$search}%")
+                            ->orWhere('organizer_name', 'like', "%{$search}%")
+                        )
+                        ->orderBy('organizer_name')
+                        ->limit(50)
+                        ->get()
+                        ->mapWithKeys(fn ($wo) => [$wo->id => $wo->brand_name ?: $wo->organizer_name])
+                        ->toArray()
+                    )
                     ->placeholder('Pilih WO terkait (opsional)')
-                    ->helperText('Hanya menampilkan WO yang belum terhubung; WO terhubung saat ini tetap dipilih')
+                    ->helperText('Hanya menampilkan WO yang belum terhubung; WO terhubung saat ini tetap ditampilkan')
                     ->prefixIcon('heroicon-o-briefcase')
-                    ->afterStateHydrated(function ($component, $state, $record) {
+                    ->afterStateHydrated(function ($component, mixed $_state, $record) {
                         if ($record) {
                             $component->state(optional($record->weddingOrganizer)->id);
                         }

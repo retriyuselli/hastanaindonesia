@@ -27,8 +27,13 @@ class ProfileUpdateRequest extends FormRequest
                 Rule::unique(User::class)->ignore($this->user()->id),
             ],
             'phone' => ['nullable', 'string', 'max:20', 'regex:/^(\+62|62|0)[0-9]{9,15}$/'],
-            'avatar' => ['nullable', 'image', 'mimes:jpeg,jpg,png,gif', 'max:2048'], // 2MB max
+            'avatar' => ['nullable', 'image', 'mimes:jpeg,jpg,png,gif', 'max:2048'],
             'remove_avatar' => ['nullable', 'boolean'],
+            'date_of_birth' => ['nullable', 'date', 'before_or_equal:today'],
+            'gender' => ['nullable', 'in:male,female'],
+            'status_menikah' => ['nullable', 'in:single,married'],
+            'agama' => ['nullable', 'in:Islam,Kristen,Katolik,Hindu,Buddha,Konghucu,Lainnya'],
+            'no_ktp' => ['nullable', 'string', 'max:20', Rule::unique(User::class, 'no_ktp')->ignore($this->user()->id)],
         ];
     }
 }

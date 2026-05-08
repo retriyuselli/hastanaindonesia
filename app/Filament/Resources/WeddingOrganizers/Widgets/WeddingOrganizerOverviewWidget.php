@@ -15,7 +15,6 @@ class WeddingOrganizerOverviewWidget extends StatsOverviewWidget
         $active = WeddingOrganizer::query()->where('status', 'active')->count();
         $featured = WeddingOrganizer::query()->where('is_featured', true)->count();
         $legalVerified = WeddingOrganizer::query()->where('legal_document_status', 'verified')->count();
-        $avgRating = WeddingOrganizer::query()->whereNotNull('rating')->avg('rating');
 
         return [
             Stat::make('Total WO', number_format($total))
@@ -36,11 +35,6 @@ class WeddingOrganizerOverviewWidget extends StatsOverviewWidget
                 ->color('info')
                 ->chart([0, (int) ($legalVerified * 0.4), (int) ($legalVerified * 0.7), $legalVerified]),
 
-            Stat::make('Rating Rata-rata', $avgRating ? number_format((float) $avgRating, 1).' / 5.0' : 'Belum ada')
-                ->description('Dari WO yang memiliki rating')
-                ->descriptionIcon('heroicon-m-star')
-                ->color('success')
-                ->chart([3.0, 3.5, 4.0, 4.3, (float) ($avgRating ?? 0)]),
         ];
     }
 }

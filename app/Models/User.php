@@ -13,6 +13,15 @@ class User extends Authenticatable implements FilamentUser
 {
     use HasFactory, HasRoles, Notifiable;
 
+    protected static function booted(): void
+    {
+        static::created(function (self $user) {
+            if ($user->roles()->count() === 0) {
+                $user->assignRole('customer');
+            }
+        });
+    }
+
     protected $fillable = [
         'name',
         'email',
@@ -50,14 +59,6 @@ class User extends Authenticatable implements FilamentUser
     {
         return $this->hasMany(Company::class, 'legal_verified_by');
     }
-
-    /**
-     * Get members verified by this user
-     */
-    // public function verifiedMembers()
-    // {
-    //     return $this->hasMany(Member::class, 'legal_verified_by');
-    // }
 
     /**
      * Get wedding organizers verified by this user
