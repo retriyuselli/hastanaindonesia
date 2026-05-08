@@ -81,10 +81,21 @@
                 <div class="home-hero-slide">
                     @php
                         $slideAlt = filled($slide?->alt) ? $slide->alt : 'HASTANA Indonesia';
+                        $hasLink = filled($slide?->link);
+                        $isExternalLink = false;
+                        if ($hasLink) {
+                            $lowerLink = strtolower($slide->link);
+                            $isExternalLink = str_starts_with($lowerLink, 'http://') || str_starts_with($lowerLink, 'https://');
+                        }
                     @endphp
 
-                    @if (filled($slide?->link))
-                        <a href="{{ $slide->link }}" class="block" aria-label="{{ $slideAlt }}">
+                    @if ($hasLink)
+                        <a 
+                            href="{{ $slide->link }}" 
+                            class="block cursor-pointer" 
+                            aria-label="{{ $slideAlt }}"
+                            @if($isExternalLink) target="_blank" rel="noopener noreferrer" @endif
+                        >
                             <img src="{{ $slide->image_url }}" alt="{{ $slideAlt }}" class="block w-full h-auto select-none" loading="{{ $loop->first ? 'eager' : 'lazy' }}" decoding="async" draggable="false">
                         </a>
                     @else
@@ -466,12 +477,6 @@
                     });
                 }
 
-                root.querySelectorAll('a').forEach(function (a) {
-                    a.addEventListener('click', function (e) {
-                        if (didDrag) e.preventDefault();
-                    });
-                });
-
                 function onPointerDown(e) {
                     if (e.button != null && e.button !== 0) return;
                     isDragging = true;
@@ -479,7 +484,6 @@
                     startX = e.clientX;
                     startTranslatePx = -index * root.clientWidth;
                     track.style.transition = 'none';
-                    if (track.setPointerCapture) track.setPointerCapture(e.pointerId);
                 }
 
                 function onPointerMove(e) {
@@ -501,6 +505,10 @@
                     } else {
                         setIndex(index);
                     }
+                    if (didDrag) {
+                        e.preventDefault();
+                    }
+                    didDrag = false;
                 }
 
                 track.addEventListener('pointerdown', onPointerDown);
