@@ -123,7 +123,7 @@
         @endif
     </section>
 
-    <section class="py-16 bg-white">
+    <section class="py-8 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
                 <div class="lg:col-span-5">
@@ -150,7 +150,7 @@
                 </div>
 
                 <div class="lg:col-span-7">
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
                             <div class="w-11 h-11 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center">
                                 <i class="fas fa-certificate"></i>
@@ -185,7 +185,7 @@
         </div>
     </section>
 
-    <section class="py-16 bg-gray-50">
+    <section class="py-8 bg-gray-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-end justify-between gap-6">
                 <div>
@@ -198,7 +198,7 @@
                 </a>
             </div>
 
-            <div class="mt-8 grid grid-cols-2 lg:grid-cols-4 gap-4">
+            <div class="mt-8 grid grid-cols-2 lg:grid-cols-4 gap-3">
                 @forelse($featuredWeddingOrganizers->take(8) as $wo)
                     <a href="{{ route('members.show', $wo->slug) }}" class="group rounded-2xl border border-slate-200 bg-white p-3 sm:p-5 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition flex flex-col">
                         <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
@@ -238,7 +238,7 @@
     </section>
 
     @if(($featuredProducts?->count() ?? 0) > 10)
-        <section class="py-16 bg-white">
+        <section class="py-8 bg-white">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex items-end justify-between gap-6">
                     <div>
@@ -251,7 +251,7 @@
                     </a>
                 </div>
 
-                <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                     @forelse($featuredProducts->take(6) as $product)
                         <a href="{{ $product->weddingOrganizer?->slug ? route('members.product', ['slug' => $product->weddingOrganizer->slug, 'productId' => $product->id]) : '#' }}"
                             class="group rounded-2xl border border-slate-200 bg-white overflow-hidden shadow-sm hover:shadow-md transition">
@@ -259,7 +259,7 @@
                                 <img src="{{ $product->main_image }}" alt="{{ $product->name }}" class="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-300">
                             </div>
                             <div class="p-5">
-                                <div class="flex items-center justify-between gap-4">
+                                <div class="flex items-center justify-between gap-3">
                                     <div class="min-w-0">
                                         <div class="text-sm font-bold text-slate-900 truncate">{{ $product->name }}</div>
                                         <div class="text-xs text-slate-600 truncate">{{ $product->weddingOrganizer?->brand_name ?: $product->weddingOrganizer?->organizer_name ?: 'Wedding Organizer' }}</div>
@@ -289,7 +289,7 @@
         </section>
     @endif
 
-    <section class="py-16 bg-gray-50">
+    <section class="py-8 bg-gray-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-end justify-between gap-6">
                 <div>
@@ -302,7 +302,7 @@
                 </a>
             </div>
 
-            <div class="mt-8 grid grid-cols-2 lg:grid-cols-4 gap-4">
+            <div class="mt-8 grid grid-cols-2 lg:grid-cols-4 gap-3">
                 @forelse($upcomingEvents as $event)
                     <a href="{{ route('events.show', $event->slug) }}" class="group rounded-2xl border border-slate-200 bg-white overflow-hidden shadow-sm hover:shadow-md transition">
                         <div class="aspect-[4/5] bg-slate-100 overflow-hidden">
@@ -338,7 +338,7 @@
         </div>
     </section>
 
-    <section class="py-16 bg-white">
+    <section class="py-8 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-end justify-between gap-6">
                 <div>
@@ -351,7 +351,7 @@
                 </a>
             </div>
 
-            <div class="mt-8 grid grid-cols-2 lg:grid-cols-4 gap-4">
+            <div class="mt-8 grid grid-cols-2 lg:grid-cols-4 gap-3">
                 @forelse($latestBlogs as $blog)
                     <a href="{{ route('blog.detail', $blog->slug) }}" class="group rounded-2xl border border-slate-200 bg-white overflow-hidden shadow-sm hover:shadow-md transition">
                         <div class="aspect-[4/5] bg-slate-100 overflow-hidden">
@@ -385,7 +385,7 @@
         </div>
     </section>
 
-    <section class="py-16 bg-gray-50">
+    <section class="py-8 bg-gray-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="rounded-3xl border border-slate-200 bg-gradient-to-r from-slate-900 to-slate-800 overflow-hidden">
                 <div class="px-6 py-10 sm:px-10 sm:py-12">

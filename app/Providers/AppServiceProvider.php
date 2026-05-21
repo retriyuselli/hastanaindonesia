@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\EventParticipant;
 use App\Observers\EventParticipantObserver;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -21,6 +22,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Paginator::useTailwind();
+
         // Register EventParticipant Observer
         EventParticipant::observe(EventParticipantObserver::class);
     }

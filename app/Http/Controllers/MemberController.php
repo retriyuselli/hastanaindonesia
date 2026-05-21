@@ -54,7 +54,7 @@ class MemberController extends Controller
         }
 
         // Sort options
-        $sort = $request->get('sort', 'name');
+        $sort = $request->input('sort', 'name');
         switch ($sort) {
             case 'events':
                 $query->orderBy('completed_events', 'desc');
@@ -66,17 +66,8 @@ class MemberController extends Controller
                 $query->orderBy('organizer_name', 'asc');
         }
 
-        // Get featured members separately
-        $featuredMembers = WeddingOrganizer::with(['region', 'user'])
-            ->verified()
-            ->active()
-            ->featured()
-            ->inRandomOrder()
-            ->limit(3)
-            ->get();
-
         // Paginate results
-        $members = $query->paginate(12);
+        $members = $query->paginate(12)->withQueryString();
 
         $totalWeddingOrganizers = Cache::remember('members:total_wedding_organizers_with_name', now()->addMinutes(30), function () {
             return WeddingOrganizer::query()
@@ -85,18 +76,12 @@ class MemberController extends Controller
                 ->count();
         });
 
-        // Get filter options
         $regions = Region::orderBy('region_name')->get();
-        $provinces = config('indonesia.provinces', []);
-        $certificationLevels = config('indonesia.certification_levels', []);
 
         return view('front.members.index', compact(
             'members',
-            'featuredMembers',
             'totalWeddingOrganizers',
-            'regions',
-            'provinces',
-            'certificationLevels'
+            'regions'
         ));
     }
 

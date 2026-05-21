@@ -61,19 +61,7 @@
         }
         
         .nav-link::after {
-            content: '';
-            position: absolute;
-            bottom: -2px;
-            left: 50%;
-            width: 0;
-            height: 2px;
-            background: linear-gradient(90deg, var(--hastana-red), var(--hastana-black));
-            transition: all 0.3s ease;
-            transform: translateX(-50%);
-        }
-        
-        .nav-link:hover::after {
-            width: 100%;
+            display: none;
         }
         
         .nav-link:hover {
@@ -160,40 +148,9 @@
             font-weight: 600;
         }
         
-        .nav-link.active::after {
-            content: '';
-            position: absolute;
-            bottom: -8px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 6px;
-            height: 6px;
-            background: linear-gradient(135deg, var(--hastana-red), var(--hastana-black));
-            border-radius: 50%;
-            animation: pulse-dot 2s infinite;
-        }
-        
+        .nav-link.active::after,
         .nav-link.active::before {
-            content: '';
-            position: absolute;
-            bottom: -6px;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: linear-gradient(90deg, var(--hastana-red), var(--hastana-black));
-            border-radius: 1px;
-            opacity: 0.7;
-        }
-        
-        @keyframes pulse-dot {
-            0%, 100% { 
-                opacity: 1; 
-                transform: translateX(-50%) scale(1); 
-            }
-            50% { 
-                opacity: 0.7; 
-                transform: translateX(-50%) scale(1.2); 
-            }
+            display: none;
         }
         
         /* Dropdown Menu Styles */

@@ -12,12 +12,18 @@
         flex-direction: column;
         background: white;
         border-radius: 1rem;
-        padding: 1.5rem;
+        padding: 0.875rem;
         position: relative;
         height: 100%;
         text-decoration: none;
         color: inherit;
         cursor: pointer;
+    }
+
+    @media (min-width: 1024px) {
+        .member-card {
+            padding: 1.5rem;
+        }
     }
     
     .member-card:hover {
@@ -45,13 +51,32 @@
     
     /* Logo circle */
     .member-logo {
-        width: 140px;
-        height: 140px;
+        width: 80px;
+        height: 80px;
+        min-width: 80px;
+        min-height: 80px;
         border-radius: 50%;
         object-fit: cover;
         border: 3px solid #f3f4f6;
-        margin: 0 auto 1rem;
+        margin: 0 auto 0.75rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+    }
+
+    img.member-logo {
         display: block;
+    }
+
+    @media (min-width: 1024px) {
+        .member-logo {
+            width: 140px;
+            height: 140px;
+            min-width: 140px;
+            min-height: 140px;
+            margin-bottom: 1rem;
+        }
     }
     
     /* Icon badge on logo */
@@ -175,7 +200,7 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         <!-- Stats -->
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
             <div class="bg-gradient-to-r from-gray-900 to-gray-700 text-white p-6 rounded-xl text-center">
                 <div class="text-3xl font-bold">{{ number_format($totalWeddingOrganizers ?? 0) }}</div>
                 <div class="text-sm opacity-90">Total Anggota</div>
@@ -191,7 +216,7 @@
         </div>
 
         <!-- Members Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" id="members-grid">
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6" id="members-grid">
             
             @forelse($members as $member)
             <a href="{{ $member->slug ? route('members.show', $member->slug) : '#' }}" class="member-card {{ !$member->slug ? 'opacity-50 cursor-not-allowed' : '' }}">
@@ -222,23 +247,22 @@
                         </div>
                         
                         <!-- Name -->
-                        <h3 class="font-bold text-base mb-1 text-gray-900">{{ $member->organizer_name }}</h3>
-                        
+                        <h3 class="font-bold text-xs sm:text-base mb-1 text-gray-900 line-clamp-2">{{ $member->organizer_name }}</h3>
+
                         <!-- Category -->
-                        <p class="text-gray-600 text-xs mb-1">
+                        <p class="text-gray-600 text-xs mb-1 line-clamp-1">
                             @if($member->specializations && is_array($member->specializations) && count($member->specializations) > 0)
                                 {{ $member->specializations[0] }}
                             @else
                                 Wedding Organizer
                             @endif
                         </p>
-                        
+
                         <!-- Location -->
-                        <p class="text-gray-500 text-xs mb-3">
+                        <p class="text-gray-500 text-xs mb-2 sm:mb-3 line-clamp-1">
                             {{ $member->city }}{{ $member->province ? ', ' . substr($member->province, 0, 2) : '' }}
                         </p>
                         
-                        <!-- </div> -->
                     </div>
                 </div>
             </a>
