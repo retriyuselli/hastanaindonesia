@@ -157,10 +157,32 @@ class ProductForm
                                 Section::make('Status & Visibilitas')
                                     ->columns(2)
                                     ->schema([
+                                        Select::make('status')
+                                            ->label('Status')
+                                            ->options([
+                                                'published' => 'Published',
+                                                'draft'     => 'Draft',
+                                                'archived'  => 'Archived',
+                                            ])
+                                            ->default('published')
+                                            ->required()
+                                            ->helperText('Published = tampil di website, Draft = belum dipublish, Archived = disembunyikan'),
+
+                                        Select::make('visibility')
+                                            ->label('Visibilitas')
+                                            ->options([
+                                                'public'       => 'Public — Semua pengunjung',
+                                                'members_only' => 'Members Only — Khusus anggota login',
+                                                'private'      => 'Private — Hanya admin',
+                                            ])
+                                            ->default('public')
+                                            ->required()
+                                            ->helperText('Tentukan siapa yang bisa melihat produk ini'),
+
                                         Toggle::make('is_active')
                                             ->label('Aktif')
                                             ->default(true)
-                                            ->helperText('Hanya produk aktif yang tampil di website'),
+                                            ->helperText('Non-aktifkan untuk menyembunyikan sementara tanpa mengubah status'),
 
                                         TextInput::make('sort_order')
                                             ->label('Urutan')

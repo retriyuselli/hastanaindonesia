@@ -48,7 +48,7 @@ class HomeController extends Controller
         // Get featured products with their wedding organizer
         $featuredProducts = Cache::remember('home:featured_products', now()->addMinutes(10), function () {
             return Product::query()
-                ->active()
+                ->visibleOnHomepage()
                 ->with(['weddingOrganizer.region'])
                 ->inRandomOrder()
                 ->limit(10)

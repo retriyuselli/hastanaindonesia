@@ -176,10 +176,12 @@ class MemberController extends Controller
             ->active()
             ->firstOrFail();
 
-        // Get product from database
+        // Get product from database — only published + public products accessible
         $productModel = Product::where('id', $productId)
             ->where('wedding_organizer_id', $member->id)
             ->where('is_active', true)
+            ->where('status', Product::STATUS_PUBLISHED)
+            ->where('visibility', Product::VISIBILITY_PUBLIC)
             ->firstOrFail();
 
         // Process images to use storage URL

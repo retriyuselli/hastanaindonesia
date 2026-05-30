@@ -12,6 +12,14 @@ class Product extends Model
 {
     use HasFactory, SoftDeletes;
 
+    const STATUS_PUBLISHED = 'published';
+    const STATUS_DRAFT     = 'draft';
+    const STATUS_ARCHIVED  = 'archived';
+
+    const VISIBILITY_PUBLIC       = 'public';
+    const VISIBILITY_MEMBERS_ONLY = 'members_only';
+    const VISIBILITY_PRIVATE      = 'private';
+
     protected $fillable = [
         'wedding_organizer_id',
         'name',
@@ -25,6 +33,8 @@ class Product extends Model
         'badges',
         'limited_offer',
         'is_active',
+        'status',
+        'visibility',
         'sort_order',
     ];
 
@@ -37,6 +47,8 @@ class Product extends Model
         'badges' => 'array',
         'limited_offer' => 'boolean',
         'is_active' => 'boolean',
+        'status' => 'string',
+        'visibility' => 'string',
     ];
 
     protected static function boot()
@@ -48,21 +60,18 @@ class Product extends Model
                 $product->slug = Str::slug($product->name);
             }
 
-            // Auto calculate discount
             if ($product->original_price && $product->price) {
-                $product->discount = $product->original_price - $product->price;
+                $product->discount = max(0, $product->original_price - $product->price);
             }
         });
 
         static::updating(function ($product) {
-            // Auto update slug if name changed
             if ($product->isDirty('name') && empty($product->slug)) {
                 $product->slug = Str::slug($product->name);
             }
 
-            // Auto recalculate discount
             if ($product->isDirty(['original_price', 'price'])) {
-                $product->discount = $product->original_price - $product->price;
+                $product->discount = max(0, $product->original_price - $product->price);
             }
         });
     }
@@ -81,6 +90,32 @@ class Product extends Model
     public function scopeActive($query)
     {
         return $query->where('is_active', true);
+    }
+
+    /**
+     * Scope for published products
+     */
+    public function scopePublished($query)
+    {
+        return $query->where('status', self::STATUS_PUBLISHED);
+    }
+
+    /**
+     * Scope for publicly visible products
+     */
+    public function scopePubliclyVisible($query)
+    {
+        return $query->where('visibility', self::VISIBILITY_PUBLIC);
+    }
+
+    /**
+     * Scope untuk tampil di homepage: aktif, published, dan public
+     */
+    public function scopeVisibleOnHomepage($query)
+    {
+        return $query->where('is_active', true)
+            ->where('status', self::STATUS_PUBLISHED)
+            ->where('visibility', self::VISIBILITY_PUBLIC);
     }
 
     /**
@@ -118,14 +153,25 @@ class Product extends Model
     }
 
     /**
-     * Get discount percentage
+     * Get discount percentage calculated live from original_price and price
      */
-    public function getDiscountPercentageAttribute()
+    public function getDiscountPercentageAttribute(): int
     {
-        if ($this->original_price > 0) {
-            return round(($this->discount / $this->original_price) * 100);
+        $original = (float) $this->original_price;
+        $current  = (float) $this->price;
+
+        if ($original <= 0 || $current >= $original) {
+            return 0;
         }
 
-        return 0;
+        return (int) round((($original - $current) / $original) * 100);
+    }
+
+    /**
+     * Check whether price is lower than original (has real discount)
+     */
+    public function getHasDiscountAttribute(): bool
+    {
+        return (float) $this->price < (float) $this->original_price;
     }
 }

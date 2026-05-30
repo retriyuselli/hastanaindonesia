@@ -79,12 +79,13 @@ class ProductController extends Controller
             'description' => 'nullable|string',
             'features' => 'nullable|string',
             'original_price' => 'required|numeric|min:0',
-            'price' => 'required|numeric|min:0',
-            'discount' => 'nullable|numeric|min:0',
+            'price' => 'required|numeric|min:0|lte:original_price',
             'limited_offer' => 'boolean',
             'badges' => 'nullable|string',
             'images.*' => 'required|image|mimes:jpeg,jpg,png,webp|max:2048',
             'is_active' => 'boolean',
+        ], [
+            'price.lte' => 'Harga jual tidak boleh lebih besar dari harga asli.',
         ]);
 
         // Handle badges as comma-separated string
@@ -156,13 +157,14 @@ class ProductController extends Controller
             'description' => 'nullable|string',
             'features' => 'nullable|string',
             'original_price' => 'required|numeric|min:0',
-            'price' => 'required|numeric|min:0',
-            'discount' => 'nullable|numeric|min:0',
+            'price' => 'required|numeric|min:0|lte:original_price',
             'limited_offer' => 'boolean',
             'badges' => 'nullable|string',
             'images.*' => 'nullable|image|mimes:jpeg,jpg,png,webp|max:2048',
             'existing_images' => 'nullable|array',
             'is_active' => 'boolean',
+        ], [
+            'price.lte' => 'Harga jual tidak boleh lebih besar dari harga asli.',
         ]);
 
         // Handle badges as comma-separated string

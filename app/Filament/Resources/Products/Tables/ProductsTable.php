@@ -62,6 +62,40 @@ class ProductsTable
                     ->boolean()
                     ->sortable(),
 
+                TextColumn::make('status')
+                    ->label('Status')
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'published' => 'success',
+                        'draft'     => 'warning',
+                        'archived'  => 'gray',
+                        default     => 'gray',
+                    })
+                    ->formatStateUsing(fn (string $state): string => match ($state) {
+                        'published' => 'Published',
+                        'draft'     => 'Draft',
+                        'archived'  => 'Archived',
+                        default     => $state,
+                    })
+                    ->sortable(),
+
+                TextColumn::make('visibility')
+                    ->label('Visibilitas')
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'public'       => 'info',
+                        'members_only' => 'warning',
+                        'private'      => 'danger',
+                        default        => 'gray',
+                    })
+                    ->formatStateUsing(fn (string $state): string => match ($state) {
+                        'public'       => 'Public',
+                        'members_only' => 'Members Only',
+                        'private'      => 'Private',
+                        default        => $state,
+                    })
+                    ->sortable(),
+
                 IconColumn::make('is_active')
                     ->label('Aktif')
                     ->boolean()
@@ -107,8 +141,24 @@ class ProductsTable
                         0 => 'Tidak',
                     ]),
 
-                SelectFilter::make('is_active')
+                SelectFilter::make('status')
                     ->label('Status')
+                    ->options([
+                        'published' => 'Published',
+                        'draft'     => 'Draft',
+                        'archived'  => 'Archived',
+                    ]),
+
+                SelectFilter::make('visibility')
+                    ->label('Visibilitas')
+                    ->options([
+                        'public'       => 'Public',
+                        'members_only' => 'Members Only',
+                        'private'      => 'Private',
+                    ]),
+
+                SelectFilter::make('is_active')
+                    ->label('Aktif')
                     ->options([
                         1 => 'Aktif',
                         0 => 'Tidak Aktif',

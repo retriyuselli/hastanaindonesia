@@ -255,36 +255,63 @@
                     </a>
                 </div>
 
-                <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-                    @forelse($featuredProducts->take(6) as $product)
+                <div class="mt-8 grid grid-cols-2 lg:grid-cols-4 gap-3">
+                    @foreach($featuredProducts->take(4) as $product)
                         <a href="{{ $product->weddingOrganizer?->slug ? route('members.product', ['slug' => $product->weddingOrganizer->slug, 'productId' => $product->id]) : '#' }}"
                             class="group rounded-2xl border border-slate-200 bg-white overflow-hidden shadow-sm hover:shadow-md transition">
-                            <div class="aspect-[4/5] bg-slate-100 overflow-hidden">
-                                <img src="{{ $product->main_image }}" alt="{{ $product->name }}" class="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-300">
+
+                            {{-- Gambar dengan badge overlay — rasio tetap 4:5 (1080×1350) --}}
+                            <div class="relative w-full overflow-hidden bg-slate-100" style="padding-bottom: 125%;">
+                                <img src="{{ $product->main_image }}"
+                                     alt="{{ $product->name }}"
+                                     class="absolute inset-0 w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-300">
+
+                                {{-- Badge diskon --}}
+                                @if($product->has_discount && $product->discount_percentage > 0)
+                                    <span class="absolute top-3 left-3 text-xs font-bold px-2 py-1 rounded-full bg-red-600 text-white shadow">
+                                        -{{ $product->discount_percentage }}%
+                                    </span>
+                                @endif
+
+                                {{-- Badge limited offer --}}
+                                @if($product->limited_offer)
+                                    <span class="absolute top-3 right-3 text-xs font-semibold px-2 py-1 rounded-full bg-amber-500 text-white shadow">
+                                        Terbatas
+                                    </span>
+                                @endif
                             </div>
+
+                            {{-- Info produk --}}
                             <div class="p-5">
-                                <div class="flex items-center justify-between gap-3">
-                                    <div class="min-w-0">
-                                        <div class="text-sm font-bold text-slate-900 truncate">{{ $product->name }}</div>
-                                        <div class="text-xs text-slate-600 truncate">{{ $product->weddingOrganizer?->brand_name ?: $product->weddingOrganizer?->organizer_name ?: 'Wedding Organizer' }}</div>
-                                    </div>
-                                    @if($product->limited_offer)
-                                        <span class="text-xs px-2.5 py-1 rounded-full bg-red-50 text-red-700 font-semibold">Terbatas</span>
-                                    @endif
+                                <div class="text-sm font-bold text-slate-900 truncate">{{ $product->name }}</div>
+                                <div class="text-xs text-slate-500 truncate mt-0.5">
+                                    {{ $product->weddingOrganizer?->brand_name ?: $product->weddingOrganizer?->organizer_name ?: 'Wedding Organizer' }}
                                 </div>
+
                                 <div class="mt-4 flex items-end justify-between">
                                     <div>
-                                        @if((float) $product->original_price > (float) $product->price)
-                                            <div class="text-xs text-slate-400 line-through">Rp {{ number_format($product->original_price) }}</div>
+                                        @if($product->has_discount)
+                                            <div class="text-xs text-slate-400 line-through">
+                                                Rp {{ number_format($product->original_price) }}
+                                            </div>
                                         @endif
-                                        <div class="text-base font-extrabold text-slate-900">Rp {{ number_format($product->price) }}</div>
+                                        <div class="text-base font-extrabold text-slate-900">
+                                            Rp {{ number_format($product->price) }}
+                                        </div>
                                     </div>
-                                    <span class="text-sm font-semibold text-blue-700 group-hover:text-blue-800">Detail</span>
+                                    <span class="text-sm font-semibold text-blue-700 group-hover:text-blue-800">
+                                        Detail <i class="fas fa-arrow-right text-xs ml-0.5"></i>
+                                    </span>
                                 </div>
                             </div>
                         </a>
-                    @empty
-                    @endforelse
+                    @endforeach
+                </div>
+
+                <div class="mt-6 text-center sm:hidden">
+                    <a href="{{ route('members') }}" class="inline-flex items-center gap-2 text-sm font-semibold text-blue-700 hover:text-blue-800">
+                        Jelajahi semua paket <i class="fas fa-arrow-right text-xs"></i>
+                    </a>
                 </div>
             </div>
         </section>
