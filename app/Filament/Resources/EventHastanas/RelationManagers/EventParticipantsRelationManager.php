@@ -213,13 +213,7 @@ class EventParticipantsRelationManager extends RelationManager
                 CreateAction::make()
                     ->label('Tambah Peserta')
                     ->icon('heroicon-o-plus')
-                    ->mutateFormDataUsing(fn (array $data): array => $data + ['event_hastana_id' => $this->getOwnerRecord()->id])
-                    ->after(function (): void {
-                        $owner = $this->getOwnerRecord();
-                        if (($owner->current_participants ?? 0) >= 0) {
-                            $owner->increment('current_participants');
-                        }
-                    }),
+                    ->mutateFormDataUsing(fn (array $data): array => $data + ['event_hastana_id' => $this->getOwnerRecord()->id]),
             ])
             ->columns([
                 TextColumn::make('registration_code')
@@ -368,13 +362,7 @@ class EventParticipantsRelationManager extends RelationManager
                             'attended_at' => now(),
                         ])),
                     DeleteAction::make()
-                        ->label('Hapus')
-                        ->after(function (): void {
-                            $owner = $this->getOwnerRecord();
-                            if (($owner->current_participants ?? 0) > 0) {
-                                $owner->decrement('current_participants');
-                            }
-                        }),
+                        ->label('Hapus'),
                 ])->label('Aksi'),
             ])
             ->toolbarActions([
@@ -404,13 +392,7 @@ class EventParticipantsRelationManager extends RelationManager
                             ]));
                         })
                         ->deselectRecordsAfterCompletion(),
-                    DeleteBulkAction::make()
-                        ->after(function (Collection $records): void {
-                            $owner = $this->getOwnerRecord();
-                            $count = $records->count();
-                            $current = (int) ($owner->current_participants ?? 0);
-                            $owner->update(['current_participants' => max(0, $current - $count)]);
-                        }),
+                    DeleteBulkAction::make(),
                 ])->label('Aksi'),
             ])
             ->defaultSort('created_at', 'desc')

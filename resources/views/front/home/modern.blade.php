@@ -85,7 +85,11 @@
                         $isExternalLink = false;
                         if ($hasLink) {
                             $lowerLink = strtolower($slide->link);
-                            $isExternalLink = str_starts_with($lowerLink, 'http://') || str_starts_with($lowerLink, 'https://');
+                            if (str_starts_with($lowerLink, 'javascript:')) {
+                                $hasLink = false;
+                            } else {
+                                $isExternalLink = str_starts_with($lowerLink, 'http://') || str_starts_with($lowerLink, 'https://');
+                            }
                         }
                     @endphp
 
@@ -237,7 +241,7 @@
         </div>
     </section>
 
-    @if(($featuredProducts?->count() ?? 0) > 10)
+    @if(($featuredProducts?->count() ?? 0) > 0)
         <section class="py-8 bg-white">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex items-end justify-between gap-6">
@@ -280,9 +284,6 @@
                             </div>
                         </a>
                     @empty
-                        <div class="rounded-2xl border border-slate-200 bg-gray-50 p-6 text-sm text-slate-600">
-                            Paket belum tersedia saat ini.
-                        </div>
                     @endforelse
                 </div>
             </div>
@@ -413,6 +414,8 @@
         </div>
     </section>
 
+@endsection
+
 @push('scripts')
     <script>
         (function () {
@@ -534,5 +537,3 @@
         })();
     </script>
 @endpush
-
-@endsection

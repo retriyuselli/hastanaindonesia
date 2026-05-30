@@ -115,6 +115,9 @@ Route::middleware(['auth'])->group(function () {
     // E-Ticket Routes
     Route::get('/my-tickets/{registrationCode}', [EventController::class, 'showTicket'])->name('tickets.show');
     Route::get('/my-tickets/{registrationCode}/download', [EventController::class, 'downloadTicket'])->name('tickets.download');
+
+    // Cancel Registration
+    Route::delete('/my-registrations/{registrationCode}/cancel', [EventController::class, 'cancelRegistration'])->name('registrations.cancel');
 });
 
 Route::middleware('auth')->prefix('admin/files')->group(function () {

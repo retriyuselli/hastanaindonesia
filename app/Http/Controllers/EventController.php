@@ -570,4 +570,24 @@ class EventController extends Controller
         return redirect()->back()
             ->with('success', 'Terima kasih! Review Anda telah dikirim dan akan ditampilkan setelah disetujui oleh admin.');
     }
+
+    /**
+     * Cancel event registration
+     */
+    public function cancelRegistration($registrationCode)
+    {
+        $participant = EventParticipant::where('registration_code', $registrationCode)
+            ->where('user_id', Auth::id())
+            ->firstOrFail();
+
+        if ($participant->status !== 'pending') {
+            return redirect()->route('dashboard')
+                ->with('error', 'Pendaftaran hanya dapat dibatalkan jika masih berstatus menunggu konfirmasi.');
+        }
+
+        $participant->update(['status' => 'cancelled']);
+
+        return redirect()->route('dashboard')
+            ->with('success', 'Pendaftaran Anda untuk event "' . $participant->eventHastana->title . '" telah dibatalkan.');
+    }
 }

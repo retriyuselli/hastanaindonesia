@@ -69,7 +69,7 @@ php artisan shield:generate --all
 ## Cache / Optimize
 
 ```bash
-cd /home/u380354370/domains/paketpernikahan.co.id/public_html
+cd /home/u380354370/domains/hastanaindonesia.id/public_html
 git pull
 /opt/alt/php84/usr/bin/php artisan cache:clear
 /opt/alt/php84/usr/bin/php artisan config:clear

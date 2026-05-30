@@ -261,20 +261,10 @@
                                             <div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
                                                 <div>
                                                     <p class="text-xs text-gray-500">Bank BCA</p>
-                                                    <p class="font-semibold text-gray-900">1234567890</p>
-                                                    <p class="text-xs text-gray-600">a.n. PT Hastana Indonesia</p>
+                                                    <p class="font-semibold text-gray-900">2910777800</p>
+                                                    <p class="text-xs text-gray-600">an/ Perk Hastana Indonesia</p>
                                                 </div>
-                                                <button type="button" onclick="copyToClipboard('1234567890')" class="text-hastana-red hover:text-red-700">
-                                                    <i class="fas fa-copy"></i>
-                                                </button>
-                                            </div>
-                                            <div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
-                                                <div>
-                                                    <p class="text-xs text-gray-500">Bank Mandiri</p>
-                                                    <p class="font-semibold text-gray-900">0987654321</p>
-                                                    <p class="text-xs text-gray-600">a.n. PT Hastana Indonesia</p>
-                                                </div>
-                                                <button type="button" onclick="copyToClipboard('0987654321')" class="text-hastana-red hover:text-red-700">
+                                                <button type="button" onclick="copyToClipboard('2910777800')" class="text-hastana-red hover:text-red-700">
                                                     <i class="fas fa-copy"></i>
                                                 </button>
                                             </div>
@@ -298,9 +288,6 @@
                                                 class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-hastana-red focus:border-transparent @error('payment_method') border-red-500 @enderror">
                                             <option value="">Pilih Metode Pembayaran</option>
                                             <option value="bca" {{ old('payment_method') == 'bca' ? 'selected' : '' }}>Transfer Bank BCA</option>
-                                            <option value="mandiri" {{ old('payment_method') == 'mandiri' ? 'selected' : '' }}>Transfer Bank Mandiri</option>
-                                            <option value="bni" {{ old('payment_method') == 'bni' ? 'selected' : '' }}>Transfer Bank BNI</option>
-                                            <option value="bri" {{ old('payment_method') == 'bri' ? 'selected' : '' }}>Transfer Bank BRI</option>
                                         </select>
                                         @error('payment_method')
                                             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -445,7 +432,7 @@
                             <!-- Time -->
                             <div class="flex items-center gap-2">
                                 <i class="fas fa-clock text-hastana-red w-5"></i>
-                                <span>{{ substr($event->start_time, 0, 5) }} WIB</span>
+                                <span>{{ $event->start_time->format('H:i') }} WIB</span>
                             </div>
 
                             <!-- Location -->
@@ -457,7 +444,7 @@
                             <!-- Type -->
                             <div class="flex items-center gap-2">
                                 <i class="fas fa-info-circle text-hastana-red w-5"></i>
-                                <span>{{ ucfirst($event->type) }}</span>
+                                <span>{{ ucfirst($event->event_type) }}</span>
                             </div>
                         </div>
 

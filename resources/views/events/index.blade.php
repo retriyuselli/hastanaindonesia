@@ -7,7 +7,7 @@
 <section class="bg-gradient-to-r from-gray-900 to-black text-white py-12 mt-20">
     <div class="container mx-auto px-4">
         <div class="max-w-3xl mx-auto text-center">
-            <h1 class="text-3xl md:text-4xl font-bold mb-3">EVENT HASTANA INDONESIA</h1>
+            <h1 class="text-3xl md:text-4xl font-bold mb-3">EVENT HASTANA INDONESIA1</h1>
             <p class="text-sm text-gray-300">Temukan berbagai event menarik untuk mengembangkan diri Anda</p>
         </div>
     </div>
