@@ -144,7 +144,7 @@ class UserForm
                     ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
                     ->maxSize(2048)
                     ->imageEditor()
-                    ->imageEditorAspectRatios(['1:1'])
+                    ->downloadable()
                     ->columnSpanFull(),
 
                 Select::make('wedding_organizer_id')
