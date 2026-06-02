@@ -1473,32 +1473,51 @@
                     @php
                         $isAlmostFull = $event->capacity_percentage >= 90;
                         $canRegister = $event->canRegister();
-                        $isRegistered = false;
-                        
-                        // Check if user already registered
+                        $registrationStatus = null;
+
                         if (auth()->check()) {
-                            $isRegistered = \App\Models\EventParticipant::where('event_hastana_id', $event->id)
+                            $existingParticipant = \App\Models\EventParticipant::where('event_hastana_id', $event->id)
                                 ->where('user_id', auth()->id())
                                 ->whereIn('status', ['pending', 'confirmed', 'attended'])
-                                ->exists();
+                                ->first();
+                            $registrationStatus = $existingParticipant?->status;
                         }
+
+                        $isRegistered = !is_null($registrationStatus);
                     @endphp
 
                     @if($isRegistered)
-                        <!-- Already Registered -->
-                        <div class="bg-gray-50 border border-gray-200 rounded-lg p-3 mb-3">
-                            <div class="flex items-center gap-2.5 text-gray-800 mb-2.5">
-                                <i class="fas fa-check-circle text-xl"></i>
-                                <div>
-                                    <p class="font-bold text-base">Anda Sudah Terdaftar!</p>
-                                    <p class="text-xs">Lihat detail registrasi Anda di Event Saya</p>
+                        @if($registrationStatus === 'pending')
+                            <!-- Pending - waiting for admin approval -->
+                            <div class="bg-yellow-50 border border-yellow-300 rounded-lg p-3 mb-3">
+                                <div class="flex items-center gap-2.5 text-yellow-800 mb-2.5">
+                                    <i class="fas fa-clock text-xl"></i>
+                                    <div>
+                                        <p class="font-bold text-base">Menunggu Konfirmasi</p>
+                                        <p class="text-xs">Pendaftaran Anda sedang ditinjau oleh admin. Kami akan memberi tahu Anda setelah dikonfirmasi.</p>
+                                    </div>
                                 </div>
+                                <a href="{{ route('dashboard') }}" class="block w-full text-center bg-yellow-500 text-white py-2.5 rounded-lg font-semibold hover:bg-yellow-600 transition duration-200 text-sm">
+                                    <i class="fas fa-tachometer-alt mr-2"></i>
+                                    Cek Status Pendaftaran
+                                </a>
                             </div>
-                            <a href="{{ route('dashboard') }}" class="block w-full text-center bg-hastana-red text-white py-2.5 rounded-lg font-semibold hover:bg-red-700 transition duration-200 text-sm">
-                                <i class="fas fa-tachometer-alt mr-2"></i>
-                                Lihat Dashboard Saya
-                            </a>
-                        </div>
+                        @else
+                            <!-- Confirmed or Attended -->
+                            <div class="bg-gray-50 border border-gray-200 rounded-lg p-3 mb-3">
+                                <div class="flex items-center gap-2.5 text-gray-800 mb-2.5">
+                                    <i class="fas fa-check-circle text-xl"></i>
+                                    <div>
+                                        <p class="font-bold text-base">Anda Sudah Terdaftar!</p>
+                                        <p class="text-xs">Lihat detail registrasi Anda di Event Saya</p>
+                                    </div>
+                                </div>
+                                <a href="{{ route('dashboard') }}" class="block w-full text-center bg-hastana-red text-white py-2.5 rounded-lg font-semibold hover:bg-red-700 transition duration-200 text-sm">
+                                    <i class="fas fa-tachometer-alt mr-2"></i>
+                                    Lihat Dashboard Saya
+                                </a>
+                            </div>
+                        @endif
                     @elseif($canRegister)
                         @if($isAlmostFull)
                             <!-- Almost Full Alert -->
