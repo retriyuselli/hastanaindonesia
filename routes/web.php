@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminFileController;
+use App\Http\Controllers\IuranController;
 use App\Http\Controllers\BlogEngagementController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EventController;
@@ -308,6 +309,10 @@ Route::get('/welcome', function () {
 Route::get('/dashboard', [DashboardController::class, 'index'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
+
+Route::middleware(['auth', 'verified'])->prefix('iuran')->name('iuran.')->group(function () {
+    Route::post('/{iuran}/bayar', [IuranController::class, 'bayar'])->name('bayar');
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\EventHastana;
 use App\Models\EventParticipant;
+use App\Models\Iuran;
 use App\Models\WeddingOrganizer;
 use Illuminate\Support\Facades\Auth;
 
@@ -56,13 +57,26 @@ class DashboardController extends Controller
         // Ambil Wedding Organizer milik user
         $myWeddingOrganizer = WeddingOrganizer::where('user_id', $user->id)->first();
 
+        // Iuran
+        $myIurans      = Iuran::with('iuranSetting')
+            ->where('user_id', $user->id)
+            ->orderBy('due_date', 'desc')
+            ->get();
+        $iuranLunas    = $myIurans->where('status', 'paid')->count();
+        $iuranBelumBayar = $myIurans->whereIn('status', ['unpaid', 'overdue'])->count();
+        $iuranMenunggu = $myIurans->where('status', 'pending')->count();
+
         return view('front.dashboard.index', compact(
             'totalRegistered',
             'upcomingEvents',
             'completedEvents',
             'myEvents',
             'recommendedEvents',
-            'myWeddingOrganizer'
+            'myWeddingOrganizer',
+            'myIurans',
+            'iuranLunas',
+            'iuranBelumBayar',
+            'iuranMenunggu'
         ));
     }
 }

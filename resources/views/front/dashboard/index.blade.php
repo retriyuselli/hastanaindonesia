@@ -47,6 +47,11 @@
                                     <i class="fas fa-star text-yellow-500 w-4"></i>
                                     Event Rekomendasi
                                 </a>
+                                <a href="#iuran" class="flex items-center gap-2 px-3 py-2 rounded-lg text-gray-700 hover:bg-red-50 transition">
+                                    <i class="fas fa-wallet text-red-600 w-4"></i>
+                                    Iuran
+                                    <span class="ml-auto bg-yellow-100 text-yellow-700 text-xs font-semibold rounded-full px-2 py-0.5 leading-none">Coming Soon</span>
+                                </a>
                                 <a href="{{ route('profile.edit') }}" class="flex items-center gap-2 px-3 py-2 rounded-lg text-gray-700 hover:bg-red-50 transition">
                                     <i class="fas fa-user-circle text-red-600 w-4"></i>
                                     Edit Profil
@@ -405,6 +410,111 @@
                                 Lihat Semua Event Featured <i class="fas fa-arrow-right ml-1"></i>
                             </a>
                         </div>
+                    </div>
+                    <!-- Iuran Section -->
+                    <div id="iuran" class="scroll-mt-24 bg-white rounded-lg shadow-md p-6">
+                        <h2 class="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+                            <i class="fas fa-wallet text-red-600"></i> Iuran Saya
+                        </h2>
+
+                        @if(session('success'))
+                            <div class="bg-green-50 border border-green-200 rounded-lg p-3 mb-4 flex items-center gap-2 text-green-800 text-sm">
+                                <i class="fas fa-check-circle"></i>
+                                {{ session('success') }}
+                            </div>
+                        @endif
+
+                        <!-- Summary Cards -->
+                        <div class="grid grid-cols-3 gap-3 mb-5">
+                            <div class="bg-green-50 rounded-lg p-3 text-center">
+                                <div class="text-2xl font-bold text-green-700">{{ $iuranLunas }}</div>
+                                <div class="text-xs text-green-600 mt-0.5">Lunas</div>
+                            </div>
+                            <div class="bg-yellow-50 rounded-lg p-3 text-center">
+                                <div class="text-2xl font-bold text-yellow-700">{{ $iuranMenunggu }}</div>
+                                <div class="text-xs text-yellow-600 mt-0.5">Menunggu</div>
+                            </div>
+                            <div class="bg-red-50 rounded-lg p-3 text-center">
+                                <div class="text-2xl font-bold text-red-700">{{ $iuranBelumBayar }}</div>
+                                <div class="text-xs text-red-600 mt-0.5">Belum Bayar</div>
+                            </div>
+                        </div>
+
+                        @if($myIurans->isEmpty())
+                            <div class="text-center py-8 text-gray-400">
+                                <i class="fas fa-wallet text-4xl mb-2"></i>
+                                <p class="text-sm">Belum ada tagihan iuran.</p>
+                            </div>
+                        @else
+                            <div class="space-y-3">
+                                @foreach($myIurans as $iuran)
+                                    @php
+                                        $statusColor = match($iuran->status) {
+                                            'paid'    => ['bg' => 'bg-green-100',  'text' => 'text-green-800',  'label' => 'Lunas'],
+                                            'pending' => ['bg' => 'bg-yellow-100', 'text' => 'text-yellow-800', 'label' => 'Menunggu Konfirmasi'],
+                                            'overdue' => ['bg' => 'bg-red-100',    'text' => 'text-red-800',    'label' => 'Terlambat'],
+                                            default   => ['bg' => 'bg-gray-100',   'text' => 'text-gray-800',   'label' => 'Belum Bayar'],
+                                        };
+                                    @endphp
+                                    <div class="border border-gray-200 rounded-lg p-4">
+                                        <div class="flex items-start justify-between gap-3">
+                                            <div class="flex-1 min-w-0">
+                                                <p class="font-semibold text-gray-900 text-sm truncate">
+                                                    {{ $iuran->iuranSetting->name ?? '-' }}
+                                                </p>
+                                                <p class="text-xs text-gray-500 mt-0.5">
+                                                    Periode: {{ $iuran->period_label }} &bull;
+                                                    Jatuh tempo: {{ $iuran->due_date->format('d M Y') }}
+                                                </p>
+                                                <p class="text-sm font-bold text-gray-900 mt-1">
+                                                    Rp {{ number_format($iuran->amount, 0, ',', '.') }}
+                                                </p>
+                                            </div>
+                                            <span class="shrink-0 px-2.5 py-1 rounded-full text-xs font-semibold {{ $statusColor['bg'] }} {{ $statusColor['text'] }}">
+                                                {{ $statusColor['label'] }}
+                                            </span>
+                                        </div>
+
+                                        @if(in_array($iuran->status, ['unpaid', 'overdue']))
+                                            <div class="mt-3 border-t border-gray-100 pt-3">
+                                                <form action="{{ route('iuran.bayar', $iuran->id) }}" method="POST" enctype="multipart/form-data" class="space-y-2">
+                                                    @csrf
+                                                    <div class="grid grid-cols-2 gap-2">
+                                                        <select name="payment_method" required
+                                                            class="text-xs border border-gray-300 rounded-lg px-2 py-1.5 focus:ring-1 focus:ring-red-500 focus:border-red-500">
+                                                            <option value="">Pilih Metode</option>
+                                                            <option value="bca">Transfer BCA</option>
+                                                            <option value="mandiri">Transfer Mandiri</option>
+                                                            <option value="bni">Transfer BNI</option>
+                                                            <option value="bri">Transfer BRI</option>
+                                                            <option value="gopay">GoPay</option>
+                                                            <option value="ovo">OVO</option>
+                                                            <option value="dana">DANA</option>
+                                                            <option value="cash">Tunai</option>
+                                                        </select>
+                                                        <input type="file" name="payment_proof" required accept=".jpg,.jpeg,.png,.pdf"
+                                                            class="text-xs border border-gray-300 rounded-lg px-2 py-1.5 file:mr-2 file:text-xs file:border-0 file:bg-red-50 file:text-red-700 file:rounded file:px-2 file:py-1">
+                                                    </div>
+                                                    <button type="submit"
+                                                        class="w-full bg-hastana-red text-white text-xs font-semibold py-2 rounded-lg hover:bg-red-700 transition">
+                                                        <i class="fas fa-upload mr-1"></i> Upload Bukti Bayar
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        @elseif($iuran->status === 'pending')
+                                            <p class="mt-2 text-xs text-yellow-700">
+                                                <i class="fas fa-clock mr-1"></i> Bukti bayar sudah dikirim, menunggu konfirmasi admin.
+                                            </p>
+                                        @elseif($iuran->status === 'paid')
+                                            <p class="mt-2 text-xs text-green-700">
+                                                <i class="fas fa-check-circle mr-1"></i>
+                                                Dikonfirmasi {{ $iuran->confirmed_at?->format('d M Y') ?? '-' }}
+                                            </p>
+                                        @endif
+                                    </div>
+                                @endforeach
+                            </div>
+                        @endif
                     </div>
                 </main>
             </div>

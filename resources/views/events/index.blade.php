@@ -188,7 +188,7 @@
                                         <div class="flex items-center">
                                             <i class="fas fa-users text-gray-700 w-4"></i>
                                             <span class="ml-2">
-                                                @if($event->capacity)
+                                                @if($event->capacity && auth()->check() && auth()->user()->hasRole('super_admin'))
                                                     {{ $event->current_participants }} / {{ $event->capacity }} peserta
                                                     <span class="text-xs text-gray-500">({{ number_format($event->capacity_percentage, 0) }}%)</span>
                                                 @else

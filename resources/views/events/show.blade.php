@@ -1453,7 +1453,7 @@
                     </div>
 
                     <!-- Capacity Progress -->
-                    @if($event->max_participants || $event->quota)
+                    @if(($event->max_participants || $event->quota) && auth()->check() && auth()->user()->hasRole('super_admin'))
                         <div class="mb-5">
                             <div class="flex justify-between text-xs text-gray-600 mb-1.5">
                                 <span>Kapasitas Terisi</span>
