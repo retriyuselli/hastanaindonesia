@@ -62,7 +62,7 @@ class EventParticipantForm
                                                         return new HtmlString(
                                                             '<div class="mt-2 p-3 bg-blue-50 rounded-lg border border-blue-200">
                                                                 <div class="flex items-center gap-2 mb-2">
-                                                                    <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                    <svg width="20" height="20" class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                                                     </svg>
                                                                     <span class="font-semibold text-blue-900">Info Event:</span>
@@ -74,10 +74,10 @@ class EventParticipantForm
                                                                     <div>👥 <strong>Kuota:</strong> '.$event->current_participants.' / '.$event->capacity.' peserta</div>
                                                                 </div>
                                                                 <div class="mt-3">
-                                                                    <a href="'.route('filament.admin.resources.event-hastanas.edit', ['record' => $eventId]).'" 
-                                                                        target="_blank" 
-                                                                        class="inline-flex items-center gap-1 text-blue-600 hover:text-blue-700 font-medium">
-                                                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                    <a href="'.route('filament.admin.resources.event-hastanas.edit', ['record' => $eventId]).'"
+                                                                        target="_blank"
+                                                                        style="display:inline-flex;align-items:center;gap:4px;color:#2563eb;font-weight:500;text-decoration:none;">
+                                                                        <svg width="16" height="16" style="flex-shrink:0;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
                                                                         </svg>
                                                                         Lihat Detail Event
@@ -109,7 +109,7 @@ class EventParticipantForm
                                                 'cancelled' => '❌ Cancelled - Dibatalkan',
                                                 'attended' => '🎉 Attended - Sudah Hadir',
                                             ])
-                                            ->default('pending')
+                                            ->default('confirmed')
                                             ->required()
                                             ->live()
                                             ->afterStateUpdated(function ($state, callable $set, callable $get) {
@@ -359,7 +359,6 @@ class EventParticipantForm
                                     ->schema([
                                         FileUpload::make('payment_proof')
                                             ->label('Upload Bukti Pembayaran')
-                                            ->image()
                                             ->disk('private')
                                             ->directory('payment_proofs')
                                             ->nullable()

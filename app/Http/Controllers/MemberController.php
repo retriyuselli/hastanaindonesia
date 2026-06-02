@@ -54,7 +54,7 @@ class MemberController extends Controller
         }
 
         // Sort options
-        $sort = $request->input('sort', 'name');
+        $sort = $request->input('sort', 'random');
         switch ($sort) {
             case 'events':
                 $query->orderBy('completed_events', 'desc');
@@ -62,8 +62,14 @@ class MemberController extends Controller
             case 'newest':
                 $query->orderBy('created_at', 'desc');
                 break;
-            default:
+            case 'name':
                 $query->orderBy('organizer_name', 'asc');
+                break;
+            default:
+                // Use session seed so pagination remains consistent within a session
+                $seed = session()->get('members_random_seed', rand(1, 99999));
+                session()->put('members_random_seed', $seed);
+                $query->orderByRaw("RAND($seed)");
         }
 
         // Paginate results
