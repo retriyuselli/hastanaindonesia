@@ -281,6 +281,31 @@ class EventParticipantForm
                                 };
                             })
                             ->schema([
+                                Section::make('Rincian Harga')
+                                    ->description('Breakdown harga tiket dan addon')
+                                    ->icon('heroicon-o-banknotes')
+                                    ->columns(2)
+                                    ->schema([
+                                        TextInput::make('base_price')
+                                            ->label('Harga Tiket (Rp)')
+                                            ->numeric()
+                                            ->prefix('Rp')
+                                            ->disabled()
+                                            ->dehydrated()
+                                            ->placeholder('0 = Gratis')
+                                            ->columnSpan(1),
+
+                                        TextInput::make('total_amount')
+                                            ->label('Total Pembayaran (Rp)')
+                                            ->numeric()
+                                            ->prefix('Rp')
+                                            ->disabled()
+                                            ->dehydrated()
+                                            ->placeholder('0 = Gratis')
+                                            ->helperText('Harga tiket + total addon')
+                                            ->columnSpan(1),
+                                    ]),
+
                                 Section::make('Status Pembayaran')
                                     ->description('Kelola pembayaran dan bukti transfer')
                                     ->icon('heroicon-o-credit-card')

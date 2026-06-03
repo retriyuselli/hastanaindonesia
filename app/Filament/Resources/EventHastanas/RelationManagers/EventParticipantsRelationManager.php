@@ -288,6 +288,23 @@ class EventParticipantsRelationManager extends RelationManager
                         default => $state,
                     }),
 
+                TextColumn::make('participantAddons_count')
+                    ->label('Addon')
+                    ->counts('participantAddons')
+                    ->badge()
+                    ->color(fn ($state) => $state > 0 ? 'success' : 'gray')
+                    ->formatStateUsing(fn ($state) => $state > 0 ? "{$state} item" : '-')
+                    ->toggleable(),
+
+                TextColumn::make('total_amount')
+                    ->label('Total')
+                    ->formatStateUsing(fn ($state) => $state > 0
+                        ? 'Rp ' . number_format($state, 0, ',', '.')
+                        : 'GRATIS')
+                    ->color(fn ($state) => $state > 0 ? 'danger' : 'success')
+                    ->weight('bold')
+                    ->toggleable(),
+
                 TextColumn::make('created_at')
                     ->label('Terdaftar')
                     ->dateTime('d M Y, H:i')

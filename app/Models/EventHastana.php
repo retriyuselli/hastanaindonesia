@@ -467,4 +467,14 @@ class EventHastana extends Model
         $this->total_reviews = $this->approvedReviews()->count();
         $this->save();
     }
+
+    public function addons()
+    {
+        return $this->hasMany(EventAddon::class);
+    }
+
+    public function activeAddons()
+    {
+        return $this->hasMany(EventAddon::class)->where('is_active', true)->orderBy('sort_order');
+    }
 }

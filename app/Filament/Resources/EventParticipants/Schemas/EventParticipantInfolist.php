@@ -3,7 +3,9 @@
 namespace App\Filament\Resources\EventParticipants\Schemas;
 
 use Filament\Infolists\Components\ImageEntry;
+use Filament\Infolists\Components\RepeatableEntry;
 use Filament\Infolists\Components\TextEntry;
+use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 
 class EventParticipantInfolist
@@ -139,6 +141,57 @@ class EventParticipantInfolist
                     ->label('Catatan')
                     ->placeholder('Tidak ada catatan')
                     ->columnSpanFull(),
+
+                // Rincian Harga
+                Section::make('Rincian Pembayaran')
+                    ->icon('heroicon-o-banknotes')
+                    ->columns(3)
+                    ->columnSpanFull()
+                    ->schema([
+                        TextEntry::make('base_price')
+                            ->label('Harga Tiket')
+                            ->formatStateUsing(fn ($state) => $state !== null
+                                ? 'Rp ' . number_format($state, 0, ',', '.')
+                                : 'GRATIS')
+                            ->columnSpan(1),
+
+                        TextEntry::make('total_amount')
+                            ->label('Total Pembayaran')
+                            ->formatStateUsing(fn ($state) => $state > 0
+                                ? 'Rp ' . number_format($state, 0, ',', '.')
+                                : 'GRATIS')
+                            ->weight('bold')
+                            ->color(fn ($state) => $state > 0 ? 'danger' : 'success')
+                            ->columnSpan(1),
+
+                        TextEntry::make('participantAddons_count')
+                            ->label('Jumlah Addon')
+                            ->getStateUsing(fn ($record) => $record->participantAddons()->count() . ' item')
+                            ->badge()
+                            ->color(fn ($record) => $record->participantAddons()->count() > 0 ? 'success' : 'gray')
+                            ->columnSpan(1),
+
+                        RepeatableEntry::make('participantAddons')
+                            ->label('Addon yang Dipesan')
+                            ->schema([
+                                TextEntry::make('eventAddon.name')
+                                    ->label('Nama Addon')
+                                    ->weight('bold'),
+                                TextEntry::make('quantity')
+                                    ->label('Jumlah'),
+                                TextEntry::make('price_at_time')
+                                    ->label('Harga/item')
+                                    ->formatStateUsing(fn ($state) => 'Rp ' . number_format($state, 0, ',', '.')),
+                                TextEntry::make('subtotal')
+                                    ->label('Subtotal')
+                                    ->getStateUsing(fn ($record) => 'Rp ' . number_format($record->quantity * $record->price_at_time, 0, ',', '.'))
+                                    ->weight('bold')
+                                    ->color('danger'),
+                            ])
+                            ->columns(4)
+                            ->columnSpanFull()
+                            ->placeholder('Tidak ada addon yang dipesan'),
+                    ]),
 
                 TextEntry::make('created_at')
                     ->label('Terdaftar Pada')

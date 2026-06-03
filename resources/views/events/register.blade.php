@@ -230,24 +230,82 @@
                                 </div>
                             </div>
 
-                            <!-- Payment Information (Only for Paid Events) -->
-                            @if(!$event->is_free && !$isAlreadyRegistered)
+                            <!-- Addon Section -->
+                            @if($event->activeAddons->count() > 0 && !$isAlreadyRegistered)
+                                <div class="mb-6">
+                                    <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                                        <i class="fas fa-plus-circle text-hastana-red"></i>
+                                        Pilihan Addon <span class="text-sm font-normal text-gray-500">(Opsional)</span>
+                                    </h3>
+                                    <div class="space-y-3">
+                                        @foreach($event->activeAddons as $addon)
+                                            @php $remaining = $addon->remaining_quota; @endphp
+                                            <div class="border border-gray-200 rounded-lg p-4 {{ $remaining !== null && $remaining <= 0 ? 'opacity-50' : '' }}">
+                                                <div class="flex items-start justify-between gap-4">
+                                                    <div class="flex-1">
+                                                        <div class="flex items-center gap-2 mb-1">
+                                                            <span class="font-semibold text-gray-900">{{ $addon->name }}</span>
+                                                            @if($remaining !== null)
+                                                                <span class="text-xs px-2 py-0.5 rounded-full {{ $remaining <= 0 ? 'bg-red-100 text-red-600' : ($remaining <= 5 ? 'bg-yellow-100 text-yellow-700' : 'bg-green-100 text-green-700') }}">
+                                                                    {{ $remaining <= 0 ? 'Habis' : "Sisa {$remaining}" }}
+                                                                </span>
+                                                            @endif
+                                                        </div>
+                                                        @if($addon->description)
+                                                            <p class="text-sm text-gray-500 mb-2">{{ $addon->description }}</p>
+                                                        @endif
+                                                        <span class="text-hastana-red font-bold">{{ $addon->formatted_price }}</span>
+                                                        <span class="text-gray-400 text-sm"> / item</span>
+                                                    </div>
+                                                    <div class="flex items-center gap-2 shrink-0">
+                                                        <input type="hidden" name="addons[{{ $loop->index }}][id]" value="{{ $addon->id }}">
+                                                        <button type="button"
+                                                                onclick="changeAddonQty({{ $loop->index }}, -1)"
+                                                                class="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center font-bold text-gray-600 transition">−</button>
+                                                        <input type="number"
+                                                               id="addon_qty_{{ $loop->index }}"
+                                                               name="addons[{{ $loop->index }}][qty]"
+                                                               value="0"
+                                                               min="0"
+                                                               max="{{ $remaining !== null ? $remaining : 99 }}"
+                                                               data-price="{{ $addon->price }}"
+                                                               data-index="{{ $loop->index }}"
+                                                               {{ $remaining !== null && $remaining <= 0 ? 'disabled' : '' }}
+                                                               onchange="recalcTotal()"
+                                                               class="w-14 text-center border border-gray-300 rounded-lg py-1 font-semibold text-gray-900 focus:ring-2 focus:ring-hastana-red">
+                                                        <button type="button"
+                                                                onclick="changeAddonQty({{ $loop->index }}, 1, {{ $remaining !== null ? $remaining : 99 }})"
+                                                                {{ $remaining !== null && $remaining <= 0 ? 'disabled' : '' }}
+                                                                class="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center font-bold text-gray-600 transition">+</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            @endif
+
+                            <!-- Payment Section (paid event OR addon berbayar dipilih) -->
+                            @if(!$isAlreadyRegistered)
+                            <div id="payment-section" class="{{ $event->is_free ? 'hidden' : '' }}">
                                 <div class="mb-6">
                                     <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
                                         <i class="fas fa-credit-card text-hastana-red"></i>
                                         Informasi Pembayaran
                                     </h3>
 
-                                    <!-- Price Info -->
-                                    <div class="bg-gray-50 border border-gray-200 rounded-lg p-4 mb-4">
-                                        <div class="flex items-center justify-between">
-                                            <div>
-                                                <p class="text-sm text-gray-600 mb-1">Total Pembayaran:</p>
-                                                <p class="text-2xl font-bold text-hastana-red">Rp {{ number_format($event->price, 0, ',', '.') }}</p>
-                                            </div>
-                                            <div class="text-right">
-                                                <i class="fas fa-money-bill-wave text-hastana-red text-4xl"></i>
-                                            </div>
+                                    <!-- Price Breakdown -->
+                                    <div class="bg-gray-50 border border-gray-200 rounded-lg p-4 mb-4 space-y-2 text-sm">
+                                        <div class="flex justify-between text-gray-600">
+                                            <span>Harga Tiket</span>
+                                            <span id="breakdown-base">{{ $event->is_free ? 'GRATIS' : 'Rp ' . number_format($event->price, 0, ',', '.') }}</span>
+                                        </div>
+                                        <div id="breakdown-addons"></div>
+                                        <div class="border-t border-gray-300 pt-2 flex justify-between items-center">
+                                            <span class="font-semibold text-gray-900">Total Pembayaran</span>
+                                            <span id="breakdown-total" class="text-xl font-bold text-hastana-red">
+                                                {{ $event->is_free ? 'GRATIS' : 'Rp ' . number_format($event->price, 0, ',', '.') }}
+                                            </span>
                                         </div>
                                     </div>
 
@@ -282,9 +340,7 @@
                                         <label for="payment_method" class="block text-sm font-medium text-gray-700 mb-2">
                                             Metode Pembayaran <span class="text-red-500">*</span>
                                         </label>
-                                        <select name="payment_method" 
-                                                id="payment_method"
-                                                required
+                                        <select name="payment_method" id="payment_method"
                                                 class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-hastana-red focus:border-transparent @error('payment_method') border-red-500 @enderror">
                                             <option value="">Pilih Metode Pembayaran</option>
                                             <option value="bca" {{ old('payment_method') == 'bca' ? 'selected' : '' }}>Transfer Bank BCA</option>
@@ -307,13 +363,9 @@
                                                     <p class="text-xs text-gray-500">PNG, JPG, JPEG (MAX. 2MB)</p>
                                                     <p id="file-name" class="mt-2 text-sm text-hastana-red font-semibold"></p>
                                                 </div>
-                                                <input id="payment_proof" 
-                                                       name="payment_proof" 
-                                                       type="file" 
+                                                <input id="payment_proof" name="payment_proof" type="file"
                                                        accept="image/png,image/jpeg,image/jpg"
-                                                       required
-                                                       class="hidden" 
-                                                       onchange="displayFileName(this)">
+                                                       class="hidden" onchange="displayFileName(this)">
                                             </label>
                                         </div>
                                         @error('payment_proof')
@@ -336,6 +388,7 @@
                                         </div>
                                     </div>
                                 </div>
+                            </div>
                             @endif
 
                             @if(!$event->is_free && $isAlreadyRegistered && $registeredData && $registeredData->payment_proof)
@@ -449,14 +502,17 @@
                         </div>
 
                         <!-- Price -->
-                        <div class="mt-6 pt-6 border-t border-gray-200">
-                            <div class="flex justify-between items-center mb-2">
-                                <span class="text-gray-600">Harga:</span>
-                                @if($event->is_free)
-                                    <span class="text-2xl font-bold text-hastana-red">GRATIS</span>
-                                @else
-                                    <span class="text-2xl font-bold text-hastana-red">Rp {{ number_format($event->price, 0, ',', '.') }}</span>
-                                @endif
+                        <div class="mt-6 pt-6 border-t border-gray-200 space-y-1 text-sm">
+                            <div class="flex justify-between text-gray-500">
+                                <span>Harga Tiket</span>
+                                <span>{{ $event->is_free ? 'GRATIS' : 'Rp ' . number_format($event->price, 0, ',', '.') }}</span>
+                            </div>
+                            <div id="sidebar-addon-lines"></div>
+                            <div class="flex justify-between items-center pt-2 border-t border-gray-200">
+                                <span class="font-semibold text-gray-700">Total</span>
+                                <span id="sidebar-total" class="text-xl font-bold text-hastana-red">
+                                    {{ $event->is_free ? 'GRATIS' : 'Rp ' . number_format($event->price, 0, ',', '.') }}
+                                </span>
                             </div>
                         </div>
 
@@ -530,6 +586,70 @@
         previewContainer.classList.add('hidden');
     }
     
+    // ── Addon kalkulasi harga ──────────────────────────────────────
+    const BASE_PRICE = {{ (float) $event->price }};
+
+    function changeAddonQty(index, delta, max) {
+        const input = document.getElementById('addon_qty_' + index);
+        if (!input) return;
+        let val = parseInt(input.value || '0') + delta;
+        val = Math.max(0, val);
+        if (max !== undefined) val = Math.min(max, val);
+        input.value = val;
+        recalcTotal();
+    }
+
+    function recalcTotal() {
+        const addonInputs = document.querySelectorAll('input[id^="addon_qty_"]');
+        let addonsTotal = 0;
+        let breakdownHtml = '';
+
+        addonInputs.forEach(input => {
+            const qty = parseInt(input.value || '0');
+            if (qty <= 0) return;
+            const price = parseFloat(input.dataset.price || '0');
+            const subtotal = qty * price;
+            addonsTotal += subtotal;
+
+            // Ambil nama addon dari label saudara terdekat
+            const card  = input.closest('.border');
+            const name  = card ? card.querySelector('.font-semibold')?.textContent?.trim() : 'Addon';
+            breakdownHtml += `<div class="flex justify-between text-gray-600">
+                <span>${name} × ${qty}</span>
+                <span>Rp ${subtotal.toLocaleString('id-ID')}</span>
+            </div>`;
+        });
+
+        const total = BASE_PRICE + addonsTotal;
+
+        const elAddons      = document.getElementById('breakdown-addons');
+        const elTotal       = document.getElementById('breakdown-total');
+        const sidebarLines  = document.getElementById('sidebar-addon-lines');
+        const sidebarTotal  = document.getElementById('sidebar-total');
+        const section       = document.getElementById('payment-section');
+        const pmMethod      = document.getElementById('payment_method');
+        const pmProof       = document.getElementById('payment_proof');
+
+        const totalStr = total > 0 ? 'Rp ' + total.toLocaleString('id-ID') : 'GRATIS';
+
+        if (elAddons)     elAddons.innerHTML    = breakdownHtml;
+        if (elTotal)      elTotal.textContent   = totalStr;
+        if (sidebarLines) sidebarLines.innerHTML = breakdownHtml;
+        if (sidebarTotal) sidebarTotal.textContent = totalStr;
+
+        // Tampilkan / sembunyikan payment section
+        if (section) {
+            const needsPayment = total > 0;
+            section.classList.toggle('hidden', !needsPayment);
+            if (pmMethod) pmMethod.required = needsPayment;
+            if (pmProof)  pmProof.required  = needsPayment;
+        }
+    }
+
+    // Inisialisasi saat halaman load
+    document.addEventListener('DOMContentLoaded', recalcTotal);
+    // ──────────────────────────────────────────────────────────────
+
     // Copy to clipboard function
     function copyToClipboard(text) {
         navigator.clipboard.writeText(text).then(function() {

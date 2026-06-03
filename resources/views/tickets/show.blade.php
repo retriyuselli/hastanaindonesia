@@ -55,15 +55,40 @@
                             <p>{{ $participant->eventHastana->eventCategory->name ?? 'Event' }}</p>
                         </div>
                         
-                        <div>
-                            <span class="font-semibold text-gray-600">Harga:</span>
-                            <p>
-                                @if($participant->eventHastana->is_free)
-                                    <span class="font-semibold text-green-600">GRATIS</span>
-                                @else
-                                    <span class="font-semibold">Rp {{ number_format($participant->eventHastana->price, 0, ',', '.') }}</span>
-                                @endif
-                            </p>
+                        <div class="md:col-span-2">
+                            <span class="font-semibold text-gray-600">Rincian Pembayaran:</span>
+                            @php
+                                $addons = $participant->participantAddons()->with('eventAddon')->get();
+                                $total  = $participant->total_amount ?? $participant->eventHastana->price;
+                            @endphp
+                            <div class="mt-2 bg-gray-50 rounded-lg p-3 space-y-1 text-sm">
+                                <div class="flex justify-between text-gray-600">
+                                    <span>Harga Tiket</span>
+                                    <span>
+                                        @if($participant->eventHastana->is_free && $addons->isEmpty())
+                                            GRATIS
+                                        @else
+                                            Rp {{ number_format($participant->base_price ?? $participant->eventHastana->price, 0, ',', '.') }}
+                                        @endif
+                                    </span>
+                                </div>
+                                @foreach($addons as $pa)
+                                    <div class="flex justify-between text-gray-600">
+                                        <span>{{ $pa->eventAddon->name ?? 'Addon' }} × {{ $pa->quantity }}</span>
+                                        <span>Rp {{ number_format($pa->quantity * $pa->price_at_time, 0, ',', '.') }}</span>
+                                    </div>
+                                @endforeach
+                                <div class="border-t border-gray-300 pt-1 flex justify-between font-bold text-gray-900">
+                                    <span>Total</span>
+                                    <span class="text-hastana-red">
+                                        @if($total == 0)
+                                            GRATIS
+                                        @else
+                                            Rp {{ number_format($total, 0, ',', '.') }}
+                                        @endif
+                                    </span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

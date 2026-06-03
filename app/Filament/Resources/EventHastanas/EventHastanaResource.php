@@ -47,6 +47,7 @@ class EventHastanaResource extends Resource
     {
         return [
             EventParticipantsRelationManager::class,
+            RelationManagers\AddonsRelationManager::class,
         ];
     }
 

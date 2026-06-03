@@ -128,6 +128,23 @@ class EventParticipantsTable
                         default => 'Tidak ada'
                     }),
 
+                TextColumn::make('participantAddons_count')
+                    ->label('Addon')
+                    ->counts('participantAddons')
+                    ->badge()
+                    ->color(fn ($state) => $state > 0 ? 'success' : 'gray')
+                    ->formatStateUsing(fn ($state) => $state > 0 ? "{$state} item" : '-')
+                    ->toggleable(),
+
+                TextColumn::make('total_amount')
+                    ->label('Total')
+                    ->money('IDR')
+                    ->sortable()
+                    ->formatStateUsing(fn ($state) => $state ? 'Rp ' . number_format($state, 0, ',', '.') : 'GRATIS')
+                    ->color(fn ($state) => $state > 0 ? 'danger' : 'success')
+                    ->weight('bold')
+                    ->toggleable(),
+
                 TextColumn::make('eventHastana.start_date')
                     ->label('Tanggal Event')
                     ->date('d M Y')

@@ -19,6 +19,8 @@ class EventParticipant extends Model
         'company',
         'position',
         'notes',
+        'base_price',
+        'total_amount',
         'payment_method',
         'payment_proof',
         'status',
@@ -30,7 +32,9 @@ class EventParticipant extends Model
 
     protected $casts = [
         'confirmed_at' => 'datetime',
-        'attended_at' => 'datetime',
+        'attended_at'  => 'datetime',
+        'base_price'   => 'decimal:2',
+        'total_amount' => 'decimal:2',
     ];
 
     protected $appends = [
@@ -290,5 +294,15 @@ class EventParticipant extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function participantAddons()
+    {
+        return $this->hasMany(EventParticipantAddon::class);
+    }
+
+    public function getAddonsTotalAttribute(): float
+    {
+        return $this->participantAddons->sum(fn($a) => $a->quantity * $a->price_at_time);
     }
 }

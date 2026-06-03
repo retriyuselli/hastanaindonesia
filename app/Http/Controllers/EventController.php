@@ -361,17 +361,11 @@ class EventController extends Controller
      */
     public function register($slug)
     {
-        $event = EventHastana::with('eventCategory')
+        $event = EventHastana::with(['eventCategory', 'activeAddons'])
             ->where('slug', $slug)
             ->where('status', 'published')
             ->where('is_active', true)
             ->firstOrFail();
-
-        // Check if registration is still open
-        $capacity = $event->max_participants ?? $event->quota;
-
-        // TIDAK redirect jika sudah terdaftar, biarkan form tetap ditampilkan
-        // Tombol submit akan otomatis disabled di blade
 
         // Check availability using model methods
         if ($event->is_full || $event->is_past) {
@@ -387,78 +381,121 @@ class EventController extends Controller
      */
     public function storeRegistration(Request $request, $slug)
     {
-        $event = EventHastana::where('slug', $slug)
+        $event = EventHastana::with('activeAddons')
+            ->where('slug', $slug)
             ->where('status', 'published')
             ->where('is_active', true)
             ->firstOrFail();
 
         // Validate basic fields
         $rules = [
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
-            'phone' => 'required|string|max:20',
-            'company' => 'nullable|string|max:255',
+            'name'     => 'required|string|max:255',
+            'email'    => 'required|email|max:255',
+            'phone'    => 'required|string|max:20',
+            'company'  => 'nullable|string|max:255',
             'position' => 'nullable|string|max:255',
-            'notes' => 'nullable|string|max:1000',
+            'notes'    => 'nullable|string|max:1000',
+            'addons'   => 'nullable|array',
+            'addons.*.id'  => 'required_with:addons|integer|exists:event_addons,id',
+            'addons.*.qty' => 'required_with:addons|integer|min:1|max:99',
         ];
 
-        // Add payment validation for paid events
-        if (! $event->is_free) {
+        // Hitung base price & total addon
+        $basePrice   = (float) $event->price;
+        $addonsTotal = 0;
+        $selectedAddons = []; // [addon_id => ['addon' => EventAddon, 'qty' => int]]
+
+        if ($request->filled('addons')) {
+            $addonMap = $event->activeAddons->keyBy('id');
+            foreach ($request->input('addons', []) as $item) {
+                $addonId = $item['id'] ?? null;
+                $qty     = (int) ($item['qty'] ?? 0);
+                if (! $addonId || $qty <= 0) continue;
+
+                $addon = $addonMap->get($addonId);
+                if (! $addon) continue;
+
+                // Cek sisa kuota addon
+                if ($addon->quota !== null && $addon->remaining_quota < $qty) {
+                    return back()
+                        ->with('error', "Stok addon \"{$addon->name}\" tidak mencukupi (tersisa {$addon->remaining_quota}).")
+                        ->withInput();
+                }
+
+                $selectedAddons[$addonId] = ['addon' => $addon, 'qty' => $qty];
+                $addonsTotal += $addon->price * $qty;
+            }
+        }
+
+        $totalAmount = $basePrice + $addonsTotal;
+
+        // Butuh bukti bayar jika total > 0
+        $needsPayment = $totalAmount > 0;
+        if ($needsPayment) {
             $rules['payment_method'] = 'required|string|in:bca,mandiri,bni,bri';
-            $rules['payment_proof'] = 'required|image|mimes:jpeg,jpg,png|max:2048';
+            $rules['payment_proof']  = 'required|image|mimes:jpeg,jpg,png|max:2048';
         }
 
         $validated = $request->validate($rules);
 
-        // Check if user already registered (double check)
+        // Cek sudah terdaftar
         if (Auth::check()) {
-            $existingRegistration = EventParticipant::where('event_hastana_id', $event->id)
-                ->where(function ($query) {
-                    $query->where('user_id', Auth::id())
-                        ->orWhere('email', Auth::user()->email);
+            $existing = EventParticipant::where('event_hastana_id', $event->id)
+                ->where(function ($q) {
+                    $q->where('user_id', Auth::id())
+                      ->orWhere('email', Auth::user()->email);
                 })
                 ->whereIn('status', ['pending', 'confirmed', 'attended'])
                 ->first();
 
-            if ($existingRegistration) {
+            if ($existing) {
                 return redirect()->route('events.show', $slug)
-                    ->with('info', 'Anda sudah terdaftar di event ini! Kode registrasi: '.$existingRegistration->registration_code);
+                    ->with('info', 'Anda sudah terdaftar di event ini! Kode registrasi: ' . $existing->registration_code);
             }
         }
 
-        // Check availability again
-        // Double-check availability using model method
         if ($event->is_full) {
             return back()->with('error', 'Maaf, event sudah penuh!')->withInput();
         }
 
-        // Handle payment proof upload
+        // Upload bukti bayar
         $paymentProofPath = null;
-        if (! $event->is_free && $request->hasFile('payment_proof')) {
+        if ($needsPayment && $request->hasFile('payment_proof')) {
             $paymentProofPath = $request->file('payment_proof')->store('payment_proofs', 'private');
         }
 
-        // Save to database
+        // Simpan peserta
         $participant = EventParticipant::create([
             'event_hastana_id' => $event->id,
-            'user_id' => Auth::id(), // Save user_id
-            'name' => $validated['name'],
-            'email' => $validated['email'],
-            'phone' => $validated['phone'],
-            'company' => $validated['company'] ?? null,
-            'position' => $validated['position'] ?? null,
-            'notes' => $validated['notes'] ?? null,
-            'payment_method' => $validated['payment_method'] ?? null,
-            'payment_proof' => $paymentProofPath,
-            'status' => 'pending',
-            'payment_status' => $event->is_free ? 'free' : 'pending',
+            'user_id'          => Auth::id(),
+            'name'             => $validated['name'],
+            'email'            => $validated['email'],
+            'phone'            => $validated['phone'],
+            'company'          => $validated['company'] ?? null,
+            'position'         => $validated['position'] ?? null,
+            'notes'            => $validated['notes'] ?? null,
+            'base_price'       => $basePrice,
+            'total_amount'     => $totalAmount,
+            'payment_method'   => $validated['payment_method'] ?? null,
+            'payment_proof'    => $paymentProofPath,
+            'status'           => 'pending',
+            'payment_status'   => $needsPayment ? 'pending' : 'free',
         ]);
 
-        // Increment participants
+        // Simpan addon yang dipilih
+        foreach ($selectedAddons as $addonId => $data) {
+            \App\Models\EventParticipantAddon::create([
+                'event_participant_id' => $participant->id,
+                'event_addon_id'       => $addonId,
+                'quantity'             => $data['qty'],
+                'price_at_time'        => $data['addon']->price,
+            ]);
+        }
+
         $event->increment('current_participants');
 
         return redirect()->route('events.show', $slug)
-            ->with('success', 'Pendaftaran berhasil! Kode registrasi Anda: '.$participant->registration_code.'. Kami akan mengirimkan konfirmasi ke email Anda.');
+            ->with('success', 'Pendaftaran berhasil! Kode registrasi Anda: ' . $participant->registration_code . '. Kami akan mengirimkan konfirmasi ke email Anda.');
     }
 
     /**
