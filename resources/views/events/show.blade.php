@@ -1666,6 +1666,21 @@
                                     @endif
                                     <br>{{ $event->city }}{{ $event->province ? ', ' . $event->province : '' }}
                                 </div>
+                                @if($event->location_type !== 'online')
+                                @php
+                                    $fullAddress = collect([$event->location, $event->venue, $event->city, $event->province])
+                                        ->filter()->implode(', ');
+                                    $mapsUrl = 'https://www.google.com/maps/search/?api=1&query=' . urlencode($fullAddress);
+                                @endphp
+                                <a href="{{ $mapsUrl }}"
+                                   target="_blank"
+                                   rel="noopener noreferrer"
+                                   class="inline-flex items-center gap-1.5 mt-2 px-3 py-1.5 bg-white border border-gray-200 rounded-lg shadow-sm text-xs font-semibold text-gray-700 hover:border-hastana-red hover:text-hastana-red transition-all duration-200 group">
+                                    <i class="fas fa-map-marker-alt text-hastana-red group-hover:scale-110 transition-transform text-xs"></i>
+                                    Lihat di Maps
+                                    <i class="fas fa-external-link-alt text-gray-400 group-hover:text-hastana-red transition-colors" style="font-size:9px"></i>
+                                </a>
+                                @endif
                             </div>
                         </div>
 

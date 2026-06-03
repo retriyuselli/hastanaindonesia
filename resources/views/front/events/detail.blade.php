@@ -54,7 +54,7 @@
                         </div>
                     </div>
                     
-                    <div class="flex items-center">
+                    <div class="flex items-center">z
                         <div class="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center mr-3">
                             <i class="fas fa-map-marker-alt text-white"></i>
                         </div>
@@ -200,10 +200,29 @@
                                         Online Event
                                     @else
                                         {{ $event->venue }}, {{ $event->city }}
+                                        @if($event->province), {{ $event->province }}@endif
                                     @endif
                                 </div>
                             </div>
                         </div>
+
+                        @if($event->location_type !== 'online')
+                        @php
+                            $fullAddress = collect([$event->location ?: $event->venue, $event->city, $event->province])
+                                ->filter()->implode(', ');
+                            $mapsUrl = 'https://www.google.com/maps/search/?api=1&query=' . urlencode($fullAddress);
+                        @endphp
+                        <div>
+                            <a href="{{ $mapsUrl }}"
+                               target="_blank"
+                               rel="noopener noreferrer"
+                               class="inline-flex items-center gap-2 px-5 py-2.5 bg-white border border-gray-200 rounded-xl shadow-sm text-sm font-semibold text-gray-800 hover:shadow-md hover:border-hastana-red hover:text-hastana-red transition-all duration-200 group">
+                                <i class="fas fa-map-marker-alt text-hastana-red group-hover:scale-110 transition-transform"></i>
+                                Lihat di Maps
+                                <i class="fas fa-external-link-alt text-xs text-gray-400 group-hover:text-hastana-red transition-colors"></i>
+                            </a>
+                        </div>
+                        @endif
                         
                         @if($event->speaker)
                         <div class="flex items-start">
