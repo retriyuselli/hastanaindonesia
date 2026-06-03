@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Front;
 
 use App\Http\Controllers\Controller;
 use App\Models\AboutPage;
+use App\Models\EventHastana;
 use App\Models\Region;
 use App\Models\WeddingOrganizer;
 
@@ -31,7 +32,7 @@ class AboutController extends Controller
         // Get statistics
         $totalMembers = WeddingOrganizer::count();
         $totalRegions = Region::count();
-        $totalEvents = WeddingOrganizer::sum('completed_events') ?: 0;
+        $totalEvents = EventHastana::where('status', 'finished')->count();
 
         return view('front.about.index', compact('about', 'totalMembers', 'totalRegions', 'totalEvents'));
     }
