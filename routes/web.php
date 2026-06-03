@@ -60,6 +60,10 @@ Route::get('/kebijakan-privasi', function () {
     return view('privacy');
 })->name('privacy');
 
+Route::get('/kebijakan-cookie', function () {
+    return view('cookies');
+})->name('cookies');
+
 Route::get('/portfolio', function () {
     return view('front.portfolio.index');
 })->name('portfolio');
@@ -293,6 +297,14 @@ Route::get('/contact', function () {
 })->name('contact');
 
 Route::get('/about', [AboutController::class, 'index'])->name('about');
+
+// Layanan
+Route::get('/layanan/sertifikasi-wo', fn() => view('layanan.sertifikasi-wo'))->name('layanan.sertifikasi');
+Route::get('/layanan/pelatihan-profesional', fn() => view('layanan.pelatihan-profesional'))->name('layanan.pelatihan');
+Route::get('/layanan/networking-event', fn() => view('layanan.networking-event'))->name('layanan.networking');
+Route::get('/layanan/konsultasi-bisnis', fn() => view('layanan.konsultasi-bisnis'))->name('layanan.konsultasi');
+Route::get('/layanan/directory-wo', fn() => view('layanan.directory-wo'))->name('layanan.directory');
+Route::get('/layanan/quality-assurance', fn() => view('layanan.quality-assurance'))->name('layanan.quality');
 
 Route::get('/header-demo', function () {
     return view('layouts.header');

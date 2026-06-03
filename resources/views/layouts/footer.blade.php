@@ -1,7 +1,7 @@
 <!-- Footer -->
 <footer class="bg-gray-900 text-white py-16">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
             <!-- Company Info -->
             <div class="lg:col-span-1">
                 <div class="flex items-center space-x-3 mb-6">
@@ -74,16 +74,12 @@
             <div>
                 <h4 class="text-base font-semibold mb-4">Layanan</h4>
                 <ul class="space-y-2">
-                    <li><a href="#" class="text-sm text-gray-300 hover:text-white transition-colors">Sertifikasi WO</a>
-                    </li>
-                    <li><a href="#" class="text-sm text-gray-300 hover:text-white transition-colors">Pelatihan Profesional</a></li>
-                    <li><a href="#" class="text-sm text-gray-300 hover:text-white transition-colors">Networking Event</a>
-                    </li>
-                    <li><a href="#" class="text-sm text-gray-300 hover:text-white transition-colors">Konsultasi Bisnis</a>
-                    </li>
-                    <li><a href="#" class="text-sm text-gray-300 hover:text-white transition-colors">Directory WO</a></li>
-                    <li><a href="#" class="text-sm text-gray-300 hover:text-white transition-colors">Quality Assurance</a>
-                    </li>
+                    <li><a href="{{ route('layanan.sertifikasi') }}" class="text-sm text-gray-300 hover:text-white transition-colors">Sertifikasi WO</a></li>
+                    <li><a href="{{ route('layanan.pelatihan') }}" class="text-sm text-gray-300 hover:text-white transition-colors">Pelatihan Profesional</a></li>
+                    <li><a href="{{ route('layanan.networking') }}" class="text-sm text-gray-300 hover:text-white transition-colors">Networking Event</a></li>
+                    <li><a href="{{ route('layanan.konsultasi') }}" class="text-sm text-gray-300 hover:text-white transition-colors">Konsultasi Bisnis</a></li>
+                    <li><a href="{{ route('layanan.directory') }}" class="text-sm text-gray-300 hover:text-white transition-colors">Directory WO</a></li>
+                    <li><a href="{{ route('layanan.quality') }}" class="text-sm text-gray-300 hover:text-white transition-colors">Quality Assurance</a></li>
                 </ul>
             </div>
 
@@ -122,9 +118,9 @@
                     <p>&copy; {{ date('Y') }} HASTANA Indonesia. All rights reserved.</p>
                 </div>
                 <div class="flex space-x-4 text-xs">
-                    <a href="#" class="text-gray-400 hover:text-white transition-colors">Privacy Policy</a>
-                    <a href="#" class="text-gray-400 hover:text-white transition-colors">Terms of Service</a>
-                    <a href="#" class="text-gray-400 hover:text-white transition-colors">Cookie Policy</a>
+                    <a href="{{ route('privacy') }}" class="text-gray-400 hover:text-white transition-colors">Privacy Policy</a>
+                    <a href="{{ route('terms') }}" class="text-gray-400 hover:text-white transition-colors">Terms of Service</a>
+                    <a href="{{ route('cookies') }}" class="text-gray-400 hover:text-white transition-colors">Cookie Policy</a>
                 </div>
             </div>
         </div>

@@ -4,7 +4,7 @@
 
 @section('content')
 <!-- Hero Section -->
-<section class="bg-gradient-to-r from-gray-900 to-black text-white py-12 mt-20">
+<section class="bg-gradient-to-r from-gray-900 to-black text-white py-12">
     <div class="container mx-auto px-4">
         <div class="max-w-3xl mx-auto text-center">
             <h1 class="text-3xl md:text-4xl font-bold mb-3">EVENT HASTANA INDONESIA1</h1>
@@ -110,7 +110,7 @@
 
                 @if($events->count() > 0)
                     <!-- Events Grid -->
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                    <div class="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-5">
                         @foreach($events as $event)
                             <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition duration-300 flex flex-col h-full">
                                 <!-- Event Image -->
@@ -185,10 +185,11 @@
                                             <i class="fas fa-map-marker-alt text-hastana-red w-4"></i>
                                             <span class="ml-2">{{ $event->city }}</span>
                                         </div>
+                                        @if(auth()->check() && auth()->user()->hasRole('super_admin'))
                                         <div class="flex items-center">
                                             <i class="fas fa-users text-gray-700 w-4"></i>
                                             <span class="ml-2">
-                                                @if($event->capacity && auth()->check() && auth()->user()->hasRole('super_admin'))
+                                                @if($event->capacity)
                                                     {{ $event->current_participants }} / {{ $event->capacity }} peserta
                                                     <span class="text-xs text-gray-500">({{ number_format($event->capacity_percentage, 0) }}%)</span>
                                                 @else
@@ -196,6 +197,7 @@
                                                 @endif
                                             </span>
                                         </div>
+                                        @endif
                                     </div>
 
                                     <!-- Action Buttons - Always at bottom -->
@@ -307,9 +309,15 @@
                                                 {{ $trending->title }}
                                             </h4>
                                             <p class="text-xs text-gray-500 mt-1">
+                                                <i class="fas fa-calendar text-gray-700"></i>
+                                                {{ $trending->start_date->format('d M Y') }}
+                                            </p>
+                                            @if(auth()->check() && auth()->user()->hasRole('super_admin'))
+                                            <p class="text-xs text-gray-500 mt-1">
                                                 <i class="fas fa-users text-gray-700"></i>
                                                 {{ $trending->current_participants }} peserta terdaftar
                                             </p>
+                                            @endif
                                             <p class="text-xs font-semibold {{ $trending->is_free ? 'text-hastana-red' : 'text-gray-900' }} mt-0.5">
                                                 {{ $trending->is_free ? 'GRATIS' : 'Rp ' . number_format($trending->price, 0, ',', '.') }}
                                             </p>

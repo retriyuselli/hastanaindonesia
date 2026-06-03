@@ -101,7 +101,7 @@
     @include('layouts.header')
     
     <!-- Main Content -->
-    <main>
+    <main class="pt-20">
         @yield('content')
     </main>
     

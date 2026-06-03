@@ -79,6 +79,7 @@
                         @endif
 
                         <!-- Event Stats -->
+                        @if(auth()->check() && auth()->user()->role === 'super_admin')
                         <div class="flex flex-wrap justify-center gap-5 md:gap-6 p-5 bg-gray-50 rounded-lg">
                             <div class="text-center min-w-[100px]">
                                 <i class="fas fa-users text-hastana-red text-xl mb-1.5"></i>
@@ -98,6 +99,7 @@
                                 <div class="text-xs text-gray-600">Reviews</div>
                             </div>
                         </div>
+                        @endif
                     </div>
                 </div>
 
