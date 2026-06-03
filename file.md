@@ -83,6 +83,7 @@ php artisan db:seed --class=BlogSeeder
 
 /opt/alt/php84/usr/bin/php /usr/local/bin/composer2
 
+php artisan shield:generate --all
 npm run build
 php artisan cache:clear
 php artisan config:clear
