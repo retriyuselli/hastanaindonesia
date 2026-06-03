@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\User;
 
 class Company extends Model
 {
@@ -13,6 +14,15 @@ class Company extends Model
         'company_name',
         'business_license',
         'owner_name',
+        'nama_sekretaris_umum',
+        'nama_bendahara_umum',
+        'nama_bid_organisasi',
+        'nama_bid_pengembangan',
+        'nama_bid_humas_1',
+        'nama_bid_humas_2',
+        'nama_bid_sosial',
+        'nama_bid_bisnis',
+        'nama_bid_hukum',
         'email',
         'phone',
         'address',
@@ -60,12 +70,60 @@ class Company extends Model
         'legal_documents' => 'array',
     ];
 
-    /**
-     * Get the region that owns the company
-     */
     public function region()
     {
         return $this->belongsTo(Region::class);
+    }
+
+    public function ownerUser()
+    {
+        return $this->belongsTo(User::class, 'owner_name');
+    }
+
+    // ── Relasi Pengurus ke User ──────────────────────────────────
+    public function sekretarisUmum()
+    {
+        return $this->belongsTo(User::class, 'nama_sekretaris_umum');
+    }
+
+    public function bendaharaUmum()
+    {
+        return $this->belongsTo(User::class, 'nama_bendahara_umum');
+    }
+
+    public function bidOrganisasi()
+    {
+        return $this->belongsTo(User::class, 'nama_bid_organisasi');
+    }
+
+    public function bidPengembangan()
+    {
+        return $this->belongsTo(User::class, 'nama_bid_pengembangan');
+    }
+
+    public function bidHumas1()
+    {
+        return $this->belongsTo(User::class, 'nama_bid_humas_1');
+    }
+
+    public function bidHumas2()
+    {
+        return $this->belongsTo(User::class, 'nama_bid_humas_2');
+    }
+
+    public function bidSosial()
+    {
+        return $this->belongsTo(User::class, 'nama_bid_sosial');
+    }
+
+    public function bidBisnis()
+    {
+        return $this->belongsTo(User::class, 'nama_bid_bisnis');
+    }
+
+    public function bidHukum()
+    {
+        return $this->belongsTo(User::class, 'nama_bid_hukum');
     }
 
     /**

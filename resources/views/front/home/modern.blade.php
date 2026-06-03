@@ -75,7 +75,7 @@
         }
     @endphp
 
-    <section class="home-hero home-hero-carousel relative overflow-hidden mt-20" data-hero-carousel>
+    <section class="home-hero home-hero-carousel relative overflow-hidden -mt-20" data-hero-carousel>
         <div class="home-hero-track" data-hero-track>
             @foreach ($heroSlides as $slide)
                 <div class="home-hero-slide">

@@ -299,6 +299,10 @@
                             <i class="fas fa-chevron-down ml-1 text-xs dropdown-arrow"></i>
                         </a>
                         <div class="dropdown-menu">
+                            <a href="{{ route('dpp') }}" class="dropdown-item text-sm {{ Request::routeIs('dpp') ? 'active' : '' }}">
+                                <i class="fas fa-landmark text-xs"></i>
+                                DPP
+                            </a>
                             <a href="{{ route('about') }}" class="dropdown-item text-sm">
                                 <i class="fas fa-info-circle text-xs"></i>
                                 About
@@ -418,7 +422,7 @@
                 
                 <!-- Mobile Kontak Dropdown -->
                 <div class="border-b border-gray-100">
-                    <button class="mobile-menu-item {{ Request::routeIs('contact') || Request::routeIs('portfolio*') || Request::routeIs('about') ? 'active' : '' }} w-full flex items-center justify-between py-4 px-4 text-gray-700 hover:text-hastana-red hover:bg-gray-50 rounded-lg transition-smooth" onclick="toggleMobileDropdown('kontak')">
+                    <button class="mobile-menu-item {{ Request::routeIs('contact') || Request::routeIs('portfolio*') || Request::routeIs('about') || Request::routeIs('dpp') ? 'active' : '' }} w-full flex items-center justify-between py-4 px-4 text-gray-700 hover:text-hastana-red hover:bg-gray-50 rounded-lg transition-smooth" onclick="toggleMobileDropdown('kontak')">
                         <div class="flex items-center">
                             <i class="fas fa-envelope mr-3 text-sm w-5"></i>
                             <span class="font-medium">Kontak</span>
@@ -426,6 +430,10 @@
                         <i class="fas fa-chevron-down text-sm transition-transform duration-300" id="kontak-arrow"></i>
                     </button>
                     <div class="mobile-dropdown-menu" id="kontak-dropdown">
+                        <a href="{{ route('dpp') }}" class="mobile-dropdown-item flex items-center text-sm hover:bg-gray-50 transition-smooth rounded {{ Request::routeIs('dpp') ? 'text-hastana-red font-semibold' : '' }}">
+                            <i class="fas fa-landmark mr-2 text-xs w-4"></i>
+                            DPP
+                        </a>
                         <a href="{{ route('about') }}" class="mobile-dropdown-item flex items-center text-sm hover:bg-gray-50 transition-smooth rounded">
                             <i class="fas fa-info-circle mr-2 text-xs w-4"></i>
                             About

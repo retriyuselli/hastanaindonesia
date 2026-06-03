@@ -41,12 +41,13 @@ class CompanyForm
 
                                         Grid::make(2)
                                             ->schema([
-                                                TextInput::make('owner_name')
+                                                Select::make('owner_name')
                                                     ->label('Nama Ketua Umum')
-                                                    ->required()
-                                                    ->maxLength(255)
-                                                    ->placeholder('Nama lengkap pemilik perusahaan')
-                                                    ->prefixIcon('heroicon-o-user'),
+                                                    ->options(User::orderBy('name')->pluck('name', 'id'))
+                                                    ->searchable()
+                                                    ->getOptionLabelUsing(fn ($value) => User::find($value)?->name)
+                                                    ->placeholder('Pilih Ketua Umum')
+                                                    ->native(false),
 
                                                 TextInput::make('business_license')
                                                     ->label('Nomor Izin Usaha')
@@ -56,6 +57,88 @@ class CompanyForm
                                                     ->unique(ignoreRecord: true)
                                                     ->prefixIcon('heroicon-o-document-text')
                                                     ->helperText('Nomor harus unik'),
+                                            ]),
+
+                                        Section::make('Struktur Kepengurusan')
+                                            ->description('Pilih pengurus perusahaan dari daftar user terdaftar')
+                                            ->icon('heroicon-o-user-group')
+                                            ->collapsible()
+                                            ->collapsed()
+                                            ->schema([
+                                                Grid::make(2)
+                                                    ->schema([
+                                                        Select::make('nama_sekretaris_umum')
+                                                            ->label('Sekretaris Umum')
+                                                            ->options(User::orderBy('name')->pluck('name', 'id'))
+                                                            ->searchable()
+                                                            ->getOptionLabelUsing(fn ($value) => User::find($value)?->name)
+                                                            ->placeholder('Pilih Sekretaris Umum')
+                                                            ->native(false),
+
+                                                        Select::make('nama_bendahara_umum')
+                                                            ->label('Bendahara Umum')
+                                                            ->options(User::orderBy('name')->pluck('name', 'id'))
+                                                            ->searchable()
+                                                            ->getOptionLabelUsing(fn ($value) => User::find($value)?->name)
+                                                            ->placeholder('Pilih Bendahara Umum')
+                                                            ->native(false),
+
+                                                        Select::make('nama_bid_organisasi')
+                                                            ->label('Bid. Organisasi & Keanggotaan')
+                                                            ->options(User::orderBy('name')->pluck('name', 'id'))
+                                                            ->searchable()
+                                                            ->getOptionLabelUsing(fn ($value) => User::find($value)?->name)
+                                                            ->placeholder('Pilih Pengurus')
+                                                            ->native(false),
+
+                                                        Select::make('nama_bid_pengembangan')
+                                                            ->label('Bid. Pengembangan & Pelatihan')
+                                                            ->options(User::orderBy('name')->pluck('name', 'id'))
+                                                            ->searchable()
+                                                            ->getOptionLabelUsing(fn ($value) => User::find($value)?->name)
+                                                            ->placeholder('Pilih Pengurus')
+                                                            ->native(false),
+
+                                                        Select::make('nama_bid_humas_1')
+                                                            ->label('Bid. Humas (1)')
+                                                            ->options(User::orderBy('name')->pluck('name', 'id'))
+                                                            ->searchable()
+                                                            ->getOptionLabelUsing(fn ($value) => User::find($value)?->name)
+                                                            ->placeholder('Pilih Pengurus')
+                                                            ->native(false),
+
+                                                        Select::make('nama_bid_humas_2')
+                                                            ->label('Bid. Humas (2)')
+                                                            ->options(User::orderBy('name')->pluck('name', 'id'))
+                                                            ->searchable()
+                                                            ->getOptionLabelUsing(fn ($value) => User::find($value)?->name)
+                                                            ->placeholder('Pilih Pengurus')
+                                                            ->native(false),
+
+                                                        Select::make('nama_bid_sosial')
+                                                            ->label('Bid. Sosial')
+                                                            ->options(User::orderBy('name')->pluck('name', 'id'))
+                                                            ->searchable()
+                                                            ->getOptionLabelUsing(fn ($value) => User::find($value)?->name)
+                                                            ->placeholder('Pilih Pengurus')
+                                                            ->native(false),
+
+                                                        Select::make('nama_bid_bisnis')
+                                                            ->label('Bid. Bisnis & Kerjasama')
+                                                            ->options(User::orderBy('name')->pluck('name', 'id'))
+                                                            ->searchable()
+                                                            ->getOptionLabelUsing(fn ($value) => User::find($value)?->name)
+                                                            ->placeholder('Pilih Pengurus')
+                                                            ->native(false),
+
+                                                        Select::make('nama_bid_hukum')
+                                                            ->label('Bid. Hukum & Advokasi')
+                                                            ->options(User::orderBy('name')->pluck('name', 'id'))
+                                                            ->searchable()
+                                                            ->getOptionLabelUsing(fn ($value) => User::find($value)?->name)
+                                                            ->placeholder('Pilih Pengurus')
+                                                            ->native(false),
+                                                    ]),
                                             ]),
 
                                         Grid::make(2)

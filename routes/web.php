@@ -298,6 +298,16 @@ Route::get('/contact', function () {
 
 Route::get('/about', [AboutController::class, 'index'])->name('about');
 
+Route::get('/dpp', function () {
+    $dpp = App\Models\Company::with([
+        'ownerUser', 'sekretarisUmum', 'bendaharaUmum',
+        'bidOrganisasi', 'bidPengembangan',
+        'bidHumas1', 'bidHumas2',
+        'bidSosial', 'bidBisnis', 'bidHukum',
+    ])->first();
+    return view('front.dpp', compact('dpp'));
+})->name('dpp');
+
 // Layanan
 Route::get('/layanan/sertifikasi-wo', fn() => view('layanan.sertifikasi-wo'))->name('layanan.sertifikasi');
 Route::get('/layanan/pelatihan-profesional', fn() => view('layanan.pelatihan-profesional'))->name('layanan.pelatihan');

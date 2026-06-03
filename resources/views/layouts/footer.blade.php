@@ -63,6 +63,7 @@
                     <li><a href="{{ route('home') }}" class="text-sm text-gray-300 hover:text-white transition-colors">Home</a></li>
                     <li><a href="{{ route('events') }}" class="text-sm text-gray-300 hover:text-white transition-colors">Event</a></li>
                     <li><a href="{{ route('blog') }}" class="text-sm text-gray-300 hover:text-white transition-colors">Blog</a></li>
+                    <li><a href="{{ route('dpp') }}" class="text-sm text-gray-300 hover:text-white transition-colors">DPP</a></li>
                     <li><a href="{{ route('about') }}" class="text-sm text-gray-300 hover:text-white transition-colors">About</a></li>
                     <li><a href="{{ route('contact') }}" class="text-sm text-gray-300 hover:text-white transition-colors">Hubungi Kami</a></li>
                     <li><a href="{{ route('gallery') }}" class="text-sm text-gray-300 hover:text-white transition-colors">Gallery</a></li>
