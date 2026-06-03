@@ -192,7 +192,7 @@
                     </p>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-2xl mx-auto">
                     <div class="text-center">
                         <div class="text-3xl md:text-4xl font-bold text-gray-900 mb-2">{{ $totalMembers }}</div>
                         <div class="text-gray-600 font-medium text-sm">Total Anggota</div>
