@@ -7,14 +7,14 @@
 <section class="bg-gradient-to-r from-gray-900 to-black text-white py-12">
     <div class="container mx-auto px-4">
         <div class="max-w-3xl mx-auto text-center">
-            <h1 class="text-3xl md:text-4xl font-bold mb-3">EVENT HASTANA INDONESIA1</h1>
+            <h1 class="text-3xl md:text-4xl font-bold mb-3">EVENT HASTANA INDONESIA</h1>
             <p class="text-sm text-gray-300">Temukan berbagai event menarik untuk mengembangkan diri Anda</p>
         </div>
     </div>
 </section>
 
 <!-- Filter & Search Section -->
-<section class="bg-white shadow-md py-5 sticky top-0 z-10">
+<section class="bg-white shadow-md py-5">
     <div class="container mx-auto px-4">
         <form action="{{ route('events') }}" method="GET" class="grid grid-cols-1 md:grid-cols-5 gap-3">
             <!-- Search -->

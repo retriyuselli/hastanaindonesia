@@ -261,15 +261,15 @@
         <div class="absolute inset-0 pattern-bg ring-pattern opacity-30"></div>
         
         <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-20">
+            <div class="flex items-center justify-between h-14 sm:h-20">
                 
                 <!-- Logo Section -->
                 <a href="{{ route('home') }}" class="flex items-center space-x-4 logo-container cursor-pointer group">
                     <!-- Logo Image -->
                     <div class="relative">
-                        <img src="{{ asset('images/hastana_logo.png') }}" 
-                             alt="HASTANA Indonesia" 
-                             class="h-12 w-auto object-contain transition-transform duration-300 group-hover:scale-110">
+                        <img src="{{ asset('images/hastana_logo.png') }}"
+                             alt="HASTANA Indonesia"
+                             class="h-8 sm:h-12 w-auto object-contain transition-transform duration-300 group-hover:scale-110">
                         <!-- Subtle glow effect on hover -->
                         <div class="absolute -inset-1 bg-gradient-to-r from-gray-900 to-red-600 rounded-full opacity-0 group-hover:opacity-20 blur transition-opacity duration-300"></div>
                     </div>
