@@ -456,9 +456,9 @@
 
                         <!-- Event Image -->
                         @if($event->image)
-                            <img src="{{ Storage::url($event->image) }}" 
-                                 alt="{{ $event->title }}" 
-                                 class="w-full h-48 object-cover rounded-lg mb-4">
+                            <img src="{{ Storage::url($event->image) }}"
+                                 alt="{{ $event->title }}"
+                                 class="w-full h-auto object-contain rounded-lg mb-4">
                         @else
                             <div class="w-full h-48 bg-gradient-to-br from-gray-700 to-gray-900 rounded-lg flex items-center justify-center mb-4">
                                 <i class="fas fa-calendar-alt text-white text-6xl"></i>
