@@ -384,7 +384,7 @@ class EventParticipantForm
                                     ->schema([
                                         FileUpload::make('payment_proof')
                                             ->label('Upload Bukti Pembayaran')
-                                            ->disk('private')
+                                            ->disk('public')
                                             ->directory('payment_proofs')
                                             ->nullable()
                                             ->maxSize(2048)
