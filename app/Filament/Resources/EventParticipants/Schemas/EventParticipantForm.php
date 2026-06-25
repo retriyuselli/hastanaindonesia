@@ -386,6 +386,7 @@ class EventParticipantForm
                                             ->label('Upload Bukti Pembayaran')
                                             ->disk('public')
                                             ->directory('payment_proofs')
+                                            ->downloadable()
                                             ->nullable()
                                             ->maxSize(2048)
                                             ->acceptedFileTypes(['image/jpeg', 'image/jpg', 'image/png', 'application/pdf'])
