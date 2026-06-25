@@ -403,8 +403,8 @@
                                             <span class="text-sm text-gray-600">Metode Pembayaran: </span>
                                             <span class="font-semibold">{{ strtoupper($registeredData->payment_method ?? '-') }}</span>
                                         </div>
-                                        <img src="{{ asset('storage/' . $registeredData->payment_proof) }}" 
-                                             alt="Bukti Pembayaran" 
+                                        <img src="{{ Storage::url($registeredData->payment_proof) }}"
+                                             alt="Bukti Pembayaran"
                                              class="max-w-full h-auto rounded-lg border border-gray-300 max-h-64">
                                     </div>
                                 </div>
@@ -485,7 +485,7 @@
                             <!-- Time -->
                             <div class="flex items-center gap-2">
                                 <i class="fas fa-clock text-hastana-red w-5"></i>
-                                <span>{{ $event->start_time->format('H:i') }} WIB</span>
+                                <span>{{ $event->start_time ? $event->start_time->format('H:i') . ' WIB' : '-' }}</span>
                             </div>
 
                             <!-- Location -->

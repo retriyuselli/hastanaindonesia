@@ -389,15 +389,16 @@ class EventController extends Controller
 
         // Validate basic fields
         $rules = [
-            'name'     => 'required|string|max:255',
-            'email'    => 'required|email|max:255',
-            'phone'    => 'required|string|max:20',
-            'company'  => 'nullable|string|max:255',
-            'position' => 'nullable|string|max:255',
-            'notes'    => 'nullable|string|max:1000',
-            'addons'   => 'nullable|array',
+            'name'        => 'required|string|max:255',
+            'email'       => 'required|email|max:255',
+            'phone'       => 'required|string|max:20',
+            'company'     => 'nullable|string|max:255',
+            'position'    => 'nullable|string|max:255',
+            'notes'       => 'nullable|string|max:1000',
+            'agree_terms' => 'required|accepted',
+            'addons'      => 'nullable|array',
             'addons.*.id'  => 'required_with:addons|integer|exists:event_addons,id',
-            'addons.*.qty' => 'required_with:addons|integer|min:1|max:99',
+            'addons.*.qty' => 'required_with:addons|integer|min:0|max:99',
         ];
 
         // Hitung base price & total addon
@@ -461,7 +462,7 @@ class EventController extends Controller
         // Upload bukti bayar
         $paymentProofPath = null;
         if ($needsPayment && $request->hasFile('payment_proof')) {
-            $paymentProofPath = $request->file('payment_proof')->store('payment_proofs', 'private');
+            $paymentProofPath = $request->file('payment_proof')->store('payment_proofs', 'public');
         }
 
         // Simpan peserta
