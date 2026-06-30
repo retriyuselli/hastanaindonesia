@@ -132,6 +132,68 @@ Route::middleware('auth')->prefix('admin/files')->group(function () {
 
     Route::get('event-participants/{eventParticipant}/payment-proof', [AdminFileController::class, 'downloadEventParticipantPaymentProof'])
         ->name('admin.files.event-participants.payment-proof');
+
+    Route::get('event-participants/{eventParticipant}/invoice', function (\App\Models\EventParticipant $eventParticipant) {
+        $eventParticipant->load(['eventHastana.eventCategory', 'participantAddons.eventAddon']);
+
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('filament.pdfs.event-participant-invoice', [
+            'participant' => $eventParticipant,
+            'event'       => $eventParticipant->eventHastana,
+        ])
+            ->setPaper('a4', 'portrait')
+            ->setOption('defaultFont', 'DejaVu Sans')
+            ->setOption('isHtml5ParserEnabled', true)
+            ->setOption('isRemoteEnabled', false);
+
+        $filename    = 'invoice-' . strtolower($eventParticipant->registration_code) . '.pdf';
+        $disposition = request()->boolean('download') ? 'attachment' : 'inline';
+
+        return response()->make(
+            $pdf->output(),
+            200,
+            [
+                'Content-Type'        => 'application/pdf',
+                'Content-Disposition' => $disposition . '; filename="' . $filename . '"',
+            ],
+        );
+    })->name('admin.files.event-participants.invoice');
+
+    Route::get('event-participants/recap', function () {
+        $participants = \App\Models\EventParticipant::with(['eventHastana', 'participantAddons.eventAddon'])
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        $company = \App\Models\Company::first();
+
+        $stats = [
+            'total'     => $participants->count(),
+            'confirmed' => $participants->whereIn('status', ['confirmed', 'attended'])->count(),
+            'pending'   => $participants->where('status', 'pending')->count(),
+            'cancelled' => $participants->where('status', 'cancelled')->count(),
+            'paid'      => $participants->where('payment_status', 'paid')->count(),
+            'unpaid'    => $participants->where('payment_status', 'pending')->count(),
+            'free'      => $participants->where('payment_status', 'free')->count(),
+            'revenue'   => $participants->where('payment_status', 'paid')->sum('total_amount'),
+        ];
+
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('filament.pdfs.event-participants-recap', compact('participants', 'company', 'stats'))
+            ->setPaper('a4', 'landscape')
+            ->setOption('defaultFont', 'DejaVu Sans')
+            ->setOption('isHtml5ParserEnabled', true)
+            ->setOption('isRemoteEnabled', false);
+
+        $filename    = 'rekapan-peserta-' . now()->format('Ymd-His') . '.pdf';
+        $disposition = request()->boolean('download') ? 'attachment' : 'inline';
+
+        return response()->make(
+            $pdf->output(),
+            200,
+            [
+                'Content-Type'        => 'application/pdf',
+                'Content-Disposition' => $disposition . '; filename="' . $filename . '"',
+            ],
+        );
+    })->name('admin.files.event-participants.recap');
 });
 
 Route::middleware('auth')->prefix('files')->group(function () {

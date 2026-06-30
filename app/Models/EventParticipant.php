@@ -43,7 +43,6 @@ class EventParticipant extends Model
         'formatted_registration_date',
         'is_confirmed',
         'is_attended',
-        'event_title',
     ];
 
     /**

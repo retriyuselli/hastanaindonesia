@@ -5,7 +5,6 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class EventHastana extends Model
@@ -103,55 +102,37 @@ class EventHastana extends Model
     /**
      * Scope for published events
      */
-    public function scopePublished($query)
+    public function scopePublished(\Illuminate\Database\Eloquent\Builder $query): \Illuminate\Database\Eloquent\Builder
     {
         return $query->where('status', 'published');
     }
 
-    /**
-     * Scope for active events
-     */
-    public function scopeActive($query)
+    public function scopeActive(\Illuminate\Database\Eloquent\Builder $query): \Illuminate\Database\Eloquent\Builder
     {
         return $query->where('is_active', true);
     }
 
-    /**
-     * Scope for featured events
-     */
-    public function scopeFeatured($query)
+    public function scopeFeatured(\Illuminate\Database\Eloquent\Builder $query): \Illuminate\Database\Eloquent\Builder
     {
         return $query->where('is_featured', true);
     }
 
-    /**
-     * Scope for trending events
-     */
-    public function scopeTrending($query)
+    public function scopeTrending(\Illuminate\Database\Eloquent\Builder $query): \Illuminate\Database\Eloquent\Builder
     {
         return $query->where('is_trending', true);
     }
 
-    /**
-     * Scope for free events
-     */
-    public function scopeFree($query)
+    public function scopeFree(\Illuminate\Database\Eloquent\Builder $query): \Illuminate\Database\Eloquent\Builder
     {
         return $query->where('is_free', true);
     }
 
-    /**
-     * Scope for upcoming events
-     */
-    public function scopeUpcoming($query)
+    public function scopeUpcoming(\Illuminate\Database\Eloquent\Builder $query): \Illuminate\Database\Eloquent\Builder
     {
         return $query->where('start_date', '>', now());
     }
 
-    /**
-     * Scope for ongoing events
-     */
-    public function scopeOngoing($query)
+    public function scopeOngoing(\Illuminate\Database\Eloquent\Builder $query): \Illuminate\Database\Eloquent\Builder
     {
         return $query->where('start_date', '<=', now())
             ->where('end_date', '>=', now());
@@ -299,14 +280,6 @@ class EventHastana extends Model
     /**
      * Get image URL
      */
-    // public function getImageUrlAttribute(): ?string
-    // {
-    //     if (!$this->image) {
-    //         return 'https://images.unsplash.com/photo-1519741497674-611481863552?w=800&h=450&fit=crop&auto=format';
-    //     }
-    //     return Storage::url($this->image);
-    // }
-
     public function getImageUrlAttribute(): ?string
     {
         if (! $this->image) {

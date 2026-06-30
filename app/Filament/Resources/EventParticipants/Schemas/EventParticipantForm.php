@@ -26,8 +26,6 @@ class EventParticipantForm
                     ->tabs([
                         Tab::make('Informasi Event & Pendaftaran')
                             ->icon('heroicon-o-calendar-days')
-                            ->badge(fn ($get) => $get('status') === 'pending' ? 'Pending' : null)
-                            ->badgeColor(fn ($get) => $get('status') === 'pending' ? 'warning' : 'success')
                             ->schema([
                                 Section::make('Detail Event')
                                     ->description('Pilih event dan lihat detail registrasi')
@@ -109,48 +107,10 @@ class EventParticipantForm
                                                 'cancelled' => '❌ Cancelled - Dibatalkan',
                                                 'attended' => '🎉 Attended - Sudah Hadir',
                                             ])
-                                            ->default('confirmed')
-                                            ->required()
-                                            ->live()
-                                            ->afterStateUpdated(function ($state, callable $set, callable $get) {
-                                                // Auto-set confirmed_at saat status berubah ke confirmed
-                                                if ($state === 'confirmed' && ! $get('confirmed_at')) {
-                                                    $set('confirmed_at', now());
-                                                }
-
-                                                // Auto-set attended_at saat status berubah ke attended
-                                                if ($state === 'attended') {
-                                                    if (! $get('confirmed_at')) {
-                                                        $set('confirmed_at', now());
-                                                    }
-                                                    if (! $get('attended_at')) {
-                                                        $set('attended_at', now());
-                                                    }
-                                                }
-
-                                                // Reset timestamp jika status kembali ke pending
-                                                if ($state === 'pending') {
-                                                    $set('confirmed_at', null);
-                                                    $set('attended_at', null);
-                                                }
-
-                                                // Reset attended_at jika dari attended ke confirmed
-                                                if ($state === 'confirmed' && $get('attended_at')) {
-                                                    $set('attended_at', null);
-                                                }
-                                            })
-                                            ->helperText(function ($get) {
-                                                $paymentStatus = $get('payment_status');
-                                                if ($paymentStatus === 'pending') {
-                                                    return '⚠️ Pembayaran masih pending, konfirmasi setelah dibayar';
-                                                } elseif ($paymentStatus === 'paid') {
-                                                    return '✓ Pembayaran sudah lunas, bisa dikonfirmasi';
-                                                } elseif ($paymentStatus === 'free') {
-                                                    return '✓ Event gratis, bisa langsung dikonfirmasi';
-                                                }
-
-                                                return 'Pilih status sesuai kondisi peserta';
-                                            })
+                                            ->default('pending')
+                                            ->disabled()
+                                            ->dehydrated()
+                                            ->helperText('Status diubah melalui tombol Aksi pada tabel (Konfirmasi / Tandai Hadir)')
                                             ->columnSpan(1),
                                     ]),
 
@@ -322,38 +282,12 @@ class EventParticipantForm
                                             ->default('free')
                                             ->required()
                                             ->live()
-                                            ->afterStateUpdated(function ($state, callable $set, callable $get) {
-                                                // Auto-update status berdasarkan payment_status
-                                                if ($state === 'paid') {
-                                                    // Jika sudah dibayar, otomatis konfirmasi
-                                                    if ($get('status') === 'pending') {
-                                                        $set('status', 'confirmed');
-                                                        $set('confirmed_at', now());
-                                                    }
-                                                } elseif ($state === 'pending') {
-                                                    // Jika pembayaran pending, status tetap pending
-                                                    if ($get('status') === 'confirmed' && ! $get('attended_at')) {
-                                                        $set('status', 'pending');
-                                                        $set('confirmed_at', null);
-                                                    }
-                                                } elseif ($state === 'free') {
-                                                    // Event gratis bisa langsung confirmed
-                                                    if ($get('status') === 'pending') {
-                                                        $set('status', 'confirmed');
-                                                        $set('confirmed_at', now());
-                                                    }
-                                                }
-                                            })
-                                            ->helperText(function ($get) {
-                                                $status = $get('payment_status');
-
-                                                return match ($status) {
-                                                    'paid' => '✓ Pembayaran lunas, peserta bisa dikonfirmasi',
-                                                    'pending' => '⚠️ Menunggu pembayaran dari peserta',
-                                                    'free' => '✓ Event gratis, tidak ada pembayaran',
-                                                    'refunded' => 'ℹ️ Dana sudah dikembalikan ke peserta',
-                                                    default => 'Pilih status pembayaran'
-                                                };
+                                            ->helperText(fn ($get) => match ($get('payment_status')) {
+                                                'paid'     => '✓ Pembayaran lunas — konfirmasi peserta via tombol Aksi di tabel',
+                                                'pending'  => '⚠️ Menunggu pembayaran dari peserta',
+                                                'free'     => '✓ Event gratis, tidak ada pembayaran',
+                                                'refunded' => 'ℹ️ Dana sudah dikembalikan ke peserta',
+                                                default    => 'Pilih status pembayaran',
                                             })
                                             ->columnSpan(2),
 
@@ -392,14 +326,11 @@ class EventParticipantForm
                                             ->acceptedFileTypes(['image/jpeg', 'image/jpg', 'image/png', 'application/pdf'])
                                             ->live()
                                             ->afterStateUpdated(function ($state, callable $set, callable $get) {
-                                                // Auto-update payment_status ke 'paid' saat upload bukti
                                                 if ($state && $get('payment_status') === 'pending') {
                                                     $set('payment_status', 'paid');
-                                                    $set('status', 'confirmed');
-                                                    $set('confirmed_at', now());
                                                 }
                                             })
-                                            ->helperText('Upload bukti transfer (JPG, PNG, PDF - Max 2MB). Status akan otomatis berubah menjadi "Paid".')
+                                            ->helperText('Upload bukti transfer (JPG, PNG, PDF - Max 2MB). Payment status otomatis berubah ke "Paid" saat file diupload.')
                                             ->columnSpanFull(),
                                     ]),
 
@@ -418,26 +349,26 @@ class EventParticipantForm
                                     ]),
                             ]),
 
-                        Tab::make('Ringkasan')
-                            ->icon('heroicon-o-clipboard-document-check')
-                            ->schema([
-                                Section::make('Ringkasan Pendaftaran')
-                                    ->description('Lihat semua informasi peserta dalam satu tampilan')
-                                    ->icon('heroicon-o-document-text')
-                                    ->schema([
-                                        ViewField::make('summary')
-                                            ->view('filament.forms.components.participant-summary')
-                                            ->viewData(fn ($get) => [
-                                                'name' => $get('name'),
-                                                'email' => $get('email'),
-                                                'phone' => $get('phone'),
-                                                'registrationCode' => $get('registration_code'),
-                                                'status' => $get('status'),
-                                                'paymentStatus' => $get('payment_status'),
-                                                'eventId' => $get('event_hastana_id'),
-                                            ]),
-                                    ]),
-                            ]),
+                        // Tab::make('Ringkasan')
+                        //     ->icon('heroicon-o-clipboard-document-check')
+                        //     ->schema([
+                        //         Section::make('Ringkasan Pendaftaran')
+                        //             ->description('Lihat semua informasi peserta dalam satu tampilan')
+                        //             ->icon('heroicon-o-document-text')
+                        //             ->schema([
+                        //                 ViewField::make('summary')
+                        //                     ->view('filament.forms.components.participant-summary')
+                        //                     ->viewData(fn ($get) => [
+                        //                         'name' => $get('name'),
+                        //                         'email' => $get('email'),
+                        //                         'phone' => $get('phone'),
+                        //                         'registrationCode' => $get('registration_code'),
+                        //                         'status' => $get('status'),
+                        //                         'paymentStatus' => $get('payment_status'),
+                        //                         'eventId' => $get('event_hastana_id'),
+                        //                     ]),
+                        //             ]),
+                        //     ]),
                     ])
                     ->columnSpanFull()
                     ->persistTabInQueryString(),

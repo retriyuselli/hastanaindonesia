@@ -260,16 +260,6 @@ class CompanyForm
                                             ->directory('company-logos')
                                             ->image()
                                             ->maxSize(2048)
-                                            ->imageEditor()
-                                            ->imageEditorAspectRatios([
-                                                '1:1',
-                                                '16:9',
-                                                '4:3',
-                                            ])
-                                            ->imageResizeMode('cover')
-                                            ->imageCropAspectRatio('1:1')
-                                            ->imageResizeTargetWidth('500')
-                                            ->imageResizeTargetHeight('500')
                                             ->helperText('Format: JPG, PNG. Maksimal 2MB. Rekomendasi: 500x500px')
                                             ->columnSpanFull(),
 
