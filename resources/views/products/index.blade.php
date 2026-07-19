@@ -4,7 +4,7 @@
 
 @section('content')
 <!-- Hero Section -->
-<section class="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-16 mt-20">
+<section class="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-16">
     <div class="container mx-auto px-4">
         <div class="max-w-4xl mx-auto">
             <h1 class="text-4xl font-bold mb-2">Kelola Produk</h1>

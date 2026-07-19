@@ -20,7 +20,7 @@
                 
                 @if($showOverlay)
                 <!-- Overlay -->
-                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <div class="gallery-grid-overlay pointer-events-none absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     <div class="absolute inset-0 flex items-center justify-center">
                         <div class="text-center text-white transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
                             <i class="fas fa-search-plus text-3xl mb-3"></i>
@@ -34,7 +34,7 @@
                     </div>
                     
                     <!-- Action buttons -->
-                    <div class="absolute top-4 right-4 flex space-x-2 transform translate-x-8 group-hover:translate-x-0 transition-transform duration-300">
+                    <div class="gallery-grid-actions absolute top-4 right-4 flex space-x-2 transform translate-x-8 group-hover:translate-x-0 transition-transform duration-300">
                         @if($showModal)
                         <button class="bg-white/20 backdrop-blur-sm text-white p-2 rounded-full hover:bg-white/30 transition-colors" 
                                 title="Lihat Besar">
@@ -45,6 +45,7 @@
                         @if(isset($item['downloadable']) && $item['downloadable'])
                         <a href="{{ $item['image'] }}" 
                            download 
+                           data-gallery-download
                            class="bg-white/20 backdrop-blur-sm text-white p-2 rounded-full hover:bg-white/30 transition-colors" 
                            title="Download">
                             <i class="fas fa-download"></i>
@@ -67,6 +68,27 @@
         </div>
     @endforeach
 </div>
+
+<style>
+.gallery-grid-actions {
+    pointer-events: none;
+}
+
+.group:hover .gallery-grid-actions {
+    pointer-events: auto;
+}
+
+@media (hover: none), (pointer: coarse) {
+    .gallery-grid-overlay {
+        opacity: 1;
+    }
+
+    .gallery-grid-actions {
+        pointer-events: auto;
+        transform: translateX(0);
+    }
+}
+</style>
 
 @if($showModal)
 <!-- Modal -->
@@ -124,6 +146,10 @@
 @endif
 
 <script>
+document.querySelectorAll('[data-gallery-download]').forEach((link) => {
+    link.addEventListener('click', (event) => event.stopPropagation());
+});
+
 @if($showModal)
 let galleryItems = @json($items);
 let currentImageIndex = 0;

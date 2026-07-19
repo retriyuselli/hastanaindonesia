@@ -4,7 +4,7 @@
 
 @section('content')
 <!-- Hero Section -->
-<section class="bg-gradient-to-r from-gray-900 to-black text-white py-16 mt-20">
+<section class="bg-gradient-to-r from-gray-900 to-black text-white py-16">
     <div class="container mx-auto px-4">
         <div class="max-w-3xl mx-auto text-center">
             <h1 class="text-3xl md:text-4xl font-bold mb-4">
@@ -44,15 +44,6 @@
             <div>
                 <select name="city" class="w-full px-4 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-hastana-red focus:border-transparent">
                     <option value="">Semua Kota</option>
-                    @php
-                        $cities = \App\Models\EventHastana::where('is_featured', true)
-                            ->where('status', 'published')
-                            ->where('is_active', true)
-                            ->distinct()
-                            ->pluck('city')
-                            ->filter()
-                            ->sort();
-                    @endphp
                     @foreach($cities as $city)
                         <option value="{{ $city }}" {{ request('city') == $city ? 'selected' : '' }}>
                             {{ $city }}
@@ -251,15 +242,6 @@
             <!-- Sidebar -->
             <div class="lg:w-1/4">
                 <!-- Top Featured Events -->
-                @php
-                    $topFeaturedEvents = \App\Models\EventHastana::where('is_featured', true)
-                        ->where('status', 'published')
-                        ->where('is_active', true)
-                        ->where('start_date', '>=', now())
-                        ->orderBy('start_date', 'asc')
-                        ->take(5)
-                        ->get();
-                @endphp
                 @if($topFeaturedEvents->count() > 0)
                     <div class="bg-white rounded-lg shadow-md p-5 mb-5">
                         <h3 class="text-lg font-bold text-gray-800 mb-3 flex items-center">
@@ -303,16 +285,6 @@
                 @endif
 
                 <!-- Premium Featured Events (Paid) -->
-                @php
-                    $premiumFeaturedEvents = \App\Models\EventHastana::where('is_featured', true)
-                        ->where('is_free', false)
-                        ->where('status', 'published')
-                        ->where('is_active', true)
-                        ->where('start_date', '>=', now())
-                        ->orderBy('price', 'desc')
-                        ->take(5)
-                        ->get();
-                @endphp
                 @if($premiumFeaturedEvents->count() > 0)
                     <div class="bg-white rounded-lg shadow-md p-5">
                         <h3 class="text-lg font-bold text-gray-800 mb-3 flex items-center">

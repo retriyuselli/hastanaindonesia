@@ -1,8 +1,8 @@
 <!-- Modal Bukti Pembayaran -->
-<div id="paymentProofModal" class="hidden fixed inset-0 bg-gray-900 bg-opacity-75 overflow-y-auto h-full w-full z-50" onclick="closePaymentProofModal()">
-    <div class="relative top-10 mx-auto p-3 w-11/12 md:w-3/4 lg:w-2/3 xl:w-1/2 max-w-4xl" onclick="event.stopPropagation()">
+<div id="paymentProofModal" class="hidden fixed inset-0 bg-gray-900 bg-opacity-75 overflow-y-auto h-full w-full z-50">
+    <div data-payment-proof-dialog class="relative top-10 mx-auto p-3 w-11/12 md:w-3/4 lg:w-2/3 xl:w-1/2 max-w-4xl">
         <!-- Close Button -->
-        <button onclick="closePaymentProofModal()" 
+        <button type="button" data-payment-proof-close aria-label="Tutup bukti pembayaran"
                 class="absolute -top-2 -right-2 z-10 w-10 h-10 bg-white hover:bg-gray-100 rounded-full shadow-lg flex items-center justify-center transition-colors">
             <i class="fas fa-times text-gray-700 text-xl"></i>
         </button>
@@ -28,6 +28,20 @@ function closePaymentProofModal() {
     document.getElementById('paymentProofModal').classList.add('hidden');
     document.body.style.overflow = 'auto';
 }
+
+document.querySelectorAll('[data-payment-proof-trigger]').forEach((button) => {
+    button.addEventListener('click', () => openPaymentProofModal(button.dataset.paymentProofUrl));
+});
+
+document.querySelectorAll('[data-payment-proof-close]').forEach((button) => {
+    button.addEventListener('click', closePaymentProofModal);
+});
+
+document.querySelector('[data-payment-proof-dialog]')?.addEventListener('click', (event) => {
+    event.stopPropagation();
+});
+
+document.getElementById('paymentProofModal')?.addEventListener('click', closePaymentProofModal);
 
 // Close modal with ESC key
 document.addEventListener('keydown', function(e) {

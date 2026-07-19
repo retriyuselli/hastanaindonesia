@@ -4,7 +4,7 @@
 
 @section('content')
 <!-- Hero Section -->
-<section class="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-16 mt-20">
+<section class="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-16">
     <div class="container mx-auto px-4">
         <div class="max-w-4xl mx-auto">
             <h1 class="text-4xl font-bold mb-2">Tambah Produk Baru</h1>
@@ -128,45 +128,38 @@
 </section>
 @endsection
 
-@push('styles')
-<!-- Quill CSS -->
-<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
-@endpush
-
 @push('scripts')
-<!-- Quill JS -->
-<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
 <script>
-    // Initialize Quill editor
-    var quill = new Quill('#editor', {
-        theme: 'snow',
-        modules: {
-            toolbar: [
-                [{ 'header': [1, 2, 3, false] }],
-                ['bold', 'italic', 'underline', 'strike'],
-                [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-                [{ 'align': [] }],
-                ['link'],
-                ['clean']
-            ]
-        },
-        placeholder: 'Tulis deskripsi produk di sini...'
-    });
+    document.addEventListener('DOMContentLoaded', function() {
+        const quill = new window.Quill('#editor', {
+            theme: 'snow',
+            modules: {
+                toolbar: [
+                    [{ 'header': [1, 2, 3, false] }],
+                    ['bold', 'italic', 'underline', 'strike'],
+                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                    [{ 'align': [] }],
+                    ['link'],
+                    ['clean']
+                ]
+            },
+            placeholder: 'Tulis deskripsi produk di sini...'
+        });
 
-    // Set initial content if any
-    var description = {!! json_encode(old('description')) !!};
-    if (description) {
-        quill.root.innerHTML = description;
-    }
+        const description = {{ Illuminate\Support\Js::from(
+            app(\App\Support\RichTextSanitizer::class)->sanitize(old('description'))
+        ) }};
+        if (description) {
+            quill.root.innerHTML = description;
+        }
 
-    // Sync content to hidden textarea on text change
-    quill.on('text-change', function() {
-        document.getElementById('description').value = quill.root.innerHTML;
-    });
+        quill.on('text-change', function() {
+            document.getElementById('description').value = quill.root.innerHTML;
+        });
 
-    // Also update on form submit (backup)
-    document.querySelector('form').addEventListener('submit', function(e) {
-        document.getElementById('description').value = quill.root.innerHTML;
+        document.querySelector('form').addEventListener('submit', function() {
+            document.getElementById('description').value = quill.root.innerHTML;
+        });
     });
 
     // Calculate discount automatically

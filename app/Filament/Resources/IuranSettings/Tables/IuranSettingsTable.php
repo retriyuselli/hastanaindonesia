@@ -3,16 +3,17 @@
 namespace App\Filament\Resources\IuranSettings\Tables;
 
 use App\Models\Iuran;
+use App\Models\IuranSetting;
 use App\Models\User;
 use Filament\Actions\Action;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Notifications\Notification;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
-use Illuminate\Support\Facades\DB;
 
 class IuranSettingsTable
 {
@@ -73,9 +74,9 @@ class IuranSettingsTable
                     ->modalHeading('Generate Tagihan')
                     ->modalDescription('Ini akan membuat tagihan iuran ke semua member yang belum memiliki tagihan untuk periode ini.')
                     ->action(function () {
-                        $settings = \App\Models\IuranSetting::active()->get();
-                        $users    = User::whereHas('roles', fn ($q) => $q->whereIn('name', ['member', 'panel_user']))->get();
-                        $created  = 0;
+                        $settings = IuranSetting::active()->get();
+                        $users = User::whereHas('roles', fn ($q) => $q->whereIn('name', ['member', 'panel_user']))->get();
+                        $created = 0;
 
                         foreach ($settings as $setting) {
                             foreach ($users as $user) {
@@ -85,19 +86,19 @@ class IuranSettingsTable
 
                                 if (! $exists) {
                                     Iuran::create([
-                                        'user_id'           => $user->id,
-                                        'iuran_setting_id'  => $setting->id,
-                                        'amount'            => $setting->amount,
-                                        'period_label'      => $setting->period_label,
-                                        'due_date'          => $setting->due_date,
-                                        'status'            => 'unpaid',
+                                        'user_id' => $user->id,
+                                        'iuran_setting_id' => $setting->id,
+                                        'amount' => $setting->amount,
+                                        'period_label' => $setting->period_label,
+                                        'due_date' => $setting->due_date,
+                                        'status' => 'unpaid',
                                     ]);
                                     $created++;
                                 }
                             }
                         }
 
-                        \Filament\Notifications\Notification::make()
+                        Notification::make()
                             ->title("{$created} tagihan berhasil dibuat")
                             ->success()
                             ->send();
@@ -109,7 +110,7 @@ class IuranSettingsTable
             ->bulkActions([
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
-                ]),
+                ])->label('Aksi'),
             ])
             ->defaultSort('due_date', 'desc');
     }

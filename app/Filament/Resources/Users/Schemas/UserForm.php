@@ -116,7 +116,13 @@ class UserForm
                     ->relationship('roles', 'name')
                     ->multiple()
                     ->preload()
-                    ->searchable(),
+                    ->searchable()
+                    ->visible(fn (): bool => auth()->user()?->hasRole(
+                        config('filament-shield.super_admin.name', 'super_admin'),
+                    ) === true)
+                    ->dehydrated(fn (): bool => auth()->user()?->hasRole(
+                        config('filament-shield.super_admin.name', 'super_admin'),
+                    ) === true),
 
                 Select::make('status')
                     ->label('Status Akun')
@@ -141,6 +147,7 @@ class UserForm
                     ->image()
                     ->directory('avatars')
                     ->disk('public')
+                    ->preventFilePathTampering()
                     ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
                     ->maxSize(2048)
                     ->imageEditor()

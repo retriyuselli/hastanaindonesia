@@ -33,10 +33,46 @@ class JoinController extends Controller
         $totalRegions = Region::query()->count();
         $companyEstablishedYear = Company::query()->orderBy('id')->value('established_year');
         $companyYearsExperience = $companyEstablishedYear ? max(0, now()->year - (int) $companyEstablishedYear) : null;
+        $existingOrganizerFormData = $existingOrganizer?->only([
+            'organizer_name',
+            'brand_name',
+            'email',
+            'phone',
+            'established_year',
+            'business_type',
+            'address',
+            'postal_code',
+            'website',
+            'instagram',
+            'business_license',
+            'completed_events',
+            'certification_level',
+            'region_id',
+            'description',
+            'specializations',
+            'services',
+            'awards',
+            'province',
+            'city',
+            'deed_of_establishment',
+            'deed_date',
+            'notary_name',
+            'notary_license_number',
+            'nib_number',
+            'nib_issued_date',
+            'nib_valid_until',
+            'npwp_number',
+            'npwp_issued_date',
+            'tax_office',
+        ]);
+        if ($existingOrganizerFormData !== null) {
+            $existingOrganizerFormData['has_legal_documents'] = ! empty($existingOrganizer->legal_documents);
+        }
 
         return view('join', [
             'alreadyRegistered' => $alreadyRegistered,
             'existingOrganizer' => $existingOrganizer,
+            'existingOrganizerFormData' => $existingOrganizerFormData,
             'regions' => $regions,
             'totalWeddingOrganizers' => $totalWeddingOrganizers,
             'totalRegions' => $totalRegions,
@@ -185,13 +221,12 @@ class JoinController extends Controller
         }
 
         if ($request->hasFile('file_recom')) {
-            $newRecomPath = $request->file('file_recom')->store('wedding-organizer-recom', 'public');
+            $newRecomPath = $request->file('file_recom')->store('wedding-organizer-recom', 'private');
             $validated['file_recom'] = $newRecomPath;
 
             if ($isUpdate && $existingOrganizer?->file_recom && $existingOrganizer->file_recom !== $newRecomPath) {
-                if (Storage::disk('public')->exists($existingOrganizer->file_recom)) {
-                    Storage::disk('public')->delete($existingOrganizer->file_recom);
-                }
+                Storage::disk('private')->delete($existingOrganizer->file_recom);
+                Storage::disk('public')->delete($existingOrganizer->file_recom);
             }
         }
 

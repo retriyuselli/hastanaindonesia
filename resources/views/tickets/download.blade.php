@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>E-Ticket - {{ $participant->eventHastana->title }}</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
     <style>
         @media print {
             button, .no-print {
@@ -169,22 +167,16 @@
     </div>
 
     <script>
-        // Generate QR Code
-        new QRCode(document.getElementById('qrcode'), {
-            text: '{{ $participant->registration_code }}',
-            width: 250,
-            height: 250,
-            colorDark: '#1e40af',
-            colorLight: '#ffffff',
-            correctLevel: QRCode.CorrectLevel.H
+        document.addEventListener('DOMContentLoaded', function() {
+            new window.QRCode(document.getElementById('qrcode'), {
+                text: @json($participant->registration_code),
+                width: 250,
+                height: 250,
+                colorDark: '#1e40af',
+                colorLight: '#ffffff',
+                correctLevel: window.QRCode.CorrectLevel.H
+            });
         });
-
-        // Auto print when page loads (optional)
-        // window.onload = function() {
-        //     setTimeout(function() {
-        //         window.print();
-        //     }, 1000);
-        // };
     </script>
 </body>
 </html>

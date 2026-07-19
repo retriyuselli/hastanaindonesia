@@ -23,7 +23,7 @@
 @section('content')
 
 <!-- Hero Section -->
-<section class="bg-gradient-to-r from-gray-900 via-gray-800 to-red-900 py-20 text-white mt-20">
+<section class="bg-gradient-to-r from-gray-900 via-gray-800 to-red-900 py-20 text-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <div class="max-w-4xl mx-auto">
             <div class="mb-8">
@@ -227,7 +227,7 @@
         </div>
         
         <div class="text-center mt-6">
-            <a href="https://maps.app.goo.gl/ZzAiVcjTcY5gWYjK8" target="_blank" class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-gray-900 to-hastana-red text-white font-semibold rounded-lg hover:from-black hover:to-red-700 transition-colors">
+            <a href="https://maps.app.goo.gl/ZzAiVcjTcY5gWYjK8" target="_blank" rel="noopener noreferrer" class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-gray-900 to-hastana-red text-white font-semibold rounded-lg hover:from-black hover:to-red-700 transition-colors">
                 <i class="fas fa-map-marker-alt mr-2"></i>
                 Buka di Google Maps
             </a>

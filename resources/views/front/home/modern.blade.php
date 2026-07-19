@@ -67,7 +67,7 @@
         if ($heroSlides->isEmpty()) {
             $heroSlides = collect([
                 (object) [
-                    'image_url' => asset('images/' . rawurlencode('Untitled design_20251103_181604_0000.png')),
+                    'image_url' => asset('images/default-event.svg'),
                     'alt' => 'HASTANA Indonesia',
                     'link' => null,
                 ],
@@ -81,24 +81,15 @@
                 <div class="home-hero-slide">
                     @php
                         $slideAlt = filled($slide?->alt) ? $slide->alt : 'HASTANA Indonesia';
-                        $hasLink = filled($slide?->link);
-                        $isExternalLink = false;
-                        if ($hasLink) {
-                            $lowerLink = strtolower($slide->link);
-                            if (str_starts_with($lowerLink, 'javascript:')) {
-                                $hasLink = false;
-                            } else {
-                                $isExternalLink = str_starts_with($lowerLink, 'http://') || str_starts_with($lowerLink, 'https://');
-                            }
-                        }
+                        $slideLink = data_get($slide, 'safe_link');
+                        $hasLink = filled($slideLink);
                     @endphp
 
                     @if ($hasLink)
                         <a 
-                            href="{{ $slide->link }}" 
+                            href="{{ $slideLink }}"
                             class="block cursor-pointer" 
                             aria-label="{{ $slideAlt }}"
-                            @if($isExternalLink) target="_blank" rel="noopener noreferrer" @endif
                         >
                             <img src="{{ $slide->image_url }}" alt="{{ $slideAlt }}" class="block w-full h-auto select-none" loading="{{ $loop->first ? 'eager' : 'lazy' }}" decoding="async" draggable="false">
                         </a>
@@ -465,7 +456,7 @@
                 let isDragging = false;
                 let startX = 0;
                 let startTranslatePx = 0;
-                let didDrag = false;
+                let suppressNextClick = false;
 
                 function setDisabledStates() {
                     if (prevBtn) prevBtn.disabled = index <= 0;
@@ -507,7 +498,6 @@
                 function onPointerDown(e) {
                     if (e.button != null && e.button !== 0) return;
                     isDragging = true;
-                    didDrag = false;
                     startX = e.clientX;
                     startTranslatePx = -index * root.clientWidth;
                     track.style.transition = 'none';
@@ -516,7 +506,6 @@
                 function onPointerMove(e) {
                     if (!isDragging) return;
                     const dx = e.clientX - startX;
-                    if (Math.abs(dx) > 6) didDrag = true;
                     track.style.transform = 'translateX(' + (startTranslatePx + dx) + 'px)';
                 }
 
@@ -532,16 +521,25 @@
                     } else {
                         setIndex(index);
                     }
-                    if (didDrag) {
-                        e.preventDefault();
+                    if (Math.abs(dx) > threshold) {
+                        suppressNextClick = true;
+                        window.setTimeout(function () {
+                            suppressNextClick = false;
+                        }, 0);
                     }
-                    didDrag = false;
                 }
 
                 track.addEventListener('pointerdown', onPointerDown);
                 track.addEventListener('pointermove', onPointerMove);
                 track.addEventListener('pointerup', onPointerEnd);
                 track.addEventListener('pointercancel', onPointerEnd);
+                track.addEventListener('click', function (event) {
+                    if (!suppressNextClick) return;
+
+                    event.preventDefault();
+                    event.stopPropagation();
+                    suppressNextClick = false;
+                }, true);
 
                 window.addEventListener('resize', function () {
                     track.style.transition = 'none';

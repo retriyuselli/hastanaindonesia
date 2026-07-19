@@ -4,7 +4,7 @@
 @section('description', 'Daftar region HASTANA Indonesia yang telah terdaftar.')
 
 @section('content')
-    <div class="pt-28 pb-16 bg-gray-50 min-h-screen">
+    <div class="pt-8 pb-16 bg-gray-50 min-h-screen">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
                 <div>

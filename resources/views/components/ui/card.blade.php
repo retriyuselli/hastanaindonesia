@@ -11,7 +11,7 @@
     'showReadMore' => true
 ])
 
-<article class="bg-white rounded-2xl shadow-lg overflow-hidden transition-all duration-300 {{ $hover ? 'hover:shadow-2xl hover:-translate-y-2' : '' }} {{ $featured ? 'ring-2 ring-hastana-blue' : '' }}">
+<article class="relative bg-white rounded-2xl shadow-lg overflow-hidden transition-all duration-300 {{ $hover ? 'hover:shadow-2xl hover:-translate-y-2' : '' }} {{ $featured ? 'ring-2 ring-hastana-blue' : '' }}">
     
     @if($image)
     <!-- Image -->
@@ -35,7 +35,7 @@
         @endif
         
         <!-- Overlay on hover -->
-        <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300">
+        <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300">
             <div class="absolute bottom-4 left-4 right-4">
                 <div class="flex items-center justify-between text-white">
                     <span class="text-sm">
@@ -71,9 +71,15 @@
         @endif
         
         <!-- Title -->
-        <h3 class="text-xl font-bold text-gray-900 mb-3 line-clamp-2 hover:text-hastana-blue transition-colors">
-            <a href="{{ $url }}" class="stretched-link">{{ $title }}</a>
-        </h3>
+        @if(filled($title))
+            <h3 class="text-xl font-bold text-gray-900 mb-3 line-clamp-2 hover:text-hastana-blue transition-colors">
+                @if($url !== '#')
+                    <a href="{{ $url }}" class="stretched-link">{{ $title }}</a>
+                @else
+                    <span>{{ $title }}</span>
+                @endif
+            </h3>
+        @endif
         
         <!-- Description -->
         @if($description)
@@ -86,7 +92,7 @@
         {{ $slot }}
         
         <!-- Read More Link -->
-        @if($showReadMore)
+        @if($showReadMore && $url !== '#')
         <div class="flex items-center justify-between pt-4 border-t border-gray-100">
             <a href="{{ $url }}" class="text-hastana-blue font-medium text-sm hover:text-hastana-red transition-colors">
                 Selengkapnya
@@ -95,10 +101,10 @@
             
             <!-- Additional actions -->
             <div class="flex items-center space-x-2">
-                <button class="text-gray-400 hover:text-hastana-red transition-colors" title="Suka">
+                <button type="button" class="relative z-[2] text-gray-400 hover:text-hastana-red transition-colors" title="Suka">
                     <i class="fas fa-heart"></i>
                 </button>
-                <button class="text-gray-400 hover:text-hastana-blue transition-colors" title="Bagikan">
+                <button type="button" class="relative z-[2] text-gray-400 hover:text-hastana-blue transition-colors" title="Bagikan">
                     <i class="fas fa-share-alt"></i>
                 </button>
             </div>

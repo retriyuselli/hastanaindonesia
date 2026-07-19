@@ -53,7 +53,7 @@
 
 @section('content')
 
-<div class="min-h-screen bg-gray-50 pt-20">
+<div class="min-h-screen bg-gray-50">
     <!-- Breadcrumb -->
     <div class="bg-gray-50 py-4">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -93,9 +93,13 @@
                 <!-- Thumbnails -->
                 <div class="grid grid-cols-4 gap-3">
                     @foreach($product['images'] as $index => $image)
-                    <div class="thumbnail {{ $index === 0 ? 'active' : '' }} rounded-lg overflow-hidden" onclick="changeMainImage('{{ $image }}', this)">
+                    <button type="button"
+                            class="thumbnail {{ $index === 0 ? 'active' : '' }} rounded-lg overflow-hidden"
+                            data-product-thumbnail
+                            data-image="{{ $image }}"
+                            aria-label="Tampilkan gambar produk {{ $index + 1 }}">
                         <img src="{{ $image }}" alt="Thumbnail {{ $index + 1 }}" class="w-full aspect-square object-cover">
-                    </div>
+                    </button>
                     @endforeach
                 </div>
             </div>
@@ -154,7 +158,7 @@
                             [&_h1]:text-base [&_h1]:font-bold [&_h1]:mb-2 [&_h1]:text-gray-900
                             [&_h2]:text-sm [&_h2]:font-bold [&_h2]:mb-2 [&_h2]:text-gray-900
                             [&_h3]:text-xs [&_h3]:font-bold [&_h3]:mb-1 [&_h3]:text-gray-900">
-                            {!! $product['description'] !!}
+                            @sanitize($product['description'])
                         </div>
                     </div>
                     @endif
@@ -174,7 +178,7 @@
                     
                     <!-- CTA Buttons -->
                     <div class="flex flex-wrap justify-center gap-2">
-                        <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $member->phone ?? '') }}?text=Halo, saya tertarik dengan {{ $product['name'] }}" target="_blank" class="inline-block px-6 py-2.5 bg-hastana-red text-white text-sm font-bold rounded-lg hover:bg-red-700 transition-colors">
+                        <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $member->phone ?? '') }}?text={{ urlencode('Halo, saya tertarik dengan '.$product['name']) }}" target="_blank" rel="noopener noreferrer" class="inline-block px-6 py-2.5 bg-hastana-red text-white text-sm font-bold rounded-lg hover:bg-red-700 transition-colors">
                             <i class="fab fa-whatsapp mr-2"></i>Hubungi via WhatsApp
                         </a>
                         
@@ -261,15 +265,17 @@
 
 @push('scripts')
 <script>
-function changeMainImage(imageSrc, element) {
-    // Update main image
-    document.getElementById('main-product-image').src = imageSrc;
-    
-    // Update active thumbnail
-    document.querySelectorAll('.thumbnail').forEach(thumb => {
-        thumb.classList.remove('active');
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('[data-product-thumbnail]').forEach((thumbnail) => {
+        thumbnail.addEventListener('click', () => {
+            document.getElementById('main-product-image').src = thumbnail.dataset.image;
+
+            document.querySelectorAll('[data-product-thumbnail]').forEach((item) => {
+                item.classList.remove('active');
+            });
+            thumbnail.classList.add('active');
+        });
     });
-    element.classList.add('active');
-}
+});
 </script>
 @endpush

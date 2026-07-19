@@ -15,7 +15,6 @@ use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Schema;
-use Filament\Support\RawJs;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
@@ -487,6 +486,7 @@ class WeddingOrganizerForm
                                             ->label('Upload Dokumen Legal')
                                             ->disk('private')
                                             ->directory('wedding-organizer-documents')
+                                            ->preventFilePathTampering()
                                             ->acceptedFileTypes(['application/pdf', 'image/jpeg', 'image/png', 'image/webp'])
                                             ->maxSize(5120)
                                             ->multiple()
@@ -495,8 +495,9 @@ class WeddingOrganizerForm
 
                                         FileUpload::make('file_recom')
                                             ->label('Surat Rekomendasi (PDF)')
-                                            ->disk('public')
+                                            ->disk('private')
                                             ->directory('wedding-organizer-recom')
+                                            ->preventFilePathTampering()
                                             ->acceptedFileTypes(['application/pdf', 'image/jpeg', 'image/png', 'image/webp'])
                                             ->maxSize(5120)
                                             ->openable()

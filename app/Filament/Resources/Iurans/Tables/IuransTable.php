@@ -6,6 +6,7 @@ use Filament\Actions\Action;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Notifications\Notification;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
@@ -45,18 +46,18 @@ class IuransTable
                     ->label('Status')
                     ->badge()
                     ->formatStateUsing(fn ($state) => match ($state) {
-                        'unpaid'  => 'Belum Bayar',
+                        'unpaid' => 'Belum Bayar',
                         'pending' => 'Menunggu',
-                        'paid'    => 'Lunas',
+                        'paid' => 'Lunas',
                         'overdue' => 'Terlambat',
-                        default   => ucfirst($state),
+                        default => ucfirst($state),
                     })
                     ->color(fn ($state) => match ($state) {
-                        'unpaid'  => 'gray',
+                        'unpaid' => 'gray',
                         'pending' => 'warning',
-                        'paid'    => 'success',
+                        'paid' => 'success',
                         'overdue' => 'danger',
-                        default   => 'gray',
+                        default => 'gray',
                     }),
 
                 TextColumn::make('paid_at')
@@ -69,9 +70,9 @@ class IuransTable
                 SelectFilter::make('status')
                     ->label('Status')
                     ->options([
-                        'unpaid'  => 'Belum Bayar',
+                        'unpaid' => 'Belum Bayar',
                         'pending' => 'Menunggu',
-                        'paid'    => 'Lunas',
+                        'paid' => 'Lunas',
                         'overdue' => 'Terlambat',
                     ]),
 
@@ -88,7 +89,7 @@ class IuransTable
                     ->visible(fn ($record) => $record->status === 'pending')
                     ->action(function ($record) {
                         $record->markAsPaid(auth()->id());
-                        \Filament\Notifications\Notification::make()
+                        Notification::make()
                             ->title('Iuran dikonfirmasi lunas')
                             ->success()
                             ->send();
@@ -99,7 +100,7 @@ class IuransTable
             ->bulkActions([
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
-                ]),
+                ])->label('Aksi'),
             ])
             ->defaultSort('due_date', 'desc');
     }

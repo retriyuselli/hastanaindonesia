@@ -4,7 +4,14 @@
 @section('description', $member->description ?? 'Detail informasi wedding organizer ' . ($member->organizer_name ?? ''))
 
 @section('content')
-    <div class="pt-28 pb-16 bg-gray-50 min-h-screen">
+@php
+    $websiteUrl = \App\Support\SafeUrl::http($member->website);
+    $instagramLabel = trim(preg_replace('#^https?://(www\.)?instagram\.com/#i', '', (string) $member->instagram), "/ \t\n\r\0\x0B");
+    $instagramLabel = preg_replace('/[^A-Za-z0-9._]/', '', ltrim($instagramLabel, '@'));
+    $instagramHref = \App\Support\SafeUrl::http($member->instagram)
+        ?? (filled($instagramLabel) ? 'https://instagram.com/'.$instagramLabel : null);
+@endphp
+    <div class="pt-8 pb-16 bg-gray-50 min-h-screen">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between gap-4">
                 <div>
@@ -46,6 +53,13 @@
                 </div>
                 <div class="hidden sm:flex flex-col items-end gap-3">
                     @auth
+                        @if(auth()->id() === $member->user_id || auth()->user()->hasRole(config('filament-shield.super_admin.name', 'super_admin')))
+                            <a href="{{ route('products.manage', $member->slug) }}" class="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-gray-900 text-white text-sm font-semibold hover:bg-black transition">
+                                <i class="fas fa-box-open text-xs"></i>
+                                Edit Produk
+                            </a>
+                        @endif
+
                         @if(auth()->id() === $member->user_id)
                             <a href="{{ route('join') }}" class="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-hastana-red text-white text-sm font-semibold hover:bg-red-700 transition">
                                 <i class="fas fa-pen-to-square text-xs"></i>
@@ -187,27 +201,20 @@
                                 </div>
                             @endif
 
-                            @if($member->website)
+                            @if($websiteUrl)
                                 <div class="sm:col-span-2">
                                     <dt class="text-gray-500">Website</dt>
                                     <dd class="text-gray-900 mt-1">
-                                        <a href="{{ $member->website }}" target="_blank" rel="noopener" class="text-hastana-red hover:underline">{{ $member->website }}</a>
+                                        <a href="{{ $websiteUrl }}" target="_blank" rel="noopener noreferrer" class="text-hastana-red hover:underline">{{ $member->website }}</a>
                                     </dd>
                                 </div>
                             @endif
 
-                            @if($member->instagram)
-                                @php
-                                    $instagramLabel = trim(preg_replace('#^https?://(www\.)?instagram\.com/#', '', $member->instagram), "/ \t\n\r\0\x0B");
-                                    $instagramLabel = ltrim($instagramLabel, '@');
-                                    $instagramHref = str_starts_with($member->instagram, 'http://') || str_starts_with($member->instagram, 'https://')
-                                        ? $member->instagram
-                                        : ('https://instagram.com/' . $instagramLabel);
-                                @endphp
+                            @if($instagramHref)
                                 <div class="sm:col-span-2">
                                     <dt class="text-gray-500">Instagram</dt>
                                     <dd class="text-gray-900 mt-1">
-                                        <a href="{{ $instagramHref }}" target="_blank" rel="noopener" class="text-hastana-red hover:underline">{{ '@' . $instagramLabel }}</a>
+                                        <a href="{{ $instagramHref }}" target="_blank" rel="noopener noreferrer" class="text-hastana-red hover:underline">{{ '@' . $instagramLabel }}</a>
                                     </dd>
                                 </div>
                             @endif
@@ -344,8 +351,8 @@
                                     </div>
                                 </a>
                             @endif
-                            @if($member->website)
-                                <a href="{{ $member->website }}" target="_blank" rel="noopener" class="flex items-center gap-3 rounded-xl border border-gray-100 hover:border-gray-200 hover:shadow-sm transition-all p-4">
+                            @if($websiteUrl)
+                                <a href="{{ $websiteUrl }}" target="_blank" rel="noopener noreferrer" class="flex items-center gap-3 rounded-xl border border-gray-100 hover:border-gray-200 hover:shadow-sm transition-all p-4">
                                     <div class="w-10 h-10 rounded-lg bg-gray-100 text-gray-600 flex items-center justify-center">
                                         <i class="fas fa-globe"></i>
                                     </div>
@@ -355,14 +362,14 @@
                                     </div>
                                 </a>
                             @endif
-                            @if($member->instagram)
-                                <a href="{{ $instagramHref ?? ('https://instagram.com/' . ltrim($member->instagram, '@')) }}" target="_blank" rel="noopener" class="flex items-center gap-3 rounded-xl border border-gray-100 hover:border-gray-200 hover:shadow-sm transition-all p-4">
+                            @if($instagramHref)
+                                <a href="{{ $instagramHref }}" target="_blank" rel="noopener noreferrer" class="flex items-center gap-3 rounded-xl border border-gray-100 hover:border-gray-200 hover:shadow-sm transition-all p-4">
                                     <div class="w-10 h-10 rounded-lg bg-gray-100 text-hastana-red flex items-center justify-center">
                                         <i class="fab fa-instagram"></i>
                                     </div>
                                     <div class="min-w-0">
                                         <div class="text-xs text-gray-500">Instagram</div>
-                                        <div class="text-sm font-semibold text-gray-900 truncate">{{ '@' . ($instagramLabel ?? ltrim($member->instagram, '@')) }}</div>
+                                        <div class="text-sm font-semibold text-gray-900 truncate">{{ '@'.$instagramLabel }}</div>
                                     </div>
                                 </a>
                             @endif

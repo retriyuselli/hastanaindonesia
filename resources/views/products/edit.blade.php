@@ -4,7 +4,7 @@
 
 @section('content')
 <!-- Hero Section -->
-<section class="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-16 mt-20">
+<section class="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-16">
     <div class="container mx-auto px-4">
         <div class="max-w-4xl mx-auto">
             <h1 class="text-4xl font-bold mb-2">Edit Produk</h1>
@@ -112,7 +112,10 @@
                                                 </div>
                                             @endif
                                             <!-- Delete Button -->
-                                            <button type="button" onclick="deleteImage({{ $index }}, '{{ addslashes($image) }}')" class="absolute bottom-1 right-1 bg-red-600 hover:bg-red-700 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">
+                                            <button type="button"
+                                                    data-delete-image-index="{{ $index }}"
+                                                    aria-label="Hapus gambar produk {{ $index + 1 }}"
+                                                    class="absolute bottom-1 right-1 bg-red-600 hover:bg-red-700 text-white text-xs px-2 py-1 rounded transition-colors">
                                                 <i class="fas fa-trash text-[10px]"></i> Hapus
                                             </button>
                                             <input type="hidden" name="existing_images[]" value="{{ $image }}">
@@ -175,47 +178,46 @@
 </section>
 @endsection
 
-@push('styles')
-<!-- Quill CSS -->
-<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
-@endpush
-
 @push('scripts')
-<!-- Quill JS -->
-<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
 <script>
-    // Initialize Quill editor
-    var quill = new Quill('#editor', {
-        theme: 'snow',
-        modules: {
-            toolbar: [
-                [{ 'header': [1, 2, 3, false] }],
-                ['bold', 'italic', 'underline', 'strike'],
-                [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-                [{ 'align': [] }],
-                ['link'],
-                ['clean']
-            ]
-        },
-        placeholder: 'Tulis deskripsi produk di sini...'
-    });
+    document.addEventListener('DOMContentLoaded', function() {
+        const quill = new window.Quill('#editor', {
+            theme: 'snow',
+            modules: {
+                toolbar: [
+                    [{ 'header': [1, 2, 3, false] }],
+                    ['bold', 'italic', 'underline', 'strike'],
+                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                    [{ 'align': [] }],
+                    ['link'],
+                    ['clean']
+                ]
+            },
+            placeholder: 'Tulis deskripsi produk di sini...'
+        });
 
-    // Set initial content
-    var description = {!! json_encode(old('description', $product->description)) !!};
-    quill.root.innerHTML = description || '';
+        const description = {{ Illuminate\Support\Js::from(
+            app(\App\Support\RichTextSanitizer::class)->sanitize(old('description', $product->description))
+        ) }};
+        quill.root.innerHTML = description || '';
 
-    // Sync content to hidden textarea on text change
-    quill.on('text-change', function() {
-        document.getElementById('description').value = quill.root.innerHTML;
-    });
+        quill.on('text-change', function() {
+            document.getElementById('description').value = quill.root.innerHTML;
+        });
 
-    // Also update on form submit (backup)
-    document.querySelector('form').addEventListener('submit', function(e) {
-        document.getElementById('description').value = quill.root.innerHTML;
+        document.querySelector('form').addEventListener('submit', function() {
+            document.getElementById('description').value = quill.root.innerHTML;
+        });
+
+        document.querySelectorAll('[data-delete-image-index]').forEach((button) => {
+            button.addEventListener('click', () => {
+                deleteImage(Number(button.dataset.deleteImageIndex));
+            });
+        });
     });
 
     // Delete image function
-    function deleteImage(index, imagePath) {
+    function deleteImage(index) {
         if (!confirm('Yakin ingin menghapus gambar ini?')) {
             return;
         }

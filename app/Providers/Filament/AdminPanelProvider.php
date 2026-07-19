@@ -6,10 +6,12 @@ use App\Filament\Widgets\ActivityTrendChart;
 use App\Filament\Widgets\DashboardStatsOverview;
 use App\Filament\Widgets\LatestActivities;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
+use Filament\Auth\MultiFactor\App\AppAuthentication;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
+use Filament\Navigation\NavigationItem;
 use Filament\Pages\Dashboard;
 use Filament\Panel;
 use Filament\PanelProvider;
@@ -37,6 +39,10 @@ class AdminPanelProvider extends PanelProvider
             ->pages([
                 Dashboard::class,
             ])
+            ->profile()
+            ->multiFactorAuthentication([
+                AppAuthentication::make()->recoverable(),
+            ], isRequired: true)
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
                 DashboardStatsOverview::class,
@@ -54,6 +60,16 @@ class AdminPanelProvider extends PanelProvider
                 SubstituteBindings::class,
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
+            ])
+            ->navigationItems([
+                NavigationItem::make('Log Aplikasi')
+                    ->url(fn (): string => url(config('log-viewer.route_path')))
+                    ->icon('heroicon-o-document-magnifying-glass')
+                    ->group('Pengaturan')
+                    ->sort(110)
+                    ->visible(fn (): bool => auth()->user()?->hasRole(
+                        config('filament-shield.super_admin.name', 'super_admin'),
+                    ) === true),
             ])
             ->plugins([
                 FilamentShieldPlugin::make()

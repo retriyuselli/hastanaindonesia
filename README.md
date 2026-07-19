@@ -1,61 +1,121 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# HASTANA Indonesia
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Aplikasi web Himpunan Perusahaan Penata Acara Seluruh Indonesia. Dibangun dengan Laravel 12, Blade, Livewire, Filament, Tailwind CSS, dan Vite.
 
-## About Laravel
+## Persyaratan
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- PHP 8.2 atau lebih baru beserta ekstensi yang dibutuhkan Laravel
+- Composer
+- Node.js dan npm
+- MySQL
+- MAMP atau web server lokal lain
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Instalasi dengan MAMP
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+1. Pastikan proyek berada di `/Applications/MAMP/htdocs/hastanaindonesia`.
+2. Atur document root virtual host ke folder `public`, bukan root proyek.
+3. Buat database MySQL bernama `hastana_indonesia`.
+4. Jalankan:
 
-## Learning Laravel
+```bash
+composer install
+npm install
+cp .env.example .env
+php artisan key:generate
+php artisan migrate --seed
+php artisan storage:link
+npm run build
+```
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Sesuaikan koneksi database di `.env`. MAMP umumnya menggunakan port MySQL `8889`, tetapi instalasi tertentu memakai `3306`.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+```dotenv
+APP_URL=http://hastanaindonesia.test
+DB_HOST=127.0.0.1
+DB_PORT=8889
+DB_DATABASE=hastana_indonesia
+DB_USERNAME=root
+DB_PASSWORD=root
+```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Jika tidak menggunakan virtual host, sesuaikan `APP_URL` dengan URL MAMP yang digunakan.
 
-## Laravel Sponsors
+## Menjalankan saat development
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+Jalankan seluruh proses development:
 
-### Premium Partners
+```bash
+composer dev
+```
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+Atau gunakan Apache MAMP dan jalankan Vite secara terpisah:
 
-## Contributing
+```bash
+npm run dev
+php artisan queue:listen --tries=1
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Panel admin tersedia di `/admin`.
 
-## Code of Conduct
+Seeder membuat akun development, termasuk `superadmin@hastana.com` dan `admin@hastana.com`, dengan password awal `password123`. Jangan menjalankan seeder data contoh di production dan segera ganti seluruh password tersebut bila database digunakan bersama.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## Pengujian dan kualitas
 
-## Security Vulnerabilities
+```bash
+composer test
+npm run build
+./vendor/bin/pint --test
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## Persiapan production
 
-## License
+```bash
+composer install --no-dev --optimize-autoloader
+npm ci
+npm run build
+php artisan migrate --force
+php artisan storage:link
+php artisan optimize
+php artisan app:production-check
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Gunakan nilai berikut pada environment production:
+
+```dotenv
+APP_ENV=production
+APP_DEBUG=false
+LOG_LEVEL=warning
+```
+
+Pastikan queue worker aktif karena konfigurasi default menggunakan queue database. Contoh konfigurasi Supervisor:
+
+```ini
+[program:hastana-worker]
+command=/usr/bin/php /var/www/hastanaindonesia/artisan queue:work --sleep=3 --tries=3 --max-time=3600
+directory=/var/www/hastanaindonesia
+autostart=true
+autorestart=true
+stopasgroup=true
+killasgroup=true
+user=www-data
+redirect_stderr=true
+stdout_logfile=/var/log/supervisor/hastana-worker.log
+```
+
+Tambahkan scheduler Laravel ke cron:
+
+```cron
+* * * * * cd /var/www/hastanaindonesia && /usr/bin/php artisan schedule:run >> /dev/null 2>&1
+```
+
+Backup database dan file upload harus disimpan di lokasi terpisah dari document root. Contoh backup MySQL:
+
+```bash
+mysqldump --single-transaction --routines --triggers \
+  -h "$DB_HOST" -P "$DB_PORT" -u "$DB_USERNAME" -p \
+  "$DB_DATABASE" | gzip > "/secure-backups/hastana-$(date +%F-%H%M).sql.gz"
+```
+
+Jadwalkan backup otomatis, enkripsi bila disimpan di luar server, tetapkan masa retensi, dan lakukan uji restore secara berkala. Route demo dan debug hanya didaftarkan pada environment `local` atau `testing`.
+
+Jangan deploy `.env`, `storage_backup`, log, cache runtime, `node_modules`, atau `vendor` dari mesin development.

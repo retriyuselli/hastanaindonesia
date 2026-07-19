@@ -19,7 +19,7 @@ class IuranSettingResource extends Resource
 {
     protected static ?string $model = IuranSetting::class;
 
-    protected static string|UnitEnum|null $navigationGroup = 'Iuran';
+    protected static string|UnitEnum|null $navigationGroup = 'Organization';
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedCog6Tooth;
 
@@ -36,9 +36,9 @@ class IuranSettingResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index'  => ListIuranSettings::route('/'),
+            'index' => ListIuranSettings::route('/'),
             'create' => CreateIuranSetting::route('/create'),
-            'edit'   => EditIuranSetting::route('/{record}/edit'),
+            'edit' => EditIuranSetting::route('/{record}/edit'),
         ];
     }
 }

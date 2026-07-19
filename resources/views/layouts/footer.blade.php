@@ -17,7 +17,7 @@
                                 class="h-12 w-auto object-contain transition-transform duration-300 group-hover:scale-110">
                             <!-- Subtle glow effect on hover -->
                             <div
-                                class="absolute -inset-1 bg-gradient-to-r from-gray-900 to-red-600 rounded-full opacity-0 group-hover:opacity-20 blur transition-opacity duration-300">
+                                class="pointer-events-none absolute -inset-1 bg-gradient-to-r from-gray-900 to-red-600 rounded-full opacity-0 group-hover:opacity-20 blur transition-opacity duration-300">
                             </div>
                         </div>
 
@@ -41,7 +41,7 @@
                         class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center hover:bg-blue-700 transition-colors">
                         <i class="fab fa-facebook-f text-white text-xs"></i>
                     </a> --}}
-                    <a href="https://www.instagram.com/hastana_indonesia" target="_blank"
+                    <a href="https://www.instagram.com/hastana_indonesia" target="_blank" rel="noopener noreferrer"
                         class="w-8 h-8 bg-gray-800 rounded-full flex items-center justify-center hover:bg-hastana-red transition-colors">
                         <i class="fab fa-instagram text-white text-xs"></i>
                     </a>
@@ -144,13 +144,13 @@
 <!-- Floating WhatsApp Button -->
 <div class="fixed bottom-6 left-6 z-50">
     <a href="https://wa.me/628113130612?text=Halo%20Kak,%20saya%20ingin%20berkonsultasi%20tentang%20HASTANA%20INDONESIA"
-        target="_blank"
+        target="_blank" rel="noopener noreferrer"
         class="group bg-hastana-red hover:bg-red-700 text-white p-4 rounded-full shadow-2xl transition-all duration-300 hover:scale-110 flex items-center justify-center">
         <i class="fab fa-whatsapp text-2xl"></i>
 
         <!-- Tooltip -->
         <div
-            class="absolute left-full ml-3 bg-gray-800 text-white px-3 py-2 rounded-lg text-sm whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            class="pointer-events-none absolute left-full ml-3 bg-gray-800 text-white px-3 py-2 rounded-lg text-sm whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300">
             Chat via WhatsApp
             <div
                 class="absolute top-1/2 -left-1 transform -translate-y-1/2 w-0 h-0 border-r-4 border-r-gray-800 border-t-2 border-b-2 border-t-transparent border-b-transparent">
@@ -158,7 +158,7 @@
         </div>
 
         <!-- Pulse Animation -->
-        <div class="absolute inset-0 bg-hastana-red rounded-full animate-ping opacity-20"></div>
+        <div class="pointer-events-none absolute inset-0 bg-hastana-red rounded-full animate-ping opacity-20"></div>
     </a>
 </div>
 

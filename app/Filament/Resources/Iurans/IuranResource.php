@@ -19,7 +19,7 @@ class IuranResource extends Resource
 {
     protected static ?string $model = Iuran::class;
 
-    protected static string|UnitEnum|null $navigationGroup = 'Iuran';
+    protected static string|UnitEnum|null $navigationGroup = 'Organization';
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedBanknotes;
 
@@ -36,9 +36,9 @@ class IuranResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index'  => ListIurans::route('/'),
+            'index' => ListIurans::route('/'),
             'create' => CreateIuran::route('/create'),
-            'edit'   => EditIuran::route('/{record}/edit'),
+            'edit' => EditIuran::route('/{record}/edit'),
         ];
     }
 }

@@ -1,3 +1,8 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@theme {
+    --font-poppins: "Poppins", sans-serif;
+    --color-hastana-black: #1a1a1a;
+    --color-hastana-blue: #111827;
+    --color-hastana-red: #dc2626;
+}

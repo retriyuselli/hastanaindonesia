@@ -7,6 +7,7 @@ use App\Filament\Resources\HomeHeroImages\Pages\EditHomeHeroImage;
 use App\Filament\Resources\HomeHeroImages\Pages\ListHomeHeroImages;
 use App\Models\HomeHeroImage;
 use BackedEnum;
+use Closure;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
@@ -51,8 +52,15 @@ class HomeHeroImageResource extends Resource
                         FileUpload::make('image')
                             ->label('Image')
                             ->image()
+                            ->acceptedFileTypes([
+                                'image/jpeg',
+                                'image/png',
+                                'image/webp',
+                            ])
+                            ->rules(['dimensions:min_width=1200,min_height=400'])
                             ->disk('public')
                             ->directory('home-hero')
+                            ->preventFilePathTampering()
                             ->visibility('public')
                             ->imageEditor()
                             ->imageEditorAspectRatios([
@@ -75,7 +83,16 @@ class HomeHeroImageResource extends Resource
                         TextInput::make('link')
                             ->label('Link')
                             ->url()
+                            ->rules([
+                                static function (string $attribute, mixed $value, Closure $fail): void {
+                                    if (filled($value)
+                                        && (! is_string($value) || ! HomeHeroImage::isAllowedLink($value))) {
+                                        $fail('Link banner harus menggunakan host yang telah diizinkan.');
+                                    }
+                                },
+                            ])
                             ->maxLength(2048)
+                            ->helperText('Kosongkan jika banner tidak perlu diarahkan ke halaman lain.')
                             ->columnSpanFull(),
                         TextInput::make('sort_order')
                             ->label('Urutan')

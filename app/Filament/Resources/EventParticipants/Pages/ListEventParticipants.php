@@ -20,15 +20,24 @@ class ListEventParticipants extends ListRecords
                 ->icon('heroicon-o-document-text')
                 ->color('gray')
                 ->url(fn () => route('admin.files.event-participants.recap'))
+                ->visible(fn (): bool => $this->canAccessRecap())
                 ->openUrlInNewTab(),
             Action::make('downloadRecap')
                 ->label('Download Rekapan')
                 ->icon('heroicon-o-arrow-down-tray')
                 ->color('warning')
-                ->url(fn () => route('admin.files.event-participants.recap') . '?download=1')
-                ->openUrlInNewTab(),
+                ->url(fn () => route('admin.files.event-participants.recap', ['download' => 1]))
+                ->visible(fn (): bool => $this->canAccessRecap()),
             CreateAction::make(),
         ];
+    }
+
+    private function canAccessRecap(): bool
+    {
+        return auth()->user()?->hasAnyRole([
+            'admin',
+            config('filament-shield.super_admin.name', 'super_admin'),
+        ]) === true;
     }
 
     protected function getHeaderWidgets(): array

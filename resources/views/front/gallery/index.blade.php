@@ -30,6 +30,7 @@
     .gallery-overlay {
         position: absolute;
         inset: 0;
+        pointer-events: none;
         background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
         opacity: 0;
         transition: opacity 0.3s ease;
@@ -289,7 +290,7 @@
 
 @section('content')
 <!-- Hero Section -->
-<section class="relative bg-gradient-to-br from-gray-900 via-gray-800 to-red-900 text-white py-20 overflow-hidden mt-20">
+<section class="relative bg-gradient-to-br from-gray-900 via-gray-800 to-red-900 text-white py-20 overflow-hidden">
     <div class="absolute inset-0 opacity-10">
         <div class="absolute inset-0" style="background-image: url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 1200 600%22><defs><pattern id=%22wedding-pattern%22 x=%220%22 y=%220%22 width=%22100%22 height=%22100%22 patternUnits=%22userSpaceOnUse%22><circle cx=%2250%22 cy=%2250%22 r=%2220%22 fill=%22none%22 stroke=%22rgba(255,255,255,0.1)%22 stroke-width=%221%22/><circle cx=%2250%22 cy=%2250%22 r=%2210%22 fill=%22none%22 stroke=%22rgba(255,255,255,0.05)%22 stroke-width=%221%22/></pattern></defs><rect width=%22100%25%22 height=%22100%25%22 fill=%22url(%23wedding-pattern)%22/></svg>'); background-size: 100px 100px;"></div>
     </div>
@@ -327,22 +328,22 @@
                     </span>
                 </button>
                 <div class="filter-dropdown-content">
-                    <div class="filter-dropdown-item active" data-category="all" onclick="selectCategory('all', 'Semua Kategori', {{ count($galleries) }})">
+                    <button type="button" class="filter-dropdown-item active" data-gallery-filter data-category="all" data-category-label="Semua Kategori" data-count="{{ count($galleries) }}">
                         <span class="flex items-center gap-2">
                             <i class="fas fa-th text-sm"></i>
                             <span>Semua Kategori</span>
                         </span>
                         <span class="count">{{ count($galleries) }}</span>
-                    </div>
+                    </button>
                     @foreach($categories as $category => $count)
                         @if($category !== 'Semua')
-                        <div class="filter-dropdown-item" data-category="{{ strtolower(str_replace(' ', '-', $category)) }}" onclick="selectCategory('{{ strtolower(str_replace(' ', '-', $category)) }}', '{{ $category }}', {{ $count }})">
+                        <button type="button" class="filter-dropdown-item" data-gallery-filter data-category="{{ strtolower(str_replace(' ', '-', $category)) }}" data-category-label="{{ $category }}" data-count="{{ $count }}">
                             <span class="flex items-center gap-2">
                                 <i class="fas fa-tag text-sm"></i>
                                 <span>{{ $category }}</span>
                             </span>
                             <span class="count">{{ $count }}</span>
-                        </div>
+                        </button>
                         @endif
                     @endforeach
                 </div>
@@ -362,7 +363,7 @@
                          alt="{{ $gallery['title'] }}" 
                          class="w-full h-full object-cover"
                          loading="lazy"
-                         onerror="this.onerror=null; this.src='https://via.placeholder.com/800x800/e5e7eb/6b7280?text=No+Image';">
+                         onerror="this.onerror=null; this.src='{{ asset('images/default-event.svg') }}';">
                 </div>
                 <div class="gallery-overlay">
                     <div class="text-white">
@@ -467,7 +468,7 @@
     });
 
     // Select Category from Dropdown
-    function selectCategory(category, categoryName, count) {
+    function selectCategory(category, categoryName, count, activeItem) {
         // Update button text
         document.getElementById('selected-category').textContent = categoryName;
         document.getElementById('selected-count').textContent = `(${count})`;
@@ -476,7 +477,7 @@
         document.querySelectorAll('.filter-dropdown-item').forEach(item => {
             item.classList.remove('active');
         });
-        event.target.closest('.filter-dropdown-item').classList.add('active');
+        activeItem.classList.add('active');
         
         // Close dropdown
         document.getElementById('filterDropdown').classList.remove('active');
@@ -484,6 +485,17 @@
         // Filter gallery
         filterGallery(category);
     }
+
+    document.querySelectorAll('[data-gallery-filter]').forEach((button) => {
+        button.addEventListener('click', () => {
+            selectCategory(
+                button.dataset.category,
+                button.dataset.categoryLabel,
+                Number(button.dataset.count),
+                button,
+            );
+        });
+    });
 
     // Filter Gallery
     function filterGallery(category) {

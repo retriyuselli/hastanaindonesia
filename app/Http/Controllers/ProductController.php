@@ -5,12 +5,26 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Models\User;
 use App\Models\WeddingOrganizer;
+use App\Support\RichTextSanitizer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
+    public function redirectToManage()
+    {
+        $weddingOrganizer = WeddingOrganizer::where('user_id', Auth::id())->first();
+
+        if (! $weddingOrganizer) {
+            return redirect()
+                ->route('join')
+                ->with('error', 'Anda belum memiliki Wedding Organizer. Silakan daftar terlebih dahulu.');
+        }
+
+        return redirect()->route('products.manage', $weddingOrganizer->slug);
+    }
+
     protected function canManageWeddingOrganizerProducts(WeddingOrganizer $weddingOrganizer): bool
     {
         if ($weddingOrganizer->user_id === Auth::id()) {
@@ -100,6 +114,9 @@ class ProductController extends Controller
             ));
         }
 
+        $validated['description'] = app(RichTextSanitizer::class)
+            ->sanitize($validated['description'] ?? null);
+
         // Handle multiple images upload
         if ($request->hasFile('images')) {
             $imagePaths = [];
@@ -162,6 +179,7 @@ class ProductController extends Controller
             'badges' => 'nullable|string',
             'images.*' => 'nullable|image|mimes:jpeg,jpg,png,webp|max:2048',
             'existing_images' => 'nullable|array',
+            'existing_images.*' => 'string|max:2048',
             'is_active' => 'boolean',
         ], [
             'price.lte' => 'Harga jual tidak boleh lebih besar dari harga asli.',
@@ -181,13 +199,26 @@ class ProductController extends Controller
             $validated['features'] = [];
         }
 
-        // Handle images: keep existing + add new
-        $finalImages = [];
+        $validated['description'] = app(RichTextSanitizer::class)
+            ->sanitize($validated['description'] ?? null);
 
-        // Keep existing images that weren't deleted
-        if ($request->has('existing_images')) {
-            $finalImages = $request->existing_images;
+        // Handle images: keep existing + add new
+        $currentImages = collect($product->images ?? [])
+            ->filter(fn (mixed $image): bool => is_string($image))
+            ->values();
+        $requestedExistingImages = collect($validated['existing_images'] ?? [])
+            ->filter(fn (mixed $image): bool => is_string($image))
+            ->unique()
+            ->values();
+
+        if ($requestedExistingImages->diff($currentImages)->isNotEmpty()) {
+            return back()
+                ->withErrors(['existing_images' => 'Daftar gambar produk tidak valid.'])
+                ->withInput();
         }
+
+        $finalImages = $currentImages->intersect($requestedExistingImages)->values()->all();
+        unset($validated['existing_images']);
 
         // Add new uploaded images
         if ($request->hasFile('images')) {

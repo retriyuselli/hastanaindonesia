@@ -39,17 +39,26 @@ class PrivateFileController extends Controller
         $filename = basename($path);
 
         if (Storage::disk('private')->exists($path)) {
-            return response()->file(Storage::disk('private')->path($path), [
-                'Content-Disposition' => 'inline; filename="'.$filename.'"',
-            ]);
+            return $this->fileResponse(Storage::disk('private')->path($path), $filename);
         }
 
         if (Storage::disk('public')->exists($path)) {
-            return response()->file(Storage::disk('public')->path($path), [
-                'Content-Disposition' => 'inline; filename="'.$filename.'"',
-            ]);
+            return $this->fileResponse(Storage::disk('public')->path($path), $filename);
         }
 
         abort(404);
+    }
+
+    private function fileResponse(string $path, string $filename): BinaryFileResponse
+    {
+        $response = response()->file($path, [
+            'Content-Disposition' => 'inline; filename="'.$filename.'"',
+            'X-Content-Type-Options' => 'nosniff',
+        ]);
+        $response->setPrivate();
+        $response->setMaxAge(0);
+        $response->headers->addCacheControlDirective('no-store');
+
+        return $response;
     }
 }

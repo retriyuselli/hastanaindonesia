@@ -18,5 +18,11 @@
         "postcss": "^8.4.31",
         "tailwindcss": "^4.1.16",
         "vite": "^7.0.4"
+    },
+    "dependencies": {
+        "@fontsource/poppins": "^5.3.0",
+        "@fortawesome/fontawesome-free": "^7.3.1",
+        "qrcodejs": "^1.0.0",
+        "quill": "^2.0.2"
     }
 }

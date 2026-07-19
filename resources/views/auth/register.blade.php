@@ -367,24 +367,25 @@
 
                             <!-- Terms & Conditions -->
                             <div class="mb-6">
-                                <label class="flex items-start cursor-pointer">
+                                <div class="flex items-start">
                                     <input 
+                                        id="terms_acknowledgement"
                                         type="checkbox" 
                                         class="mt-1 h-5 w-5 text-red-600 border-gray-300 rounded focus:ring-red-500" 
                                         required
                                     >
                                     <span class="ml-3 text-sm text-gray-600">
-                                        Saya menyetujui 
-                                        <a href="{{ route('terms') }}" target="_blank" class="text-red-600 hover:text-red-800 font-semibold">
+                                        <label for="terms_acknowledgement" class="cursor-pointer">Saya menyetujui</label>
+                                        <a href="{{ route('terms') }}" target="_blank" rel="noopener noreferrer" class="text-red-600 hover:text-red-800 font-semibold">
                                             Syarat dan Ketentuan
                                         </a> 
                                         serta 
-                                        <a href="{{ route('privacy') }}" target="_blank" class="text-red-600 hover:text-red-800 font-semibold">
+                                        <a href="{{ route('privacy') }}" target="_blank" rel="noopener noreferrer" class="text-red-600 hover:text-red-800 font-semibold">
                                             Kebijakan Privasi
                                         </a> 
                                         HASTANA Indonesia
                                     </span>
-                                </label>
+                                </div>
                             </div>
 
                             <!-- Submit Button -->

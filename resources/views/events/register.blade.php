@@ -4,7 +4,7 @@
 
 @section('content')
 <!-- Hero Section -->
-<section class="bg-gradient-to-r from-gray-900 to-black text-white py-12 mt-20">
+<section class="bg-gradient-to-r from-gray-900 to-black text-white py-12">
     <div class="container mx-auto px-4">
         <div class="max-w-3xl mx-auto text-center">
             <h1 class="text-3xl md:text-4xl font-bold mb-2">Daftar Event</h1>
@@ -34,22 +34,6 @@
 
                         <form action="{{ route('events.register.store', $event->slug) }}" method="POST" enctype="multipart/form-data">
                             @csrf
-
-                            @php
-                                // Cek apakah user sudah terdaftar di event ini (di awal form)
-                                $isAlreadyRegistered = false;
-                                $registeredData = null;
-                                if (auth()->check()) {
-                                    $registeredData = \App\Models\EventParticipant::where('event_hastana_id', $event->id)
-                                        ->where(function($query) {
-                                            $query->where('user_id', auth()->id())
-                                                  ->orWhere('email', auth()->user()->email);
-                                        })
-                                        ->whereIn('status', ['pending', 'confirmed', 'attended'])
-                                        ->first();
-                                    $isAlreadyRegistered = $registeredData !== null;
-                                }
-                            @endphp
 
                             @if($isAlreadyRegistered)
                                 <div class="bg-gray-50 border border-gray-200 text-gray-800 px-4 py-3 rounded-lg mb-6">
@@ -125,38 +109,6 @@
                                     <i class="fas fa-briefcase text-hastana-red"></i>
                                     Data Pekerjaan (Opsional)
                                 </h3>
-
-                                @php
-                                    // Ambil data profesional dari pendaftaran event terakhir user
-                                    $lastParticipant = null;
-                                    $defaultCompany = '';
-                                    $defaultPosition = '';
-                                    
-                                    if (auth()->check()) {
-                                        if ($isAlreadyRegistered && $registeredData) {
-                                            // Jika sudah terdaftar, gunakan data dari registrasi ini
-                                            $defaultCompany = $registeredData->company;
-                                            $defaultPosition = $registeredData->position;
-                                        } else {
-                                            // Jika belum terdaftar, cari dari pendaftaran event lain
-                                            $lastParticipant = \App\Models\EventParticipant::where(function($query) {
-                                                    $query->where('user_id', auth()->id())
-                                                          ->orWhere('email', auth()->user()->email);
-                                                })
-                                                ->where(function($query) {
-                                                    $query->whereNotNull('company')
-                                                          ->orWhereNotNull('position');
-                                                })
-                                                ->orderBy('created_at', 'desc')
-                                                ->first();
-                                            
-                                            if ($lastParticipant) {
-                                                $defaultCompany = $lastParticipant->company;
-                                                $defaultPosition = $lastParticipant->position;
-                                            }
-                                        }
-                                    }
-                                @endphp
 
                                 <!-- Company -->
                                 <div class="mb-4">
@@ -403,7 +355,7 @@
                                             <span class="text-sm text-gray-600">Metode Pembayaran: </span>
                                             <span class="font-semibold">{{ strtoupper($registeredData->payment_method ?? '-') }}</span>
                                         </div>
-                                        <img src="{{ Storage::url($registeredData->payment_proof) }}"
+                                        <img src="{{ route('files.event-participants.payment-proof', $registeredData) }}"
                                              alt="Bukti Pembayaran"
                                              class="max-w-full h-auto rounded-lg border border-gray-300 max-h-64">
                                     </div>
@@ -419,8 +371,8 @@
                                            {{ $isAlreadyRegistered ? 'checked disabled' : 'required' }}
                                            class="mt-1 w-5 h-5 text-hastana-red border-gray-300 rounded focus:ring-2 focus:ring-hastana-red">
                                     <span class="text-sm text-gray-700">
-                                        Saya menyetujui <a href="{{ route('terms') }}" target="_blank" class="text-hastana-red hover:underline">syarat dan ketentuan</a> 
-                                        serta <a href="{{ route('privacy') }}" target="_blank" class="text-hastana-red hover:underline">kebijakan privasi</a> 
+                                        Saya menyetujui <a href="{{ route('terms') }}" target="_blank" rel="noopener noreferrer" class="text-hastana-red hover:underline">syarat dan ketentuan</a> 
+                                        serta <a href="{{ route('privacy') }}" target="_blank" rel="noopener noreferrer" class="text-hastana-red hover:underline">kebijakan privasi</a> 
                                         yang berlaku. <span class="text-red-500">*</span>
                                     </span>
                                 </label>

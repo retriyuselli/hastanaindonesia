@@ -295,7 +295,7 @@
         margin-bottom: 24px;
     }
 </style>
-<div class="min-h-screen bg-gray-50 pt-20">
+<div class="min-h-screen bg-gray-50">
     <div class="container mx-auto px-4 py-8">
         <div class="max-w-7xl mx-auto">
             
@@ -338,6 +338,7 @@
                 @can('update', $blog)
                     <a href="{{ route('filament.admin.resources.blogs.edit', ['record' => $blog]) }}"
                         target="_blank"
+                        rel="noopener noreferrer"
                         class="inline-flex items-center gap-2 rounded-lg bg-hastana-red px-3 py-1.5 font-medium text-white transition-colors hover:bg-red-700">
                         <i class="fas fa-pen"></i>
                         Edit
@@ -436,7 +437,7 @@
 
                     <!-- Content -->
                     <div class="blog-content">
-                        {!! $blog->content !!}
+                        @sanitize($blog->content)
                     </div>
 
                     <!-- Tags -->
@@ -462,7 +463,7 @@
                     <h2 class="text-xl font-bold text-gray-900 flex items-center gap-2">
                         <i class="fas fa-comments text-hastana-red"></i>
                         Komentar
-                        <span class="text-sm font-normal text-gray-500">({{ $blog->comments()->where('is_approved', true)->count() }})</span>
+                        <span class="text-sm font-normal text-gray-500">({{ $blog->comments_count }})</span>
                     </h2>
                 </div>
 
@@ -530,7 +531,7 @@
 
                 <!-- Comments List -->
                 <div class="space-y-4">
-                    @forelse($blog->comments()->where('is_approved', true)->whereNull('parent_id')->orderBy('created_at', 'desc')->get() as $comment)
+                    @forelse($comments as $comment)
                     <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition">
                         <div class="flex items-start gap-3">
                             <!-- Avatar -->
@@ -609,13 +610,13 @@
                     </div>
                     <p class="text-xs text-gray-600 text-center mb-4">Penulis artikel informatif seputar pernikahan dan event organizing</p>
                     <div class="flex justify-center gap-3">
-                        <a href="#" class="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center text-hastana-red hover:bg-gray-200 transition">
+                        <a href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode(request()->fullUrl()) }}" target="_blank" rel="noopener noreferrer" aria-label="Bagikan ke Facebook" class="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center text-hastana-red hover:bg-gray-200 transition">
                             <i class="fab fa-facebook-f text-sm"></i>
                         </a>
-                        <a href="#" class="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center text-hastana-red hover:bg-gray-200 transition">
+                        <a href="https://twitter.com/intent/tweet?url={{ urlencode(request()->fullUrl()) }}" target="_blank" rel="noopener noreferrer" aria-label="Bagikan ke X" class="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center text-hastana-red hover:bg-gray-200 transition">
                             <i class="fab fa-twitter text-sm"></i>
                         </a>
-                        <a href="#" class="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center text-hastana-red hover:bg-gray-200 transition">
+                        <a href="https://www.linkedin.com/sharing/share-offsite/?url={{ urlencode(request()->fullUrl()) }}" target="_blank" rel="noopener noreferrer" aria-label="Bagikan ke LinkedIn" class="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center text-hastana-red hover:bg-gray-200 transition">
                             <i class="fab fa-linkedin-in text-sm"></i>
                         </a>
                     </div>
@@ -627,13 +628,6 @@
                         <i class="fas fa-fire text-hastana-red"></i>
                         Artikel Populer
                     </h3>
-                    @php
-                        $popularBlogs = \App\Models\Blog::where('is_published', true)
-                            ->where('id', '!=', $blog->id)
-                            ->orderBy('views_count', 'desc')
-                            ->take(5)
-                            ->get();
-                    @endphp
                     <div class="space-y-4">
                         @foreach($popularBlogs as $index => $popularBlog)
                         <a href="{{ route('blog.detail', $popularBlog->slug) }}" class="flex gap-3 group hover:bg-gray-50 p-2 rounded-lg transition">
@@ -662,17 +656,6 @@
                         <i class="fas fa-folder text-hastana-red"></i>
                         Kategori
                     </h3>
-                    @php
-                        $categories = \App\Models\BlogCategory::withCount([
-                            'blogs' => function($query) {
-                                $query->where('is_published', true);
-                            }
-                        ])
-                        ->has('blogs')
-                        ->orderBy('blogs_count', 'desc')
-                        ->take(8)
-                        ->get();
-                    @endphp
                     <div class="space-y-2">
                         @foreach($categories as $category)
                         <a href="{{ route('blog') }}?category={{ $category->slug }}" class="flex items-center justify-between p-2 rounded-lg hover:bg-gray-50 transition group">

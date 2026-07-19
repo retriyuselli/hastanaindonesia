@@ -3,7 +3,7 @@
 @section('title', 'Dashboard - HASTANA Indonesia')
 
 @section('content')
-<section class="py-10 bg-gray-50 mt-20">
+<section class="py-10 bg-gray-50">
     <div class="container mx-auto px-4">
         <div class="max-w-7xl mx-auto">
             <div class="flex flex-col lg:flex-row gap-8">
@@ -234,6 +234,7 @@
                         @forelse($myEvents as $participant)
                             @php
                                 $event = $participant->eventHastana;
+                                $onlineUrl = \App\Support\SafeUrl::http($event->online_link, httpsOnly: true);
                                 $statusColors = [
                                     'pending' => 'bg-yellow-100 text-yellow-800',
                                     'confirmed' => 'bg-green-100 text-green-800',
@@ -251,9 +252,9 @@
                             <div class="border border-gray-200 rounded-lg p-4 hover:border-red-300 transition duration-200 mb-4">
                                 <div class="flex flex-col md:flex-row md:items-center gap-4">
                                     <div class="flex-shrink-0">
-                                        <img src="{{ $event->image_url ?? asset('images/default-event.png') }}"
+                                        <img src="{{ $event->image_url ?? asset('images/default-event.svg') }}"
                                             alt="{{ $event->title }}"
-                                            onerror="this.src='https://via.placeholder.com/300x200?text=No+Image'"
+                                            onerror="this.onerror=null; this.src='{{ asset('images/default-event.svg') }}'"
                                             class="w-full md:w-32 h-32 object-cover rounded-lg">
                                     </div>
 
@@ -293,16 +294,23 @@
 
                                             @if($participant->status === 'confirmed' && $event->start_date >= now())
                                                 @if($event->location_type === 'offline' || $event->location_type === 'hybrid')
-                                                    <button onclick="openTicketModal('{{ $participant->registration_code }}', '{{ $event->title }}', '{{ $event->formatted_date }}', '{{ $event->location }}', '{{ $participant->name }}', '{{ $participant->email }}')"
+                                                    <button type="button"
+                                                        data-ticket-trigger
+                                                        data-registration-code="{{ $participant->registration_code }}"
+                                                        data-event-title="{{ $event->title }}"
+                                                        data-event-date="{{ $event->formatted_date }}"
+                                                        data-event-location="{{ $event->location }}"
+                                                        data-participant-name="{{ $participant->name }}"
+                                                        data-participant-email="{{ $participant->email }}"
                                                         class="inline-flex items-center px-4 py-2 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 transition duration-200">
                                                         <i class="fas fa-ticket-alt mr-2"></i>
                                                         E-Ticket
                                                     </button>
                                                 @endif
 
-                                                @if($event->location_type === 'online' || ($event->location_type === 'hybrid' && $event->online_link))
-                                                    @if($event->online_link && $event->online_link !== '' && $event->online_link !== 'coming soon')
-                                                        <a href="{{ $event->online_link }}" target="_blank"
+                                                @if($event->location_type === 'online' || $event->location_type === 'hybrid')
+                                                    @if($onlineUrl)
+                                                        <a href="{{ $onlineUrl }}" target="_blank" rel="noopener noreferrer"
                                                             class="inline-flex items-center px-4 py-2 bg-purple-600 text-white text-sm font-medium rounded-lg hover:bg-purple-700 transition duration-200">
                                                             <i class="fas fa-video mr-2"></i>
                                                             Join Online
@@ -338,8 +346,10 @@
                                             @endif
 
                                             @if($participant->payment_proof)
-                                                <button class="inline-flex items-center px-4 py-2 bg-gray-700 text-white text-sm font-medium rounded-lg hover:bg-gray-800 transition duration-200"
-                                                    onclick="openPaymentProofModal('{{ route('files.event-participants.payment-proof', $participant) }}')">
+                                                <button type="button"
+                                                    data-payment-proof-trigger
+                                                    data-payment-proof-url="{{ route('files.event-participants.payment-proof', $participant) }}"
+                                                    class="inline-flex items-center px-4 py-2 bg-gray-700 text-white text-sm font-medium rounded-lg hover:bg-gray-800 transition duration-200">
                                                     <i class="fas fa-receipt mr-2"></i>
                                                     Lihat Bukti Pembayaran
                                                 </button>

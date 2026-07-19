@@ -27,7 +27,7 @@
             
             <div class="prose prose-base max-w-none text-gray-700 leading-relaxed">
                 @if($about && $about->history)
-                    {!! $about->history !!}
+                    @sanitize($about->history)
                 @else
                     <p class="text-base mb-6">
                         <strong>Himpunan Perusahaan Penata Acara Seluruh Indonesia (HASTANA)</strong> didirikan pada tahun 2010 sebagai respons terhadap kebutuhan akan standarisasi dan profesionalisme dalam industri wedding organizer di Indonesia.
@@ -75,7 +75,7 @@
                     </div>
                     @if($about && $about->mission)
                         <div class="text-gray-700 leading-relaxed text-center">
-                            {!! $about->mission !!}
+                            @sanitize($about->mission)
                         </div>
                     @else
                         <ul class="text-gray-700 leading-relaxed space-y-3">

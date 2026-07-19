@@ -12,7 +12,7 @@
                     <p class="text-sm text-gray-500">Tiket Digital Anda</p>
                 </div>
             </div>
-            <button onclick="closeTicketModal()" class="text-gray-400 hover:text-gray-600 transition">
+            <button type="button" onclick="closeTicketModal()" aria-label="Tutup modal tiket" class="text-gray-400 hover:text-gray-600 transition">
                 <i class="fas fa-times text-2xl"></i>
             </button>
         </div>
@@ -91,7 +91,7 @@
         
         <!-- Modal Footer -->
         <div class="flex flex-col sm:flex-row gap-3 pt-6 border-t border-gray-200 mt-6">
-            <a id="ticket-download-link" href="" target="_blank"
+            <a id="ticket-download-link" href="" target="_blank" rel="noopener noreferrer"
                class="flex-1 inline-flex items-center justify-center px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors">
                 <i class="fas fa-download mr-2"></i>
                 Download E-Ticket (PDF)
@@ -108,9 +108,6 @@
         </div>
     </div>
 </div>
-
-<!-- QR Code Library -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
 <script>
 function openTicketModal(registrationCode, eventTitle, eventDate, eventLocation, participantName, participantEmail) {
@@ -131,19 +128,32 @@ function openTicketModal(registrationCode, eventTitle, eventDate, eventLocation,
     document.getElementById('ticket-qrcode').innerHTML = '';
     
     // Generate QR Code
-    new QRCode(document.getElementById('ticket-qrcode'), {
+    new window.QRCode(document.getElementById('ticket-qrcode'), {
         text: registrationCode,
         width: 200,
         height: 200,
         colorDark: '#1e40af',
         colorLight: '#ffffff',
-        correctLevel: QRCode.CorrectLevel.H
+        correctLevel: window.QRCode.CorrectLevel.H
     });
     
     // Show modal
     document.getElementById('ticketModal').classList.remove('hidden');
     document.body.style.overflow = 'hidden';
 }
+
+document.querySelectorAll('[data-ticket-trigger]').forEach((button) => {
+    button.addEventListener('click', () => {
+        openTicketModal(
+            button.dataset.registrationCode,
+            button.dataset.eventTitle,
+            button.dataset.eventDate,
+            button.dataset.eventLocation,
+            button.dataset.participantName,
+            button.dataset.participantEmail,
+        );
+    });
+});
 
 function closeTicketModal() {
     document.getElementById('ticketModal').classList.add('hidden');

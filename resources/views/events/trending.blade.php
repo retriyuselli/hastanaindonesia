@@ -4,7 +4,7 @@
 
 @section('content')
 <!-- Hero Section -->
-<section class="bg-gradient-to-r from-gray-900 to-black text-white py-16 mt-20">
+<section class="bg-gradient-to-r from-gray-900 to-black text-white py-16">
     <div class="container mx-auto px-4">
         <div class="max-w-3xl mx-auto text-center">
             <h1 class="text-3xl md:text-4xl font-bold mb-4">
@@ -44,15 +44,6 @@
             <div>
                 <select name="city" class="w-full px-4 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-hastana-red focus:border-transparent">
                     <option value="">Semua Kota</option>
-                    @php
-                        $cities = \App\Models\EventHastana::where('is_trending', true)
-                            ->where('status', 'published')
-                            ->where('is_active', true)
-                            ->distinct()
-                            ->pluck('city')
-                            ->filter()
-                            ->sort();
-                    @endphp
                     @foreach($cities as $city)
                         <option value="{{ $city }}" {{ request('city') == $city ? 'selected' : '' }}>
                             {{ $city }}
@@ -269,15 +260,6 @@
             <!-- Sidebar -->
             <div class="lg:w-1/4">
                 <!-- Top 5 Most Popular -->
-                @php
-                    $topTrendingEvents = \App\Models\EventHastana::where('is_trending', true)
-                        ->where('status', 'published')
-                        ->where('is_active', true)
-                        ->where('start_date', '>=', now())
-                        ->orderBy('current_participants', 'desc')
-                        ->take(5)
-                        ->get();
-                @endphp
                 @if($topTrendingEvents->count() > 0)
                     <div class="bg-white rounded-lg shadow-md p-5 mb-5">
                         <h3 class="text-lg font-bold text-gray-800 mb-3 flex items-center">
@@ -323,20 +305,6 @@
                 @endif
 
                 <!-- Fast Selling Events -->
-                @php
-                    $fastSellingEvents = \App\Models\EventHastana::where('is_trending', true)
-                        ->where('status', 'published')
-                        ->where('is_active', true)
-                        ->where('start_date', '>=', now())
-                        ->whereNotNull('max_participants')
-                        ->where('max_participants', '>', 0)
-                        ->get()
-                        ->filter(function($event) {
-                            return $event->capacity_percentage >= 70;
-                        })
-                        ->sortByDesc('capacity_percentage')
-                        ->take(5);
-                @endphp
                 @if($fastSellingEvents->count() > 0)
                     <div class="bg-white rounded-lg shadow-md p-5">
                         <h3 class="text-lg font-bold text-gray-800 mb-3 flex items-center">

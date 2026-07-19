@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\User;
+use Illuminate\Support\Facades\Storage;
 
 class Company extends Model
 {
@@ -69,6 +69,21 @@ class Company extends Model
         'legal_verified_at' => 'datetime',
         'legal_documents' => 'array',
     ];
+
+    public function getPublicLogoUrlAttribute(): ?string
+    {
+        $path = ltrim((string) $this->logo_url, '/');
+        $extension = strtolower(pathinfo($path, PATHINFO_EXTENSION));
+
+        if (! str_starts_with($path, 'company-logos/')
+            || str_contains($path, '..')
+            || ! in_array($extension, ['jpg', 'jpeg', 'png', 'webp'], true)
+            || ! Storage::disk('public')->exists($path)) {
+            return null;
+        }
+
+        return Storage::disk('public')->url($path);
+    }
 
     public function region()
     {

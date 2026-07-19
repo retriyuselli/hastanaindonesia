@@ -116,7 +116,9 @@ class EventParticipantInfolist
 
                 ImageEntry::make('payment_proof')
                     ->label('Bukti Pembayaran')
-                    ->disk('public')
+                    ->getStateUsing(fn ($record): ?string => filled($record->payment_proof)
+                        ? route('files.event-participants.payment-proof', $record)
+                        : null)
                     ->height(250)
                     ->placeholder('Tidak ada bukti')
                     ->columnSpan(1)
@@ -151,14 +153,14 @@ class EventParticipantInfolist
                         TextEntry::make('base_price')
                             ->label('Harga Tiket')
                             ->formatStateUsing(fn ($state) => $state !== null
-                                ? 'Rp ' . number_format($state, 0, ',', '.')
+                                ? 'Rp '.number_format($state, 0, ',', '.')
                                 : 'GRATIS')
                             ->columnSpan(1),
 
                         TextEntry::make('total_amount')
                             ->label('Total Pembayaran')
                             ->formatStateUsing(fn ($state) => $state > 0
-                                ? 'Rp ' . number_format($state, 0, ',', '.')
+                                ? 'Rp '.number_format($state, 0, ',', '.')
                                 : 'GRATIS')
                             ->weight('bold')
                             ->color(fn ($state) => $state > 0 ? 'danger' : 'success')
@@ -166,7 +168,7 @@ class EventParticipantInfolist
 
                         TextEntry::make('participantAddons_count')
                             ->label('Jumlah Addon')
-                            ->getStateUsing(fn ($record) => $record->participantAddons()->count() . ' item')
+                            ->getStateUsing(fn ($record) => $record->participantAddons()->count().' item')
                             ->badge()
                             ->color(fn ($record) => $record->participantAddons()->count() > 0 ? 'success' : 'gray')
                             ->columnSpan(1),
@@ -181,10 +183,10 @@ class EventParticipantInfolist
                                     ->label('Jumlah'),
                                 TextEntry::make('price_at_time')
                                     ->label('Harga/item')
-                                    ->formatStateUsing(fn ($state) => 'Rp ' . number_format($state, 0, ',', '.')),
+                                    ->formatStateUsing(fn ($state) => 'Rp '.number_format($state, 0, ',', '.')),
                                 TextEntry::make('subtotal')
                                     ->label('Subtotal')
-                                    ->getStateUsing(fn ($record) => 'Rp ' . number_format($record->quantity * $record->price_at_time, 0, ',', '.'))
+                                    ->getStateUsing(fn ($record) => 'Rp '.number_format($record->quantity * $record->price_at_time, 0, ',', '.'))
                                     ->weight('bold')
                                     ->color('danger'),
                             ])

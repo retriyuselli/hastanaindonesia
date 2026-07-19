@@ -11,42 +11,13 @@
     <title>@yield('title', 'HASTANA Indonesia - Wedding Organizer Professional')</title>
     
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="/favicon.ico">
-    
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" type="image/svg+xml" href="{{ asset('images/favicon.svg') }}">
     
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ asset('css/hastana.css') }}">
     
-    <!-- Vite Assets -->
-    {{-- @vite(['resources/css/app.css', 'resources/js/app.js']) --}}
-    
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Custom Tailwind Config -->
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        'poppins': ['Poppins', 'sans-serif'],
-                    },
-                    colors: {
-                        'hastana-blue': '#111827',
-                        'hastana-red': '#dc2626',
-                        'hastana-black': '#1a1a1a',
-                    }
-                }
-            }
-        }
-    </script>
+    <!-- Compiled application assets -->
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
     
     <!-- Custom Styles -->
     <style>
@@ -97,11 +68,15 @@
     @stack('styles')
 </head>
 <body class="bg-white">
+    <a href="#main-content" class="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] focus:bg-white focus:px-4 focus:py-2">
+        Lewati ke konten utama
+    </a>
+
     <!-- Header -->
     @include('layouts.header')
     
     <!-- Main Content -->
-    <main class="pt-14 sm:pt-20">
+    <main id="main-content" class="pt-14 sm:pt-20">
         @yield('content')
     </main>
     
@@ -109,7 +84,7 @@
     @include('layouts.footer')
     
     <!-- Back to Top Button -->
-    <button id="back-to-top" class="fixed bottom-8 right-8 bg-gradient-to-r from-gray-900 to-hastana-red text-white p-3 rounded-full shadow-lg hover:from-black hover:to-red-700 transition-all duration-300 transform hover:scale-110 hidden z-50">
+    <button type="button" id="back-to-top" aria-label="Kembali ke atas" class="fixed bottom-8 right-8 bg-gradient-to-r from-gray-900 to-hastana-red text-white p-3 rounded-full shadow-lg hover:from-black hover:to-red-700 transition-all duration-300 transform hover:scale-110 hidden z-50">
         <i class="fas fa-chevron-up"></i>
     </button>
     

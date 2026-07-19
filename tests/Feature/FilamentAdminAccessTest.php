@@ -3,7 +3,10 @@
 namespace Tests\Feature;
 
 use App\Models\User;
+use Filament\Facades\Filament;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\PermissionRegistrar;
 use Tests\TestCase;
@@ -49,6 +52,35 @@ class FilamentAdminAccessTest extends TestCase
         $this->assertNotEquals(403, $response->getStatusCode());
         if ($response->getStatusCode() === 302) {
             $this->assertStringNotContainsString('/admin/login', (string) $response->headers->get('Location'));
+        }
+    }
+
+    public function test_inactive_or_known_default_password_accounts_cannot_access_production_panel(): void
+    {
+        $adminRole = Role::findOrCreate('admin');
+        $panel = Filament::getPanel('admin');
+
+        $inactiveUser = User::factory()->create(['status' => 'inactive']);
+        $inactiveUser->assignRole($adminRole);
+        $this->assertFalse($inactiveUser->canAccessPanel($panel));
+
+        $defaultPasswordUser = User::factory()->create([
+            'password' => Hash::make('password123'),
+        ]);
+        $defaultPasswordUser->assignRole($adminRole);
+
+        $originalEnvironment = $this->app['env'];
+        $this->app['env'] = 'production';
+
+        try {
+            $this->assertFalse($defaultPasswordUser->canAccessPanel($panel));
+            $this->assertFalse(Auth::attempt([
+                'email' => $defaultPasswordUser->email,
+                'password' => 'password123',
+            ]));
+            $this->assertGuest();
+        } finally {
+            $this->app['env'] = $originalEnvironment;
         }
     }
 }

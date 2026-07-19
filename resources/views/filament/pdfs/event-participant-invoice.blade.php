@@ -1,29 +1,4 @@
 @php
-    $company     = \App\Models\Company::first();
-
-    // Resolve logo to base64 so DomPDF can render it without remote access
-    $logoBase64 = null;
-    if ($company?->logo_url) {
-        $url = $company->logo_url;
-        if (\Illuminate\Support\Str::startsWith($url, ['http://', 'https://'])) {
-            try {
-                $ctx  = stream_context_create(['http' => ['timeout' => 5, 'ignore_errors' => true]]);
-                $data = @file_get_contents($url, false, $ctx);
-                if ($data !== false) {
-                    $ext  = strtolower(pathinfo(parse_url($url, PHP_URL_PATH), PATHINFO_EXTENSION));
-                    $mime = match($ext) { 'jpg','jpeg' => 'image/jpeg', 'gif' => 'image/gif', 'svg' => 'image/svg+xml', 'webp' => 'image/webp', default => 'image/png' };
-                    $logoBase64 = "data:{$mime};base64," . base64_encode($data);
-                }
-            } catch (\Throwable) {}
-        } else {
-            $path = storage_path('app/public/' . ltrim($url, '/'));
-            if (file_exists($path)) {
-                $mime       = mime_content_type($path) ?: 'image/png';
-                $logoBase64 = "data:{$mime};base64," . base64_encode(file_get_contents($path));
-            }
-        }
-    }
-
     $basePrice   = $participant->base_price ?? 0;
     $addonsTotal = $participant->participantAddons->sum(fn($a) => $a->quantity * $a->price_at_time);
     $total       = $participant->total_amount ?? ($basePrice + $addonsTotal);

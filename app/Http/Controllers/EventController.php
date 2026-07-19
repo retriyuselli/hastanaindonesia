@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\EventCategory;
 use App\Models\EventHastana;
 use App\Models\EventParticipant;
+use App\Models\EventParticipantAddon;
 use App\Models\EventReview;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
@@ -263,12 +264,37 @@ class EventController extends Controller
             }
         );
 
+        $userParticipant = null;
+        $hasReviewed = false;
+        if (Auth::check()) {
+            $userParticipant = EventParticipant::query()
+                ->where('event_hastana_id', $event->id)
+                ->where('user_id', Auth::id())
+                ->latest()
+                ->first();
+            $hasReviewed = EventReview::query()
+                ->where('event_hastana_id', $event->id)
+                ->where('user_id', Auth::id())
+                ->exists();
+        }
+
+        $hasAttended = $userParticipant?->status === 'attended';
+        $registrationStatus = in_array(
+            $userParticipant?->status,
+            ['pending', 'confirmed', 'attended'],
+            true,
+        ) ? $userParticipant->status : null;
+
         return view('events.show', compact(
             'event',
             'relatedEvents',
             'reviews',
             'benefits',
-            'requirements'
+            'requirements',
+            'userParticipant',
+            'hasReviewed',
+            'hasAttended',
+            'registrationStatus',
         ));
     }
 
@@ -281,19 +307,7 @@ class EventController extends Controller
             ->where('is_active', true)
             ->firstOrFail();
 
-        $events = EventHastana::with('eventCategory')
-            ->where('event_category_id', $category->id)
-            ->where('status', 'published')
-            ->where('is_active', true)
-            ->where('start_date', '>=', now())
-            ->orderBy('start_date')
-            ->paginate(12);
-
-        $categories = EventCategory::where('is_active', true)
-            ->orderBy('name')
-            ->get();
-
-        return view('events.category', compact('category', 'events', 'categories'));
+        return redirect()->route('events', ['category' => $category->id]);
     }
 
     /**
@@ -312,8 +326,40 @@ class EventController extends Controller
         $categories = EventCategory::where('is_active', true)
             ->orderBy('name')
             ->get();
+        $cities = EventHastana::query()
+            ->where('is_free', true)
+            ->published()
+            ->active()
+            ->distinct()
+            ->pluck('city')
+            ->filter()
+            ->sort();
+        $featuredFreeEvents = EventHastana::query()
+            ->where('is_free', true)
+            ->where('is_featured', true)
+            ->published()
+            ->active()
+            ->where('start_date', '>=', now())
+            ->orderBy('start_date')
+            ->limit(5)
+            ->get();
+        $trendingFreeEvents = EventHastana::query()
+            ->where('is_free', true)
+            ->where('is_trending', true)
+            ->published()
+            ->active()
+            ->where('start_date', '>=', now())
+            ->orderByDesc('current_participants')
+            ->limit(5)
+            ->get();
 
-        return view('events.free', compact('events', 'categories'));
+        return view('events.free', compact(
+            'events',
+            'categories',
+            'cities',
+            'featuredFreeEvents',
+            'trendingFreeEvents',
+        ));
     }
 
     /**
@@ -332,8 +378,39 @@ class EventController extends Controller
         $categories = EventCategory::where('is_active', true)
             ->orderBy('name')
             ->get();
+        $cities = EventHastana::query()
+            ->where('is_featured', true)
+            ->published()
+            ->active()
+            ->distinct()
+            ->pluck('city')
+            ->filter()
+            ->sort();
+        $topFeaturedEvents = EventHastana::query()
+            ->where('is_featured', true)
+            ->published()
+            ->active()
+            ->where('start_date', '>=', now())
+            ->orderBy('start_date')
+            ->limit(5)
+            ->get();
+        $premiumFeaturedEvents = EventHastana::query()
+            ->where('is_featured', true)
+            ->where('is_free', false)
+            ->published()
+            ->active()
+            ->where('start_date', '>=', now())
+            ->orderByDesc('price')
+            ->limit(5)
+            ->get();
 
-        return view('events.featured', compact('events', 'categories'));
+        return view('events.featured', compact(
+            'events',
+            'categories',
+            'cities',
+            'topFeaturedEvents',
+            'premiumFeaturedEvents',
+        ));
     }
 
     /**
@@ -352,8 +429,41 @@ class EventController extends Controller
         $categories = EventCategory::where('is_active', true)
             ->orderBy('name')
             ->get();
+        $cities = EventHastana::query()
+            ->where('is_trending', true)
+            ->published()
+            ->active()
+            ->distinct()
+            ->pluck('city')
+            ->filter()
+            ->sort();
+        $topTrendingEvents = EventHastana::query()
+            ->where('is_trending', true)
+            ->published()
+            ->active()
+            ->where('start_date', '>=', now())
+            ->orderByDesc('current_participants')
+            ->limit(5)
+            ->get();
+        $fastSellingEvents = EventHastana::query()
+            ->where('is_trending', true)
+            ->published()
+            ->active()
+            ->where('start_date', '>=', now())
+            ->whereNotNull('max_participants')
+            ->where('max_participants', '>', 0)
+            ->get()
+            ->filter(fn (EventHastana $event): bool => $event->capacity_percentage >= 70)
+            ->sortByDesc('capacity_percentage')
+            ->take(5);
 
-        return view('events.trending', compact('events', 'categories'));
+        return view('events.trending', compact(
+            'events',
+            'categories',
+            'cities',
+            'topTrendingEvents',
+            'fastSellingEvents',
+        ));
     }
 
     /**
@@ -373,7 +483,36 @@ class EventController extends Controller
                 ->with('error', $event->is_full ? 'Event sudah penuh!' : 'Event sudah berakhir!');
         }
 
-        return view('events.register', compact('event'));
+        $registeredData = EventParticipant::query()
+            ->where('event_hastana_id', $event->id)
+            ->where(function ($query) {
+                $query->where('user_id', Auth::id())
+                    ->orWhere('email', Auth::user()->email);
+            })
+            ->whereIn('status', ['pending', 'confirmed', 'attended'])
+            ->first();
+        $isAlreadyRegistered = $registeredData !== null;
+        $lastParticipant = $registeredData ?? EventParticipant::query()
+            ->where(function ($query) {
+                $query->where('user_id', Auth::id())
+                    ->orWhere('email', Auth::user()->email);
+            })
+            ->where(function ($query) {
+                $query->whereNotNull('company')
+                    ->orWhereNotNull('position');
+            })
+            ->latest()
+            ->first();
+        $defaultCompany = $lastParticipant?->company ?? '';
+        $defaultPosition = $lastParticipant?->position ?? '';
+
+        return view('events.register', compact(
+            'event',
+            'registeredData',
+            'isAlreadyRegistered',
+            'defaultCompany',
+            'defaultPosition',
+        ));
     }
 
     /**
@@ -389,20 +528,20 @@ class EventController extends Controller
 
         // Validate basic fields
         $rules = [
-            'name'        => 'required|string|max:255',
-            'email'       => 'required|email|max:255',
-            'phone'       => 'required|string|max:20',
-            'company'     => 'nullable|string|max:255',
-            'position'    => 'nullable|string|max:255',
-            'notes'       => 'nullable|string|max:1000',
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'phone' => 'required|string|max:20',
+            'company' => 'nullable|string|max:255',
+            'position' => 'nullable|string|max:255',
+            'notes' => 'nullable|string|max:1000',
             'agree_terms' => 'required|accepted',
-            'addons'      => 'nullable|array',
-            'addons.*.id'  => 'required_with:addons|integer|exists:event_addons,id',
+            'addons' => 'nullable|array',
+            'addons.*.id' => 'required_with:addons|integer|exists:event_addons,id',
             'addons.*.qty' => 'required_with:addons|integer|min:0|max:99',
         ];
 
         // Hitung base price & total addon
-        $basePrice   = (float) $event->price;
+        $basePrice = (float) $event->price;
         $addonsTotal = 0;
         $selectedAddons = []; // [addon_id => ['addon' => EventAddon, 'qty' => int]]
 
@@ -410,11 +549,15 @@ class EventController extends Controller
             $addonMap = $event->activeAddons->keyBy('id');
             foreach ($request->input('addons', []) as $item) {
                 $addonId = $item['id'] ?? null;
-                $qty     = (int) ($item['qty'] ?? 0);
-                if (! $addonId || $qty <= 0) continue;
+                $qty = (int) ($item['qty'] ?? 0);
+                if (! $addonId || $qty <= 0) {
+                    continue;
+                }
 
                 $addon = $addonMap->get($addonId);
-                if (! $addon) continue;
+                if (! $addon) {
+                    continue;
+                }
 
                 // Cek sisa kuota addon
                 if ($addon->quota !== null && $addon->remaining_quota < $qty) {
@@ -434,7 +577,7 @@ class EventController extends Controller
         $needsPayment = $totalAmount > 0;
         if ($needsPayment) {
             $rules['payment_method'] = 'required|string|in:bca,mandiri,bni,bri';
-            $rules['payment_proof']  = 'required|image|mimes:jpeg,jpg,png|max:2048';
+            $rules['payment_proof'] = 'required|image|mimes:jpeg,jpg,png|max:2048';
         }
 
         $validated = $request->validate($rules);
@@ -444,14 +587,14 @@ class EventController extends Controller
             $existing = EventParticipant::where('event_hastana_id', $event->id)
                 ->where(function ($q) {
                     $q->where('user_id', Auth::id())
-                      ->orWhere('email', Auth::user()->email);
+                        ->orWhere('email', Auth::user()->email);
                 })
                 ->whereIn('status', ['pending', 'confirmed', 'attended'])
                 ->first();
 
             if ($existing) {
                 return redirect()->route('events.show', $slug)
-                    ->with('info', 'Anda sudah terdaftar di event ini! Kode registrasi: ' . $existing->registration_code);
+                    ->with('info', 'Anda sudah terdaftar di event ini! Kode registrasi: '.$existing->registration_code);
             }
         }
 
@@ -462,41 +605,41 @@ class EventController extends Controller
         // Upload bukti bayar
         $paymentProofPath = null;
         if ($needsPayment && $request->hasFile('payment_proof')) {
-            $paymentProofPath = $request->file('payment_proof')->store('payment_proofs', 'public');
+            $paymentProofPath = $request->file('payment_proof')->store('payment_proofs', 'private');
         }
 
         // Simpan peserta
         $participant = EventParticipant::create([
             'event_hastana_id' => $event->id,
-            'user_id'          => Auth::id(),
-            'name'             => $validated['name'],
-            'email'            => $validated['email'],
-            'phone'            => $validated['phone'],
-            'company'          => $validated['company'] ?? null,
-            'position'         => $validated['position'] ?? null,
-            'notes'            => $validated['notes'] ?? null,
-            'base_price'       => $basePrice,
-            'total_amount'     => $totalAmount,
-            'payment_method'   => $validated['payment_method'] ?? null,
-            'payment_proof'    => $paymentProofPath,
-            'status'           => 'pending',
-            'payment_status'   => $needsPayment ? 'pending' : 'free',
+            'user_id' => Auth::id(),
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'phone' => $validated['phone'],
+            'company' => $validated['company'] ?? null,
+            'position' => $validated['position'] ?? null,
+            'notes' => $validated['notes'] ?? null,
+            'base_price' => $basePrice,
+            'total_amount' => $totalAmount,
+            'payment_method' => $validated['payment_method'] ?? null,
+            'payment_proof' => $paymentProofPath,
+            'status' => 'pending',
+            'payment_status' => $needsPayment ? 'pending' : 'free',
         ]);
 
         // Simpan addon yang dipilih
         foreach ($selectedAddons as $addonId => $data) {
-            \App\Models\EventParticipantAddon::create([
+            EventParticipantAddon::create([
                 'event_participant_id' => $participant->id,
-                'event_addon_id'       => $addonId,
-                'quantity'             => $data['qty'],
-                'price_at_time'        => $data['addon']->price,
+                'event_addon_id' => $addonId,
+                'quantity' => $data['qty'],
+                'price_at_time' => $data['addon']->price,
             ]);
         }
 
         $event->increment('current_participants');
 
         return redirect()->route('events.show', $slug)
-            ->with('success', 'Pendaftaran berhasil! Kode registrasi Anda: ' . $participant->registration_code . '. Kami akan mengirimkan konfirmasi ke email Anda.');
+            ->with('success', 'Pendaftaran berhasil! Kode registrasi Anda: '.$participant->registration_code.'. Kami akan mengirimkan konfirmasi ke email Anda.');
     }
 
     /**
@@ -626,6 +769,6 @@ class EventController extends Controller
         $participant->update(['status' => 'cancelled']);
 
         return redirect()->route('dashboard')
-            ->with('success', 'Pendaftaran Anda untuk event "' . $participant->eventHastana->title . '" telah dibatalkan.');
+            ->with('success', 'Pendaftaran Anda untuk event "'.$participant->eventHastana->title.'" telah dibatalkan.');
     }
 }

@@ -7,17 +7,8 @@
 
         <title>{{ config('app.name', 'Laravel') }}</title>
 
-        <!-- Fonts -->
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-        <!-- Styles -->
-        @if(file_exists(public_path('build/manifest.json')))
-            @vite(['resources/css/app.css', 'resources/js/app.js'])
-        @else
-            <script src="https://cdn.tailwindcss.com"></script>
-        @endif
+        <!-- Compiled application assets -->
+        @vite(['resources/css/app.css', 'resources/js/app.js'])
 
         <style>
             body {
@@ -171,7 +162,7 @@
         <div class="guest-page">
             <div class="guest-logo-wrap">
                 <a href="/" class="guest-logo-link">
-                    <img src="{{ asset('images/hastana_logo.png') }}" alt="HASTANA Indonesia" class="guest-logo">
+                    <img src="{{ asset('images/hastana-logo.svg') }}" alt="HASTANA Indonesia" class="guest-logo">
                 </a>
             </div>
 

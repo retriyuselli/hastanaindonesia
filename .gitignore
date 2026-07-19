@@ -13,10 +13,17 @@
 /.zed
 /auth.json
 /node_modules
+/public/build
 /public/hot
 /public/storage
+/bootstrap/cache/*.php
+/storage/framework/cache/*
+/storage/framework/sessions/*
+/storage/framework/views/*
+/storage/logs/*
 /storage/*.key
 /storage/pail
+/storage_backup/
 /vendor
 /.info.md
 /PRODUCT_MANAGEMENT.md

@@ -16,7 +16,7 @@
     
     <!-- Image & Status -->
     <div class="relative aspect-[4/3] overflow-hidden">
-        <img src="{{ $image ?? asset('images/default-avatar.png') }}" 
+        <img src="{{ $image ?? asset('images/default-avatar.svg') }}" 
              alt="{{ $name }}" 
              class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
         
@@ -44,7 +44,7 @@
         @endif
         
         <!-- Hover Overlay -->
-        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+        <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
             <div class="absolute bottom-4 left-4 right-4">
                 <div class="flex items-center justify-between text-white">
                     <span class="text-sm font-medium">Lihat Profil</span>

@@ -4,7 +4,7 @@
 
 @section('content')
 <!-- Profile Hero -->
-<section class="bg-gradient-to-r from-gray-900 to-red-700 text-white py-16 mt-20">
+<section class="bg-gradient-to-r from-gray-900 to-red-700 text-white py-16">
     <div class="container mx-auto px-4">
         <div class="max-w-4xl mx-auto text-center">
             <div class="w-24 h-24 rounded-full mx-auto mb-4 shadow-xl overflow-hidden {{ auth()->user()->avatar ? '' : 'bg-gradient-to-r from-white to-gray-200 flex items-center justify-center text-red-600 text-4xl font-bold' }}">

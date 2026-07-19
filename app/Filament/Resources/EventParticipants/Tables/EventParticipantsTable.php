@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\EventParticipants\Tables;
 
+use App\Models\EventHastana;
 use Filament\Actions\Action;
 use Filament\Actions\ActionGroup;
 use Filament\Actions\BulkAction;
@@ -48,63 +49,63 @@ class EventParticipantsTable
                     ->label('Peserta')
                     ->searchable()
                     ->weight('bold')
-                    ->description(fn ($record) => $record->email . ' · ' . $record->phone),
+                    ->description(fn ($record) => $record->email.' · '.$record->phone),
 
                 TextColumn::make('status')
                     ->label('Status')
                     ->badge()
                     ->icon(fn ($state) => match ($state) {
-                        'pending'   => 'heroicon-m-clock',
+                        'pending' => 'heroicon-m-clock',
                         'confirmed' => 'heroicon-m-check-circle',
                         'cancelled' => 'heroicon-m-x-circle',
-                        'attended'  => 'heroicon-m-check-badge',
-                        default     => null,
+                        'attended' => 'heroicon-m-check-badge',
+                        default => null,
                     })
                     ->color(fn ($state) => match ($state) {
-                        'pending'   => 'warning',
+                        'pending' => 'warning',
                         'confirmed' => 'success',
                         'cancelled' => 'danger',
-                        'attended'  => 'info',
-                        default     => 'gray',
+                        'attended' => 'info',
+                        default => 'gray',
                     })
                     ->formatStateUsing(fn ($state) => match ($state) {
-                        'pending'   => 'Pending',
+                        'pending' => 'Pending',
                         'confirmed' => 'Confirmed',
                         'cancelled' => 'Cancelled',
-                        'attended'  => 'Attended',
-                        default     => $state,
+                        'attended' => 'Attended',
+                        default => $state,
                     }),
 
                 TextColumn::make('payment_status')
                     ->label('Pembayaran')
                     ->badge()
                     ->icon(fn ($state) => match ($state) {
-                        'paid'     => 'heroicon-m-banknotes',
-                        'free'     => 'heroicon-m-gift',
+                        'paid' => 'heroicon-m-banknotes',
+                        'free' => 'heroicon-m-gift',
                         'refunded' => 'heroicon-m-arrow-uturn-left',
-                        'pending'  => 'heroicon-m-clock',
-                        default    => null,
+                        'pending' => 'heroicon-m-clock',
+                        default => null,
                     })
                     ->color(fn ($state) => match ($state) {
-                        'paid'     => 'success',
-                        'free'     => 'info',
+                        'paid' => 'success',
+                        'free' => 'info',
                         'refunded' => 'danger',
-                        'pending'  => 'warning',
-                        default    => 'gray',
+                        'pending' => 'warning',
+                        default => 'gray',
                     })
                     ->formatStateUsing(fn ($state) => match ($state) {
-                        'paid'     => 'Lunas',
-                        'free'     => 'Gratis',
+                        'paid' => 'Lunas',
+                        'free' => 'Gratis',
                         'refunded' => 'Refund',
-                        'pending'  => 'Belum Bayar',
-                        default    => $state,
+                        'pending' => 'Belum Bayar',
+                        default => $state,
                     }),
 
                 TextColumn::make('total_amount')
                     ->label('Total')
                     ->sortable()
                     ->formatStateUsing(fn ($state) => $state > 0
-                        ? 'Rp ' . number_format($state, 0, ',', '.')
+                        ? 'Rp '.number_format($state, 0, ',', '.')
                         : 'GRATIS')
                     ->color(fn ($state) => $state > 0 ? 'warning' : 'success')
                     ->weight('semibold')
@@ -121,18 +122,18 @@ class EventParticipantsTable
                     ->badge()
                     ->color('gray')
                     ->formatStateUsing(fn ($state) => match ($state) {
-                        'bca'          => 'BCA',
-                        'mandiri'      => 'Mandiri',
-                        'bni'          => 'BNI',
-                        'bri'          => 'BRI',
-                        'gopay'        => 'GoPay',
-                        'ovo'          => 'OVO',
-                        'dana'         => 'DANA',
-                        'bank_transfer'=> 'Bank Transfer',
-                        'credit_card'  => 'Kartu Kredit',
-                        'e_wallet'     => 'E-Wallet',
-                        'cash'         => 'Tunai',
-                        default        => $state ? strtoupper($state) : '—',
+                        'bca' => 'BCA',
+                        'mandiri' => 'Mandiri',
+                        'bni' => 'BNI',
+                        'bri' => 'BRI',
+                        'gopay' => 'GoPay',
+                        'ovo' => 'OVO',
+                        'dana' => 'DANA',
+                        'bank_transfer' => 'Bank Transfer',
+                        'credit_card' => 'Kartu Kredit',
+                        'e_wallet' => 'E-Wallet',
+                        'cash' => 'Tunai',
+                        default => $state ? strtoupper($state) : '—',
                     })
                     ->placeholder('—')
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -155,14 +156,14 @@ class EventParticipantsTable
                     ->color(fn ($state) => $state > 0 ? 'success' : 'gray')
                     ->formatStateUsing(fn ($state) => $state > 0 ? "{$state} item" : '—')
                     ->description(fn ($record) => $record->participantAddons_count > 0
-                        ? 'Rp ' . number_format(
+                        ? 'Rp '.number_format(
                             $record->participantAddons->sum(fn ($a) => $a->quantity * $a->price_at_time),
                             0, ',', '.'
                         )
                         : null)
                     ->tooltip(fn ($record) => $record->participantAddons_count > 0
                         ? $record->participantAddons
-                            ->map(fn ($a) => ($a->eventAddon?->name ?? '?') . ' ×' . $a->quantity . '  →  Rp ' . number_format($a->quantity * $a->price_at_time, 0, ',', '.'))
+                            ->map(fn ($a) => ($a->eventAddon?->name ?? '?').' ×'.$a->quantity.'  →  Rp '.number_format($a->quantity * $a->price_at_time, 0, ',', '.'))
                             ->join("\n")
                         : null)
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -199,46 +200,46 @@ class EventParticipantsTable
                     ->searchable()
                     ->preload()
                     ->indicateUsing(fn (array $data) => $data['value']
-                        ? 'Event: ' . \App\Models\EventHastana::find($data['value'])?->title
+                        ? 'Event: '.EventHastana::find($data['value'])?->title
                         : null),
 
                 SelectFilter::make('status')
                     ->label('Status Pendaftaran')
                     ->options([
-                        'pending'   => '⏳ Pending',
+                        'pending' => '⏳ Pending',
                         'confirmed' => '✅ Confirmed',
-                        'attended'  => '🎉 Attended',
+                        'attended' => '🎉 Attended',
                         'cancelled' => '❌ Cancelled',
                     ])
                     ->indicateUsing(fn (array $data) => $data['value']
-                        ? 'Status: ' . ucfirst($data['value'])
+                        ? 'Status: '.ucfirst($data['value'])
                         : null),
 
                 SelectFilter::make('payment_status')
                     ->label('Status Pembayaran')
                     ->options([
-                        'free'     => '🎁 Gratis',
-                        'pending'  => '⏳ Belum Bayar',
-                        'paid'     => '✅ Lunas',
+                        'free' => '🎁 Gratis',
+                        'pending' => '⏳ Belum Bayar',
+                        'paid' => '✅ Lunas',
                         'refunded' => '↩️ Refund',
                     ])
                     ->indicateUsing(fn (array $data) => $data['value']
-                        ? 'Bayar: ' . ucfirst($data['value'])
+                        ? 'Bayar: '.ucfirst($data['value'])
                         : null),
 
                 SelectFilter::make('payment_method')
                     ->label('Metode Pembayaran')
                     ->options([
-                        'bca'           => 'BCA',
-                        'mandiri'       => 'Mandiri',
-                        'bni'           => 'BNI',
-                        'bri'           => 'BRI',
+                        'bca' => 'BCA',
+                        'mandiri' => 'Mandiri',
+                        'bni' => 'BNI',
+                        'bri' => 'BRI',
                         'bank_transfer' => 'Bank Transfer',
-                        'gopay'         => 'GoPay',
-                        'ovo'           => 'OVO',
-                        'dana'          => 'DANA',
-                        'e_wallet'      => 'E-Wallet',
-                        'cash'          => 'Tunai',
+                        'gopay' => 'GoPay',
+                        'ovo' => 'OVO',
+                        'dana' => 'DANA',
+                        'e_wallet' => 'E-Wallet',
+                        'cash' => 'Tunai',
                     ])
                     ->multiple(),
 
@@ -248,7 +249,7 @@ class EventParticipantsTable
                     ->trueLabel('Ada bukti')
                     ->falseLabel('Tidak ada bukti')
                     ->queries(
-                        true:  fn (Builder $query): Builder => $query->whereNotNull('payment_proof')->where('payment_proof', '!=', ''),
+                        true: fn (Builder $query): Builder => $query->whereNotNull('payment_proof')->where('payment_proof', '!=', ''),
                         false: fn (Builder $query): Builder => $query->where(fn ($q) => $q->whereNull('payment_proof')->orWhere('payment_proof', '')),
                         blank: fn (Builder $query): Builder => $query,
                     ),
@@ -261,12 +262,17 @@ class EventParticipantsTable
                     ])
                     ->columns(2)
                     ->query(fn (Builder $query, array $data): Builder => $query
-                        ->when($data['from'] ?? null,  fn ($q, $date) => $q->whereDate('created_at', '>=', $date))
+                        ->when($data['from'] ?? null, fn ($q, $date) => $q->whereDate('created_at', '>=', $date))
                         ->when($data['until'] ?? null, fn ($q, $date) => $q->whereDate('created_at', '<=', $date)))
                     ->indicateUsing(function (array $data): array {
                         $indicators = [];
-                        if ($data['from'] ?? null)  $indicators[] = 'Dari: ' . $data['from'];
-                        if ($data['until'] ?? null) $indicators[] = 'Sampai: ' . $data['until'];
+                        if ($data['from'] ?? null) {
+                            $indicators[] = 'Dari: '.$data['from'];
+                        }
+                        if ($data['until'] ?? null) {
+                            $indicators[] = 'Sampai: '.$data['until'];
+                        }
+
                         return $indicators;
                     }),
             ])
@@ -275,20 +281,20 @@ class EventParticipantsTable
                 Group::make('status')
                     ->label('Status Pendaftaran')
                     ->getTitleFromRecordUsing(fn ($record) => match ($record->status) {
-                        'pending'   => '⏳ Pending',
+                        'pending' => '⏳ Pending',
                         'confirmed' => '✅ Confirmed',
-                        'attended'  => '🎉 Attended',
+                        'attended' => '🎉 Attended',
                         'cancelled' => '❌ Cancelled',
-                        default     => ucfirst($record->status),
+                        default => ucfirst($record->status),
                     }),
                 Group::make('payment_status')
                     ->label('Status Pembayaran')
                     ->getTitleFromRecordUsing(fn ($record) => match ($record->payment_status) {
-                        'paid'     => '💳 Lunas',
-                        'free'     => '🎁 Gratis',
+                        'paid' => '💳 Lunas',
+                        'free' => '🎁 Gratis',
                         'refunded' => '↩️ Refund',
-                        'pending'  => '⏳ Belum Bayar',
-                        default    => ucfirst($record->payment_status),
+                        'pending' => '⏳ Belum Bayar',
+                        default => ucfirst($record->payment_status),
                     }),
                 Group::make('eventHastana.title')
                     ->label('Event'),
@@ -307,7 +313,7 @@ class EventParticipantsTable
                         ->label('Download Invoice')
                         ->icon('heroicon-o-arrow-down-tray')
                         ->color('success')
-                        ->url(fn ($record) => route('admin.files.event-participants.invoice', $record) . '?download=1')
+                        ->url(fn ($record) => route('admin.files.event-participants.invoice', $record).'?download=1')
                         ->openUrlInNewTab(),
                     Action::make('viewPaymentProof')
                         ->label('Bukti Bayar')
@@ -316,7 +322,7 @@ class EventParticipantsTable
                         ->visible(fn ($record) => $record->payment_proof !== null)
                         ->modalHeading(false)
                         ->modalContent(fn ($record) => view('filament.modals.payment-proof', [
-                            'record'   => $record,
+                            'record' => $record,
                             'imageUrl' => route('files.event-participants.payment-proof', $record),
                         ]))
                         ->modalSubmitAction(false)
@@ -383,7 +389,7 @@ class EventParticipantsTable
                         ->successNotificationTitle('Pendaftaran dibatalkan')
                         ->deselectRecordsAfterCompletion(),
                     DeleteBulkAction::make(),
-                ])->label('Aksi Massal'),
+                ])->label('Aksi'),
             ])
             ->emptyStateIcon('heroicon-o-ticket')
             ->emptyStateHeading('Belum ada peserta')

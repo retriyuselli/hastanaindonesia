@@ -83,7 +83,7 @@
 @section('content')
 
 <!-- Hero Section -->
-<section class="bg-gradient-to-r from-gray-900 via-gray-800 to-red-900 py-20 text-white mt-20">
+<section class="bg-gradient-to-r from-gray-900 via-gray-800 to-red-900 py-20 text-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <div class="max-w-4xl mx-auto">
             <div class="mb-8">

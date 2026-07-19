@@ -39,11 +39,7 @@ class EventHastanaForm
                                             ->required()
                                             ->maxLength(255)
                                             ->live(onBlur: true)
-                                            ->afterStateUpdated(function ($get, $set, ?string $state) {
-                                                if (! $get('slug') || $get('slug') === Str::slug($get('title'))) {
-                                                    $set('slug', Str::slug($state));
-                                                }
-                                            })
+                                            ->afterStateUpdated(fn ($state, callable $set) => $set('slug', Str::slug($state)))
                                             ->placeholder('e.g., Wedding Photography Masterclass')
                                             ->helperText('Attractive title for your event')
                                             ->prefixIcon('heroicon-o-sparkles')
@@ -54,6 +50,7 @@ class EventHastanaForm
                                             ->required()
                                             ->unique(ignoreRecord: true)
                                             ->maxLength(255)
+                                            ->readOnly()
                                             ->placeholder('wedding-photography-masterclass')
                                             ->helperText('URL-friendly slug (auto-generated from title)')
                                             ->prefixIcon('heroicon-o-link')

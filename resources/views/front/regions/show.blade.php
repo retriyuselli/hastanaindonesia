@@ -4,7 +4,10 @@
 @section('description', 'Detail profil region HASTANA Indonesia.')
 
 @section('content')
-    <div class="pt-28 pb-16 bg-gray-50 min-h-screen">
+@php
+    $websiteUrl = \App\Support\SafeUrl::http($region->website);
+@endphp
+    <div class="pt-8 pb-16 bg-gray-50 min-h-screen">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between gap-4">
                 <div>
@@ -107,11 +110,11 @@
                                     </dd>
                                 </div>
                             @endif
-                            @if($region->website)
+                                    @if($websiteUrl)
                                 <div class="sm:col-span-2">
                                     <dt class="text-gray-500">Website</dt>
                                     <dd class="text-gray-900 mt-1">
-                                        <a href="{{ $region->website }}" target="_blank" rel="noopener" class="text-hastana-blue hover:underline">{{ $region->website }}</a>
+                                        <a href="{{ $websiteUrl }}" target="_blank" rel="noopener noreferrer" class="text-hastana-blue hover:underline">{{ $region->website }}</a>
                                     </dd>
                                 </div>
                             @endif
@@ -232,8 +235,8 @@
                                     </div>
                                 </a>
                             @endif
-                            @if($region->website)
-                                <a href="{{ $region->website }}" target="_blank" rel="noopener" class="flex items-center gap-3 rounded-xl border border-gray-100 hover:border-gray-200 hover:shadow-sm transition-all p-4">
+                            @if($websiteUrl)
+                                <a href="{{ $websiteUrl }}" target="_blank" rel="noopener noreferrer" class="flex items-center gap-3 rounded-xl border border-gray-100 hover:border-gray-200 hover:shadow-sm transition-all p-4">
                                     <div class="w-10 h-10 rounded-lg bg-gray-100 text-gray-600 flex items-center justify-center">
                                         <i class="fas fa-globe"></i>
                                     </div>

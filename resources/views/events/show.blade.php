@@ -4,7 +4,7 @@
 
 @section('content')
 <!-- Event Hero Section -->
-<section class="text-gray-800 py-6 mt-20">
+<section class="text-gray-800 py-6">
     <div class="container mx-auto px-4">
         <div class="flex items-center gap-2 text-xs mb-3">
             <a href="{{ route('home') }}" class="hover:underline">Home</a>
@@ -109,7 +109,7 @@
                         <i class="fas fa-info-circle text-hastana-red mr-2"></i> Deskripsi Event
                     </h2>
                     <div class="event-description prose max-w-none text-gray-700">
-                        {!! $event->description !!}
+                        @sanitize($event->description)
                     </div>
                 </div>
 
@@ -997,7 +997,7 @@
                             <i class="fas fa-gift text-hastana-red mr-2"></i> Yang Akan Anda Dapatkan
                         </h2>
                         <div class="benefits-description prose max-w-none text-gray-700">
-                            {!! $event->benefits !!}
+                            @sanitize($event->benefits)
                         </div>
                     </div>
                 @endif
@@ -1008,7 +1008,7 @@
                         <i class="fas fa-clipboard-list text-hastana-red mr-2"></i> Persyaratan
                     </h2>
                     <div class="requirements-description prose max-w-none text-gray-700">
-                        {!! $event->requirements !!}
+                        @sanitize($event->requirements)
                     </div>
                 </div>
 
@@ -1094,24 +1094,6 @@
 
                     <!-- Write a Review Section (Only for verified participants) -->
                     @auth
-                        @php
-                            // Check if user has attended this event
-                            $hasAttended = \App\Models\EventParticipant::where('event_hastana_id', $event->id)
-                                ->where('user_id', auth()->id())
-                                ->where('status', 'attended')
-                                ->exists();
-                            
-                            // Check if user already reviewed
-                            $hasReviewed = \App\Models\EventReview::where('event_hastana_id', $event->id)
-                                ->where('user_id', auth()->id())
-                                ->exists();
-                            
-                            // Get participant status for debugging
-                            $participant = \App\Models\EventParticipant::where('event_hastana_id', $event->id)
-                                ->where('user_id', auth()->id())
-                                ->first();
-                        @endphp
-
                         @if($hasAttended && !$hasReviewed)
                             <div class="bg-gray-50 border-2 border-gray-200 rounded-lg p-5 mb-6">
                                 <h3 class="text-lg font-bold text-gray-900 mb-3 flex items-center">
@@ -1475,17 +1457,7 @@
                     @php
                         $isAlmostFull = $event->capacity_percentage >= 90;
                         $canRegister = $event->canRegister();
-                        $registrationStatus = null;
-
-                        if (auth()->check()) {
-                            $existingParticipant = \App\Models\EventParticipant::where('event_hastana_id', $event->id)
-                                ->where('user_id', auth()->id())
-                                ->whereIn('status', ['pending', 'confirmed', 'attended'])
-                                ->first();
-                            $registrationStatus = $existingParticipant?->status;
-                        }
-
-                        $isRegistered = !is_null($registrationStatus);
+                        $isRegistered = $registrationStatus !== null;
                     @endphp
 
                     @if($isRegistered)
@@ -1618,7 +1590,7 @@
                             title: eventTitle,
                             text: 'Yuk ikutan event ini!',
                             url: eventUrl
-                        }).catch(err => console.log('Error sharing:', err));
+                        }).catch(() => {});
                     } else {
                         // Fallback: Copy to clipboard
                         navigator.clipboard.writeText(eventUrl).then(() => {
@@ -1642,7 +1614,7 @@
                                 <div class="font-semibold text-gray-900 text-sm">Tanggal & Waktu</div>
                                 <div class="text-xs text-gray-600">
                                     {{ $event->start_date->format('l, d F Y') }}
-                                    @if($event->start_date->format('Y-m-d') != $event->end_date->format('Y-m-d'))
+                                    @if($event->end_date && $event->start_date->format('Y-m-d') !== $event->end_date->format('Y-m-d'))
                                         <br>s/d {{ $event->end_date->format('l, d F Y') }}
                                     @endif
                                 </div>

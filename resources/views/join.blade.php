@@ -169,7 +169,7 @@
 @section('content')
 
 <!-- Hero Section -->
-<section class="hero-join-bg py-20 mt-20">
+<section class="hero-join-bg py-20">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-white">
         <div class="max-w-4xl mx-auto">
             <div class="mb-8">
@@ -803,14 +803,15 @@
 
                 <!-- Terms and Conditions -->
                 <div class="mb-8">
-                    <label class="flex items-start space-x-3">
-                        <input type="checkbox" name="terms" class="mt-1 h-5 w-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500 @error('terms') border-red-500 @enderror" required {{ old('terms') ? 'checked' : '' }}>
+                    <div class="flex items-start space-x-3">
+                        <input id="terms" type="checkbox" name="terms" class="mt-1 h-5 w-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500 @error('terms') border-red-500 @enderror" required {{ old('terms') ? 'checked' : '' }}>
                         <span class="text-gray-700">
-                            Saya menyetujui <a href="{{ route('terms') }}" target="_blank" class="text-blue-600 hover:underline font-semibold">syarat dan ketentuan</a> 
-                            serta <a href="{{ route('privacy') }}" target="_blank" class="text-blue-600 hover:underline font-semibold">kebijakan privasi</a> 
+                            <label for="terms" class="cursor-pointer">Saya menyetujui</label>
+                            <a href="{{ route('terms') }}" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline font-semibold">syarat dan ketentuan</a>
+                            serta <a href="{{ route('privacy') }}" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline font-semibold">kebijakan privasi</a> 
                             keanggotaan HASTANA Indonesia dan bersedia mematuhi kode etik organisasi. *
                         </span>
-                    </label>
+                    </div>
                     @error('terms')
                     <p class="text-xs text-red-600 mt-1 ml-8">{{ $message }}</p>
                     @enderror
@@ -1083,16 +1084,7 @@
     // Already Registered Modal
     @if($alreadyRegistered)
     // Data wedding organizer yang sudah terdaftar
-    const existingData = @json($existingOrganizer);
-    console.log('Existing Data:', existingData);
-    console.log('City:', existingData?.city);
-    console.log('Legal Documents:', existingData?.legal_documents);
-    console.log('Date Fields:', {
-        deed_date: existingData?.deed_date,
-        nib_issued_date: existingData?.nib_issued_date,
-        nib_valid_until: existingData?.nib_valid_until,
-        npwp_issued_date: existingData?.npwp_issued_date
-    });
+    const existingData = @json($existingOrganizerFormData);
     
     // Disable form when user already registered
     document.addEventListener('DOMContentLoaded', function() {
@@ -1184,7 +1176,6 @@
         const citySelect = document.getElementById('city-select');
         
         if (provinceSelect && existingData.province) {
-            console.log('Setting province to:', existingData.province);
             provinceSelect.value = existingData.province;
             
             // Manually populate cities for this province
@@ -1204,93 +1195,23 @@
                 if (existingData.city) {
                     setTimeout(() => {
                         citySelect.value = existingData.city;
-                        console.log('City value set to:', citySelect.value);
-                        console.log('Expected city:', existingData.city);
                     }, 50);
                 }
             }
         }
 
         // Show existing legal documents info (file uploads can't be pre-filled for security reasons)
-        console.log('Checking legal documents...', existingData.legal_documents);
-        
-        if (existingData.legal_documents) {
-            // Parse legal_documents if it's a JSON string
-            let legalDocs = existingData.legal_documents;
-            console.log('Legal docs type:', typeof legalDocs);
-            console.log('Legal docs value:', legalDocs);
-            
-            if (typeof legalDocs === 'string') {
-                try {
-                    legalDocs = JSON.parse(legalDocs);
-                    console.log('Parsed legal docs:', legalDocs);
-                } catch (e) {
-                    console.log('Failed to parse legal docs:', e);
-                    legalDocs = [];
-                }
+        if (existingData.has_legal_documents) {
+            const fileInput = document.querySelector('input[name="legal_documents[]"]');
+            const fileContainer = fileInput?.closest('.form-group');
+
+            if (fileContainer) {
+                const existingFilesInfo = document.createElement('div');
+                existingFilesInfo.className = 'mt-3 p-4 bg-blue-50 border border-blue-200 rounded-lg existing-files-info';
+                existingFilesInfo.textContent = 'Dokumen legal sudah tersimpan. Upload file baru hanya jika ingin menggantinya.';
+                fileContainer.appendChild(existingFilesInfo);
             }
-            
-            console.log('Is array?', Array.isArray(legalDocs));
-            console.log('Length:', legalDocs?.length);
-            
-            if (Array.isArray(legalDocs) && legalDocs.length > 0) {
-                const fileInput = document.querySelector('input[name="legal_documents[]"]');
-                console.log('File input found:', fileInput);
-                
-                if (fileInput) {
-                    // Find parent form-group instead of .mb-6
-                    const fileContainer = fileInput.closest('.form-group');
-                    console.log('File container found:', fileContainer);
-                    
-                    if (fileContainer) {
-                        // Remove old info if exists
-                        const oldInfo = fileContainer.querySelector('.existing-files-info');
-                        if (oldInfo) {
-                            console.log('Removing old info');
-                            oldInfo.remove();
-                        }
-                        
-                        // Create info message about existing files
-                        const existingFilesInfo = document.createElement('div');
-                        existingFilesInfo.className = 'mt-3 p-4 bg-blue-50 border border-blue-200 rounded-lg existing-files-info';
-                        existingFilesInfo.innerHTML = `
-                            <p class="text-sm text-blue-800 font-semibold mb-2">
-                                <i class="fas fa-file-check mr-2"></i>Dokumen yang sudah diupload:
-                            </p>
-                            <ul class="text-sm text-blue-700 space-y-1 mb-2"></ul>
-                            <p class="text-xs text-blue-600 italic">
-                                <i class="fas fa-info-circle mr-1"></i>
-                                Upload file baru jika ingin mengganti dokumen yang sudah ada.
-                            </p>
-                        `;
-
-                        const list = existingFilesInfo.querySelector('ul');
-                        legalDocs.forEach((doc) => {
-                            const fileName = String(doc).split('/').pop() ?? '';
-
-                            const li = document.createElement('li');
-                            li.className = 'flex items-center';
-
-                            const icon = document.createElement('i');
-                            icon.className = 'fas fa-paperclip mr-2 text-blue-500';
-
-                            const text = document.createElement('span');
-                            text.textContent = fileName;
-
-                            li.appendChild(icon);
-                            li.appendChild(text);
-                            list.appendChild(li);
-                        });
-                        
-                        fileContainer.appendChild(existingFilesInfo);
-                        console.log('Legal documents info added successfully');
-                    }
                 }
-            } else {
-                console.log('No legal documents to display (empty or null)');
-            }
-        } else {
-            console.log('No legal_documents field in existingData');
         }
 
         const businessTypeSelect = document.querySelector('select[name="business_type"]');
@@ -1457,16 +1378,17 @@
         });
 
         // Smooth scrolling for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        document.querySelectorAll('a[href^="#"]:not([href="#"])').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
+                const target = document.getElementById(this.getAttribute('href').slice(1));
+
+                if (!target) return;
+
                 e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
             });
         });
 

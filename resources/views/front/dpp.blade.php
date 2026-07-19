@@ -4,6 +4,9 @@
 @section('description', 'Struktur kepengurusan Dewan Pengurus Pusat (DPP) HASTANA Indonesia — Himpunan Perusahaan Penata Acara Pernikahan Seluruh Indonesia.')
 
 @section('content')
+@php
+    $websiteUrl = \App\Support\SafeUrl::http($dpp?->website);
+@endphp
 
 <!-- Hero Section -->
 <section class="bg-gradient-to-r from-gray-900 via-gray-800 to-red-900 py-20 text-white">
@@ -49,10 +52,10 @@
                 <span>{{ $dpp->phone }}</span>
             </div>
             @endif
-            @if($dpp->website)
+            @if($websiteUrl)
             <div class="flex items-center gap-2">
                 <i class="fas fa-globe text-hastana-red"></i>
-                <a href="{{ $dpp->website }}" target="_blank" class="hover:text-hastana-red transition">{{ $dpp->website }}</a>
+                <a href="{{ $websiteUrl }}" target="_blank" rel="noopener noreferrer" class="hover:text-hastana-red transition">{{ $dpp->website }}</a>
             </div>
             @endif
             @if($dpp->city || $dpp->province)

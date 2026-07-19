@@ -18,11 +18,20 @@
     .portfolio-overlay {
         background: linear-gradient(45deg, rgba(30, 64, 175, 0.9), rgba(220, 38, 38, 0.9));
         opacity: 0;
+        pointer-events: none;
         transition: all 0.3s ease;
     }
     
     .portfolio-card:hover .portfolio-overlay {
         opacity: 1;
+        pointer-events: auto;
+    }
+
+    @media (hover: none), (pointer: coarse) {
+        .portfolio-overlay {
+            opacity: 1;
+            pointer-events: auto;
+        }
     }
     
     .filter-btn {
@@ -40,7 +49,7 @@
 @section('content')
 
 <!-- Hero Section -->
-<section class="bg-gradient-to-r from-red-900 via-red-800 to-blue-800 py-20 text-white mt-20">
+<section class="bg-gradient-to-r from-red-900 via-red-800 to-blue-800 py-20 text-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <div class="max-w-4xl mx-auto">
             <div class="mb-8">

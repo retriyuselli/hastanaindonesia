@@ -283,11 +283,11 @@ class EventParticipantForm
                                             ->required()
                                             ->live()
                                             ->helperText(fn ($get) => match ($get('payment_status')) {
-                                                'paid'     => '✓ Pembayaran lunas — konfirmasi peserta via tombol Aksi di tabel',
-                                                'pending'  => '⚠️ Menunggu pembayaran dari peserta',
-                                                'free'     => '✓ Event gratis, tidak ada pembayaran',
+                                                'paid' => '✓ Pembayaran lunas — konfirmasi peserta via tombol Aksi di tabel',
+                                                'pending' => '⚠️ Menunggu pembayaran dari peserta',
+                                                'free' => '✓ Event gratis, tidak ada pembayaran',
                                                 'refunded' => 'ℹ️ Dana sudah dikembalikan ke peserta',
-                                                default    => 'Pilih status pembayaran',
+                                                default => 'Pilih status pembayaran',
                                             })
                                             ->columnSpan(2),
 
@@ -318,8 +318,9 @@ class EventParticipantForm
                                     ->schema([
                                         FileUpload::make('payment_proof')
                                             ->label('Upload Bukti Pembayaran')
-                                            ->disk('public')
+                                            ->disk('private')
                                             ->directory('payment_proofs')
+                                            ->preventFilePathTampering()
                                             ->downloadable()
                                             ->nullable()
                                             ->maxSize(2048)
@@ -349,26 +350,6 @@ class EventParticipantForm
                                     ]),
                             ]),
 
-                        // Tab::make('Ringkasan')
-                        //     ->icon('heroicon-o-clipboard-document-check')
-                        //     ->schema([
-                        //         Section::make('Ringkasan Pendaftaran')
-                        //             ->description('Lihat semua informasi peserta dalam satu tampilan')
-                        //             ->icon('heroicon-o-document-text')
-                        //             ->schema([
-                        //                 ViewField::make('summary')
-                        //                     ->view('filament.forms.components.participant-summary')
-                        //                     ->viewData(fn ($get) => [
-                        //                         'name' => $get('name'),
-                        //                         'email' => $get('email'),
-                        //                         'phone' => $get('phone'),
-                        //                         'registrationCode' => $get('registration_code'),
-                        //                         'status' => $get('status'),
-                        //                         'paymentStatus' => $get('payment_status'),
-                        //                         'eventId' => $get('event_hastana_id'),
-                        //                     ]),
-                        //             ]),
-                        //     ]),
                     ])
                     ->columnSpanFull()
                     ->persistTabInQueryString(),

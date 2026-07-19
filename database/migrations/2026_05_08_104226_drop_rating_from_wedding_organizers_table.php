@@ -12,6 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('wedding_organizers', function (Blueprint $table) {
+            $table->dropIndex(['is_featured', 'rating']);
+        });
+
+        Schema::table('wedding_organizers', function (Blueprint $table) {
             $table->dropColumn('rating');
         });
     }
@@ -20,6 +24,10 @@ return new class extends Migration
     {
         Schema::table('wedding_organizers', function (Blueprint $table) {
             $table->decimal('rating', 3, 1)->nullable()->after('completed_events');
+        });
+
+        Schema::table('wedding_organizers', function (Blueprint $table) {
+            $table->index(['is_featured', 'rating']);
         });
     }
 };

@@ -1,20 +1,4 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HASTANA Indonesia - Himpunan Perusahaan Penata Acara Seluruh Indonesia</title>
-    
-    <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    
-    <!-- Icons -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <style>
+<style>
         /* Custom Tailwind Configuration */
         :root {
             --hastana-black: #1a1a1a;
@@ -66,7 +50,12 @@
         
         .nav-link:hover {
             color: var(--hastana-red);
-            transform: translateY(-1px);
+        }
+
+        .nav-link,
+        .dropdown-item,
+        .dropdown-toggle {
+            touch-action: manipulation;
         }
         
         /* Logo animation */
@@ -83,13 +72,16 @@
             transform: translateY(-10px);
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             visibility: hidden;
+            pointer-events: none;
         }
         
         .mobile-menu.active {
-            max-height: 600px;
+            max-height: calc(100dvh - 3.5rem);
+            overflow-y: auto;
             opacity: 1;
             transform: translateY(0);
             visibility: visible;
+            pointer-events: auto;
         }
         
         /* Debug mobile menu - remove this in production */
@@ -177,12 +169,12 @@
             margin-top: 8px;
         }
         
-        .dropdown:hover .dropdown-menu {
+        .dropdown-menu.open {
             opacity: 1;
             visibility: visible;
             transform: translateX(-50%) translateY(0);
         }
-        
+
         .dropdown-item {
             display: flex;
             align-items: center;
@@ -197,7 +189,6 @@
         .dropdown-item:hover {
             background: linear-gradient(135deg, rgba(220, 38, 38, 0.08), rgba(17, 24, 39, 0.05));
             color: var(--hastana-red);
-            transform: translateX(4px);
         }
         
         .dropdown-item i {
@@ -210,10 +201,10 @@
             transition: transform 0.3s ease;
         }
         
-        .dropdown:hover .dropdown-arrow {
+        .dropdown-toggle[aria-expanded="true"] .dropdown-arrow {
             transform: rotate(180deg);
         }
-        
+
         /* Mobile Dropdown Styles */
         .mobile-dropdown-menu {
             max-height: 0;
@@ -225,7 +216,8 @@
         }
         
         .mobile-dropdown-menu.active {
-            max-height: 200px;
+            max-height: min(50dvh, 24rem);
+            overflow-y: auto;
         }
         
         .mobile-dropdown-item {
@@ -252,13 +244,10 @@
             color: var(--hastana-red);
         }
     </style>
-</head>
-
-<body class="font-poppins bg-white">
     <!-- Header -->
     <header class="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-custom border-b border-gray-100 shadow-sm">
         <!-- Background Pattern Overlay -->
-        <div class="absolute inset-0 pattern-bg ring-pattern opacity-30"></div>
+        <div class="pointer-events-none absolute inset-0 pattern-bg ring-pattern opacity-30"></div>
         
         <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-14 sm:h-20">
@@ -267,11 +256,11 @@
                 <a href="{{ route('home') }}" class="flex items-center space-x-4 logo-container cursor-pointer group">
                     <!-- Logo Image -->
                     <div class="relative">
-                        <img src="{{ asset('images/hastana_logo.png') }}"
-                             alt="HASTANA Indonesia"
+                        <img src="{{ $headerCompany?->public_logo_url ?? asset('images/hastana-logo.svg') }}"
+                             alt="{{ $headerCompany?->company_name ?? 'HASTANA Indonesia' }}"
                              class="h-8 sm:h-12 w-auto object-contain transition-transform duration-300 group-hover:scale-110">
                         <!-- Subtle glow effect on hover -->
-                        <div class="absolute -inset-1 bg-gradient-to-r from-gray-900 to-red-600 rounded-full opacity-0 group-hover:opacity-20 blur transition-opacity duration-300"></div>
+                        <div class="pointer-events-none absolute -inset-1 bg-gradient-to-r from-gray-900 to-red-600 rounded-full opacity-0 group-hover:opacity-20 blur transition-opacity duration-300"></div>
                     </div>
                 </a>
 
@@ -294,11 +283,17 @@
                     </a>
                     <!-- Kontak Dropdown -->
                     <div class="dropdown">
-                        <a href="{{ route('contact') }}" class="nav-link {{ Request::routeIs('contact') || Request::routeIs('portfolio*') || Request::routeIs('about') ? 'active' : '' }} text-gray-700 text-sm font-medium px-2 py-1 flex items-center">
+                        <button
+                            type="button"
+                            class="dropdown-toggle nav-link {{ Request::routeIs('contact') || Request::routeIs('portfolio*') || Request::routeIs('about') || Request::routeIs('dpp') || Request::routeIs('gallery') ? 'active' : '' }} text-gray-700 text-sm font-medium px-2 py-1"
+                            aria-label="Buka submenu Kontak"
+                            aria-expanded="false"
+                            aria-controls="contact-dropdown-menu"
+                        >
                             Kontak
                             <i class="fas fa-chevron-down ml-1 text-xs dropdown-arrow"></i>
-                        </a>
-                        <div class="dropdown-menu">
+                        </button>
+                        <div class="dropdown-menu" id="contact-dropdown-menu">
                             <a href="{{ route('dpp') }}" class="dropdown-item text-sm {{ Request::routeIs('dpp') ? 'active' : '' }}">
                                 <i class="fas fa-landmark text-xs"></i>
                                 DPP
@@ -342,7 +337,13 @@
                     @else
                         <!-- User Avatar with Dropdown (Desktop Only) -->
                         <div class="hidden sm:block dropdown">
-                            <a href="#" class="flex items-center hover:opacity-90 transition-smooth">
+                            <button
+                                type="button"
+                                aria-label="Buka menu akun"
+                                aria-expanded="false"
+                                aria-controls="account-dropdown-menu"
+                                class="dropdown-toggle flex items-center hover:opacity-90 transition-smooth"
+                            >
                                 <div class="w-10 h-10 rounded-full overflow-hidden {{ auth()->user()->avatar ? '' : 'bg-gradient-to-r from-gray-900 to-red-600 flex items-center justify-center text-white font-bold' }} ring-2 ring-red-500 shadow-lg hover:ring-red-600 transition-all">
                                     @if(auth()->user()->avatar)
                                         <img src="{{ Storage::url(auth()->user()->avatar) }}" alt="{{ auth()->user()->name }}" class="w-full h-full object-cover">
@@ -350,8 +351,8 @@
                                         {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
                                     @endif
                                 </div>
-                            </a>
-                            <div class="dropdown-menu">
+                            </button>
+                            <div class="dropdown-menu" id="account-dropdown-menu">
                                 <div class="px-4 py-2 border-b border-gray-100">
                                     <p class="text-xs font-semibold text-gray-900">{{ auth()->user()->name }}</p>
                                     <p class="text-xs text-gray-400 truncate">{{ auth()->user()->email }}</p>
@@ -386,7 +387,6 @@
                     <button 
                         id="mobile-menu-button"
                         class="lg:hidden p-2 rounded-lg text-gray-700 hover:text-hastana-red hover:bg-gray-50 transition-smooth" 
-                        onclick="toggleMobileMenu()"
                         aria-label="Toggle mobile menu"
                         aria-expanded="false"
                         type="button">
@@ -422,7 +422,7 @@
                 
                 <!-- Mobile Kontak Dropdown -->
                 <div class="border-b border-gray-100">
-                    <button class="mobile-menu-item {{ Request::routeIs('contact') || Request::routeIs('portfolio*') || Request::routeIs('about') || Request::routeIs('dpp') ? 'active' : '' }} w-full flex items-center justify-between py-4 px-4 text-gray-700 hover:text-hastana-red hover:bg-gray-50 rounded-lg transition-smooth" onclick="toggleMobileDropdown('kontak')">
+                    <button type="button" class="mobile-menu-item {{ Request::routeIs('contact') || Request::routeIs('portfolio*') || Request::routeIs('about') || Request::routeIs('dpp') ? 'active' : '' }} w-full flex items-center justify-between py-4 px-4 text-gray-700 hover:text-hastana-red hover:bg-gray-50 rounded-lg transition-smooth" onclick="toggleMobileDropdown('kontak')">
                         <div class="flex items-center">
                             <i class="fas fa-envelope mr-3 text-sm w-5"></i>
                             <span class="font-medium">Kontak</span>
@@ -457,7 +457,7 @@
                 <div class="border-b border-gray-100">
                     @auth
                         <!-- User Logged In (Mobile) -->
-                        <button class="mobile-menu-item w-full flex items-center justify-between py-4 px-4 text-gray-700 hover:text-hastana-red hover:bg-gray-50 rounded-lg transition-smooth" onclick="toggleMobileDropdown('akun')">
+                        <button type="button" class="mobile-menu-item w-full flex items-center justify-between py-4 px-4 text-gray-700 hover:text-hastana-red hover:bg-gray-50 rounded-lg transition-smooth" onclick="toggleMobileDropdown('akun')">
                             <div class="flex items-center">
                                 <div class="w-8 h-8 rounded-full overflow-hidden {{ auth()->user()->avatar ? '' : 'bg-gradient-to-r from-gray-900 to-red-600 flex items-center justify-center text-white font-semibold text-sm' }} mr-3 ring-2 ring-gray-200">
                                     @if(auth()->user()->avatar)
@@ -488,7 +488,7 @@
                                 Admin Panel
                             </a>
                             @endif
-                            <a href="#" class="mobile-dropdown-item flex items-center text-sm hover:bg-gray-50 transition-smooth rounded">
+                            <a href="{{ route('dashboard') }}" class="mobile-dropdown-item flex items-center text-sm hover:bg-gray-50 transition-smooth rounded">
                                 <i class="fas fa-ticket-alt mr-2 text-xs w-4"></i>
                                 Event Saya
                             </a>
@@ -503,7 +503,7 @@
                         </div>
                     @else
                         <!-- Guest User (Mobile) -->
-                        <button class="mobile-menu-item {{ Request::routeIs('login') || Request::routeIs('register') ? 'active' : '' }} w-full flex items-center justify-between py-4 px-4 text-gray-700 hover:text-hastana-red hover:bg-gray-50 rounded-lg transition-smooth" onclick="toggleMobileDropdown('akun')">
+                        <button type="button" class="mobile-menu-item {{ Request::routeIs('login') || Request::routeIs('register') ? 'active' : '' }} w-full flex items-center justify-between py-4 px-4 text-gray-700 hover:text-hastana-red hover:bg-gray-50 rounded-lg transition-smooth" onclick="toggleMobileDropdown('akun')">
                             <div class="flex items-center">
                                 <i class="fas fa-user mr-3 text-sm w-5"></i>
                                 <span class="font-medium">Akun</span>
@@ -541,11 +541,8 @@
             const menuIcon = document.getElementById('menu-icon');
             const menuButton = document.getElementById('mobile-menu-button');
             const body = document.body;
-            
-            console.log('toggleMobileMenu function called'); // Debug log
-            
+
             if (!mobileMenu || !menuIcon) {
-                console.error('Mobile menu elements not found in toggle function'); // Debug log
                 return;
             }
             
@@ -555,21 +552,18 @@
                 menuIcon.className = 'fas fa-bars text-xl';
                 if (menuButton) menuButton.setAttribute('aria-expanded', 'false');
                 body.style.overflow = 'auto';
-                console.log('Menu closed via toggle function'); // Debug log
             } else {
                 // Open menu
                 mobileMenu.classList.add('active');
                 menuIcon.className = 'fas fa-times text-xl';
                 if (menuButton) menuButton.setAttribute('aria-expanded', 'true');
                 body.style.overflow = 'hidden';
-                console.log('Menu opened via toggle function'); // Debug log
             }
         }
 
         // Close mobile menu when clicking outside
         document.addEventListener('click', function(event) {
             const mobileMenu = document.getElementById('mobile-menu');
-            const menuButton = event.target.closest('button');
             const header = document.querySelector('header');
             
             // Check if click is outside header and menu is open
@@ -577,7 +571,13 @@
                 mobileMenu.classList.remove('active');
                 document.getElementById('menu-icon').className = 'fas fa-bars text-xl';
                 document.body.style.overflow = 'auto';
-                console.log('Menu closed by outside click'); // Debug log
+            }
+
+            if (!event.target.closest('.dropdown')) {
+                document.querySelectorAll('.dropdown-menu.open').forEach(menu => menu.classList.remove('open'));
+                document.querySelectorAll('.dropdown-toggle[aria-expanded="true"]').forEach(toggle => {
+                    toggle.setAttribute('aria-expanded', 'false');
+                });
             }
         });
 
@@ -588,7 +588,6 @@
                 mobileMenu.classList.remove('active');
                 document.getElementById('menu-icon').className = 'fas fa-bars text-xl';
                 document.body.style.overflow = 'auto';
-                console.log('Menu closed due to resize'); // Debug log
             }
         });
 
@@ -605,16 +604,18 @@
         });
 
         // Smooth scrolling for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        document.querySelectorAll('a[href^="#"]:not([href="#"])').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
+                const targetId = this.getAttribute('href').slice(1);
+                const target = document.getElementById(targetId);
+
+                if (!target) return;
+
                 e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
                 
                 // Close mobile menu if open
                 const mobileMenu = document.getElementById('mobile-menu');
@@ -622,7 +623,6 @@
                     mobileMenu.classList.remove('active');
                     document.getElementById('menu-icon').className = 'fas fa-bars text-xl';
                     document.body.style.overflow = 'auto';
-                    console.log('Menu closed after link click'); // Debug log
                 }
             });
         });
@@ -633,7 +633,6 @@
             const arrow = document.getElementById(dropdownId + '-arrow');
             
             if (!dropdown || !arrow) {
-                console.error('Dropdown elements not found:', dropdownId);
                 return;
             }
             
@@ -650,23 +649,49 @@
             if (!isActive) {
                 dropdown.classList.add('active');
                 arrow.style.transform = 'rotate(180deg)';
-                console.log('Mobile dropdown opened:', dropdownId);
             } else {
                 dropdown.classList.remove('active');
                 arrow.style.transform = 'rotate(0deg)';
-                console.log('Mobile dropdown closed:', dropdownId);
             }
         }
 
         // Ensure mobile menu button is clickable
         document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.dropdown-toggle').forEach(toggle => {
+                toggle.addEventListener('click', function() {
+                    const menuId = toggle.getAttribute('aria-controls');
+                    const menu = menuId ? document.getElementById(menuId) : null;
+
+                    if (!menu) return;
+
+                    const willOpen = !menu.classList.contains('open');
+
+                    document.querySelectorAll('.dropdown-menu.open').forEach(openMenu => {
+                        openMenu.classList.remove('open');
+                    });
+                    document.querySelectorAll('.dropdown-toggle[aria-expanded="true"]').forEach(openToggle => {
+                        openToggle.setAttribute('aria-expanded', 'false');
+                    });
+
+                    if (willOpen) {
+                        menu.classList.add('open');
+                        toggle.setAttribute('aria-expanded', 'true');
+                    }
+                });
+            });
+
+            document.addEventListener('keydown', function(event) {
+                if (event.key !== 'Escape') return;
+
+                document.querySelectorAll('.dropdown-menu.open').forEach(menu => menu.classList.remove('open'));
+                document.querySelectorAll('.dropdown-toggle[aria-expanded="true"]').forEach(toggle => {
+                    toggle.setAttribute('aria-expanded', 'false');
+                });
+            });
+
             const menuButton = document.getElementById('mobile-menu-button');
             const mobileMenu = document.getElementById('mobile-menu');
             const menuIcon = document.getElementById('menu-icon');
-            
-            console.log('DOM loaded, setting up mobile menu'); // Debug log
-            console.log('Menu button:', menuButton); // Debug log
-            console.log('Mobile menu:', mobileMenu); // Debug log
             
             if (menuButton && mobileMenu && menuIcon) {
                 // Remove inline onclick and add proper event listener
@@ -676,8 +701,6 @@
                     e.preventDefault();
                     e.stopPropagation();
                     
-                    console.log('Menu button clicked'); // Debug log
-                    
                     const isActive = mobileMenu.classList.contains('active');
                     
                     if (isActive) {
@@ -686,28 +709,15 @@
                         menuIcon.className = 'fas fa-bars text-xl';
                         menuButton.setAttribute('aria-expanded', 'false');
                         document.body.style.overflow = 'auto';
-                        console.log('Menu closed'); // Debug log
                     } else {
                         // Open menu
                         mobileMenu.classList.add('active');
                         menuIcon.className = 'fas fa-times text-xl';
                         menuButton.setAttribute('aria-expanded', 'true');
                         document.body.style.overflow = 'hidden';
-                        console.log('Menu opened'); // Debug log
                     }
                 });
                 
-                // Add touch event for mobile devices
-                menuButton.addEventListener('touchend', function(e) {
-                    e.preventDefault();
-                    menuButton.click();
-                });
-                
-                console.log('Mobile menu event listeners added successfully'); // Debug log
-            } else {
-                console.error('Mobile menu elements not found'); // Debug log
             }
         });
     </script>
-</body>
-</html>

@@ -2,21 +2,39 @@
 
 namespace App\Models;
 
+use Filament\Auth\MultiFactor\App\Concerns\InteractsWithAppAuthentication;
+use Filament\Auth\MultiFactor\App\Concerns\InteractsWithAppAuthenticationRecovery;
+use Filament\Auth\MultiFactor\App\Contracts\HasAppAuthentication;
+use Filament\Auth\MultiFactor\App\Contracts\HasAppAuthenticationRecovery;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
+use Spatie\Permission\Models\Role;
 use Spatie\Permission\Traits\HasRoles;
 
-class User extends Authenticatable implements FilamentUser
+class User extends Authenticatable implements FilamentUser, HasAppAuthentication, HasAppAuthenticationRecovery
 {
-    use HasFactory, HasRoles, Notifiable;
+    use HasFactory;
+    use HasRoles;
+    use InteractsWithAppAuthentication;
+    use InteractsWithAppAuthenticationRecovery;
+    use Notifiable;
 
     protected static function booted(): void
     {
         static::created(function (self $user) {
-            if ($user->roles()->count() === 0) {
+            $guardName = config('auth.defaults.guard', 'web');
+            $customerRoleExists = Role::query()
+                ->where('name', 'customer')
+                ->where('guard_name', $guardName)
+                ->exists();
+
+            if ($customerRoleExists && $user->roles()->count() === 0) {
                 $user->assignRole('customer');
             }
         });
@@ -78,7 +96,41 @@ class User extends Authenticatable implements FilamentUser
         $superAdminRole = config('filament-shield.super_admin.name', 'super_admin');
         $panelUserRole = config('filament-shield.panel_user.name', 'panel_user');
 
-        return $this->hasAnyRole(['admin', $superAdminRole, $panelUserRole]);
+        if ($this->status !== 'active' || ! $this->hasAnyRole(['admin', $superAdminRole, $panelUserRole])) {
+            return false;
+        }
+
+        if (app()->isProduction()) {
+            if ($this->usesKnownDefaultPassword()) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public function getAuthPassword(): string
+    {
+        $password = (string) $this->getAttribute($this->getAuthPasswordName());
+
+        if (! app()->isProduction() || ! $this->usesKnownDefaultPassword($password)) {
+            return $password;
+        }
+
+        static $blockedPasswordHash;
+
+        return $blockedPasswordHash ??= Hash::make(Str::random(64));
+    }
+
+    private function usesKnownDefaultPassword(?string $password = null): bool
+    {
+        $password ??= (string) $this->getAttribute($this->getAuthPasswordName());
+
+        return Cache::remember(
+            'security:default-password:'.sha1($password),
+            now()->addHour(),
+            fn (): bool => Hash::check('password123', $password),
+        );
     }
 
     public function isAdmin(): bool

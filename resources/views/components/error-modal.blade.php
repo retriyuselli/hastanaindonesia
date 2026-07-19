@@ -72,6 +72,7 @@
         cancelAnimationFrame(raf);
         overlay.style.transition = 'opacity .2s';
         overlay.style.opacity    = '0';
+        overlay.style.pointerEvents = 'none';
         setTimeout(() => overlay.remove(), 200);
     };
 })();
