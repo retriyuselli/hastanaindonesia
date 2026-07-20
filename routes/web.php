@@ -95,6 +95,9 @@ Route::middleware('auth')->prefix('admin/files')->group(function () {
 
     Route::get('event-participants/recap', [AdminFileController::class, 'eventParticipantRecap'])
         ->name('admin.files.event-participants.recap');
+
+    Route::get('event-participants/recap-excel', [AdminFileController::class, 'eventParticipantRecapExcel'])
+        ->name('admin.files.event-participants.recap-excel');
 });
 
 Route::middleware('auth')->prefix('files')->group(function () {

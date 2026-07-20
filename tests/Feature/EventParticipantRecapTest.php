@@ -61,6 +61,41 @@ class EventParticipantRecapTest extends TestCase
             ->assertForbidden();
     }
 
+    public function test_admin_can_download_recap_excel(): void
+    {
+        $user = $this->userWithRole('admin');
+
+        $response = $this->actingAs($user)
+            ->get(route('admin.files.event-participants.recap-excel'));
+
+        $response->assertOk()
+            ->assertHeader(
+                'Content-Type',
+                'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            )
+            ->assertHeader('X-Content-Type-Options', 'nosniff');
+
+        $this->assertStringStartsWith(
+            'attachment; filename=rekapan-peserta-',
+            (string) $response->headers->get('Content-Disposition'),
+        );
+        $this->assertStringContainsString(
+            'no-store',
+            (string) $response->headers->get('Cache-Control'),
+        );
+    }
+
+    public function test_non_admin_panel_user_cannot_access_recap_excel(): void
+    {
+        $user = $this->userWithRole(
+            config('filament-shield.panel_user.name', 'panel_user'),
+        );
+
+        $this->actingAs($user)
+            ->get(route('admin.files.event-participants.recap-excel'))
+            ->assertForbidden();
+    }
+
     private function userWithRole(string $roleName): User
     {
         $role = Role::findOrCreate($roleName);

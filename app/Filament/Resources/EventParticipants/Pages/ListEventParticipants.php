@@ -23,10 +23,16 @@ class ListEventParticipants extends ListRecords
                 ->visible(fn (): bool => $this->canAccessRecap())
                 ->openUrlInNewTab(),
             Action::make('downloadRecap')
-                ->label('Download Rekapan')
+                ->label('Download PDF')
                 ->icon('heroicon-o-arrow-down-tray')
                 ->color('warning')
                 ->url(fn () => route('admin.files.event-participants.recap', ['download' => 1]))
+                ->visible(fn (): bool => $this->canAccessRecap()),
+            Action::make('downloadRecapExcel')
+                ->label('Download Excel')
+                ->icon('heroicon-o-table-cells')
+                ->color('success')
+                ->url(fn () => route('admin.files.event-participants.recap-excel'))
                 ->visible(fn (): bool => $this->canAccessRecap()),
             CreateAction::make(),
         ];

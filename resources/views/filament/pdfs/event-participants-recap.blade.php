@@ -160,6 +160,9 @@ table.recap tfoot td.r { text-align:right; color:{{ $accent }}; font-size:10px; 
                 </td>
                 <td>
                     {{ $p->email }}
+                    <div class="sub">
+                        Asal Region: {{ $p->user?->weddingOrganizer?->region?->region_name ?? '—' }}
+                    </div>
                     <div class="sub" style="font-family:monospace;">{{ strtoupper($p->registration_code) }}</div>
                 </td>
                 <td>
@@ -173,6 +176,11 @@ table.recap tfoot td.r { text-align:right; color:{{ $accent }}; font-size:10px; 
                           style="background:{{ $payBg[$p->payment_status] ?? '#f3f4f6' }}; color:{{ $payColor[$p->payment_status] ?? '#374151' }}">
                         {{ $payLabels[$p->payment_status] ?? strtoupper($p->payment_status) }}
                     </span>
+                    @if(filled($p->payment_proof))
+                        <div class="sub" style="margin-top:3px;">
+                            {{ $p->created_at?->format('d M Y') ?? '—' }}
+                        </div>
+                    @endif
                 </td>
                 <td>
                     @if($addons->isNotEmpty())

@@ -10,7 +10,13 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Style\Alignment;
+use PhpOffice\PhpSpreadsheet\Style\Fill;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class AdminFileController extends Controller
 {
@@ -117,7 +123,11 @@ class AdminFileController extends Controller
             'revenue' => (clone $participantsQuery)->where('payment_status', 'paid')->sum('total_amount'),
         ];
 
-        $participants = EventParticipant::with(['eventHastana', 'participantAddons.eventAddon'])
+        $participants = EventParticipant::with([
+            'eventHastana',
+            'participantAddons.eventAddon',
+            'user.weddingOrganizer.region',
+        ])
             ->lazyById(250);
 
         $company = Company::first();
@@ -136,6 +146,136 @@ class AdminFileController extends Controller
             $pdf->output(),
             'rekapan-peserta-'.now()->format('Ymd-His').'.pdf',
         );
+    }
+
+    public function eventParticipantRecapExcel(Request $request): StreamedResponse
+    {
+        $this->authorizeAdmin($request);
+
+        $payLabels = [
+            'paid' => 'LUNAS',
+            'free' => 'GRATIS',
+            'refunded' => 'REFUNDED',
+            'pending' => 'BELUM BAYAR',
+        ];
+
+        $participants = EventParticipant::with([
+            'eventHastana',
+            'participantAddons.eventAddon',
+            'user.weddingOrganizer.region',
+        ])
+            ->orderBy('id')
+            ->lazyById(250);
+
+        $spreadsheet = new Spreadsheet;
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheet->setTitle('Rekapan Peserta');
+
+        $headers = [
+            'No',
+            'Nama Peserta',
+            'Telepon',
+            'Perusahaan',
+            'Email',
+            'Asal Region',
+            'Kode Registrasi',
+            'Event',
+            'Tanggal Event',
+            'Status Pembayaran',
+            'Tanggal Upload',
+            'Add-on',
+            'Total',
+        ];
+
+        foreach ($headers as $index => $header) {
+            $column = Coordinate::stringFromColumnIndex($index + 1);
+            $sheet->setCellValue($column.'1', $header);
+        }
+
+        $lastColumn = Coordinate::stringFromColumnIndex(count($headers));
+        $sheet->getStyle('A1:'.$lastColumn.'1')->applyFromArray([
+            'font' => ['bold' => true, 'color' => ['rgb' => 'FFFFFF']],
+            'fill' => ['fillType' => Fill::FILL_SOLID, 'startColor' => ['rgb' => '8B1A1A']],
+            'alignment' => ['horizontal' => Alignment::HORIZONTAL_CENTER],
+        ]);
+
+        $rowNumber = 2;
+        $index = 0;
+
+        foreach ($participants as $participant) {
+            $index++;
+            $addons = $participant->participantAddons;
+            $addonText = $addons->isEmpty()
+                ? '—'
+                : $addons
+                    ->map(function ($addon): string {
+                        $name = $addon->eventAddon?->name ?? 'Add-on';
+                        $amount = number_format($addon->quantity * $addon->price_at_time, 0, ',', '.');
+
+                        return $name.' ×'.$addon->quantity.' (Rp '.$amount.')';
+                    })
+                    ->implode('; ');
+
+            $total = match (true) {
+                $participant->payment_status === 'free' => 'GRATIS',
+                (float) $participant->total_amount > 0 => (float) $participant->total_amount,
+                default => '—',
+            };
+
+            $data = [
+                $index,
+                $participant->name,
+                $participant->phone ?: '—',
+                trim(($participant->company ?? '').($participant->position ? ', '.$participant->position : '')) ?: '—',
+                $participant->email,
+                $participant->user?->weddingOrganizer?->region?->region_name ?? '—',
+                strtoupper((string) $participant->registration_code),
+                $participant->eventHastana?->title ?? '—',
+                $participant->eventHastana?->start_date?->format('d M Y') ?? '—',
+                $payLabels[$participant->payment_status] ?? strtoupper((string) $participant->payment_status),
+                filled($participant->payment_proof)
+                    ? ($participant->created_at?->format('d M Y') ?? '—')
+                    : '—',
+                $addonText,
+                $total,
+            ];
+
+            foreach ($data as $columnIndex => $value) {
+                $column = Coordinate::stringFromColumnIndex($columnIndex + 1);
+                $sheet->setCellValue($column.$rowNumber, $value);
+            }
+
+            if (is_float($total)) {
+                $sheet->getStyle('M'.$rowNumber)
+                    ->getNumberFormat()
+                    ->setFormatCode('"Rp "* #,##0');
+            }
+
+            if ($index % 2 === 0) {
+                $sheet->getStyle('A'.$rowNumber.':'.$lastColumn.$rowNumber)->applyFromArray([
+                    'fill' => ['fillType' => Fill::FILL_SOLID, 'startColor' => ['rgb' => 'F9FAFB']],
+                ]);
+            }
+
+            $rowNumber++;
+        }
+
+        foreach (range(1, count($headers)) as $columnIndex) {
+            $sheet->getColumnDimensionByColumn($columnIndex)->setAutoSize(true);
+        }
+
+        $sheet->freezePane('A2');
+
+        $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+        $filename = 'rekapan-peserta-'.now()->format('Ymd-His').'.xlsx';
+
+        return response()->streamDownload(function () use ($writer): void {
+            $writer->save('php://output');
+        }, $filename, [
+            'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            'X-Content-Type-Options' => 'nosniff',
+            'Cache-Control' => 'private, no-store, max-age=0',
+        ]);
     }
 
     private function authorizeAdmin(Request $request): void
