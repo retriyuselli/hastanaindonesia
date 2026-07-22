@@ -2,9 +2,11 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Pages\Auth\ChallengeMultiFactorAuthentication;
 use App\Filament\Widgets\ActivityTrendChart;
 use App\Filament\Widgets\DashboardStatsOverview;
 use App\Filament\Widgets\LatestActivities;
+use App\Http\Middleware\EnsureAdminMultiFactorChallengeIsVerified;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use Filament\Auth\MultiFactor\App\AppAuthentication;
 use Filament\Http\Middleware\Authenticate;
@@ -22,6 +24,7 @@ use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
+use Illuminate\Support\Facades\Route;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 
 class AdminPanelProvider extends PanelProvider
@@ -43,6 +46,10 @@ class AdminPanelProvider extends PanelProvider
             ->multiFactorAuthentication([
                 AppAuthentication::make()->recoverable(),
             ], isRequired: true)
+            ->authenticatedRoutes(function (): void {
+                Route::get('multi-factor-authentication/challenge', ChallengeMultiFactorAuthentication::class)
+                    ->name('auth.multi-factor-authentication.challenge');
+            })
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
                 DashboardStatsOverview::class,
@@ -81,6 +88,7 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
+                EnsureAdminMultiFactorChallengeIsVerified::class,
             ])
             ->viteTheme('resources/css/filament/admin/theme.css');
     }

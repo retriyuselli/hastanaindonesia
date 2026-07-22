@@ -7,7 +7,6 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
 class ProfileController extends Controller
@@ -28,26 +27,16 @@ class ProfileController extends Controller
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
         $user = $request->user();
-        $user->fill($request->validated());
+        $user->fill($request->safe()->except(['avatar', 'remove_avatar']));
 
-        // Handle avatar upload
         if ($request->hasFile('avatar')) {
-            // Delete old avatar if exists
-            if ($user->avatar) {
-                Storage::delete($user->avatar);
-            }
-
-            // Store new avatar
-            $avatarPath = $request->file('avatar')->store('avatars', 'public');
-            $user->avatar = $avatarPath;
+            $user->deleteStoredAvatar();
+            $user->avatar = $request->file('avatar')->store('avatars', 'public');
         }
 
-        // Handle avatar removal
-        if ($request->input('remove_avatar')) {
-            if ($user->avatar) {
-                Storage::delete($user->avatar);
-                $user->avatar = null;
-            }
+        if ($request->boolean('remove_avatar')) {
+            $user->deleteStoredAvatar();
+            $user->avatar = null;
         }
 
         if ($user->isDirty('email')) {
@@ -72,6 +61,7 @@ class ProfileController extends Controller
 
         Auth::logout();
 
+        $user->deleteStoredAvatar();
         $user->delete();
 
         $request->session()->invalidate();

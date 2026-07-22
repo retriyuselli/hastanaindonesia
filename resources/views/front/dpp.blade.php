@@ -106,7 +106,7 @@
                         {{ $item['color'] === 'red' ? 'bg-gradient-to-br from-hastana-red to-red-700 text-white ring-4 ring-red-100' : 'bg-gradient-to-br from-gray-700 to-gray-900 text-white ring-4 ring-gray-100' }}
                         group-hover:scale-105 transition-transform">
                         @if($item['user']->avatar)
-                            <img src="{{ Storage::url($item['user']->avatar) }}" class="w-full h-full object-cover rounded-full" alt="{{ $item['user']->name }}">
+                            <img src="{{ $item['user']->avatar_url }}" class="w-full h-full object-cover rounded-full" alt="{{ $item['user']->name }}" referrerpolicy="no-referrer">
                         @else
                             {{ strtoupper(substr($item['user']->name, 0, 1)) }}
                         @endif
@@ -144,7 +144,7 @@
                         bg-gradient-to-br from-gray-700 to-gray-900 text-white ring-2 ring-gray-100
                         group-hover:scale-105 transition-transform">
                         @if($item['user']->avatar)
-                            <img src="{{ Storage::url($item['user']->avatar) }}" class="w-full h-full object-cover rounded-full" alt="{{ $item['user']->name }}">
+                            <img src="{{ $item['user']->avatar_url }}" class="w-full h-full object-cover rounded-full" alt="{{ $item['user']->name }}" referrerpolicy="no-referrer">
                         @else
                             {{ strtoupper(substr($item['user']->name, 0, 1)) }}
                         @endif

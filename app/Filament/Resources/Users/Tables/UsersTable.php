@@ -23,10 +23,9 @@ class UsersTable
     {
         return $table
             ->columns([
-                ImageColumn::make('avatar')
+                ImageColumn::make('avatar_url')
                     ->label('Avatar')
                     ->circular()
-                    ->disk('public')
                     ->defaultImageUrl(url('/images/default-avatar.png'))
                     ->width(40),
 

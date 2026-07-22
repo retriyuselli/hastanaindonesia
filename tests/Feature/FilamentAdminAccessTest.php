@@ -32,7 +32,7 @@ class FilamentAdminAccessTest extends TestCase
 
         $response = $this->actingAs($user)->get('/admin');
 
-        $response->assertStatus(403);
+        $response->assertRedirect(route('admin.access-denied'));
     }
 
     public function test_user_with_panel_user_role_can_access_admin_panel(): void

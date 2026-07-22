@@ -11,9 +11,10 @@
                     <div class="lg:sticky lg:top-24 space-y-6">
                         <div class="bg-white rounded-lg shadow-md p-6">
                             <div class="flex items-center gap-4">
-                                @if(auth()->user()->avatar)
-                                    <img src="{{ asset('storage/' . auth()->user()->avatar) }}"
+                                @if(auth()->user()->avatar_url)
+                                    <img src="{{ auth()->user()->avatar_url }}"
                                         alt="{{ auth()->user()->name }}"
+                                        referrerpolicy="no-referrer"
                                         onerror="this.onerror=null; this.style.display='none'; this.nextElementSibling.style.display='flex';"
                                         class="w-14 h-14 rounded-full object-cover border-2 border-red-100">
                                     <div class="w-14 h-14 bg-gradient-to-r from-gray-900 to-red-600 rounded-full flex items-center justify-center text-white text-xl font-bold" style="display: none;">

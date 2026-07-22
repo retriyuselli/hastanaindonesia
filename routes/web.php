@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminFileController;
+use App\Http\Controllers\Auth\AdminAccessDeniedController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\BlogEngagementController;
 use App\Http\Controllers\DashboardController;
@@ -19,6 +20,9 @@ use App\Http\Controllers\RegionProfileController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
+
+Route::get('/akses-admin-ditolak', AdminAccessDeniedController::class)
+    ->name('admin.access-denied');
 
 // Gallery routes
 Route::get('/gallery', [GalleryController::class, 'index'])->name('gallery');

@@ -18,7 +18,15 @@ class GoogleAuthenticationTest extends TestCase
         $this->get(route('login'))
             ->assertOk()
             ->assertSee('Masuk dengan Google')
-            ->assertSee('googleLoginComingSoon');
+            ->assertSee(route('auth.google.redirect', absolute: false), false);
+    }
+
+    public function test_register_page_offers_google_authentication(): void
+    {
+        $this->get(route('register'))
+            ->assertOk()
+            ->assertSee('Masuk dengan Google')
+            ->assertSee(route('auth.google.redirect', absolute: false), false);
     }
 
     public function test_existing_active_user_can_login_with_verified_google_email(): void
@@ -36,16 +44,26 @@ class GoogleAuthenticationTest extends TestCase
         $response->assertRedirect(route('dashboard', absolute: false));
     }
 
-    public function test_google_login_does_not_create_an_unknown_user(): void
+    public function test_google_login_creates_an_account_for_a_new_verified_email(): void
     {
-        $this->fakeGoogleUser('unknown@example.com');
+        Role::findOrCreate('customer');
+
+        $this->fakeGoogleUser('new.member@example.com', verified: true, name: 'Anggota Baru');
 
         $response = $this->get(route('auth.google.callback'));
 
-        $this->assertGuest();
-        $this->assertDatabaseCount('users', 0);
-        $response->assertRedirect(route('login'));
-        $response->assertSessionHasErrors('email');
+        $this->assertDatabaseHas('users', [
+            'email' => 'new.member@example.com',
+            'name' => 'Anggota Baru',
+            'status' => 'active',
+        ]);
+
+        $user = User::query()->where('email', 'new.member@example.com')->first();
+        $this->assertNotNull($user);
+        $this->assertNotNull($user->email_verified_at);
+        $this->assertTrue($user->hasRole('customer'));
+        $this->assertAuthenticatedAs($user);
+        $response->assertRedirect(route('dashboard', absolute: false));
     }
 
     public function test_google_login_rejects_an_unverified_email(): void
@@ -82,7 +100,7 @@ class GoogleAuthenticationTest extends TestCase
 
     public function test_google_login_rejects_users_without_admin_access_for_admin_destination(): void
     {
-        User::factory()->create([
+        $user = User::factory()->create([
             'email' => 'member@example.com',
             'status' => 'active',
         ]);
@@ -91,10 +109,21 @@ class GoogleAuthenticationTest extends TestCase
 
         $this->withSession(['url.intended' => url('/admin')])
             ->get(route('auth.google.callback'))
-            ->assertRedirect(route('login'))
-            ->assertSessionHasErrors('email');
+            ->assertRedirect(route('admin.access-denied'));
+
+        $this->assertAuthenticatedAs($user);
+    }
+
+    public function test_google_login_to_admin_rejects_unknown_email_with_not_registered_message(): void
+    {
+        $this->fakeGoogleUser('unknown@example.com');
+
+        $this->withSession(['url.intended' => url('/admin')])
+            ->get(route('auth.google.callback'))
+            ->assertRedirect(route('admin.access-denied'));
 
         $this->assertGuest();
+        $this->assertDatabaseCount('users', 0);
     }
 
     public function test_google_login_preserves_admin_destination_for_an_authorized_user(): void
@@ -115,10 +144,11 @@ class GoogleAuthenticationTest extends TestCase
         $response->assertRedirect(url('/admin'));
     }
 
-    private function fakeGoogleUser(string $email, bool $verified = true): void
+    private function fakeGoogleUser(string $email, bool $verified = true, ?string $name = null): void
     {
         Socialite::fake('google', GoogleUser::fake([
             'email' => $email,
+            'name' => $name ?? 'Google User',
             'verified_email' => $verified,
         ]));
     }

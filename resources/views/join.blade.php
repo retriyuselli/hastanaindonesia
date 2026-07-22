@@ -866,7 +866,7 @@
                 <div class="flex items-start space-x-3">
                     <div class="flex-shrink-0">
                         @if($existingOrganizer->user && $existingOrganizer->user->avatar)
-                            <img src="{{ asset('storage/' . $existingOrganizer->user->avatar) }}" 
+                            <img src="{{ $existingOrganizer->user->avatar_url }}" 
                                  alt="{{ $existingOrganizer->user->name }}" 
                                  class="w-12 h-12 rounded-full object-cover border-2 border-blue-300">
                         @else

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Support\Auth\AdminMultiFactorSession;
 use Filament\Auth\MultiFactor\App\Concerns\InteractsWithAppAuthentication;
 use Filament\Auth\MultiFactor\App\Concerns\InteractsWithAppAuthenticationRecovery;
 use Filament\Auth\MultiFactor\App\Contracts\HasAppAuthentication;
@@ -13,6 +14,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Traits\HasRoles;
@@ -37,6 +39,20 @@ class User extends Authenticatable implements FilamentUser, HasAppAuthentication
             if ($customerRoleExists && $user->roles()->count() === 0) {
                 $user->assignRole('customer');
             }
+        });
+
+        static::updated(function (self $user): void {
+            if (! $user->wasChanged('app_authentication_secret') || ! session()->isStarted()) {
+                return;
+            }
+
+            if (filled($user->getAppAuthenticationSecret())) {
+                AdminMultiFactorSession::confirm($user);
+
+                return;
+            }
+
+            AdminMultiFactorSession::clear();
         });
     }
 
@@ -133,28 +149,52 @@ class User extends Authenticatable implements FilamentUser, HasAppAuthentication
         );
     }
 
+    /**
+     * Whether the avatar points to an external URL (e.g. Google).
+     */
+    public function hasRemoteAvatar(): bool
+    {
+        return filled($this->avatar) && filter_var($this->avatar, FILTER_VALIDATE_URL) !== false;
+    }
+
+    /**
+     * Whether the avatar is a file stored on the public disk.
+     */
+    public function hasStoredAvatar(): bool
+    {
+        return filled($this->avatar) && ! $this->hasRemoteAvatar();
+    }
+
+    /**
+     * Delete only locally stored avatar files (never remote URLs).
+     */
+    public function deleteStoredAvatar(): void
+    {
+        if ($this->hasStoredAvatar()) {
+            Storage::disk('public')->delete($this->avatar);
+        }
+    }
+
+    /**
+     * Resolved avatar URL for UI (uploaded file, Google URL, or null).
+     */
+    public function getAvatarUrlAttribute(): ?string
+    {
+        if (! filled($this->avatar)) {
+            return null;
+        }
+
+        if ($this->hasRemoteAvatar()) {
+            return $this->avatar;
+        }
+
+        return asset('storage/'.$this->avatar);
+    }
+
     public function isAdmin(): bool
     {
         $superAdminRole = config('filament-shield.super_admin.name', 'super_admin');
 
         return $this->hasAnyRole(['admin', $superAdminRole]);
-    }
-
-    /**
-     * Get avatar URL with storage path
-     */
-    public function getAvatarUrlAttribute()
-    {
-        if ($this->avatar) {
-            // If avatar already has full URL (http/https)
-            if (filter_var($this->avatar, FILTER_VALIDATE_URL)) {
-                return $this->avatar;
-            }
-
-            // If avatar is a storage path
-            return asset('storage/'.$this->avatar);
-        }
-
-        return null;
     }
 }

@@ -1,0 +1,15 @@
+---
+description: Never delete or wipe databases without explicit user instruction
+alwaysApply: true
+---
+
+# Database Safety
+
+- **NEVER** drop, delete, truncate, or wipe a database, schema, or all tables unless the user explicitly asks for that exact action in the current message.
+- **NEVER** run destructive DB commands without explicit instruction, including:
+  - `migrate:fresh`, `migrate:refresh`, `db:wipe`
+  - `DROP DATABASE`, `DROP TABLE`, `TRUNCATE`
+  - `phpmyadmin` / SQL mass deletes of production-like local data
+- Prefer safe operations: `migrate`, `db:seed` (only when asked), targeted queries, backups.
+- If a destructive step seems needed, **ask first** and wait for confirmation.
+- Do not change `DB_DATABASE` in `.env` to point at a different database as a way to “start clean” unless the user asks.

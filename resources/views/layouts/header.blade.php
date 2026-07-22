@@ -344,9 +344,9 @@
                                 aria-controls="account-dropdown-menu"
                                 class="dropdown-toggle flex items-center hover:opacity-90 transition-smooth"
                             >
-                                <div class="w-10 h-10 rounded-full overflow-hidden {{ auth()->user()->avatar ? '' : 'bg-gradient-to-r from-gray-900 to-red-600 flex items-center justify-center text-white font-bold' }} ring-2 ring-red-500 shadow-lg hover:ring-red-600 transition-all">
-                                    @if(auth()->user()->avatar)
-                                        <img src="{{ Storage::url(auth()->user()->avatar) }}" alt="{{ auth()->user()->name }}" class="w-full h-full object-cover">
+                                <div class="w-10 h-10 rounded-full overflow-hidden {{ auth()->user()->avatar_url ? '' : 'bg-gradient-to-r from-gray-900 to-red-600 flex items-center justify-center text-white font-bold' }} ring-2 ring-red-500 shadow-lg hover:ring-red-600 transition-all">
+                                    @if(auth()->user()->avatar_url)
+                                        <img src="{{ auth()->user()->avatar_url }}" alt="{{ auth()->user()->name }}" referrerpolicy="no-referrer" class="w-full h-full object-cover">
                                     @else
                                         {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
                                     @endif
@@ -459,9 +459,9 @@
                         <!-- User Logged In (Mobile) -->
                         <button type="button" class="mobile-menu-item w-full flex items-center justify-between py-4 px-4 text-gray-700 hover:text-hastana-red hover:bg-gray-50 rounded-lg transition-smooth" onclick="toggleMobileDropdown('akun')">
                             <div class="flex items-center">
-                                <div class="w-8 h-8 rounded-full overflow-hidden {{ auth()->user()->avatar ? '' : 'bg-gradient-to-r from-gray-900 to-red-600 flex items-center justify-center text-white font-semibold text-sm' }} mr-3 ring-2 ring-gray-200">
-                                    @if(auth()->user()->avatar)
-                                        <img src="{{ Storage::url(auth()->user()->avatar) }}" alt="{{ auth()->user()->name }}" class="w-full h-full object-cover">
+                                <div class="w-8 h-8 rounded-full overflow-hidden {{ auth()->user()->avatar_url ? '' : 'bg-gradient-to-r from-gray-900 to-red-600 flex items-center justify-center text-white font-semibold text-sm' }} mr-3 ring-2 ring-gray-200">
+                                    @if(auth()->user()->avatar_url)
+                                        <img src="{{ auth()->user()->avatar_url }}" alt="{{ auth()->user()->name }}" referrerpolicy="no-referrer" class="w-full h-full object-cover">
                                     @else
                                         {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
                                     @endif

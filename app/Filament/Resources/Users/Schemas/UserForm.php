@@ -152,6 +152,13 @@ class UserForm
                     ->maxSize(2048)
                     ->imageEditor()
                     ->downloadable()
+                    ->helperText('Kosongkan untuk mempertahankan avatar Google/URL eksternal. Upload file baru akan menggantinya.')
+                    ->afterStateHydrated(function (FileUpload $component, mixed $state): void {
+                        if (is_string($state) && filter_var($state, FILTER_VALIDATE_URL)) {
+                            $component->state(null);
+                        }
+                    })
+                    ->dehydrated(fn (?string $state): bool => filled($state))
                     ->columnSpanFull(),
 
                 Select::make('wedding_organizer_id')

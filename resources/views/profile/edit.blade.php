@@ -7,9 +7,9 @@
 <section class="bg-gradient-to-r from-gray-900 to-red-700 text-white py-16">
     <div class="container mx-auto px-4">
         <div class="max-w-4xl mx-auto text-center">
-            <div class="w-24 h-24 rounded-full mx-auto mb-4 shadow-xl overflow-hidden {{ auth()->user()->avatar ? '' : 'bg-gradient-to-r from-white to-gray-200 flex items-center justify-center text-red-600 text-4xl font-bold' }}">
-                @if(auth()->user()->avatar)
-                    <img src="{{ Storage::url(auth()->user()->avatar) }}" alt="{{ auth()->user()->name }}" class="w-full h-full object-cover">
+            <div class="w-24 h-24 rounded-full mx-auto mb-4 shadow-xl overflow-hidden {{ auth()->user()->avatar_url ? '' : 'bg-gradient-to-r from-white to-gray-200 flex items-center justify-center text-red-600 text-4xl font-bold' }}">
+                @if(auth()->user()->avatar_url)
+                    <img src="{{ auth()->user()->avatar_url }}" alt="{{ auth()->user()->name }}" referrerpolicy="no-referrer" class="w-full h-full object-cover">
                 @else
                     {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
                 @endif
@@ -91,13 +91,13 @@
                                     <!-- Current Avatar Preview -->
                                     <div class="relative">
                                         <div id="avatar-preview" class="w-24 h-24 rounded-full overflow-hidden bg-gradient-to-r from-gray-900 to-red-600 flex items-center justify-center text-white text-3xl font-bold shadow-lg">
-                                            @if($user->avatar)
-                                                <img src="{{ Storage::url($user->avatar) }}" alt="Avatar" class="w-full h-full object-cover">
+                                            @if($user->avatar_url)
+                                                <img src="{{ $user->avatar_url }}" alt="Avatar" referrerpolicy="no-referrer" class="w-full h-full object-cover">
                                             @else
                                                 {{ strtoupper(substr($user->name, 0, 1)) }}
                                             @endif
                                         </div>
-                                        @if($user->avatar)
+                                        @if($user->avatar_url)
                                             <button type="button" onclick="removeAvatar()" class="absolute -top-1 -right-1 w-7 h-7 bg-red-500 text-white rounded-full hover:bg-red-600 transition flex items-center justify-center shadow-lg">
                                                 <i class="fas fa-times text-xs"></i>
                                             </button>
